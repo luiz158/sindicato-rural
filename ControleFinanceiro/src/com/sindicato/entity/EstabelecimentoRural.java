@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,6 +22,9 @@ public class EstabelecimentoRural {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqEstabelecimentoRural")
 	private int id;
+	
+	@OneToOne
+	private Cliente cliente;
 	
 	@OneToMany(targetEntity=OcupacaoSolo.class, mappedBy="estabelecimentoRural")
 	private List<OcupacaoSolo> ocupacoesSolo;
