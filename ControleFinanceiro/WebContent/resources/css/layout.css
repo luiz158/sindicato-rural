@@ -7,7 +7,7 @@
 	font-size: 14px;
 }
 .itemmenu{
-	font-size: 11px;
+	font-size: 12px;
 }
 
 /*
@@ -21,14 +21,33 @@ body{
 	height: 40px;
 	position:relative;
 	top: 0;
-	background-color: black;
+	background-color: #f5f5f5;
+	border: 1px solid #eeeeee;
 }
+.infUsuario{
+	border-left: 2px solid white;;
+	height: 100%;
+	width: 280px;
+	position: relative;
+	float: right;
+	padding: 5px;
+}
+.titulo{
+	font-family: "Lato", Helvetica, Arial, sans-serif;
+	font-size: 17px;
+	height: 100%;
+	width: 400px;
+	position: relative;
+	float: left;
+	padding: 5px;
+}
+
 .menu{
 	margin: 8px;
 	display: inline;
 }
 .conteudo{
-	width: 800px;
+	position:
+	width: 100%;
 	background-color: blue;
-	display: inline;
 }

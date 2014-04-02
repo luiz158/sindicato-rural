@@ -16,11 +16,17 @@
 		
 	</h:head>
 	<h:body>
-			<div class="header"></div>
+			<div class="header">
+				<div class="titulo">Sindicato Rural de Cotia - Controle Financeiro</div>
+				<div class="infUsuario">
+					<p:button value="alyssonprs@gmail.com" icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
+					<p:button value="Sair" icon="ui-icon-power" iconPos="right" style="font-size: 13px;float:right;" />
+				</div>
+			</div>
 			
 			<div class="menu">
 				<h:form>
-					<p:menu styleClass="menu" style="width:150px">
+					<p:menu styleClass="menu" style="width:200px">
 						<p:submenu label="Cadastros" styleClass="submenu">
 							<p:menuitem styleClass="itemmenu" value="Sindicato" icon="ui-icon-disk" />
 							<p:menuitem styleClass="itemmenu" value="Clientes" icon="ui-icon-arrowrefresh-1-w" />
@@ -38,28 +44,10 @@
 						<p:submenu label="Relatórios" styleClass="submenu">
 							<p:menuitem styleClass="itemmenu" value="External" url="http://www.primefaces.org"
 								icon="ui-icon-home" />
-							<p:menuitem styleClass="itemmenu" value="Internal" outcome="index"
+							<p:menuitem styleClass="itemmenu" value="Internal"
 								icon="ui-icon-star" />
 						</p:submenu>
 					</p:menu>
-					<!-- <p:menu>
-						<p:submenu label="Cadastros">
-							<p:menuitem value="Save"
-								icon="ui-icon-disk" />
-							<p:menuitem value="Update"
-								icon="ui-icon-arrowrefresh-1-w" />
-						</p:submenu>
-						<p:submenu label="Financeiro">
-							<p:menuitem value="Delete"
-								ajax="false" icon="ui-icon-close" />
-						</p:submenu>
-						<p:submenu label="Relatórios">
-							<p:menuitem value="External" url="http://www.primefaces.org"
-								icon="ui-icon-home" />
-							<p:menuitem value="Internal" outcome="/mobile/index"
-								icon="ui-icon-star" />
-						</p:submenu>
-					</p:menu> -->
 				</h:form>
 			</div>
 			<div class="conteudo">
