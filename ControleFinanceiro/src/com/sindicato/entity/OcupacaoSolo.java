@@ -1,10 +1,10 @@
 package com.sindicato.entity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -16,30 +16,30 @@ public class OcupacaoSolo {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqOcupacaoSolo")
 	private int id;
 	
-	@ManyToOne(optional=false)
-	private EstabelecimentoRural estabelecimentoRural;
+	@ManyToOne
+	@JoinColumn(name="tipoocupacaosolo_id")
+	private TipoOcupacaoSolo tipoOcupacaoSolo;
 	
-	@Column(length=500, nullable=false)
-	private String descricao;
+	private int areaOcupada;
 	
 	
 	public int getId() {
 		return id;
 	}
-	public EstabelecimentoRural getEstabelecimentoRural() {
-		return estabelecimentoRural;
+	public int getAreaOcupada() {
+		return areaOcupada;
 	}
-	public String getDescricao() {
-		return descricao;
+	public TipoOcupacaoSolo getTipoOcupacaoSolo() {
+		return tipoOcupacaoSolo;
+	}
+	public void setTipoOcupacaoSolo(TipoOcupacaoSolo tipoOcupacaoSolo) {
+		this.tipoOcupacaoSolo = tipoOcupacaoSolo;
+	}
+	public void setAreaOcupada(int areaOcupada) {
+		this.areaOcupada = areaOcupada;
 	}
 	public void setId(int id) {
 		this.id = id;
-	}
-	public void setEstabelecimentoRural(EstabelecimentoRural estabelecimentoRural) {
-		this.estabelecimentoRural = estabelecimentoRural;
-	}
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 	
 	

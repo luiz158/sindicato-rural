@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<h:head>
+		<meta http-equiv="Content-Type"
+			content="text/html; charset=ISO-8859-1" />
+		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
+
+		<h:outputStylesheet name="layout.css" library="css"></h:outputStylesheet>
+
+	</h:head>
+	<h:body>
+		<div class="header">
+			<div class="titulo">Sindicato Rural de Cotia - Controle
+				Financeiro</div>
+			<div class="infUsuario">
+				<p:button value="alyssonprs@gmail.com" icon="ui-icon-gear"
+					iconPos="right" style="font-size: 13px;" />
+				<p:button value="Sair" icon="ui-icon-power" iconPos="right"
+					style="font-size: 13px;float:right;" />
+			</div>
+		</div>
+
+		<div class="menu">
+			<h:form>
+				<p:menu styleClass="menu" style="width:200px">
+					<p:submenu label="Cadastros" styleClass="submenu">
+						<p:menuitem styleClass="itemmenu" value="Sindicato"
+							icon="ui-icon-disk" />
+						<p:menuitem styleClass="itemmenu" value="Clientes"
+							icon="ui-icon-arrowrefresh-1-w" />
+						<p:menuitem styleClass="itemmenu" value="Lista de serviços"
+							icon="ui-icon-arrowrefresh-1-w" />
+						<p:menuitem styleClass="itemmenu" value="Tipo de ocup. de solo"
+							icon="ui-icon-arrowrefresh-1-w" />
+						<p:menuitem styleClass="itemmenu" value="Modos de pagamento"
+							icon="ui-icon-arrowrefresh-1-w" />
+					</p:submenu>
+					<p:submenu label="Financeiro" styleClass="submenu">
+						<p:menuitem styleClass="itemmenu" value="Débitos do cliente"
+							icon="ui-icon-close" />
+						<p:menuitem styleClass="itemmenu" value="Gerar nota de cobrança"
+							icon="ui-icon-close" />
+						<p:menuitem styleClass="itemmenu" value="Manutenção de Notas"
+							icon="ui-icon-close" />
+						<p:menuitem styleClass="itemmenu" value="Registrar recebimentos"
+							icon="ui-icon-close" />
+						<p:menuitem styleClass="itemmenu" value="Registrar recolhimentos"
+							icon="ui-icon-close" />
+					</p:submenu>
+					<p:submenu label="Relatórios" styleClass="submenu">
+						<p:menuitem styleClass="itemmenu" value="External"
+							url="http://www.primefaces.org" icon="ui-icon-home" />
+						<p:menuitem styleClass="itemmenu" value="Internal"
+							icon="ui-icon-star" />
+					</p:submenu>
+				</p:menu>
+			</h:form>
+		</div>
+		<div class="conteudo">
+			<ui:insert name="conteudo">
+					Conteúdo!!	
+				</ui:insert>
+		</div>
+	</h:body>
+</f:view>
+</html>

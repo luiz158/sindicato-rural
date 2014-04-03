@@ -1,5 +1,6 @@
 package com.sindicato.entity;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -31,7 +33,8 @@ public class Cliente {
 	@ManyToOne(optional = false)
 	private Empresa empresa;
 
-	@OneToOne(optional = false, targetEntity = EstabelecimentoRural.class, mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name="estabelecimentorural_id")
 	private EstabelecimentoRural estabelecimentoRural;
 
 	@OneToMany(targetEntity = InformacaoSocio.class, mappedBy = "cliente")
@@ -45,10 +48,14 @@ public class Cliente {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCadastro = Calendar.getInstance();
 
+	//@Past
+	//@NotNull
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Calendar produtorRuralDesde;
 
+	//@Past
+	//@NotNull
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Calendar dataNascimento;
@@ -65,9 +72,13 @@ public class Cliente {
 	private String cep;
 	private String telefone;
 	private String tituloEleitor;
+	
+	//@NotNull
 	private String cpf;
 	private String rg;
 	private String orgaoExp;
+	
+	//@Max(value=2)
 	private String ufExp;
 
 	public int getId() {
@@ -79,6 +90,9 @@ public class Cliente {
 	}
 
 	public List<InformacaoSocio> getInformacoesSocio() {
+		if(informacoesSocio == null){
+			informacoesSocio = new ArrayList<InformacaoSocio>();
+		}
 		return informacoesSocio;
 	}
 
@@ -160,7 +174,6 @@ public class Cliente {
 	public boolean isSocio() {
 		return socio;
 	}
-
 	public void setSocio(boolean socio) {
 		this.socio = socio;
 	}

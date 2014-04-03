@@ -1,8 +1,8 @@
 package com.sindicato.test;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.persistence.EntityManager;
+
+import junit.framework.Assert;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,14 +28,24 @@ public class TestCadastros {
 	@Test
 	public void pegarUltimoRegistroDeSocio(){
 		Cliente cliente = clienteDAO.getAll().get(0);
-		assertEquals(clienteDAO.isSocio(cliente), true);
+		Assert.assertEquals(clienteDAO.isSocio(cliente), true);
 		
-		//cli.setSocio(false);
-		//clienteDAO.update(cli);
-		//assertEquals(clienteDAO.isSocio(cli), false);
+		cliente.setSocio(false);
+		clienteDAO.update(cliente);
+		Assert.assertEquals(clienteDAO.isSocio(cliente), false);
+
+		cliente.setSocio(true);
+		clienteDAO.update(cliente);
+		Assert.assertEquals(clienteDAO.isSocio(cliente), true);
+
+		cliente.setSocio(false);
+		clienteDAO.update(cliente);
+		Assert.assertEquals(clienteDAO.isSocio(cliente), false);
 	}
 	
-	
-	
-	
+	@Test
+	public void testaCadastroERecuperacaoOcupacaoSolo(){
+		Cliente cliente = clienteDAO.getAll().get(0);
+		Assert.assertEquals(cliente.getEstabelecimentoRural().getOcupacoesSolo().size(), 2);
+	}
 }
