@@ -1,14 +1,15 @@
 package com.sindicato.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.ClienteDAO;
-import com.sindicato.dao.InformacaoSocioDAO;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.InformacaoSocio;
 
@@ -24,6 +25,38 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		infSocio.setDataEvento(Calendar.getInstance());
 		infSocio.setSocio(cliente.isSocio());
 		em.persist(infSocio);
+	}
+	
+	@Override
+	public Cliente searchByID(Integer id){
+		Cliente cliente = em.find(Cliente.class, id);
+		cliente.setSocio(this.isSocio(cliente));
+		return cliente;
+	} 
+	
+	@Override
+	public List<Cliente> getAll(){
+		
+		String subQuerySocio = "select socio from InformacaoSocio s " +
+			"Where s.id = (select MAX(s2.id) from InformacaoSocio s2 Where s2.cliente.id = c.id) ";
+		
+		String strQuery = "Select c, ("+ subQuerySocio +") from Cliente c ";
+		TypedQuery<Object[]> query = null;
+		query = em.createQuery(strQuery, Object[].class);
+		
+		List<Cliente> clientes = new ArrayList<Cliente>();
+		try {
+			List<Object[]> objects = query.getResultList();
+			for (Object[] o : objects) {
+				Cliente cliente = (Cliente) o[0];
+				if(o[1] != null){
+					cliente.setSocio((Boolean) o[1]);
+				}
+				clientes.add(cliente);
+			}
+		} catch (NoResultException e) { }
+		
+		return clientes;
 	}
 	
 	@Override
@@ -57,17 +90,15 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 
 	@Override
 	public boolean isSocio(Cliente cliente) {
-		InformacaoSocioDAO infSocioDAO = new InformacaoSocioDAOImpl(em);
-		List<InformacaoSocio> informacoesSocio = infSocioDAO.buscarTodosPorCliente(cliente);
-		if (informacoesSocio.size() == 0) {
-			return false;
-		}
-		Collections.sort(informacoesSocio, new Comparator<InformacaoSocio>() {
-			public int compare(InformacaoSocio o1, InformacaoSocio o2) {
-				return (o1.getDataEvento().compareTo(o2.getDataEvento()));
-			}
-		});
-		return informacoesSocio.get(informacoesSocio.size() - 1).isSocio();
+		String strQuery = "select socio from InformacaoSocio s " +
+				"Where s.id = (select MAX(s2.id) from InformacaoSocio s2 Where s2.cliente = :cliente) ";
+		Query query = em.createQuery(strQuery);
+		query.setParameter("cliente", cliente);
+		boolean socio = false;
+		try {
+			socio = (Boolean) query.getSingleResult();
+		} catch (NoResultException e) { }
+		return socio;
 	}
 	
 }

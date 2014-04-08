@@ -60,7 +60,6 @@ public class PreencheClasses {
 		cli.setNome("Alysson Rodrigues");
 		cli.setCpf("370754654");
 		cli.setTelefone("(11) 46141760");
-		cli.setSocio(true);
 		ClienteDAO cliDAO = new ClienteDAOImpl(em);
 		cliDAO.insert(cli);
 		
