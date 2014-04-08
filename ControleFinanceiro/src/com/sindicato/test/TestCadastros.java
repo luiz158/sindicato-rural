@@ -9,8 +9,13 @@ import org.junit.Test;
 
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.dao.EntityManagerFactorySingleton;
+import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.impl.ClienteDAOImpl;
+import com.sindicato.dao.impl.FinanceiroDAOImpl;
 import com.sindicato.entity.Cliente;
+import com.sindicato.entity.Debito;
+import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.result.ResultOperation;
 
 public class TestCadastros {
 
@@ -55,4 +60,20 @@ public class TestCadastros {
 		Assert.assertEquals(cliente.getEstabelecimentoRural()
 				.getOcupacoesSolo().size(), 2);
 	}
+	
+	@Test
+	public void testeCadastroDebito(){
+		FinanceiroDAO financeiroDAO = new FinanceiroDAOImpl(em);
+		
+		Debito debito = new Debito();
+		//debito.setDataBase(Calendar.getInstance());
+		debito.setCliente(clienteDAO.getAll().get(0));
+		debito.setStatus(StatusDebitoEnum.DEBITOCRIADO);
+		
+		ResultOperation result = financeiroDAO.gravarDebito(debito);
+		
+		Assert.assertEquals(result.isSuccess(), true);
+		
+	}
+	
 }

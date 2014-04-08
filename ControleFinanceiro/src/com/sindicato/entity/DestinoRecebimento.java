@@ -17,7 +17,7 @@ public class DestinoRecebimento {
 	
 	@Column(length=300)
 	private String descricao;
-
+	
 	
 	public int getId() {
 		return id;

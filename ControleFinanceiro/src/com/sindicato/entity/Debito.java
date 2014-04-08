@@ -3,6 +3,7 @@ package com.sindicato.entity;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,17 +25,19 @@ public class Debito {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqDebito")
 	private int id;
 	
-	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito")
+	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	private List<DebitoServico> servicos;
 	
-	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito")
+	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	//@JoinColumn(name="recebimento_id", insertable=true, updatable=true)
 	private List<Recebimento> recebimentos;
 
 	@ManyToOne
 	private Cliente cliente;
 	
 	@Temporal(TemporalType.DATE)
-	private Calendar dataBase = Calendar.getInstance();
+	@Column(nullable=false)
+	private Calendar dataBase;
 	
 	@Column(nullable=false)
 	private StatusDebitoEnum status;
