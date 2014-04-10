@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -19,18 +20,20 @@ public class DebitoServico {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqDebitoServico")
 	private int id;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne
+	@JoinColumn(name="servico_id")
 	private Servico servico;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne
+	@JoinColumn(name="debito_id")
 	private Debito debito;
 	
-	@OneToOne(optional=true)
+	@OneToOne
 	private Recolhimento recolhimento;
 	
 	@Column(precision=18, scale=2, nullable=false)
 	private BigDecimal valor;
-
+	
 	
 	public int getId() {
 		return id;

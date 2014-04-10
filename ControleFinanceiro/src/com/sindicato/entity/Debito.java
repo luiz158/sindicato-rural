@@ -1,5 +1,7 @@
 package com.sindicato.entity;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 
@@ -25,11 +28,12 @@ public class Debito {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqDebito")
 	private int id;
 	
-	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	private List<DebitoServico> servicos;
+	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true)
+	private List<DebitoServico> debitoServicos;
+	@Transient
+	private BigDecimal totalDebitos;
 	
-	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	//@JoinColumn(name="recebimento_id", insertable=true, updatable=true)
+	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true)
 	private List<Recebimento> recebimentos;
 
 	@ManyToOne
@@ -40,18 +44,30 @@ public class Debito {
 	private Calendar dataBase;
 	
 	@Column(nullable=false)
-	private StatusDebitoEnum status;
+	private StatusDebitoEnum status = StatusDebitoEnum.DEBITOCRIADO;
 	
 	
-	
+	public BigDecimal getTotalDebitos(){
+		if(debitoServicos == null || debitoServicos.size() == 0){
+			return BigDecimal.ZERO;
+		}
+		totalDebitos = BigDecimal.ZERO;
+		for (DebitoServico debitoServico : debitoServicos) {
+			totalDebitos = totalDebitos.add(debitoServico.getValor());
+		}
+		return totalDebitos;
+	}
 	public int getId() {
 		return id;
 	}
 	public StatusDebitoEnum getStatus() {
 		return status;
 	}
-	public List<DebitoServico> getServicos() {
-		return servicos;
+	public List<DebitoServico> getDebitoServicos() {
+		if(debitoServicos == null){
+			debitoServicos = new ArrayList<DebitoServico>();
+		}
+		return debitoServicos;
 	}
 	public List<Recebimento> getRecebimentos() {
 		return recebimentos;
@@ -74,8 +90,8 @@ public class Debito {
 	public void setStatus(StatusDebitoEnum status) {
 		this.status = status;
 	}
-	public void setServicos(List<DebitoServico> servicos) {
-		this.servicos = servicos;
+	public void setDebitoServicos(List<DebitoServico> debitoServicos) {
+		this.debitoServicos = debitoServicos;
 	}
 	public void setRecebimentos(List<Recebimento> recebimentos) {
 		this.recebimentos = recebimentos;

@@ -38,7 +38,7 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 			result.setMessage("Data base do débito é obrigatório.");
 			return result;
 		}
-		if(debito.getServicos() == null || debito.getServicos().size() == 0){
+		if(debito.getDebitoServicos() == null || debito.getDebitoServicos().size() == 0){
 			result.setSuccess(false);
 			result.setMessage("Os serviços do debito devem ser declarados.");
 			return result;
@@ -48,6 +48,7 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 			result.setMessage("Cliente ja possui Debito nesta data base.");
 			return result;
 		}
+		result.setSuccess(true);
 		return result;
 	}
 	
@@ -61,6 +62,12 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 		try {
 			em.getTransaction().begin();
 			em.persist(debito);
+			
+			/*for (DebitoServico servico : debito.get) {
+				
+			}*/
+			
+			
 			em.getTransaction().commit();
 			result.setSuccess(true);
 		} catch (Exception e) {
