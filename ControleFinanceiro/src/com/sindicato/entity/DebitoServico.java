@@ -2,6 +2,7 @@ package com.sindicato.entity;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,8 @@ public class DebitoServico {
 	@JoinColumn(name="debito_id")
 	private Debito debito;
 	
-	@OneToOne
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinColumn(name="recolhimento_id")
 	private Recolhimento recolhimento;
 	
 	@Column(precision=18, scale=2, nullable=false)

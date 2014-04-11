@@ -43,6 +43,9 @@ public class Debito {
 	@Column(nullable=false)
 	private Calendar dataBase;
 	
+	@Temporal(TemporalType.DATE)
+	private Calendar dataEmissaoNotaCobranca;
+	
 	@Column(nullable=false)
 	private StatusDebitoEnum status = StatusDebitoEnum.DEBITOCRIADO;
 	
@@ -77,6 +80,12 @@ public class Debito {
 	}
 	public Cliente getCliente() {
 		return cliente;
+	}
+	public Calendar getDataEmissaoNotaCobranca() {
+		return dataEmissaoNotaCobranca;
+	}
+	public void setDataEmissaoNotaCobranca(Calendar dataEmissaoNotaCobranca) {
+		this.dataEmissaoNotaCobranca = dataEmissaoNotaCobranca;
 	}
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
