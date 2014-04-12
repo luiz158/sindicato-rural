@@ -60,8 +60,6 @@ public class ListasDAOImpl implements ListasDAO {
 		}
 	}
 
-	
-	
 	@Override
 	public List<TipoRecebimento> getTodasFormasRecebimento() {
 		try {

@@ -1,9 +1,6 @@
 package com.sindicato.dao;
 
-import java.util.List;
-
 import com.sindicato.entity.Debito;
-import com.sindicato.entity.DebitoServico;
 import com.sindicato.result.ResultOperation;
 
 
@@ -17,6 +14,6 @@ public interface FinanceiroDAO{
 
 	ResultOperation registrarRecebimento(Debito debito);
 
-	ResultOperation registrarRecolhimentos(Debito debito, List<DebitoServico> servicos);
+	ResultOperation registrarRecolhimentos(Debito debito);
 	
 }

@@ -1,7 +1,6 @@
 package com.sindicato.dao.impl;
 
 import java.util.Calendar;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -9,7 +8,6 @@ import javax.persistence.TypedQuery;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
-import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.ResultOperation;
 
@@ -47,7 +45,7 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 			result.setMessage("Os serviços do debito devem ser declarados.");
 			return result;
 		}
-		if(existirDebitoParaClienteNaMesmaDataBase(debito.getCliente(), debito.getDataBase())){
+		if(debito.getId() == 0 && existirDebitoParaClienteNaMesmaDataBase(debito.getCliente(), debito.getDataBase())){
 			result.setSuccess(false);
 			result.setMessage("Cliente ja possui Debito nesta data base.");
 			return result;
@@ -141,23 +139,12 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 	}
 
 	@Override
-	public ResultOperation registrarRecolhimentos(Debito debito,
-			List<DebitoServico> servicos) {
-		ResultOperation result = new ResultOperation();
-		try {
-			debito.setStatus(StatusDebitoEnum.RECOLHIDO);
-			em.getTransaction().begin();
-			em.merge(debito);
-			for (DebitoServico debitoServico : servicos) {
-				em.merge(debitoServico);
-			}
-			em.getTransaction().commit();
-			
-			result.setSuccess(true);
+	public ResultOperation registrarRecolhimentos(Debito debito) {
+		debito.setStatus(StatusDebitoEnum.RECOLHIDO);
+		ResultOperation result = this.gravarDebito(debito);
+		if(result.isSuccess()){
 			result.setMessage("Recolhimentos gravados com sucesso.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			result.setSuccess(false);
+		}else{
 			result.setMessage("Recolhimentos não foram gravados com sucesso. Contate o administrador do sistema.");
 		}
 		return result;

@@ -21,11 +21,11 @@ public class DebitoServico {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqDebitoServico")
 	private int id;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="servico_id")
 	private Servico servico;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	@JoinColumn(name="debito_id")
 	private Debito debito;
 	
