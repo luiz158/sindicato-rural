@@ -1,12 +1,14 @@
 package com.sindicato.entity;
 
-import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -37,8 +39,8 @@ public class Cliente {
 	@JoinColumn(name="estabelecimentorural_id")
 	private EstabelecimentoRural estabelecimentoRural;
 
-	@OneToMany(targetEntity = InformacaoSocio.class, mappedBy = "cliente")
-	private List<InformacaoSocio> informacoesSocio;
+	@OneToMany(targetEntity = InformacaoSocio.class, mappedBy = "cliente", fetch=FetchType.EAGER)
+	private Set<InformacaoSocio> informacoesSocio;
 	@Transient
 	private boolean socio = false;
 	
@@ -89,9 +91,9 @@ public class Cliente {
 		return estabelecimentoRural;
 	}
 
-	public List<InformacaoSocio> getInformacoesSocio() {
+	public Set<InformacaoSocio> getInformacoesSocio() {
 		if(informacoesSocio == null){
-			informacoesSocio = new ArrayList<InformacaoSocio>();
+			informacoesSocio = new HashSet<InformacaoSocio>();
 		}
 		return informacoesSocio;
 	}
@@ -207,7 +209,7 @@ public class Cliente {
 		this.estabelecimentoRural = estabelecimentoRural;
 	}
 
-	public void setInformacoesSocio(List<InformacaoSocio> informacoesSocio) {
+	public void setInformacoesSocio(Set<InformacaoSocio> informacoesSocio) {
 		this.informacoesSocio = informacoesSocio;
 	}
 

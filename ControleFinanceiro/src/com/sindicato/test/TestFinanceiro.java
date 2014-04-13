@@ -21,10 +21,8 @@ import com.sindicato.dao.impl.FinanceiroDAOImpl;
 import com.sindicato.dao.impl.ListasDAOImpl;
 import com.sindicato.dao.impl.ModoPagamentoDAOImpl;
 import com.sindicato.dao.impl.ServicoDAOImpl;
-import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.DebitoServico;
-import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.entity.Recolhimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.ResultOperation;
@@ -209,22 +207,7 @@ public class TestFinanceiro {
 		Assert.assertEquals(debito.getStatus(), StatusDebitoEnum.RECOLHIDO);
 	}
 
-	@Test
-	public void controleDeMensalidadesDoCliente(){
-		
-		Cliente cliente = clienteDAO.searchByID(1);
-		
-		Calendar virouSocio = Calendar.getInstance();
-		virouSocio.set(Calendar.YEAR, 2013);
-
-		InformacaoSocio infSocio = new InformacaoSocio();
-		infSocio.setCliente(cliente);
-		infSocio.setDataEvento(virouSocio);
-		infSocio.setSocio(true);
-		
-		em.persist(infSocio);
-		
-	}
+	
 
 
 }
