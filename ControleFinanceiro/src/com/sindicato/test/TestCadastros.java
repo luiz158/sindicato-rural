@@ -62,13 +62,11 @@ public class TestCadastros {
 	@Test
 	public void controleDeMensalidadesDoCliente(){
 		
-		Cliente cliente = clienteDAO.searchByID(1);
 		em.getTransaction().begin();
-		for (InformacaoSocio i : cliente.getInformacoesSocio()) {
-			em.remove(i);
-		}
+		em.createQuery("DELETE FROM InformacaoSocio").executeUpdate();
 		em.getTransaction().commit();
 		
+		Cliente cliente = clienteDAO.searchByID(1);
 		
 		em.getTransaction().begin();
 		
@@ -92,12 +90,8 @@ public class TestCadastros {
 		
 		em.getTransaction().commit();
 		
+		Assert.assertEquals(clienteDAO.calculaQuantosMesesOClienteESocio(cliente), 12);
 		
-		cliente = clienteDAO.searchByID(1);
-		
-		for (InformacaoSocio infSocioCliente : cliente.getInformacoesSocio()) {
-			
-		}
 	}
 
 }

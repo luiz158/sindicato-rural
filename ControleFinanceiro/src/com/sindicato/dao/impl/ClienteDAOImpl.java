@@ -9,9 +9,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.joda.time.DateTime;
+import org.joda.time.Months;
+
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.InformacaoSocio;
+import com.sindicato.result.InformacaoMensalidade;
 
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements ClienteDAO {
 
@@ -99,6 +103,104 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 			socio = (Boolean) query.getSingleResult();
 		} catch (NoResultException e) { }
 		return socio;
+	}
+
+	private List<InformacaoSocio> getInformacoesSocio(Cliente cliente){
+		try {
+			String strQuery = " select i from InformacaoSocio i where i.cliente = :cliente " +
+					" order by i.id asc ";
+			TypedQuery<InformacaoSocio> query = em.createQuery(strQuery, InformacaoSocio.class);
+			query.setParameter("cliente", cliente);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+	
+	@Override
+	public int calculaQuantosMesesOClienteESocio(Cliente cliente){
+		List<InformacaoSocio> informacoesSocio = this.getInformacoesSocio(cliente);
+
+		if(informacoesSocio.size() == 0){
+			return 0;
+		}
+		// id impar é data inicial e id par é data final, caso nao tenha id par, sera data atual
+		
+		int i = 1;
+		boolean calcula = false;
+		DateTime dataVirouSocio = null;
+		DateTime dataDeixouDeSerSocio = null;
+		int qtdMesComoSocio = 0;
+		
+		for (InformacaoSocio informacaoSocio : informacoesSocio) {
+			
+			if(i % 2 > 0){
+				dataVirouSocio = new DateTime(informacaoSocio.getDataEvento());
+			}else{
+				dataDeixouDeSerSocio = new DateTime(informacaoSocio.getDataEvento());
+				calcula = true;
+			}
+			
+			if(calcula){
+				
+				qtdMesComoSocio += Months.monthsBetween(dataVirouSocio, dataDeixouDeSerSocio).getMonths();
+				
+				calcula = false;
+			}
+			
+			i++;
+		}
+		
+		return qtdMesComoSocio;
+	}
+	
+	@Override
+	public InformacaoMensalidade estaEmDiaComAsMensalidades(Cliente cliente) {
+		InformacaoMensalidade retorno = new InformacaoMensalidade(); 
+		
+		List<InformacaoSocio> informacoesSocio = this.getInformacoesSocio(cliente);
+
+		if(informacoesSocio.size() == 0){
+			retorno.setAtrasado(false);
+			retorno.setMensalidadesPagas(0);
+			retorno.setMensagem("Cliente nunca foi sócio do sindicato.");
+			return retorno;
+		}
+
+		
+		// id impar é data inicial e id par é data final, caso nao tenha id par, sera data atual
+		
+		int i = 1;
+		boolean calcula = false;
+		DateTime dataVirouSocio = null;
+		DateTime dataDeixouDeSerSocio = null;
+		
+		int qtdMesComoSocio = 0;
+		
+		for (InformacaoSocio informacaoSocio : informacoesSocio) {
+			
+			if(i % 2 > 0){
+				dataVirouSocio = new DateTime(informacaoSocio.getDataEvento());
+			}else{
+				dataDeixouDeSerSocio = new DateTime(informacaoSocio.getDataEvento());
+				calcula = true;
+			}
+			
+			if(calcula){
+				
+				qtdMesComoSocio += Months.monthsBetween(dataVirouSocio, dataDeixouDeSerSocio).getMonths();
+				
+				calcula = false;
+			}
+			
+			i++;
+		}
+		
+		
+		retorno.setAtrasado((qtdMesComoSocio > 0));
+		retorno.setMensalidadesPagas(0);
+		retorno.setMensagem("Cliente nunca foi sócio do sindicato.");
+		return retorno;
 	}
 	
 }

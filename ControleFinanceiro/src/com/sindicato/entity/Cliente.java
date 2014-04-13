@@ -1,14 +1,11 @@
 package com.sindicato.entity;
 
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -39,8 +36,6 @@ public class Cliente {
 	@JoinColumn(name="estabelecimentorural_id")
 	private EstabelecimentoRural estabelecimentoRural;
 
-	@OneToMany(targetEntity = InformacaoSocio.class, mappedBy = "cliente", fetch=FetchType.EAGER)
-	private Set<InformacaoSocio> informacoesSocio;
 	@Transient
 	private boolean socio = false;
 	
@@ -89,13 +84,6 @@ public class Cliente {
 
 	public EstabelecimentoRural getEstabelecimentoRural() {
 		return estabelecimentoRural;
-	}
-
-	public Set<InformacaoSocio> getInformacoesSocio() {
-		if(informacoesSocio == null){
-			informacoesSocio = new HashSet<InformacaoSocio>();
-		}
-		return informacoesSocio;
 	}
 
 	public List<Debito> getDebitos() {
@@ -207,10 +195,6 @@ public class Cliente {
 	public void setEstabelecimentoRural(
 			EstabelecimentoRural estabelecimentoRural) {
 		this.estabelecimentoRural = estabelecimentoRural;
-	}
-
-	public void setInformacoesSocio(Set<InformacaoSocio> informacoesSocio) {
-		this.informacoesSocio = informacoesSocio;
 	}
 
 	public void setDebitos(List<Debito> debitos) {
