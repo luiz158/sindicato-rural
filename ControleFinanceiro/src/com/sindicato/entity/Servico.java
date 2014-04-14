@@ -19,6 +19,8 @@ public class Servico {
 	private String descricao;
 	private boolean retencao;
 	
+	private boolean mensalidade;
+	private int quantosMesesVale;
 	
 	public int getId() {
 		return id;
@@ -28,6 +30,18 @@ public class Servico {
 	}
 	public boolean isRetencao() {
 		return retencao;
+	}
+	public boolean isMensalidade() {
+		return mensalidade;
+	}
+	public void setMensalidade(boolean mensalidade) {
+		this.mensalidade = mensalidade;
+	}
+	public int getQuantosMesesVale() {
+		return quantosMesesVale;
+	}
+	public void setQuantosMesesVale(int quantosMesesVale) {
+		this.quantosMesesVale = quantosMesesVale;
 	}
 	public void setId(int id) {
 		this.id = id;

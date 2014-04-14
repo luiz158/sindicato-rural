@@ -41,7 +41,7 @@ public class Debito {
 	
 	@Temporal(TemporalType.DATE)
 	@Column(nullable=false)
-	private Calendar dataBase;
+	private Calendar dataBase = Calendar.getInstance();
 	
 	@Temporal(TemporalType.DATE)
 	private Calendar dataEmissaoNotaCobranca;

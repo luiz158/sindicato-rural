@@ -8,6 +8,8 @@ public interface ClienteDAO extends DAO<Cliente, Integer> {
 	boolean isSocio(Cliente cliente);
 	
 	int calculaQuantosMesesOClienteESocio(Cliente cliente);
+
+	int calculaQuantasMensalidadeForamPagas(Cliente cliente);
 	
 	InformacaoMensalidade estaEmDiaComAsMensalidades(Cliente cliente);
 	

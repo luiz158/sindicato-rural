@@ -120,12 +120,9 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 	@Override
 	public int calculaQuantosMesesOClienteESocio(Cliente cliente){
 		List<InformacaoSocio> informacoesSocio = this.getInformacoesSocio(cliente);
-
 		if(informacoesSocio.size() == 0){
 			return 0;
 		}
-		// id impar é data inicial e id par é data final, caso nao tenha id par, sera data atual
-		
 		int i = 1;
 		boolean calcula = false;
 		DateTime dataVirouSocio = null;
@@ -133,7 +130,9 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		int qtdMesComoSocio = 0;
 		
 		for (InformacaoSocio informacaoSocio : informacoesSocio) {
-			
+		
+			// indice impar é data inicial e id par é data final, caso nao tenha id par, sera data atual
+			// primeiro registro sempre sera socio = true, segundo sempre quando deixa de ser sócio
 			if(i % 2 > 0){
 				dataVirouSocio = new DateTime(informacaoSocio.getDataEvento());
 			}else{
@@ -142,65 +141,48 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 			}
 			
 			if(calcula){
-				
 				qtdMesComoSocio += Months.monthsBetween(dataVirouSocio, dataDeixouDeSerSocio).getMonths();
-				
+				dataVirouSocio = null;
+				dataDeixouDeSerSocio = null;
 				calcula = false;
 			}
 			
 			i++;
 		}
 		
+		// se existir apenas registro de sócio = true, calcula com data atual
+		if((i % 2 == 0) && dataDeixouDeSerSocio == null){
+			qtdMesComoSocio += Months.monthsBetween(dataVirouSocio, new DateTime()).getMonths();
+		}
 		return qtdMesComoSocio;
+	}
+	
+	@Override
+	public int calculaQuantasMensalidadeForamPagas(Cliente cliente) {
+		
+		
+		
+		return 0;
 	}
 	
 	@Override
 	public InformacaoMensalidade estaEmDiaComAsMensalidades(Cliente cliente) {
 		InformacaoMensalidade retorno = new InformacaoMensalidade(); 
 		
-		List<InformacaoSocio> informacoesSocio = this.getInformacoesSocio(cliente);
-
-		if(informacoesSocio.size() == 0){
-			retorno.setAtrasado(false);
-			retorno.setMensalidadesPagas(0);
-			retorno.setMensagem("Cliente nunca foi sócio do sindicato.");
-			return retorno;
-		}
-
-		
-		// id impar é data inicial e id par é data final, caso nao tenha id par, sera data atual
-		
-		int i = 1;
-		boolean calcula = false;
-		DateTime dataVirouSocio = null;
-		DateTime dataDeixouDeSerSocio = null;
-		
-		int qtdMesComoSocio = 0;
-		
-		for (InformacaoSocio informacaoSocio : informacoesSocio) {
-			
-			if(i % 2 > 0){
-				dataVirouSocio = new DateTime(informacaoSocio.getDataEvento());
-			}else{
-				dataDeixouDeSerSocio = new DateTime(informacaoSocio.getDataEvento());
-				calcula = true;
-			}
-			
-			if(calcula){
-				
-				qtdMesComoSocio += Months.monthsBetween(dataVirouSocio, dataDeixouDeSerSocio).getMonths();
-				
-				calcula = false;
-			}
-			
-			i++;
-		}
-		
-		
-		retorno.setAtrasado((qtdMesComoSocio > 0));
+		retorno.setMesesComoSocio(this.calculaQuantosMesesOClienteESocio(cliente));
 		retorno.setMensalidadesPagas(0);
+		
+		
 		retorno.setMensagem("Cliente nunca foi sócio do sindicato.");
+		retorno.setAtrasado(false);
+
+		
+		
 		return retorno;
-	}
 	
+		
+	}
+
+	
+
 }
