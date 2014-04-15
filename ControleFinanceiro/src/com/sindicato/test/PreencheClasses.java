@@ -72,7 +72,7 @@ public class PreencheClasses {
 		
 		ServicoDAO servicoDAO = new ServicoDAOImpl(em); 
 		Servico servico = new Servico();
-		servico.setDescricao("Mensalidade");
+		servico.setDescricao("INSS");
 		servico.setRetencao(true);
 		servicoDAO.insert(servico);
 		

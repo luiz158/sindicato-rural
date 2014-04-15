@@ -22,7 +22,7 @@ import com.sindicato.entity.Debito;
 import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.entity.Servico;
-import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.result.InformacaoMensalidade;
 
 public class TestCadastros {
 
@@ -117,15 +117,23 @@ public class TestCadastros {
 		Cliente cliente = clienteDAO.searchByID(1);
 		
 		// cadastra servico de mensalidade
-		Servico servico = new Servico();
-		servico.setDescricao("Taxa de serviço - Bimestral");
-		servico.setMensalidade(true);
-		servico.setQuantosMesesVale(2);
-		servico.setRetencao(true);
-		servicoDAO.insert(servico);
-		
+		Servico bimestral = new Servico();
+		bimestral.setDescricao("Taxa de serviço - Bimestral");
+		bimestral.setMensalidade(true);
+		bimestral.setQuantosMesesVale(2);
+		bimestral.setRetencao(true);
+		servicoDAO.insert(bimestral);
+
+		// cadastra servico de mensalidade
+		Servico trimestral = new Servico();
+		trimestral.setDescricao("Taxa de serviço - Trimestral");
+		trimestral.setMensalidade(true);
+		trimestral.setQuantosMesesVale(3);
+		trimestral.setRetencao(true);
+		servicoDAO.insert(trimestral);
+
 		DebitoServico debitoServico = new DebitoServico();
-		debitoServico.setServico(servico);
+		debitoServico.setServico(bimestral);
 		debitoServico.setValor(BigDecimal.TEN);
 		
 		Debito debito = new Debito();
@@ -136,12 +144,39 @@ public class TestCadastros {
 
 		financeiroDAO.gravarDebito(debito);
 		financeiroDAO.registrarRecebimento(debito);
+
+		Assert.assertEquals(clienteDAO.calculaQuantasMensalidadeForamPagas(cliente), 2);
 		
-		// implementar a classe que busca quantas mensalidades foram pagas do cliente
-		// ClienteDAO ja tem a assinatura
+		// cadastra novo servico
+		debitoServico = new DebitoServico();
+		debitoServico.setServico(trimestral);
+		debitoServico.setValor(BigDecimal.TEN);
 		
+		Calendar dataBase = Calendar.getInstance();
+		dataBase.set(Calendar.YEAR, 2012);
+		
+		debito = new Debito();
+		debito.setCliente(cliente);
+		debito.setDataBase(dataBase);
+
+		debitoServico.setDebito(debito);
+		debito.getDebitoServicos().add(debitoServico);
+		
+		financeiroDAO.gravarDebito(debito);
+		financeiroDAO.registrarRecolhimentos(debito);
+		
+		
+		Assert.assertEquals(clienteDAO.calculaQuantasMensalidadeForamPagas(cliente), 5);
 		
 	}
 	
-	
+	@Test
+	public void estaEmDiaComAsMensalidades(){
+
+		Cliente cliente = clienteDAO.searchByID(1);
+		InformacaoMensalidade infMensalidade = clienteDAO.estaEmDiaComAsMensalidades(cliente);
+		
+//		Assert.assertEquals(infMensalidade.isAtrasado(), true);
+		
+	}
 }

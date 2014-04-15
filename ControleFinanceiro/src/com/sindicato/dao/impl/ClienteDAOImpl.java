@@ -15,6 +15,7 @@ import org.joda.time.Months;
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.InformacaoSocio;
+import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.InformacaoMensalidade;
 
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements ClienteDAO {
@@ -160,9 +161,27 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 	@Override
 	public int calculaQuantasMensalidadeForamPagas(Cliente cliente) {
 		
-		
-		
-		return 0;
+		try {
+			String strQuery = "select SUM(ds.servico.quantosMesesVale) from DebitoServico ds " +
+					" where ds.debito.cliente = :cliente " +
+					" and ds.debito.status in (:status) " +
+					" and ds.servico.mensalidade = :mensalidade";
+			
+			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
+			statusPermitido.add(StatusDebitoEnum.RECEBIDO);
+			statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
+			
+			TypedQuery<Long> query = em.createQuery(strQuery, Long.class);
+			query.setParameter("cliente", cliente);
+			query.setParameter("status", statusPermitido);
+			query.setParameter("mensalidade", true);
+			
+			return Integer.parseInt(query.getSingleResult().toString());
+		} catch (NoResultException e) {
+			return 0;
+		}catch (Exception e) {
+			return 0;
+		}
 	}
 	
 	@Override
@@ -170,19 +189,25 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		InformacaoMensalidade retorno = new InformacaoMensalidade(); 
 		
 		retorno.setMesesComoSocio(this.calculaQuantosMesesOClienteESocio(cliente));
-		retorno.setMensalidadesPagas(0);
+		retorno.setMensalidadesPagas(this.calculaQuantasMensalidadeForamPagas(cliente));
 		
-		
-		retorno.setMensagem("Cliente nunca foi sócio do sindicato.");
-		retorno.setAtrasado(false);
-
-		
-		
+		if(retorno.getMesesComoSocio() == 0){
+			if(cliente.isSocio()){
+				retorno.setMensagem("Cliente ainda não completou 1 mês como sócio.");
+			}else{
+				retorno.setMensagem("Cliente nunca foi sócio.");
+			}
+			retorno.setAtrasado(false);
+		} else if(retorno.getMesesComoSocio() > retorno.getMensalidadesPagas()){
+			int diferenca = retorno.getMesesComoSocio() - retorno.getMensalidadesPagas();
+			retorno.setMensagem(diferenca + " mensalidades atrasadas.");
+			retorno.setAtrasado(true);
+		}else{
+			int diferenca = retorno.getMensalidadesPagas() - retorno.getMesesComoSocio();
+			retorno.setMensagem("Cliente possui " + diferenca + " mensalidades de crédito.");
+			retorno.setAtrasado(false);
+		}
 		return retorno;
-	
-		
 	}
-
-	
 
 }
