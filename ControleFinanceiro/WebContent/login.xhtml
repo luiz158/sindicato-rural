@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<h:head>
+		<title>Núcleo Engenharia Consultiva - Login</title>
+		<h:outputStylesheet name="login.css" library="css"></h:outputStylesheet>
+	</h:head>
+	<h:body>
+		<div id="main-wrapper">
+			<div id="logo">
+				<h:graphicImage name="LogoSindRCotia.jpg" library="imagens"></h:graphicImage>
+			</div>
+			<center>
+				<div id="content">
+					<h:form>
+						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+							<f:facet name="start">
+								<p:graphicImage alt="carregando" library="imagens"
+									name="loading.gif"
+									style="position:fixed;right:10%;top:90%;z-index:100000;" />
+							</f:facet>
+
+							<f:facet name="complete">
+								<h:outputText value="" />
+							</f:facet>
+						</p:ajaxStatus>
+						<p:panelGrid width="300" columns="2">
+							<f:facet name="header">
+								<p:row>
+									<p:column colspan="2">Login</p:column>
+								</p:row>
+							</f:facet>
+							<h:outputText value="E-mail:"></h:outputText>
+							<p:inputText required="true"
+								requiredMessage="Nome de usuário é um campo obrigatório"
+								size="20"></p:inputText>
+							<h:outputText value="Senha:"></h:outputText>
+							<p:password id="senha" />
+						</p:panelGrid>
+						<br />
+						<h:messages></h:messages>
+						<br />
+
+						<p:commandButton value="Entrar" styleClass="panel_button_center" />
+
+						<br />
+
+						<p align="left">
+							<h:outputLink value="#">Esqueceu sua senha?</h:outputLink>
+						</p>
+					</h:form>
+				</div>
+			</center>
+		</div>
+	</h:body>
+</f:view>
+
+</html>
