@@ -19,6 +19,7 @@ import com.sindicato.dao.impl.UsuarioDAOImpl;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.result.ResultOperation;
 import com.sindicato.seguranca.PasswordManager;
 
 public class TestAutenticacao {
@@ -67,20 +68,34 @@ public class TestAutenticacao {
 	
 	@Test
 	public void autenticacaoUsuario(){
+		ResultOperation result;
+		
 		String userName = "teste";
 		String senha = "teste";
-		Assert.assertEquals(userDAO.autenticar(userName, senha), false);
+		result = userDAO.autenticar(userName, senha);
+		Assert.assertEquals(result.isSuccess(), false);
+		Assert.assertEquals(result.getMessage(), "Usuário não existe");
+		Assert.assertNull(userDAO.getUsuarioAutenticado());
+		
+		userName = "admin@admin.com.br";
+		senha = "teste";
+		result = userDAO.autenticar(userName, senha);
+		Assert.assertEquals(result.isSuccess(), false);
+		Assert.assertEquals(result.getMessage(), "Senha de usuário não confere");
 		Assert.assertNull(userDAO.getUsuarioAutenticado());
 		
 		Usuario usuario = userDAO.getAll().get(0);
-		Assert.assertEquals(userDAO.autenticar(usuario.getEmail(), "123456"), true);
+		result = userDAO.autenticar(usuario.getEmail(), "123456");
+		Assert.assertEquals(result.isSuccess(), true);
+		Assert.assertEquals(result.getMessage(), "Usuário autenticado");
 		Assert.assertNotNull(userDAO.getUsuarioAutenticado());
 	}
 	
 	@Test
 	public void getMenusPermitidos(){
 		Usuario usuario = userDAO.getAll().get(0);
-		Assert.assertEquals(userDAO.autenticar(usuario.getEmail(), "123456"), true);
+		ResultOperation result = userDAO.autenticar(usuario.getEmail(), "123456");
+		Assert.assertEquals(result.isSuccess(), true);
 		
 		List<Menu> menusPermitidos = userDAO.getMenusPermitidos();
 		Assert.assertNotNull(menusPermitidos);

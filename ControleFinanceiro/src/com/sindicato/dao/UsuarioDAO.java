@@ -4,10 +4,11 @@ import java.util.List;
 
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.result.ResultOperation;
 
 public interface UsuarioDAO extends DAO<Usuario, Integer> {
 
-	boolean autenticar(String usuario, String senha);
+	ResultOperation autenticar(String usuario, String senha);
 
 	Usuario getUsuarioAutenticado();
 	

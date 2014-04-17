@@ -11,6 +11,7 @@ import com.sindicato.dao.UsuarioDAO;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.result.ResultOperation;
 import com.sindicato.seguranca.PasswordManager;
 
 public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements UsuarioDAO {
@@ -22,21 +23,34 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 	private Usuario usuarioAutenticado = null;
 	
 	@Override
-	public boolean autenticar(String usuario, String senha) {
+	public ResultOperation autenticar(String usuario, String senha) {
 		String strQuery = "select u from Usuario u " +
-				" where u.email = :usuario and u.senha = :senha";
+				" where u.email = :usuario ";
 		
 		TypedQuery<Usuario> query = em.createQuery(strQuery, Usuario.class);
 		query.setParameter("usuario", usuario);
-		query.setParameter("senha", PasswordManager.generated(senha));
+		
+		ResultOperation result = new ResultOperation();
 		
 		try {
 			usuarioAutenticado = query.getSingleResult();
-			return true;
+			
+			if(usuarioAutenticado.getSenha().equals(PasswordManager.generated(senha))){
+				result.setMessage("Usuário autenticado");
+				result.setSuccess(true);
+			}else{
+				result.setMessage("Senha de usuário não confere");
+				result.setSuccess(false);
+				usuarioAutenticado = null;
+			}
+			
+			return result;
+			
 		} catch (NoResultException e) {
-			usuarioAutenticado = null;
-			return false;
+			result.setMessage("Usuário não existe");
+			result.setSuccess(false);
 		}
+		return result;
 	}
 
 	@Override
