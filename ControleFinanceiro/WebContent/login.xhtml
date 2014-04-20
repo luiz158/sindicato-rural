@@ -12,12 +12,12 @@
 		<h:outputStylesheet name="login.css" library="css"></h:outputStylesheet>
 	</h:head>
 	<h:body>
-		<div id="main-wrapper">
-			<div id="logo">
+		<div id="main-wrapper" style="width:600px;height:450px;position: relative;">
+			<div id="logo" style="position: absolute;left: 130px;">
 				<h:graphicImage name="LogoSindRCotia.jpg" library="imagens"></h:graphicImage>
 			</div>
 			<center>
-				<div id="content">
+				<div id="content" style="position: absolute;top:220px;left:180px;">
 					<h:form>
 						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
 							<f:facet name="start">
@@ -45,11 +45,8 @@
 						</p:panelGrid>
 						<br />
 						<h:messages></h:messages>
-						<br />
 
 						<p:commandButton value="Entrar" styleClass="panel_button_center" />
-
-						<br />
 
 						<p align="left">
 							<h:outputLink value="#">Esqueceu sua senha?</h:outputLink>
