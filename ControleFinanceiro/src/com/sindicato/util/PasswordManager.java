@@ -1,4 +1,4 @@
-package com.sindicato.seguranca;
+package com.sindicato.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

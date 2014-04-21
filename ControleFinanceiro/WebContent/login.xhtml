@@ -39,14 +39,14 @@
 							<h:outputText value="E-mail:"></h:outputText>
 							<p:inputText required="true"
 								requiredMessage="Nome de usuário é um campo obrigatório"
-								size="20"></p:inputText>
+								size="20" value="#{loginBean.usuario}"></p:inputText>
 							<h:outputText value="Senha:"></h:outputText>
-							<p:password id="senha" />
+							<p:password id="senha" value="#{loginBean.senha}" />
 						</p:panelGrid>
 						<br />
 						<h:messages></h:messages>
 
-						<p:commandButton value="Entrar" styleClass="panel_button_center" />
+						<p:commandButton value="Entrar" styleClass="panel_button_center" action="#{loginBean.autenticar}" />
 
 						<p align="left">
 							<h:outputLink value="#">Esqueceu sua senha?</h:outputLink>

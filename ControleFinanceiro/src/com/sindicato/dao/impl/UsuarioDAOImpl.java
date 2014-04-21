@@ -12,7 +12,7 @@ import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.ResultOperation;
-import com.sindicato.seguranca.PasswordManager;
+import com.sindicato.util.PasswordManager;
 
 public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements UsuarioDAO {
 

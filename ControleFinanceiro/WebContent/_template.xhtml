@@ -11,66 +11,23 @@
 		<meta http-equiv="Content-Type"
 			content="text/html; charset=ISO-8859-1" />
 		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
-
+		
 		<h:outputStylesheet name="layout.css" library="css"></h:outputStylesheet>
-
+		
 	</h:head>
 	<h:body>
-		<div class="header">
-			<div class="titulo">Sindicato Rural de Cotia - Controle
-				Financeiro</div>
-			<div class="infUsuario">
-				<p:button value="alyssonprs@gmail.com" icon="ui-icon-gear"
-					iconPos="right" style="font-size: 13px;" />
-				<p:button value="Sair" icon="ui-icon-power" iconPos="right"
-					style="font-size: 13px;float:right;" />
+			<div class="header">
+				<div class="titulo">Sindicato Rural de Cotia - Controle Financeiro</div>
+				<div class="infUsuario">
+					<p:button value="alyssonprs@gmail.com" icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
+					<p:button value="Sair" icon="ui-icon-power" iconPos="right" style="font-size: 13px;float:right;" />
+				</div>
 			</div>
-<<<<<<< .mine
-		</div>
-
-		<div class="menu">
-			<h:form>
-				<p:menu styleClass="menu" style="width:200px">
-					<p:submenu label="Cadastros" styleClass="submenu">
-						<p:menuitem styleClass="itemmenu" value="Sindicato"
-							icon="ui-icon-disk" />
-						<p:menuitem styleClass="itemmenu" value="Clientes"
-							icon="ui-icon-arrowrefresh-1-w" />
-						<p:menuitem styleClass="itemmenu" value="Lista de serviços"
-							icon="ui-icon-arrowrefresh-1-w" />
-						<p:menuitem styleClass="itemmenu" value="Tipo de ocup. de solo"
-							icon="ui-icon-arrowrefresh-1-w" />
-						<p:menuitem styleClass="itemmenu" value="Modos de pagamento"
-							icon="ui-icon-arrowrefresh-1-w" />
-					</p:submenu>
-					<p:submenu label="Financeiro" styleClass="submenu">
-						<p:menuitem styleClass="itemmenu" value="Débitos do cliente"
-							icon="ui-icon-close" />
-						<p:menuitem styleClass="itemmenu" value="Gerar nota de cobrança"
-							icon="ui-icon-close" />
-						<p:menuitem styleClass="itemmenu" value="Manutenção de Notas"
-							icon="ui-icon-close" />
-						<p:menuitem styleClass="itemmenu" value="Registrar recebimentos"
-							icon="ui-icon-close" />
-						<p:menuitem styleClass="itemmenu" value="Registrar recolhimentos"
-							icon="ui-icon-close" />
-					</p:submenu>
-					<p:submenu label="Relatórios" styleClass="submenu">
-						<p:menuitem styleClass="itemmenu" value="External"
-							url="http://www.primefaces.org" icon="ui-icon-home" />
-						<p:menuitem styleClass="itemmenu" value="Internal"
-							icon="ui-icon-star" />
-					</p:submenu>
-				</p:menu>
-			</h:form>
-		</div>
-		<div class="conteudo">
-			<ui:insert name="conteudo">
-=======
 			
 			<div class="menu">
 				<h:form>
-					<p:menu styleClass="menu" style="width:150px;border:none;">
+					<p:menu model="#{loginBean.model}" styleClass="menu_principal" />
+					<!-- <p:menu styleClass="menu" style="width:150px;border:none;">
 						<p:submenu label="Cadastros" styleClass="submenu">
 							<p:menuitem styleClass="itemmenu" value="Sindicato" icon="ui-icon-disk" />
 							<p:menuitem styleClass="itemmenu" value="Clientes" icon="ui-icon-arrowrefresh-1-w" />
@@ -91,15 +48,14 @@
 							<p:menuitem styleClass="itemmenu" value="Internal"
 								icon="ui-icon-star" />
 						</p:submenu>
-					</p:menu>
+					</p:menu> -->
 				</h:form>
 			</div>
 			<div class="conteudo">
 				<ui:insert name="conteudo">
->>>>>>> .r9
 					Conteúdo!!	
 				</ui:insert>
-		</div>
+			</div>
 	</h:body>
 </f:view>
 </html>
