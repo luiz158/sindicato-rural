@@ -3,6 +3,9 @@
 /*
 	MENU
 */
+.menu_principal{
+	width: 100% !important;
+}
 .submenu{
 	font-size: 14px;
 }
@@ -15,19 +18,20 @@
 */
 body{
 	margin:0;
+	font-size: 12px;
 }
 .header{
-	width:100%;
-	height: 40px;
+	height: 100px;
 	position:relative;
 	top: 0;
 	background-color: #f5f5f5;
 	border: 1px solid #eeeeee;
+	margin-bottom: 10px;
 }
 .infUsuario{
 	border-left: 2px solid white;;
 	height: 100%;
-	width: 280px;
+	width: 300px;
 	position: relative;
 	float: right;
 	padding: 5px;
@@ -43,11 +47,13 @@ body{
 }
 
 .menu{
-	margin: 8px;
-	display: inline;
+	margin-left: 10px;
+	margin-right: 20px;
+	width: 15%;
+	float: left;
 }
 .conteudo{
-	position:
-	width: 100%;
-	background-color: blue;
+	float:left;
+	width:82%;
+	/* background-color: blue; */
 }

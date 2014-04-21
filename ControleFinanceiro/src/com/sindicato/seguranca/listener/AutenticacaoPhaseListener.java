@@ -7,7 +7,7 @@ import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
 import javax.servlet.http.HttpSession;
 
-import com.sindicato.seguranca.MB.LoginBean;
+import com.sindicato.MB.seguranca.LoginBean;
 
 public class AutenticacaoPhaseListener implements PhaseListener {
 

@@ -1,4 +1,4 @@
-package com.sindicato.seguranca.MB;
+package com.sindicato.MB.seguranca;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -88,17 +88,20 @@ public class LoginBean implements Serializable {
 			if(menu.getMenuPai() == null || menu.getMenuPai().getId() == 0){
 				DefaultSubMenu submenu = new DefaultSubMenu();
 				submenu.setLabel(menu.getDescricao());
+				submenu.setStyleClass("submenu");
 				
 				if(getMenusFilho(menu.getId()) != null){
 					for (Menu menu01 : getMenusFilho(menu.getId())) {
 						
 						if(getMenusFilho(menu01.getId()) == null){
 							DefaultMenuItem item = new DefaultMenuItem(menu01.getDescricao());
+							item.setStyleClass("itemmenu");
 							item.setAjax(false);
 							item.setUrl(menu01.getUrl());
 							submenu.addElement(item);
 						}else{
 							DefaultSubMenu submenu01 = geraSubmenu(menu01);
+							submenu01.setStyleClass("submenu");
 							submenu.addElement(submenu01);
 						}
 					}
@@ -111,11 +114,13 @@ public class LoginBean implements Serializable {
 	public DefaultSubMenu geraSubmenu(Menu menu) {
 		DefaultSubMenu submenu = new DefaultSubMenu();
 		submenu.setLabel(menu.getDescricao());
+		submenu.setStyleClass("submenu");
 		for (Menu m : getMenusFilho(menu.getId())) {
 			if (getMenusFilho(m.getId()) == null) {
 				DefaultMenuItem mi = new DefaultMenuItem();
 				mi.setValue(m.getDescricao());
 				mi.setUrl(m.getUrl());
+				mi.setStyleClass("itemmenu");
 				
 				submenu.addElement(mi);
 			} else {

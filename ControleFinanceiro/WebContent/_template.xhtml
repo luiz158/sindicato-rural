@@ -19,8 +19,10 @@
 			<div class="header">
 				<div class="titulo">Sindicato Rural de Cotia - Controle Financeiro</div>
 				<div class="infUsuario">
-					<p:button value="alyssonprs@gmail.com" icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
-					<p:button value="Sair" icon="ui-icon-power" iconPos="right" style="font-size: 13px;float:right;" />
+					<h:form>
+						<p:button value="#{loginBean.usuarioLogado.email}" icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
+						<p:commandButton action="#{loginBean.logout}" value="Sair" icon="ui-icon-power" iconPos="right" style="font-size: 13px;float:right;"  />
+					</h:form>
 				</div>
 			</div>
 			
