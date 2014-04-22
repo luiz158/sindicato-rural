@@ -20,7 +20,6 @@ import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.ResultOperation;
-import com.sindicato.util.PasswordManager;
 
 public class TestAutenticacao {
 
@@ -61,7 +60,7 @@ public class TestAutenticacao {
 		Usuario usuario = new Usuario();
 		usuario.setNome("Admin");
 		usuario.setEmail("admin@admin.com.br");
-		usuario.setSenha(PasswordManager.generated("123456"));
+		usuario.setSenha("123456");
 		usuario.getPerfis().add(perfil);
 		usuarioDAO.insert(usuario);
 	}

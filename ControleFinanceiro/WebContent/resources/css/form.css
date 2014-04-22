@@ -1,0 +1,21 @@
+@CHARSET "ISO-8859-1";
+
+.panelForm{
+	width: 100%;
+}
+
+.panel_inf_proj tr, .panelForm td {
+	border-style: hidden !important;
+}
+
+.panelForm tr, .panelForm td {
+	border-style: hidden !important;
+}
+
+
+.colLabel{
+	text-align: right;
+}
+.colInput{
+	
+} 

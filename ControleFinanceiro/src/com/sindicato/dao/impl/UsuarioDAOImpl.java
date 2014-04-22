@@ -23,6 +23,12 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 	private Usuario usuarioAutenticado = null;
 	
 	@Override
+	public void insert(Usuario usuario){
+		usuario.setSenha(PasswordManager.generated(usuario.getSenha()));
+		this.insert(usuario);
+	}
+	
+	@Override
 	public ResultOperation autenticar(String usuario, String senha) {
 		String strQuery = "select u from Usuario u " +
 				" where u.email = :usuario ";

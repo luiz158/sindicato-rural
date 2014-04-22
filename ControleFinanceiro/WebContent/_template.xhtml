@@ -11,53 +11,59 @@
 		<meta http-equiv="Content-Type"
 			content="text/html; charset=ISO-8859-1" />
 		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
-		
+
 		<h:outputStylesheet name="layout.css" library="css"></h:outputStylesheet>
-		
+		<h:outputStylesheet name="form.css" library="css"></h:outputStylesheet>
+
 	</h:head>
 	<h:body>
-			<div class="header">
-				<div class="titulo">Sindicato Rural de Cotia - Controle Financeiro</div>
-				<div class="infUsuario">
-					<h:form>
-						<p:button value="#{loginBean.usuarioLogado.email}" icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
-						<p:commandButton action="#{loginBean.logout}" value="Sair" icon="ui-icon-power" iconPos="right" style="font-size: 13px;float:right;"  />
-					</h:form>
-				</div>
-			</div>
-			
-			<div class="menu">
+		<div class="header">
+			<div class="titulo">Sindicato Rural de Cotia - Controle
+				Financeiro</div>
+			<div class="infUsuario">
 				<h:form>
-					<p:menu model="#{loginBean.model}" styleClass="menu_principal" />
-					<!-- <p:menu styleClass="menu" style="width:150px;border:none;">
-						<p:submenu label="Cadastros" styleClass="submenu">
-							<p:menuitem styleClass="itemmenu" value="Sindicato" icon="ui-icon-disk" />
-							<p:menuitem styleClass="itemmenu" value="Clientes" icon="ui-icon-arrowrefresh-1-w" />
-							<p:menuitem styleClass="itemmenu" value="Lista de serviços" icon="ui-icon-arrowrefresh-1-w" />
-							<p:menuitem styleClass="itemmenu" value="Tipo de ocup. de solo" icon="ui-icon-arrowrefresh-1-w" />
-							<p:menuitem styleClass="itemmenu" value="Modos de pagamento" icon="ui-icon-arrowrefresh-1-w" />
-						</p:submenu>
-						<p:submenu label="Financeiro" styleClass="submenu">
-							<p:menuitem styleClass="itemmenu" value="Débitos do cliente" icon="ui-icon-close" />
-							<p:menuitem styleClass="itemmenu" value="Gerar nota de cobrança" icon="ui-icon-close" />
-							<p:menuitem styleClass="itemmenu" value="Manutenção de Notas" icon="ui-icon-close" />
-							<p:menuitem styleClass="itemmenu" value="Registrar recebimentos" icon="ui-icon-close" />
-							<p:menuitem styleClass="itemmenu" value="Registrar recolhimentos" icon="ui-icon-close" />
-						</p:submenu>
-						<p:submenu label="Relatórios" styleClass="submenu">
-							<p:menuitem styleClass="itemmenu" value="External" url="http://www.primefaces.org"
-								icon="ui-icon-home" />
-							<p:menuitem styleClass="itemmenu" value="Internal"
-								icon="ui-icon-star" />
-						</p:submenu>
-					</p:menu> -->
+					<p:button value="#{loginBean.usuarioLogado.email}"
+						icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
+					<p:commandButton action="#{loginBean.logout}" value="Sair"
+						icon="ui-icon-power" iconPos="right"
+						style="font-size: 13px;float:right;" />
 				</h:form>
 			</div>
-			<div class="conteudo">
-				<ui:insert name="conteudo">
+		</div>
+
+		<div class="menu">
+			<h:form>
+				<p:menu model="#{loginBean.model}" styleClass="menu_principal" />
+				<p:growl globalOnly="true" showDetail="true" life="15000" />
+			</h:form>
+		</div>
+		<div class="conteudo">
+
+			<ui:insert name="conteudo">
 					Conteúdo!!	
-				</ui:insert>
-			</div>
+			</ui:insert>
+
+			<p:messages showDetail="true" closable="true" />
+			<p:growl showDetail="true" />
+			<p:confirmDialog global="true" showEffect="puff" hideEffect="puff">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+				<f:facet name="start">
+					<p:graphicImage alt="carregando" library="imagens"
+						name="loading.gif"
+						style="position:fixed;right:10%;top:90%;z-index:100000;" />
+				</f:facet>
+
+				<f:facet name="complete">
+					<h:outputText value="" />
+				</f:facet>
+			</p:ajaxStatus>
+
+		</div>
 	</h:body>
 </f:view>
 </html>

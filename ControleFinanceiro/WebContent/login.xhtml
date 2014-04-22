@@ -44,10 +44,11 @@
 							<p:password id="senha" value="#{loginBean.senha}" />
 						</p:panelGrid>
 						<br />
-						<h:messages></h:messages>
 
 						<p:commandButton value="Entrar" styleClass="panel_button_center" action="#{loginBean.autenticar}" />
-
+						
+						<p:messages />
+						
 						<p align="left">
 							<h:outputLink value="#">Esqueceu sua senha?</h:outputLink>
 						</p>

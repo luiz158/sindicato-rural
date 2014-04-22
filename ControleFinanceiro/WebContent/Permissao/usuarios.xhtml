@@ -11,45 +11,63 @@
 	<ui:define name="conteudo">
 
 		<h:form>
+			<p:growl id="growl" showDetail="true" />
 			<p:tabView>
 				<p:tab title="Lista de Usuários">
 					<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
-						rowKey="#{usuario.id}" paginator="true" rows="10" paginatorPosition="botton"
-						selection="#{usuarioBean.usuarioSelecionado}" selectionMode="single"
-						id="usuarios">
-		
+						rowKey="#{usuario.id}" paginator="true" rows="10"
+						paginatorPosition="botton"
+						selection="#{usuarioBean.usuarioSelecionado}"
+						selectionMode="single" id="usuarios">
+
 						<p:ajax event="rowSelect" update="@(form)" />
-		
-						<p:column headerText="Nome" sortBy="nome" filterBy="nome">  
-		            		<p:outputLabel value="#{usuario.nome}" />  
-		        		</p:column>
-		
-						<p:column headerText="E-mail" sortBy="email" filterBy="email">  
-		            		<p:outputLabel value="#{usuario.email}" />  
-		        		</p:column>
+
+						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
+							<p:outputLabel value="#{usuario.nome}" />
+						</p:column>
+
+						<p:column headerText="E-mail" sortBy="email" filterBy="email">
+							<p:outputLabel value="#{usuario.email}" />
+						</p:column>
 					</p:dataTable>
 				</p:tab>
 				<p:tab title="Formulário">
-					<p:outputLabel value="#{usuarioBean.usuarioSelecionado.nome}" />
-					
-					<p:panelGrid columns="2">
-						
-						<p:outputLabel value="Nome" />
-						<p:inputText value="#{usuarioBean.usuarioSelecionado.nome}" />
-						
-						<p:outputLabel value="E-mail" />
-						<p:inputText value="#{usuarioBean.usuarioSelecionado.email}" />
-						
-						<p:outputLabel value="Senha" />
-						<p:password value="#{usuarioBean.usuarioSelecionado.senha}" />
+					<p:panelGrid styleClass="panelForm" style="width:50%;">
 
-						<p:commandButton action="" />
-
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Nome" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{usuarioBean.usuarioSelecionado.nome}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="E-mail" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{usuarioBean.usuarioSelecionado.email}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Senha" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{usuarioBean.usuarioSelecionado.senha}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column colspan="2" styleClass="colLabel">
+								<p:commandButton action="#{usuarioBean.salvar}" update="@form"
+									value="Salvar" />
+							</p:column>
+						</p:row>
 					</p:panelGrid>
-				</p:tab>				
+				</p:tab>
 			</p:tabView>
 		</h:form>
-
 
 	</ui:define>
 </ui:composition>
