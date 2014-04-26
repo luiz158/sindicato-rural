@@ -15,6 +15,11 @@
 		<h:outputStylesheet name="layout.css" library="css"></h:outputStylesheet>
 		<h:outputStylesheet name="form.css" library="css"></h:outputStylesheet>
 
+		<h:outputScript name="jquery.mask.min.js" library="scripts"></h:outputScript>
+		<h:outputScript name="jquery.maskMoney.js" library="scripts"></h:outputScript>
+		<h:outputScript name="mascara.js" library="scripts"></h:outputScript>
+		<h:outputScript name="geral.js" library="scripts"></h:outputScript>
+
 	</h:head>
 	<h:body>
 		<div class="header">
@@ -63,6 +68,15 @@
 			</p:ajaxStatus>
 
 		</div>
+
+		<div id="footer"
+			class="ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all">
+			<ui:insert name="footer">
+				<p style="text-align:center;">Sindicato Rural de Cotia - Copyright © 2014 - Todos os
+					direitos reservados</p>
+			</ui:insert>
+		</div>
+
 	</h:body>
 </f:view>
 </html>

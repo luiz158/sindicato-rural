@@ -13,7 +13,7 @@
 		<h:form>
 			<p:growl id="growl" showDetail="true" />
 			<p:messages showDetail="true" closable="true" />
-			<p:tabView>
+			<p:tabView activeIndex="#{usuarioBean.indexTab}">
 				<p:tab title="Lista de Usuários">
 					<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
 						rowKey="#{usuario.id}" paginator="true" rows="10"
@@ -21,7 +21,7 @@
 						selection="#{usuarioBean.usuarioSelecionado}"
 						selectionMode="single" id="usuarios">
 
-						<p:ajax event="rowSelect" update="@(form)" />
+						<p:ajax event="rowSelect" update="@(form)" listener="#{usuarioBean.alterTab(1)}"/>
 
 						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
 							<p:outputLabel value="#{usuario.nome}" />
@@ -35,6 +35,14 @@
 				<p:tab title="Formulário">
 					<p:panelGrid styleClass="panelForm" style="width:50%;">
 
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Código" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{usuarioBean.usuarioSelecionado.id}" readonly="true" />
+							</p:column>
+						</p:row>
 						<p:row>
 							<p:column styleClass="colLabel">
 								<p:outputLabel value="Nome" />
@@ -56,7 +64,7 @@
 								<p:outputLabel value="Senha" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText value="#{usuarioBean.usuarioSelecionado.senha}" />
+								<p:password value="#{usuarioBean.usuarioSelecionado.senha}" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -64,16 +72,16 @@
 								<p:outputLabel value="Perfis" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:selectCheckboxMenu converter="PerfilConverter" 
-									value="#{usuarioBean.perfisUsuario}" 
-									label="Perfil de acesso" filter="true" filterText="Filter"
-									filterMatchMode="startsWith" panelStyle="width:300px">
+
+								<!-- <p:selectManyCheckbox  id="grid" value="#{usuarioBean.usuarioSelecionado.perfis}"
+									layout="grid" columns="3" converter="PerfilConverter">
 									
 									<f:attribute name="collectionType" value="java.util.ArrayList" />
-									
-									<f:selectItems value="#{usuarioBean.perfisDisponiveis}" var="perfil"
-										itemValue="#{perfil}" itemLabel="#{perfil.descricao}" />
-								</p:selectCheckboxMenu>
+									<f:selectItems value="#{usuarioBean.perfisDisponiveis}"
+										var="p" itemValue="#{p}"
+										itemLabel="#{p.descricao}" />
+								</p:selectManyCheckbox > -->
+
 							</p:column>
 						</p:row>
 						<p:row>

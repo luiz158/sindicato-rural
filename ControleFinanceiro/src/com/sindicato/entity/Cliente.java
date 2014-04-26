@@ -64,10 +64,12 @@ public class Cliente {
 	private String endereco;
 	private String numero;
 	private String complemento;
+	private String bairro;
 	private String municipio;
 	private String estado;
 	private String cep;
 	private String telefone;
+	private String email;
 	private String tituloEleitor;
 	
 	//@NotNull
@@ -164,6 +166,23 @@ public class Cliente {
 	public boolean isSocio() {
 		return socio;
 	}
+	
+	public String getBairro() {
+		return bairro;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
 	public void setSocio(boolean socio) {
 		this.socio = socio;
 	}

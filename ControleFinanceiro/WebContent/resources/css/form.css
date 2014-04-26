@@ -18,4 +18,13 @@
 }
 .colInput{
 	
-} 
+}
+
+
+.container-action{
+	text-align: right;
+}
+.container-action .ui-button{
+	margin: 20px;
+}
+

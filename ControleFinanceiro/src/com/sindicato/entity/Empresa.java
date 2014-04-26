@@ -36,7 +36,7 @@ public class Empresa {
 	private String cartaSindical;
 	private String telefone;
 	private String telefone2;
-	private String faz;
+	private String fax;
 	private String email;
 	
 	
@@ -77,8 +77,8 @@ public class Empresa {
 	public String getTelefone2() {
 		return telefone2;
 	}
-	public String getFaz() {
-		return faz;
+	public String getFax() {
+		return fax;
 	}
 	public String getEmail() {
 		return email;
@@ -119,8 +119,8 @@ public class Empresa {
 	public void setTelefone2(String telefone2) {
 		this.telefone2 = telefone2;
 	}
-	public void setFaz(String faz) {
-		this.faz = faz;
+	public void setFax(String fax) {
+		this.fax = fax;
 	}
 	public void setEmail(String email) {
 		this.email = email;

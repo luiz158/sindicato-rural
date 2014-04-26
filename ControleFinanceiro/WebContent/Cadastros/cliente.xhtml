@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Cadastros" url="#" />
+			<p:menuitem value="Clientes" url="#" />
+		</p:breadCrumb>
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" />
+
+			<p:tabView activeIndex="#{clienteBean.indexTab}"
+				style="margin-top:15px;">
+				<p:tab title="Lista de Clientes">
+					<p:dataTable var="cli" value="#{clienteBean.clientes}"
+						rowKey="#{cli.id}" paginator="true" rows="15"
+						paginatorPosition="bottom"
+						selection="#{clienteBean.clienteSelecionado}"
+						selectionMode="single" id="clientes" draggableColumns="true"
+						emptyMessage="Nenhum cliente encontrado">
+
+						<p:ajax event="rowSelect" update="@(form)"
+							listener="#{clienteBean.alterTab(1)}" />
+
+						<p:column headerText="Código" sortBy="id" filterBy="id">
+							<p:outputLabel value="#{cli.id}" />
+						</p:column>
+
+						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
+							<p:outputLabel value="#{cli.nome}" />
+						</p:column>
+
+						<p:column headerText="Telefone" sortBy="telefone"
+							filterBy="telefone">
+							<p:outputLabel value="#{cli.telefone}" />
+						</p:column>
+
+						<p:column headerText="Data cadastro" sortBy="dataCadastro"
+							filterBy="dataCadastro">
+							<p:outputLabel value="#{cli.dataCadastro.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+
+						<p:column headerText="É sócio?" sortBy="socio" filterBy="socio">
+							<p:outputLabel value="Sim" rendered="#{cli.socio == true}" />
+							<p:outputLabel value="Não" rendered="#{cli.socio == false}" />
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Formulário">
+
+					<p:fieldset legend="Informações basicas" style="margin-top:15px;">
+						<p:panelGrid styleClass="panelForm"
+							style="width:80%;margin-top:20px;">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:250px;">
+									<p:outputLabel value="Código do Cliente" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.id}"
+										readonly="true" size="5" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Nome" />
+									<p:outputLabel value=" *" style="color:red;"/>
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.nome}"
+										required="true" requiredMessage="Nome é obrigatório" size="60" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="É sócio?" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:selectBooleanButton
+										value="#{clienteBean.clienteSelecionado.socio}" offLabel="Não"
+										onLabel="Sim" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Produtor rural desde" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:calendar onkeyup="mascara(this,data)"
+										value="#{clienteBean.clienteSelecionado.produtorRuralDesde}"
+										pattern="dd/MM/yyyy" styleClass="date"
+										converter="CalendarConverter" />
+
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Data de nascimento" />
+									<p:outputLabel value=" *" style="color:red;"/>
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:calendar required="true"
+										requiredMessage="Data de nascimento é obrigatório"
+										onkeyup="mascara(this,data)"
+										value="#{clienteBean.clienteSelecionado.dataNascimento}"
+										pattern="dd/MM/yyyy" styleClass="date"
+										converter="CalendarConverter" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="CPF" />
+									<p:outputLabel value=" *" style="color:red;"/>
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.cpf}"
+										required="true" requiredMessage="CPF é obrigatório" size="15"
+										onkeyup="mascara(this,cpf)" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="RG" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.rg}"
+										size="15" onkeyup="mascara(this,rg)" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Título de eleitor" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText
+										value="#{clienteBean.clienteSelecionado.tituloEleitor}"
+										size="30" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Observação" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputTextarea cols="50" rows="3"
+										value="#{clienteBean.clienteSelecionado.observacao}" />
+								</p:column>
+							</p:row>
+
+						</p:panelGrid>
+					</p:fieldset>
+
+					<p:fieldset legend="Endereço" style="margin-top:15px;">
+						<p:panelGrid styleClass="panelForm"
+							style="width:80%;margin-top:20px;">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:250px;">
+									<p:outputLabel value="CEP" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.cep}"
+										onkeyup="mascara(this,cep)" size="10" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Endereço" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.endereco}"
+										size="70" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Número" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.numero}"
+										size="5" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Complemento" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText
+										value="#{clienteBean.clienteSelecionado.complemento}"
+										size="40" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Bairro" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.bairro}"
+										size="40" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Municipio" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText
+										value="#{clienteBean.clienteSelecionado.municipio}" size="40" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Estado" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:selectOneMenu
+										value="#{clienteBean.clienteSelecionado.estado}"
+										style="width:150px;">
+										<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+
+						</p:panelGrid>
+					</p:fieldset>
+
+					<p:fieldset legend="Informações para contato"
+						style="margin-top:15px;">
+						<p:panelGrid styleClass="panelForm"
+							style="width:80%;margin-top:20px;">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:250px;">
+									<p:outputLabel value="Telefone" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.telefone}"
+										onkeyup="mascara(this,telefone)" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="E-mail" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{clienteBean.clienteSelecionado.email}"
+										size="35" />
+								</p:column>
+							</p:row>
+
+						</p:panelGrid>
+					</p:fieldset>
+
+					<div class="container-action">
+						<p:commandButton value="Limpar Formulário"
+							style="width:200px;height:50px;" update="@form" process="@this"
+							actionListener="#{clienteBean.reset}" />
+
+						<p:commandButton action="#{clienteBean.salvar}" update="@form"
+							value="Salvar alterações" style="width:200px;height:50px;" />
+					</div>
+
+
+				</p:tab>
+			</p:tabView>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

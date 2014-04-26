@@ -1,7 +1,6 @@
 package com.sindicato.MB.permissao;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -33,8 +32,9 @@ public class UsuarioBean implements Serializable {
 	private List<Usuario> usuarios;
 
 	private List<Perfil> perfisDisponiveis;
-	private List<Perfil> perfisUsuario;
 
+	private int indexTab;
+	
 	@PostConstruct
 	public void init(){
 		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
@@ -43,18 +43,24 @@ public class UsuarioBean implements Serializable {
 		listasDAO = new ListasDAOImpl(em);
 	}
 	
+	public void alterTab(int newTab){
+		indexTab = newTab;
+	}
+	
+	public void reset(){
+		usuarioSelecionado = new Usuario();
+	}
+	
 	public void salvar(){
 		
 		try {
-			usuarioSelecionado.setPerfis(perfisUsuario);
-			
 			if(usuarioSelecionado.getId() == 0){
 				usuarioDAO.insert(usuarioSelecionado);
 			}else{
 				usuarioDAO.update(usuarioSelecionado);
 			}
 			usuarioSelecionado = new Usuario();
-			
+			alterTab(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Sucesso", "Usuário salvo com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -72,21 +78,14 @@ public class UsuarioBean implements Serializable {
 		return usuarios;
 	}
 	public List<Perfil> getPerfisDisponiveis() {
-		if(perfisDisponiveis == null){
-			perfisDisponiveis = listasDAO.getTodosOsPerfis();
-		}
+		perfisDisponiveis = listasDAO.getTodosOsPerfis();
 		return perfisDisponiveis;
 	}
-	public List<Perfil> getPerfisUsuario() {
-		if(usuarioSelecionado != null){
-			perfisUsuario = usuarioSelecionado.getPerfis();
-		}else{
-			perfisUsuario = new ArrayList<Perfil>();
-		}
-		return perfisUsuario;
+	public int getIndexTab() {
+		return indexTab;
 	}
-	public void setPerfisUsuario(List<Perfil> perfisUsuario) {
-		this.perfisUsuario = perfisUsuario;
+	public void setIndexTab(int indexTab) {
+		this.indexTab = indexTab;
 	}
 	public void setPerfisDisponiveis(List<Perfil> perfis) {
 		this.perfisDisponiveis = perfis;
