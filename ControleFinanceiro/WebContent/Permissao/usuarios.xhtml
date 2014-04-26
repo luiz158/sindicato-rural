@@ -12,6 +12,7 @@
 
 		<h:form>
 			<p:growl id="growl" showDetail="true" />
+			<p:messages showDetail="true" closable="true" />
 			<p:tabView>
 				<p:tab title="Lista de Usuários">
 					<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
@@ -56,6 +57,23 @@
 							</p:column>
 							<p:column styleClass="colInput">
 								<p:inputText value="#{usuarioBean.usuarioSelecionado.senha}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Perfis" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:selectCheckboxMenu converter="PerfilConverter" 
+									value="#{usuarioBean.perfisUsuario}" 
+									label="Perfil de acesso" filter="true" filterText="Filter"
+									filterMatchMode="startsWith" panelStyle="width:300px">
+									
+									<f:attribute name="collectionType" value="java.util.ArrayList" />
+									
+									<f:selectItems value="#{usuarioBean.perfisDisponiveis}" var="perfil"
+										itemValue="#{perfil}" itemLabel="#{perfil.descricao}" />
+								</p:selectCheckboxMenu>
 							</p:column>
 						</p:row>
 						<p:row>

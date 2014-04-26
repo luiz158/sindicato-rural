@@ -13,6 +13,7 @@ import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.entity.autenticacao.Perfil;
 
 public class ListasDAOImpl implements ListasDAO {
 
@@ -89,6 +90,17 @@ public class ListasDAOImpl implements ListasDAO {
 			TypedQuery<DebitoServico> query = em.createQuery(strQuery, DebitoServico.class);
 			query.setParameter("debito", debito);
 			query.setParameter("retencao", true);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
+	}
+
+	@Override
+	public List<Perfil> getTodosOsPerfis() {
+		try {
+			String strQuery = " select p from Perfil p ";
+			TypedQuery<Perfil> query = em.createQuery(strQuery, Perfil.class);
 			return query.getResultList();
 		} catch (NoResultException e) {
 			return null;

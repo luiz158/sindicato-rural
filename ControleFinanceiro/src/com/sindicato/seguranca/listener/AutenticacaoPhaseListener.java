@@ -23,11 +23,11 @@ public class AutenticacaoPhaseListener implements PhaseListener {
 		HttpSession session = (HttpSession) context.getExternalContext().getSession(true);
 		
     	LoginBean loginBean = (LoginBean) session.getAttribute("loginBean");
-    	if(loginBean == null || loginBean.getUsuarioLogado().getNome() == null){
+/*    	if(loginBean == null || loginBean.getUsuarioLogado().getNome() == null){
     		NavigationHandler handler = context.getApplication().getNavigationHandler();
     		handler.handleNavigation(context, null, "loginPage");
     	}
-	}
+*/	}
 
 	@Override
 	public void beforePhase(PhaseEvent event) { }
