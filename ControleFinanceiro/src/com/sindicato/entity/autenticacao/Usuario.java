@@ -9,7 +9,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import com.sindicato.entity.Empresa;
 
 @Entity
 @SequenceGenerator(allocationSize=1, name="seqUsuario", sequenceName="SEQ_USUARIO")
@@ -21,6 +24,9 @@ public class Usuario {
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Perfil> perfis;
+	
+	@ManyToOne
+	private Empresa empresa;
 	
 	private String nome;
 	private String email;
@@ -59,5 +65,11 @@ public class Usuario {
 	}
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
 	}
 }

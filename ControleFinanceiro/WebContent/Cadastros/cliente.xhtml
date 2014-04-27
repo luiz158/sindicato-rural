@@ -32,7 +32,7 @@
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{clienteBean.alterTab(1)}" />
 
-						<p:column headerText="Código" sortBy="id" filterBy="id">
+						<p:column headerText="Código" sortBy="id" filterBy="id" width="5">
 							<p:outputLabel value="#{cli.id}" />
 						</p:column>
 
@@ -41,18 +41,19 @@
 						</p:column>
 
 						<p:column headerText="Telefone" sortBy="telefone"
-							filterBy="telefone">
+							filterBy="telefone" width="120">
 							<p:outputLabel value="#{cli.telefone}" />
 						</p:column>
 
 						<p:column headerText="Data cadastro" sortBy="dataCadastro"
-							filterBy="dataCadastro">
+							filterBy="dataCadastro" width="120">
 							<p:outputLabel value="#{cli.dataCadastro.time}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
 
-						<p:column headerText="É sócio?" sortBy="socio" filterBy="socio">
+						<p:column headerText="É sócio?" sortBy="socio" filterBy="socio"
+							width="5">
 							<p:outputLabel value="Sim" rendered="#{cli.socio == true}" />
 							<p:outputLabel value="Não" rendered="#{cli.socio == false}" />
 						</p:column>
@@ -77,7 +78,7 @@
 							<p:row>
 								<p:column styleClass="colLabel">
 									<p:outputLabel value="Nome" />
-									<p:outputLabel value=" *" style="color:red;"/>
+									<p:outputLabel value=" *" style="color:red;" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{clienteBean.clienteSelecionado.nome}"
@@ -109,7 +110,7 @@
 							<p:row>
 								<p:column styleClass="colLabel">
 									<p:outputLabel value="Data de nascimento" />
-									<p:outputLabel value=" *" style="color:red;"/>
+									<p:outputLabel value=" *" style="color:red;" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:calendar required="true"
@@ -123,7 +124,7 @@
 							<p:row>
 								<p:column styleClass="colLabel">
 									<p:outputLabel value="CPF" />
-									<p:outputLabel value=" *" style="color:red;"/>
+									<p:outputLabel value=" *" style="color:red;" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{clienteBean.clienteSelecionado.cpf}"
@@ -263,6 +264,212 @@
 							</p:row>
 
 						</p:panelGrid>
+					</p:fieldset>
+
+					<p:fieldset legend="Estabelecimento rural" style="margin-top:15px;">
+						<p:outputPanel>
+							<h4>Dados gerais</h4>
+
+							<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+								<p:row>
+									<p:column styleClass="colLabel" style="width:210px;">
+										<p:outputLabel value="CNPJ" />
+										<p:outputLabel value=" *" style="color:red;" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cnpj}"
+											onkeyup="mascara(this,cnpj)" required="true"
+											requiredMessage="CNPJ é obrigatório" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Inicio de atividade" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:calendar onkeyup="mascara(this,data)"
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.dataInicioAtividade}"
+											pattern="dd/MM/yyyy" styleClass="date"
+											converter="CalendarConverter" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Título" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText size="30"
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.titulo}" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="NIRF" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.nirf}"
+											size="30" />
+									</p:column>
+
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="INCRA" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.incra}"
+											size="30" />
+									</p:column>
+								</p:row>
+
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="IPTU" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.iptu}"
+											size="35" />
+									</p:column>
+
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="CEI" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cei}" />
+									</p:column>
+								</p:row>
+								
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Forma de domínio" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.formaDominio}"
+											size="35" />
+									</p:column>
+								</p:row>
+								
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Vínculo do produtor" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.vinculoProdutor}"
+											size="20" />
+									</p:column>
+
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Proprietário do imóvel" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText size="30"
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.proprietarioImovel}" />
+									</p:column>
+								</p:row>								
+								
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Área do imóvel (em ha)" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.areaImovel}" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:spacer height="10" />
+							<p:outputPanel>
+								<h4>Inscrição Estadual</h4>
+
+								<p:panelGrid styleClass="panelForm"
+									style="width:100%;margin-bottom:20px;">
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Inscrição estadual" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{clienteBean.clienteSelecionado.estabelecimentoRural.inscricaoEstadual}"
+												size="30" />
+										</p:column>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Validade da Insc. estadual" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:calendar onkeyup="mascara(this,data)"
+												value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
+												pattern="dd/MM/yyyy" styleClass="date"
+												converter="CalendarConverter" />
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:outputPanel>
+						<p:outputPanel>
+							<h4>Informações de localização</h4>
+
+							<p:panelGrid styleClass="panelForm"
+								style="width:100%;margin-top:20px;">
+
+								<p:row>
+									<p:column styleClass="colLabel" style="width:210px;">
+										<p:outputLabel value="CEP" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}"
+											onkeyup="mascara(this,cep)" size="10" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Endereço" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.logradouro}" size="70" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Bairro" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText value="#{clienteBean.clienteSelecionado.estabelecimentoRural.bairro}"
+											size="40" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Municipio" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:inputText
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cidade}" size="40" />
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column styleClass="colLabel">
+										<p:outputLabel value="Estado" />
+									</p:column>
+									<p:column styleClass="colInput">
+										<p:selectOneMenu
+											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.estado}"
+											style="width:150px;">
+											<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+										</p:selectOneMenu>
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+
+						</p:outputPanel>
 					</p:fieldset>
 
 					<div class="container-action">

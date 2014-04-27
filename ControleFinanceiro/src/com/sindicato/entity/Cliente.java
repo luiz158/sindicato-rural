@@ -23,6 +23,7 @@ import javax.persistence.Transient;
 public class Cliente {
 
 	public Cliente() {
+		estabelecimentoRural = new EstabelecimentoRural();
 	}
 
 	@Id
@@ -47,7 +48,6 @@ public class Cliente {
 
 	//@Past
 	//@NotNull
-	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
 	private Calendar produtorRuralDesde;
 

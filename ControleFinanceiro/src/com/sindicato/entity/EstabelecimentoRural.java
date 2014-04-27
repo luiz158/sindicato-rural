@@ -1,12 +1,10 @@
 package com.sindicato.entity;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -34,10 +32,9 @@ public class EstabelecimentoRural {
 	private String incra;
 	private String iptu;
 
-	@Column(precision = 18, scale = 2)
-	private BigDecimal areaImovel;
+	private String areaImovel;
 
-	private String incricaoEstadual;
+	private String inscricaoEstadual;
 	private String cei;
 
 	@Temporal(TemporalType.DATE)
@@ -49,7 +46,7 @@ public class EstabelecimentoRural {
 	private String titulo;
 	private String logradouro;
 	private String cidade;
-	private String municipio;
+	private String bairro;
 	private String cep;
 	private String estado;
 
@@ -85,12 +82,12 @@ public class EstabelecimentoRural {
 		return iptu;
 	}
 
-	public BigDecimal getAreaImovel() {
+	public String getAreaImovel() {
 		return areaImovel;
 	}
 
-	public String getIncricaoEstadual() {
-		return incricaoEstadual;
+	public String getInscricaoEstadual() {
+		return inscricaoEstadual;
 	}
 
 	public String getCei() {
@@ -113,8 +110,8 @@ public class EstabelecimentoRural {
 		return cidade;
 	}
 
-	public String getMunicipio() {
-		return municipio;
+	public String getBairro() {
+		return bairro;
 	}
 
 	public String getCep() {
@@ -173,12 +170,12 @@ public class EstabelecimentoRural {
 		this.iptu = iptu;
 	}
 
-	public void setAreaImovel(BigDecimal areaImovel) {
+	public void setAreaImovel(String areaImovel) {
 		this.areaImovel = areaImovel;
 	}
 
-	public void setIncricaoEstadual(String incricaoEstadual) {
-		this.incricaoEstadual = incricaoEstadual;
+	public void setInscricaoEstadual(String inscricaoEstadual) {
+		this.inscricaoEstadual = inscricaoEstadual;
 	}
 
 	public void setCei(String cei) {
@@ -201,8 +198,8 @@ public class EstabelecimentoRural {
 		this.cidade = cidade;
 	}
 
-	public void setMunicipio(String municipio) {
-		this.municipio = municipio;
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
 	}
 
 	public void setCep(String cep) {

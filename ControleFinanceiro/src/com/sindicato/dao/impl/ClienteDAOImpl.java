@@ -68,6 +68,7 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 	public void update(Cliente cliente){
 		try {
 			em.getTransaction().begin();
+			em.merge(cliente);
 			if(this.isSocio(cliente) != cliente.isSocio()){
 				inseriRegistroSocio(cliente);
 			}

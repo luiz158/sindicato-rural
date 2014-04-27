@@ -14,12 +14,15 @@ import com.sindicato.dao.ClienteDAO;
 import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.impl.ClienteDAOImpl;
 import com.sindicato.entity.Cliente;
+import com.sindicato.entity.autenticacao.Usuario;
 
 @ManagedBean
 @ViewScoped
 public class ClienteBean implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 	
 	private EntityManager em;
 	private ClienteDAO clienteDAO;
@@ -46,14 +49,17 @@ public class ClienteBean implements Serializable {
 
 	public void salvar(){
 		try {
+			clienteSelecionado.setEmpresa(usuarioLogado.getEmpresa());
 			if(clienteSelecionado.getId() == 0){
 				clienteDAO.insert(clienteSelecionado);
 			}else{
 				clienteDAO.update(clienteSelecionado);
 			}
+			clienteSelecionado = new Cliente();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Sucesso", "Dados do cliente salvo com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR, "Erro", "Erro ao salvar alterações. Contate o administrador.");
 		}
 	}
 
