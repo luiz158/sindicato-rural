@@ -12,7 +12,6 @@
 
 		<h:form>
 			<p:growl id="growl" showDetail="true" />
-			<p:messages showDetail="true" closable="true" />
 			<p:tabView activeIndex="#{usuarioBean.indexTab}">
 				<p:tab title="Lista de Usuários">
 					<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
@@ -21,7 +20,8 @@
 						selection="#{usuarioBean.usuarioSelecionado}"
 						selectionMode="single" id="usuarios">
 
-						<p:ajax event="rowSelect" update="@(form)" listener="#{usuarioBean.alterTab(1)}"/>
+						<p:ajax event="rowSelect" update="@(form)"
+							listener="#{usuarioBean.alterTab(1)}" />
 
 						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
 							<p:outputLabel value="#{usuario.nome}" />
@@ -32,65 +32,102 @@
 						</p:column>
 					</p:dataTable>
 				</p:tab>
-				<p:tab title="Formulário">
-					<p:panelGrid styleClass="panelForm" style="width:50%;">
+				<p:tab title="Informações do usuário">
 
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Código" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{usuarioBean.usuarioSelecionado.id}" readonly="true" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Nome" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{usuarioBean.usuarioSelecionado.nome}" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="E-mail" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{usuarioBean.usuarioSelecionado.email}" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Senha" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:password value="#{usuarioBean.usuarioSelecionado.senha}" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Perfis" />
-							</p:column>
-							<p:column styleClass="colInput">
+					<p:fieldset legend="Informações basicas">
+						<p:panelGrid styleClass="panelForm" style="width:50%;">
 
-								<!-- <p:selectManyCheckbox  id="grid" value="#{usuarioBean.usuarioSelecionado.perfis}"
-									layout="grid" columns="3" converter="PerfilConverter">
-									
-									<f:attribute name="collectionType" value="java.util.ArrayList" />
-									<f:selectItems value="#{usuarioBean.perfisDisponiveis}"
-										var="p" itemValue="#{p}"
-										itemLabel="#{p.descricao}" />
-								</p:selectManyCheckbox > -->
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Código" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{usuarioBean.usuarioSelecionado.id}"
+										readonly="true" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Nome" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{usuarioBean.usuarioSelecionado.nome}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="E-mail" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{usuarioBean.usuarioSelecionado.email}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
 
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column colspan="2" styleClass="colLabel">
-								<p:commandButton action="#{usuarioBean.salvar}" update="@form"
-									value="Salvar" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
+					</p:fieldset>
+					<p:spacer height="20" />
+					<p:fieldset legend="Alteração de senha">
+						<p:panelGrid styleClass="panelForm" style="width:50%;">
+
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Nova senha" />
+								</p:column>
+								<p:column styleClass="colInput">
+
+									<p:password value="#{usuarioBean.senhaNova}" id="ns1"
+										match="ns2" feedback="true" promptLabel="Insira a senha"
+										weakLabel="Senha fraca" goodLabel="Boa senha"
+										strongLabel="Ótima senha"
+										validatorMessage="Senhas não conferem" />
+
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Confirme a nova senha" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:password value="#{usuarioBean.senhaNova}" id="ns2" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:fieldset>
+					<p:spacer height="20" />
+					<p:fieldset legend="Controle de acesso do usuário">
+						<p:panelGrid styleClass="panelForm" style="width:50%;">
+
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Perfis" />
+								</p:column>
+								<p:column styleClass="colInput">
+
+									<p:selectCheckboxMenu
+										value="#{usuarioBean.usuarioSelecionado.perfis}"
+										converter="PerfilConverter" label="Perfis" filter="true"
+										filterText="Filter" filterMatchMode="startsWith"
+										panelStyle="width:220px">
+
+										<f:attribute name="collectionType" value="java.util.ArrayList" />
+										<f:selectItems value="#{usuarioBean.perfisDisponiveis}"
+											var="p" itemValue="#{p}" itemLabel="#{p.descricao}" />
+									</p:selectCheckboxMenu>
+
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:fieldset>
+
+					<div class="container-action">
+						<p:commandButton value="Limpar Formulário"
+							style="width:200px;height:50px;" update="@form" process="@this"
+							actionListener="#{usuarioBean.reset}" />
+
+						<p:commandButton action="#{usuarioBean.salvar}" update="@form"
+							value="Salvar alterações" style="width:200px;height:50px;" />
+					</div>
+
 				</p:tab>
 			</p:tabView>
 		</h:form>

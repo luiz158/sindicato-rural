@@ -15,6 +15,7 @@ import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
+import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.UsuarioDAO;
 import com.sindicato.dao.impl.UsuarioDAOImpl;
@@ -46,7 +47,6 @@ public class LoginBean implements Serializable {
 		String retorno = null;
 		ResultOperation result = new ResultOperation();
 
-		FacesContext fc = FacesContext.getCurrentInstance();
 		try {
 			result = usuarioDAO.autenticar(usuario, senha);
 
@@ -57,14 +57,11 @@ public class LoginBean implements Serializable {
 
 				retorno = "/faces/index?faces-redirect=true";
 			} else {
-				FacesMessage mensagem = new FacesMessage(result.getMessage());
-				fc.addMessage("", mensagem);
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Atenção", result.getMessage());
 				retorno = "";
 			}
 		} catch (Exception e) {
-			FacesMessage mensagem = new FacesMessage(
-					"Falha na autenticação do usuário. Contate o administrador do sistema.");
-			fc.addMessage("", mensagem);
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR, "Erro", "Falha na autenticação do usuário. Contate o administrador do sistema");
 			e.printStackTrace();
 		}
 		usuarioDAO = null;

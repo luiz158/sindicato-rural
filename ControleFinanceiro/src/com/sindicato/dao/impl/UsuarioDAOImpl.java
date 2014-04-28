@@ -25,8 +25,9 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 	@Override
 	public void insert(Usuario usuario){
 		usuario.setSenha(PasswordManager.generated(usuario.getSenha()));
-		this.insert(usuario);
+		super.insert(usuario);
 	}
+	
 	
 	@Override
 	public ResultOperation autenticar(String usuario, String senha) {
@@ -83,5 +84,12 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 		} catch (NoResultException e) {
 			return null;
 		}
+	}
+
+
+	@Override
+	public void atualizarSenha(Usuario usuario, String novaSenha) {
+		usuario.setSenha(PasswordManager.generated(novaSenha));
+		super.update(usuario);
 	}
 }

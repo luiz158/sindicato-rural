@@ -84,6 +84,7 @@ public class ClienteBean implements Serializable {
 			}else{
 				clienteDAO.update(clienteSelecionado);
 			}
+			alterTab(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Sucesso", "Dados do cliente salvo com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();

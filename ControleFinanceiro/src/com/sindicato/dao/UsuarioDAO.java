@@ -13,4 +13,6 @@ public interface UsuarioDAO extends DAO<Usuario, Integer> {
 	Usuario getUsuarioAutenticado();
 	
 	List<Menu> getMenusPermitidos();
+
+	void atualizarSenha(Usuario usuario, String novaSenha);
 }

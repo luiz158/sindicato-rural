@@ -12,13 +12,16 @@
 		<h:outputStylesheet name="login.css" library="css"></h:outputStylesheet>
 	</h:head>
 	<h:body>
-		<div id="main-wrapper" style="width:600px;height:450px;position: relative;">
-			<div id="logo" style="position: absolute;left: 130px;">
+		<div id="main-wrapper"
+			style="width: 600px; height: 450px; position: relative;">
+			<div id="logo" style="position: absolute; left: 130px;">
 				<h:graphicImage name="LogoSindRCotia.jpg" library="imagens"></h:graphicImage>
 			</div>
 			<center>
-				<div id="content" style="position: absolute;top:220px;left:180px;">
+				<div id="content"
+					style="position: absolute; top: 220px; left: 180px;">
 					<h:form>
+						<p:growl showDetail="true" life="15000" />
 						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
 							<f:facet name="start">
 								<p:graphicImage alt="carregando" library="imagens"
@@ -45,10 +48,9 @@
 						</p:panelGrid>
 						<br />
 
-						<p:commandButton value="Entrar" styleClass="panel_button_center" action="#{loginBean.autenticar}" />
-						
-						<p:messages />
-						
+						<p:commandButton value="Entrar" styleClass="panel_button_center"
+							action="#{loginBean.autenticar}" update="@form" />
+
 						<p align="left">
 							<h:outputLink value="#">Esqueceu sua senha?</h:outputLink>
 						</p>
