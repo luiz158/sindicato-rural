@@ -544,11 +544,11 @@
 										<p:column headerText="Tipo da ocupação">
 											<h:outputText value="#{ocupacao.tipoOcupacaoSolo.descricao}" />
 										</p:column>
-										<p:column headerText="Código">
+										<p:column headerText="Área de ocupação">
 											<h:outputText value="#{ocupacao.areaOcupada}" />
 										</p:column>
-										<p:column headerText="">
-											<p:commandButton value="Remover ocupação"
+										<p:column headerText="" width="45">
+											<p:commandButton value="Excluir"
 												action="#{clienteBean.removerOcupacao(ocupacao)}"
 												update="ocupacaoes" />
 										</p:column>
