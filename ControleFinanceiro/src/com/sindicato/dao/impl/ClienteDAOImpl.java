@@ -107,7 +107,8 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		return socio;
 	}
 
-	private List<InformacaoSocio> getInformacoesSocio(Cliente cliente){
+	@Override
+	public List<InformacaoSocio> getInformacoesSocio(Cliente cliente){
 		try {
 			String strQuery = " select i from InformacaoSocio i where i.cliente = :cliente " +
 					" order by i.id asc ";
@@ -194,18 +195,18 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		
 		if(retorno.getMesesComoSocio() == 0){
 			if(cliente.isSocio()){
-				retorno.setMensagem("Cliente ainda não completou 1 mês como sócio.");
+				retorno.setMensagem("Cliente ainda não completou 1 mês como sócio");
 			}else{
-				retorno.setMensagem("Cliente nunca foi sócio.");
+				retorno.setMensagem("Cliente nunca foi sócio");
 			}
 			retorno.setAtrasado(false);
 		} else if(retorno.getMesesComoSocio() > retorno.getMensalidadesPagas()){
 			int diferenca = retorno.getMesesComoSocio() - retorno.getMensalidadesPagas();
-			retorno.setMensagem(diferenca + " mensalidades atrasadas.");
+			retorno.setMensagem(diferenca + " mensalidades atrasadas");
 			retorno.setAtrasado(true);
 		}else{
 			int diferenca = retorno.getMensalidadesPagas() - retorno.getMesesComoSocio();
-			retorno.setMensagem("Cliente possui " + diferenca + " mensalidades de crédito.");
+			retorno.setMensagem("Cliente possui " + diferenca + " mensalidades de crédito");
 			retorno.setAtrasado(false);
 		}
 		return retorno;

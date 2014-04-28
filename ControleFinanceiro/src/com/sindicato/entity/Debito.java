@@ -112,7 +112,7 @@ public class Debito {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof Debito){
+		if(!(obj instanceof Debito)){
 			return false;
 		}
 		

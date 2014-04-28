@@ -1,5 +1,7 @@
 package com.sindicato.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,9 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 @SequenceGenerator(allocationSize=1, name="seqTipoOcupacaoSolo", sequenceName="SEQ_TIPOOCUPACAOSOLO")
-public class TipoOcupacaoSolo {
+public class TipoOcupacaoSolo implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqTipoOcupacaoSolo")
@@ -38,7 +42,7 @@ public class TipoOcupacaoSolo {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof TipoOcupacaoSolo){
+		if(!(obj instanceof TipoOcupacaoSolo)){
 			return false;
 		}
 		

@@ -277,7 +277,7 @@ public class Cliente {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof Cliente) {
+		if (!(obj instanceof Cliente)) {
 			return false;
 		}
 

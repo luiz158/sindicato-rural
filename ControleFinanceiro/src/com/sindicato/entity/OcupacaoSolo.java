@@ -20,13 +20,12 @@ public class OcupacaoSolo {
 	@JoinColumn(name="tipoocupacaosolo_id")
 	private TipoOcupacaoSolo tipoOcupacaoSolo;
 	
-	private int areaOcupada;
-	
+	private String areaOcupada;
 	
 	public int getId() {
 		return id;
 	}
-	public int getAreaOcupada() {
+	public String getAreaOcupada() {
 		return areaOcupada;
 	}
 	public TipoOcupacaoSolo getTipoOcupacaoSolo() {
@@ -35,7 +34,7 @@ public class OcupacaoSolo {
 	public void setTipoOcupacaoSolo(TipoOcupacaoSolo tipoOcupacaoSolo) {
 		this.tipoOcupacaoSolo = tipoOcupacaoSolo;
 	}
-	public void setAreaOcupada(int areaOcupada) {
+	public void setAreaOcupada(String areaOcupada) {
 		this.areaOcupada = areaOcupada;
 	}
 	public void setId(int id) {
@@ -48,7 +47,7 @@ public class OcupacaoSolo {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof OcupacaoSolo){
+		if(!(obj instanceof OcupacaoSolo)){
 			return false;
 		}
 		

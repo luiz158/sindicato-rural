@@ -30,7 +30,7 @@
 						emptyMessage="Nenhum cliente encontrado">
 
 						<p:ajax event="rowSelect" update="@(form)"
-							listener="#{clienteBean.alterTab(1)}" />
+							listener="#{clienteBean.selecionaCliente}" />
 
 						<p:column headerText="Código" sortBy="id" filterBy="id" width="5">
 							<p:outputLabel value="#{cli.id}" />
@@ -60,427 +60,608 @@
 
 					</p:dataTable>
 				</p:tab>
-				<p:tab title="Formulário">
+				<p:tab title="Informações do cliente">
 
-					<p:fieldset legend="Informações basicas" style="margin-top:15px;">
-						<p:panelGrid styleClass="panelForm"
-							style="width:80%;margin-top:20px;">
-
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Código do Cliente" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.id}"
-										readonly="true" size="5" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Nome" />
-									<p:outputLabel value=" *" style="color:red;" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.nome}"
-										required="true" requiredMessage="Nome é obrigatório" size="60" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="É sócio?" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:selectBooleanButton
-										value="#{clienteBean.clienteSelecionado.socio}" offLabel="Não"
-										onLabel="Sim" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Produtor rural desde" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:calendar onkeyup="mascara(this,data)"
-										value="#{clienteBean.clienteSelecionado.produtorRuralDesde}"
-										pattern="dd/MM/yyyy" styleClass="date"
-										converter="CalendarConverter" />
-
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Data de nascimento" />
-									<p:outputLabel value=" *" style="color:red;" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:calendar required="true"
-										requiredMessage="Data de nascimento é obrigatório"
-										onkeyup="mascara(this,data)"
-										value="#{clienteBean.clienteSelecionado.dataNascimento}"
-										pattern="dd/MM/yyyy" styleClass="date"
-										converter="CalendarConverter" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="CPF" />
-									<p:outputLabel value=" *" style="color:red;" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.cpf}"
-										required="true" requiredMessage="CPF é obrigatório" size="15"
-										onkeyup="mascara(this,cpf)" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="RG" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.rg}"
-										size="15" onkeyup="mascara(this,rg)" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Título de eleitor" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText
-										value="#{clienteBean.clienteSelecionado.tituloEleitor}"
-										size="30" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Observação" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputTextarea cols="50" rows="3"
-										value="#{clienteBean.clienteSelecionado.observacao}" />
-								</p:column>
-							</p:row>
-
-						</p:panelGrid>
-					</p:fieldset>
-
-					<p:fieldset legend="Endereço" style="margin-top:15px;">
-						<p:panelGrid styleClass="panelForm"
-							style="width:80%;margin-top:20px;">
-
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="CEP" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.cep}"
-										onkeyup="mascara(this,cep)" size="10" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Endereço" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.endereco}"
-										size="70" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Número" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.numero}"
-										size="5" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Complemento" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText
-										value="#{clienteBean.clienteSelecionado.complemento}"
-										size="40" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Bairro" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.bairro}"
-										size="40" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Municipio" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText
-										value="#{clienteBean.clienteSelecionado.municipio}" size="40" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Estado" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:selectOneMenu
-										value="#{clienteBean.clienteSelecionado.estado}"
-										style="width:150px;">
-										<f:selectItem itemLabel="São Paulo" itemValue="SP" />
-									</p:selectOneMenu>
-								</p:column>
-							</p:row>
-
-						</p:panelGrid>
-					</p:fieldset>
-
-					<p:fieldset legend="Informações para contato"
-						style="margin-top:15px;">
-						<p:panelGrid styleClass="panelForm"
-							style="width:80%;margin-top:20px;">
-
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Telefone" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.telefone}"
-										onkeyup="mascara(this,telefone)" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="E-mail" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText value="#{clienteBean.clienteSelecionado.email}"
-										size="35" />
-								</p:column>
-							</p:row>
-
-						</p:panelGrid>
-					</p:fieldset>
-
-					<p:fieldset legend="Estabelecimento rural" style="margin-top:15px;">
-						<p:outputPanel>
-							<h4>Dados gerais</h4>
-
-							<p:panelGrid styleClass="panelForm" style="width:100%;">
-
-								<p:row>
-									<p:column styleClass="colLabel" style="width:210px;">
-										<p:outputLabel value="CNPJ" />
-										<p:outputLabel value=" *" style="color:red;" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cnpj}"
-											onkeyup="mascara(this,cnpj)" required="true"
-											requiredMessage="CNPJ é obrigatório" />
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Inicio de atividade" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:calendar onkeyup="mascara(this,data)"
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.dataInicioAtividade}"
-											pattern="dd/MM/yyyy" styleClass="date"
-											converter="CalendarConverter" />
-									</p:column>
-								</p:row>
-
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Título" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText size="30"
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.titulo}" />
-									</p:column>
-								</p:row>
-
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="NIRF" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.nirf}"
-											size="30" />
-									</p:column>
-
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="INCRA" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.incra}"
-											size="30" />
-									</p:column>
-								</p:row>
-
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="IPTU" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.iptu}"
-											size="35" />
-									</p:column>
-
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="CEI" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cei}" />
-									</p:column>
-								</p:row>
-								
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Forma de domínio" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.formaDominio}"
-											size="35" />
-									</p:column>
-								</p:row>
-								
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Vínculo do produtor" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.vinculoProdutor}"
-											size="20" />
-									</p:column>
-
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Proprietário do imóvel" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText size="30"
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.proprietarioImovel}" />
-									</p:column>
-								</p:row>								
-								
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Área do imóvel (em ha)" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.areaImovel}" />
-									</p:column>
-								</p:row>
-							</p:panelGrid>
-							<p:spacer height="10" />
-							<p:outputPanel>
-								<h4>Inscrição Estadual</h4>
-
+					<p:tabView>
+						<p:tab title="Formulário">
+							<p:fieldset legend="Informações basicas" style="margin-top:15px;">
 								<p:panelGrid styleClass="panelForm"
-									style="width:100%;margin-bottom:20px;">
+									style="width:80%;margin-top:20px;">
+
 									<p:row>
-										<p:column styleClass="colLabel">
-											<p:outputLabel value="Inscrição estadual" />
+										<p:column styleClass="colLabel" style="width:250px;">
+											<p:outputLabel value="Código do Cliente" />
 										</p:column>
 										<p:column styleClass="colInput">
-											<p:inputText
-												value="#{clienteBean.clienteSelecionado.estabelecimentoRural.inscricaoEstadual}"
-												size="30" />
+											<p:inputText value="#{clienteBean.clienteSelecionado.id}"
+												readonly="true" size="5" />
 										</p:column>
+									</p:row>
+									<p:row>
 										<p:column styleClass="colLabel">
-											<p:outputLabel value="Validade da Insc. estadual" />
+											<p:outputLabel value="Nome" />
+											<p:outputLabel value=" *" style="color:red;" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.nome}"
+												required="true" requiredMessage="Nome é obrigatório"
+												size="60" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="É sócio?" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:selectBooleanButton
+												value="#{clienteBean.clienteSelecionado.socio}"
+												offLabel="Não" onLabel="Sim" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Produtor rural desde" />
 										</p:column>
 										<p:column styleClass="colInput">
 											<p:calendar onkeyup="mascara(this,data)"
-												value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
+												value="#{clienteBean.clienteSelecionado.produtorRuralDesde}"
+												pattern="dd/MM/yyyy" styleClass="date"
+												converter="CalendarConverter" />
+
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Data de nascimento" />
+											<p:outputLabel value=" *" style="color:red;" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:calendar required="true"
+												requiredMessage="Data de nascimento é obrigatório"
+												onkeyup="mascara(this,data)"
+												value="#{clienteBean.clienteSelecionado.dataNascimento}"
 												pattern="dd/MM/yyyy" styleClass="date"
 												converter="CalendarConverter" />
 										</p:column>
 									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="CPF" />
+											<p:outputLabel value=" *" style="color:red;" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.cpf}"
+												required="true" requiredMessage="CPF é obrigatório"
+												size="15" onkeyup="mascara(this,cpf)" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="RG" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.rg}"
+												size="15" onkeyup="mascara(this,rg)" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Título de eleitor" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{clienteBean.clienteSelecionado.tituloEleitor}"
+												size="30" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Observação" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputTextarea cols="50" rows="3"
+												value="#{clienteBean.clienteSelecionado.observacao}" />
+										</p:column>
+									</p:row>
+
 								</p:panelGrid>
-							</p:outputPanel>
-						</p:outputPanel>
-						<p:outputPanel>
-							<h4>Informações de localização</h4>
+							</p:fieldset>
 
-							<p:panelGrid styleClass="panelForm"
-								style="width:100%;margin-top:20px;">
+							<p:fieldset legend="Endereço" style="margin-top:15px;">
+								<p:panelGrid styleClass="panelForm"
+									style="width:80%;margin-top:20px;">
 
+									<p:row>
+										<p:column styleClass="colLabel" style="width:250px;">
+											<p:outputLabel value="CEP" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.cep}"
+												onkeyup="mascara(this,cep)" size="10" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Endereço" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{clienteBean.clienteSelecionado.endereco}" size="70" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Número" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.numero}"
+												size="5" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Complemento" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{clienteBean.clienteSelecionado.complemento}"
+												size="40" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Bairro" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.bairro}"
+												size="40" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Municipio" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{clienteBean.clienteSelecionado.municipio}"
+												size="40" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Estado" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:selectOneMenu
+												value="#{clienteBean.clienteSelecionado.estado}"
+												style="width:150px;">
+												<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+											</p:selectOneMenu>
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Informações para contato"
+								style="margin-top:15px;">
+								<p:panelGrid styleClass="panelForm"
+									style="width:80%;margin-top:20px;">
+
+									<p:row>
+										<p:column styleClass="colLabel" style="width:250px;">
+											<p:outputLabel value="Telefone" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{clienteBean.clienteSelecionado.telefone}"
+												onkeyup="mascara(this,telefone)" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="E-mail" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText value="#{clienteBean.clienteSelecionado.email}"
+												size="35" />
+										</p:column>
+									</p:row>
+
+								</p:panelGrid>
+							</p:fieldset>
+
+							<p:fieldset legend="Estabelecimento rural"
+								style="margin-top:15px;">
+								<p:outputPanel>
+									<h4>Dados gerais</h4>
+
+									<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+										<p:row>
+											<p:column styleClass="colLabel" style="width:210px;">
+												<p:outputLabel value="CNPJ" />
+												<p:outputLabel value=" *" style="color:red;" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cnpj}"
+													onkeyup="mascara(this,cnpj)" required="true"
+													requiredMessage="CNPJ é obrigatório" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Inicio de atividade" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:calendar onkeyup="mascara(this,data)"
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.dataInicioAtividade}"
+													pattern="dd/MM/yyyy" styleClass="date"
+													converter="CalendarConverter" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Título" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText size="30"
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.titulo}" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="NIRF" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.nirf}"
+													size="30" />
+											</p:column>
+
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="INCRA" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.incra}"
+													size="30" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="IPTU" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.iptu}"
+													size="35" />
+											</p:column>
+
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="CEI" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cei}" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Forma de domínio" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.formaDominio}"
+													size="35" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Vínculo do produtor" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.vinculoProdutor}"
+													size="20" />
+											</p:column>
+
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Proprietário do imóvel" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText size="30"
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.proprietarioImovel}" />
+											</p:column>
+										</p:row>
+
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Área do imóvel (em ha)" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.areaImovel}" />
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+									<p:spacer height="10" />
+									<p:outputPanel>
+										<h4>Inscrição Estadual</h4>
+
+										<p:panelGrid styleClass="panelForm"
+											style="width:100%;margin-bottom:20px;">
+											<p:row>
+												<p:column styleClass="colLabel">
+													<p:outputLabel value="Inscrição estadual" />
+												</p:column>
+												<p:column styleClass="colInput">
+													<p:inputText
+														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.inscricaoEstadual}"
+														size="30" />
+												</p:column>
+												<p:column styleClass="colLabel">
+													<p:outputLabel value="Validade da Insc. estadual" />
+												</p:column>
+												<p:column styleClass="colInput">
+													<p:calendar onkeyup="mascara(this,data)"
+														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
+														pattern="dd/MM/yyyy" styleClass="date"
+														converter="CalendarConverter" />
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:outputPanel>
+								</p:outputPanel>
+								<p:outputPanel>
+									<h4>Informações de localização</h4>
+
+									<p:panelGrid styleClass="panelForm"
+										style="width:100%;margin-top:20px;">
+
+										<p:row>
+											<p:column styleClass="colLabel" style="width:210px;">
+												<p:outputLabel value="CEP" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}"
+													onkeyup="mascara(this,cep)" size="10" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Endereço" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.logradouro}"
+													size="70" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Bairro" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.bairro}"
+													size="40" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Municipio" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cidade}"
+													size="40" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Estado" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:selectOneMenu
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.estado}"
+													style="width:150px;">
+													<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+												</p:selectOneMenu>
+											</p:column>
+										</p:row>
+									</p:panelGrid>
+
+								</p:outputPanel>
+
+								<p:outputPanel>
+									<h4>Ocupação do solo</h4>
+
+									<p:commandButton id="effectsDialogButton"
+										value="Adicionar ocupação" onclick="PF('dlg3').show();"
+										type="button" />
+									<p:spacer height="10" />
+
+									<p:dialog header="Cadastrar ocupação de solo" widgetVar="dlg3"
+										resizable="true" showEffect="fade" hideEffect="fade"
+										height="200" width="500">
+										<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+											<p:row>
+												<p:column styleClass="colLabel" style="width:210px;">
+													<p:outputLabel value="Código" />
+												</p:column>
+												<p:column styleClass="colInput">
+													<p:inputText value="#{clienteBean.ocupacaoSolo.id}"
+														size="5" readonly="true" />
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column styleClass="colLabel">
+													<p:outputLabel value="Tipo da ocupação do solo" />
+												</p:column>
+												<p:column styleClass="colInput">
+													<p:selectOneMenu converter="TipoOcupacaoSoloConverter"
+														id="tipoOcupacaoSolo"
+														value="#{clienteBean.ocupacaoSolo.tipoOcupacaoSolo}">
+														<f:selectItems value="#{clienteBean.tiposOcupacaoSolo}"
+															var="p" itemValue="#{p}" itemLabel="#{p.descricao}" />
+													</p:selectOneMenu>
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column styleClass="colLabel">
+													<p:outputLabel value="Área de ocupação" />
+												</p:column>
+												<p:column styleClass="colInput">
+													<p:inputText
+														value="#{clienteBean.ocupacaoSolo.areaOcupada}" />
+												</p:column>
+											</p:row>
+											<p:row>
+												<p:column styleClass="colLabel" colspan="2">
+													<p:commandButton value="Salvar"
+														actionListener="#{clienteBean.salvarOcupacao}"
+														oncomplete="PF('dlg3').hide();" update="ocupacaoes" />
+												</p:column>
+											</p:row>
+										</p:panelGrid>
+									</p:dialog>
+
+									<p:dataTable var="ocupacao" id="ocupacaoes"
+										emptyMessage="Nenhuma ocupação de solo cadastrada"
+										value="#{clienteBean.clienteSelecionado.estabelecimentoRural.ocupacoesSolo}">
+										<p:column headerText="Código">
+											<h:outputText value="#{ocupacao.id}" />
+										</p:column>
+										<p:column headerText="Tipo da ocupação">
+											<h:outputText value="#{ocupacao.tipoOcupacaoSolo.descricao}" />
+										</p:column>
+										<p:column headerText="Código">
+											<h:outputText value="#{ocupacao.areaOcupada}" />
+										</p:column>
+										<p:column headerText="">
+											<p:commandButton value="Remover ocupação"
+												action="#{clienteBean.removerOcupacao(ocupacao)}"
+												update="ocupacaoes" />
+										</p:column>
+									</p:dataTable>
+
+								</p:outputPanel>
+
+
+
+							</p:fieldset>
+
+							<div class="container-action">
+								<p:commandButton value="Limpar Formulário"
+									style="width:200px;height:50px;" update="@form" process="@this"
+									actionListener="#{clienteBean.reset}" />
+
+								<p:commandButton action="#{clienteBean.salvar}" update="@form"
+									value="Salvar alterações" style="width:200px;height:50px;" />
+							</div>
+
+
+						</p:tab>
+						<p:tab title="Situação do cliente">
+							<p:spacer height="25" />
+							<p:panelGrid styleClass="panelForm" style="width:100%;">
 								<p:row>
 									<p:column styleClass="colLabel" style="width:210px;">
-										<p:outputLabel value="CEP" />
+										<p:outputLabel value="Situação:" style="font-size:14px;" />
 									</p:column>
 									<p:column styleClass="colInput">
-										<p:inputText value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}"
-											onkeyup="mascara(this,cep)" size="10" />
+
+										<p:outputLabel value="Em débito" style="color:red;"
+											rendered="#{clienteBean.informacaoMensalidade.atrasado}" />
+										<p:outputLabel value="Em dia" style="color:blue;"
+											rendered="#{!clienteBean.informacaoMensalidade.atrasado}" />
+
 									</p:column>
 								</p:row>
 								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Endereço" />
+									<p:column styleClass="colLabel" style="width:210px;">
+										<p:outputLabel value="Mensalidades:" style="font-size:14px;" />
 									</p:column>
 									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.logradouro}" size="70" />
+										<p:outputLabel
+											value="#{clienteBean.informacaoMensalidade.mensagem}"
+											style="color:red;"
+											rendered="#{clienteBean.informacaoMensalidade.atrasado}" />
+										<p:outputLabel
+											value="#{clienteBean.informacaoMensalidade.mensagem}"
+											style="color:blue;"
+											rendered="#{!clienteBean.informacaoMensalidade.atrasado}" />
 									</p:column>
 								</p:row>
 								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Bairro" />
+									<p:column styleClass="colLabel" style="width:210px;">
+										<p:outputLabel value="Meses como sócio:"
+											style="font-size:14px;" />
 									</p:column>
 									<p:column styleClass="colInput">
-										<p:inputText value="#{clienteBean.clienteSelecionado.estabelecimentoRural.bairro}"
-											size="40" />
+										<p:outputLabel
+											value="#{clienteBean.informacaoMensalidade.mesesComoSocio}" />
 									</p:column>
 								</p:row>
 								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Municipio" />
+									<p:column styleClass="colLabel" style="width:210px;">
+										<p:outputLabel value="Mensalidades pagas:"
+											style="font-size:14px;" />
 									</p:column>
 									<p:column styleClass="colInput">
-										<p:inputText
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cidade}" size="40" />
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Estado" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:selectOneMenu
-											value="#{clienteBean.clienteSelecionado.estabelecimentoRural.estado}"
-											style="width:150px;">
-											<f:selectItem itemLabel="São Paulo" itemValue="SP" />
-										</p:selectOneMenu>
+										<p:outputLabel
+											value="#{clienteBean.informacaoMensalidade.mensalidadesPagas}" />
 									</p:column>
 								</p:row>
 							</p:panelGrid>
+							<p:spacer height="50" />
+							<p:fieldset legend="Histórico de sócio">
 
-						</p:outputPanel>
-					</p:fieldset>
+								<p:dataTable var="inf" emptyMessage="Cliente nunca foi sócio"
+									value="#{clienteBean.informacoesSocio}">
+									<p:column headerText="Data de evento">
+										<h:outputText value="#{inf.dataEvento.time}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+									</p:column>
 
-					<div class="container-action">
-						<p:commandButton value="Limpar Formulário"
-							style="width:200px;height:50px;" update="@form" process="@this"
-							actionListener="#{clienteBean.reset}" />
+									<p:column headerText="Tipo do evento">
+										<h:outputText value="Virou sócio" rendered="#{inf.socio}" />
+										<h:outputText value="Deixou de ser sócio"
+											rendered="#{!inf.socio}" />
+									</p:column>
 
-						<p:commandButton action="#{clienteBean.salvar}" update="@form"
-							value="Salvar alterações" style="width:200px;height:50px;" />
-					</div>
+								</p:dataTable>
 
+							</p:fieldset>
+							<p:spacer height="30" />
+							<p:fieldset legend="Histórico de mensalidades">
+
+								<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga">
+									<p:column headerText="Data do pagamento">
+										<h:outputText />
+									</p:column>
+
+									<p:column headerText="Tipo da mensalidade">
+										<h:outputText />
+									</p:column>
+
+								</p:dataTable>
+
+							</p:fieldset>
+
+
+						</p:tab>
+					</p:tabView>
 
 				</p:tab>
 			</p:tabView>

@@ -49,4 +49,24 @@ public class Menu {
 		this.url = url;
 	}
 	
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null){
+			return false;
+		}
+		if(!(obj instanceof Menu)){
+			return false;
+		}
+		
+		Menu o = (Menu) obj;
+		if(o.hashCode() == this.hashCode()){
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public int hashCode(){
+		return id;
+	}
+	
 }

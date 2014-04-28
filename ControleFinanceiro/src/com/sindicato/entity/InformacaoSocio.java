@@ -58,7 +58,7 @@ public class InformacaoSocio {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof InformacaoSocio){
+		if(!(obj instanceof InformacaoSocio)){
 			return false;
 		}
 		

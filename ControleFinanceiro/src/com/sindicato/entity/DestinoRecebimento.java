@@ -37,7 +37,7 @@ public class DestinoRecebimento {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof DestinoRecebimento){
+		if(!(obj instanceof DestinoRecebimento)){
 			return false;
 		}
 		

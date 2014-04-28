@@ -227,7 +227,7 @@ public class EstabelecimentoRural {
 		if (obj == null) {
 			return false;
 		}
-		if (obj instanceof EstabelecimentoRural) {
+		if (!(obj instanceof EstabelecimentoRural)) {
 			return false;
 		}
 

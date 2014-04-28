@@ -59,7 +59,7 @@ public class Servico {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof Servico){
+		if(!(obj instanceof Servico)){
 			return false;
 		}
 		

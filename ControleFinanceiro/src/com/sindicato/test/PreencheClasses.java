@@ -43,11 +43,11 @@ public class PreencheClasses {
 		
 		OcupacaoSolo ocup = new OcupacaoSolo();
 		ocup.setTipoOcupacaoSolo(tipoOcupSoloDAO.getAll().get(0));
-		ocup.setAreaOcupada(100);
+		ocup.setAreaOcupada("100");
 		estabRural.getOcupacoesSolo().add(ocup);
 		ocup = new OcupacaoSolo();
 		ocup.setTipoOcupacaoSolo(tipoOcupSoloDAO.getAll().get(0));
-		ocup.setAreaOcupada(150);
+		ocup.setAreaOcupada("150");
 		estabRural.getOcupacoesSolo().add(ocup);
 		
 		cli.setEstabelecimentoRural(estabRural);

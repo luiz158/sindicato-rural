@@ -45,4 +45,26 @@ public class Perfil {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	
+	@Override
+	public boolean equals(Object obj){
+		if(obj == null){
+			return false;
+		}
+		if(!(obj instanceof Perfil)){
+			return false;
+		}
+		
+		Perfil o = (Perfil) obj;
+		if(o.hashCode() == this.hashCode()){
+			return true;
+		}
+		return false;
+	}
+	@Override
+	public int hashCode(){
+		return id;
+	}
+	
 }

@@ -73,7 +73,7 @@ public class Recolhimento {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof Recolhimento){
+		if(!(obj instanceof Recolhimento)){
 			return false;
 		}
 		

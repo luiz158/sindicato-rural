@@ -38,7 +38,7 @@ public class TipoRecebimento {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof TipoRecebimento){
+		if(!(obj instanceof TipoRecebimento)){
 			return false;
 		}
 		

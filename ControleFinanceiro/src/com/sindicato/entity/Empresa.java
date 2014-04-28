@@ -20,7 +20,7 @@ public class Empresa {
 	
 	@OneToMany(targetEntity=Cliente.class, mappedBy="empresa")
 	private List<Cliente> clientes;
-
+	
 	@Column(nullable=false, length=500)
 	private String razaoSocial;
 	
@@ -132,7 +132,7 @@ public class Empresa {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof Empresa){
+		if(!(obj instanceof Empresa)){
 			return false;
 		}
 		

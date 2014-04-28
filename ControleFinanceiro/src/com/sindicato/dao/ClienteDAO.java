@@ -1,6 +1,9 @@
 package com.sindicato.dao;
 
+import java.util.List;
+
 import com.sindicato.entity.Cliente;
+import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.result.InformacaoMensalidade;
 
 public interface ClienteDAO extends DAO<Cliente, Integer> {
@@ -12,5 +15,7 @@ public interface ClienteDAO extends DAO<Cliente, Integer> {
 	int calculaQuantasMensalidadeForamPagas(Cliente cliente);
 	
 	InformacaoMensalidade estaEmDiaComAsMensalidades(Cliente cliente);
+
+	List<InformacaoSocio> getInformacoesSocio(Cliente cliente);
 	
 }

@@ -118,7 +118,7 @@ public class Recebimento {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof Recebimento){
+		if(!(obj instanceof Recebimento)){
 			return false;
 		}
 		

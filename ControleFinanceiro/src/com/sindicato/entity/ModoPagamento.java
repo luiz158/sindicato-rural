@@ -37,7 +37,7 @@ public class ModoPagamento {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof ModoPagamento){
+		if(!(obj instanceof ModoPagamento)){
 			return false;
 		}
 		

@@ -73,7 +73,7 @@ public class DebitoServico {
 		if(obj == null){
 			return false;
 		}
-		if(obj instanceof DebitoServico){
+		if(!(obj instanceof DebitoServico)){
 			return false;
 		}
 		
