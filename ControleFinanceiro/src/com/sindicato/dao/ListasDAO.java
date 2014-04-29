@@ -8,6 +8,7 @@ import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 
 public interface ListasDAO {
@@ -23,5 +24,6 @@ public interface ListasDAO {
 	List<DebitoServico> getTodosOsServicosComRetencaoDoDebito(Debito debito);
 
 	List<Perfil> getTodosOsPerfis();
+	List<Menu> getTodosOsMenus();
 	
 }

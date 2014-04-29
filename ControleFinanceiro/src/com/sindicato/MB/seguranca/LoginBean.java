@@ -2,6 +2,8 @@ package com.sindicato.MB.seguranca;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -137,6 +139,15 @@ public class LoginBean implements Serializable {
 					menusPermitidos.add(menu);
 			}
 		}
+		
+		Collections.sort (menusPermitidos, new Comparator<Object>() {  
+            public int compare(Object o1, Object o2) {  
+                Menu p1 = (Menu) o1;  
+                Menu p2 = (Menu) o2;  
+                return p1.getId() < p2.getId() ? -1 : (p1.getId() > p2.getId() ? +1 : 0);  
+            }  
+        }); 
+		
 		return menusPermitidos;
 	}
 

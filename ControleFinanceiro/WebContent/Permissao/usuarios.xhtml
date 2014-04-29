@@ -9,6 +9,13 @@
 <ui:composition template="../_template.xhtml">
 
 	<ui:define name="conteudo">
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Permissão" url="#" />
+			<p:menuitem value="Usuários" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
 
 		<h:form>
 			<p:growl id="growl" showDetail="true" />
@@ -16,7 +23,7 @@
 				<p:tab title="Lista de Usuários">
 					<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
 						rowKey="#{usuario.id}" paginator="true" rows="10"
-						paginatorPosition="botton"
+						paginatorPosition="bottom"
 						selection="#{usuarioBean.usuarioSelecionado}"
 						selectionMode="single" id="usuarios">
 
@@ -35,10 +42,10 @@
 				<p:tab title="Informações do usuário">
 
 					<p:fieldset legend="Informações basicas">
-						<p:panelGrid styleClass="panelForm" style="width:50%;">
+						<p:panelGrid styleClass="panelForm" >
 
 							<p:row>
-								<p:column styleClass="colLabel">
+								<p:column styleClass="colLabel" style="width:300px !important;">
 									<p:outputLabel value="Código" />
 								</p:column>
 								<p:column styleClass="colInput">
@@ -67,10 +74,10 @@
 					</p:fieldset>
 					<p:spacer height="20" />
 					<p:fieldset legend="Alteração de senha">
-						<p:panelGrid styleClass="panelForm" style="width:50%;">
+						<p:panelGrid styleClass="panelForm" >
 
 							<p:row>
-								<p:column styleClass="colLabel">
+								<p:column styleClass="colLabel" style="width:300px !important;">
 									<p:outputLabel value="Nova senha" />
 								</p:column>
 								<p:column styleClass="colInput">
@@ -95,10 +102,10 @@
 					</p:fieldset>
 					<p:spacer height="20" />
 					<p:fieldset legend="Controle de acesso do usuário">
-						<p:panelGrid styleClass="panelForm" style="width:50%;">
+						<p:panelGrid styleClass="panelForm" >
 
 							<p:row>
-								<p:column styleClass="colLabel">
+								<p:column styleClass="colLabel" style="width:300px !important;">
 									<p:outputLabel value="Perfis" />
 								</p:column>
 								<p:column styleClass="colInput">
