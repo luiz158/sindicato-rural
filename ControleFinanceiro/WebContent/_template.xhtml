@@ -49,12 +49,14 @@
 			</ui:insert>
 
 			<p:messages showDetail="true" closable="true" />
-			<p:confirmDialog global="true" showEffect="puff" hideEffect="puff">
+			
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 				<p:commandButton value="Sim" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 				<p:commandButton value="Não" type="button"
 					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 			</p:confirmDialog>
+			
 			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
 				<f:facet name="start">
 					<p:graphicImage alt="carregando" library="imagens"

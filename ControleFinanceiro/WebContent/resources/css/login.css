@@ -23,7 +23,7 @@ a:active {
 }
 
 #main-wrapper {
-	background-color: #F1F3FF;
+	/* background-color: #F1F3FF; */
 	border: thin solid #CCC;
 	width: 400px;
 	margin: 50px auto;

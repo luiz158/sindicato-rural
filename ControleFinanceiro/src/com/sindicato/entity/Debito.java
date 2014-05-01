@@ -49,7 +49,6 @@ public class Debito {
 	@Column(nullable=false)
 	private StatusDebitoEnum status = StatusDebitoEnum.DEBITOCRIADO;
 	
-	
 	public BigDecimal getTotalDebitos(){
 		if(debitoServicos == null || debitoServicos.size() == 0){
 			return BigDecimal.ZERO;

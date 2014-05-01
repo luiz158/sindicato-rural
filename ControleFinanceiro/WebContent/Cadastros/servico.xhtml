@@ -20,6 +20,12 @@
 			<p:growl id="growl" showDetail="true" />
 			<p:tabView activeIndex="#{servicoBean.indexTab}">
 				<p:tab title="Lista de serviços">
+
+					<div class="container-action-novo">
+						<p:commandButton value="Cadastrar novo" update="@form"
+							process="@this" actionListener="#{servicoBean.novo}" />
+					</div>
+
 					<p:dataTable var="servico" value="#{servicoBean.servicos}"
 						rowKey="#{servico.id}" paginator="true" rows="10"
 						paginatorPosition="bottom"
@@ -40,6 +46,15 @@
 							filterBy="retencao">
 							<p:outputLabel value="Sim" rendered="#{servico.retencao}" />
 							<p:outputLabel value="Não" rendered="#{!servico.retencao}" />
+						</p:column>
+						<p:column style="width:10%; text-align:center;"
+							headerText="Excluir">
+							<p:commandButton icon="ui-icon-trash" update="@form"
+								immediate="true" action="#{servicoBean.excluir(servico)}">
+								<p:confirm header="Excluir serviço"
+									message="Tem certeza que deseja excluir o serviço selecionado ?"
+									icon="ui-icon-trash" />
+							</p:commandButton>
 						</p:column>
 
 					</p:dataTable>
@@ -88,7 +103,9 @@
 								<p:outputLabel value="Descrição" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText value="#{servicoBean.servicoSelecionado.descricao}" />
+								<p:inputText value="#{servicoBean.servicoSelecionado.descricao}"
+									required="true"
+									requiredMessage="Descrição é um campo obrigatório" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -106,12 +123,19 @@
 					</p:panelGrid>
 
 					<div class="container-action">
-						<p:commandButton value="Limpar Formulário"
-							style="width:200px;height:50px;" update="@form" process="@this"
-							actionListener="#{servicoBean.reset}" />
+						<p:commandButton icon="ui-icon-trash" update="@form"
+							value="Excluir"
+							action="#{servicoBean.excluir(servicoBean.servicoSelecionado)}">
+							<p:confirm header="Excluir serviço"
+								message="Tem certeza que deseja excluir o serviço selecionado ?"
+								icon="ui-icon-trash" />
+						</p:commandButton>
+
+						<p:commandButton value="Limpar Formulário" update="@form"
+							process="@this" actionListener="#{servicoBean.reset}" />
 
 						<p:commandButton action="#{servicoBean.salvar}" update="@form"
-							value="Salvar alterações" style="width:200px;height:50px;" />
+							value="Salvar alterações" />
 					</div>
 
 				</p:tab>

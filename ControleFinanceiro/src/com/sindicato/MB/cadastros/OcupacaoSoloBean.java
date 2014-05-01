@@ -11,28 +11,28 @@ import javax.persistence.EntityManager;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.EntityManagerFactorySingleton;
-import com.sindicato.dao.ServicoDAO;
-import com.sindicato.dao.impl.ServicoDAOImpl;
-import com.sindicato.entity.Servico;
+import com.sindicato.dao.TipoOcupacaoSoloDAO;
+import com.sindicato.dao.impl.TipoOcupacaoSoloDAOImpl;
+import com.sindicato.entity.TipoOcupacaoSolo;
 
 @ManagedBean
 @ViewScoped
-public class ServicoBean implements Serializable {
+public class OcupacaoSoloBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private EntityManager em;
-	private ServicoDAO servicoDAO;
+	private TipoOcupacaoSoloDAO ocupacaoDAO;
 
-	private Servico servicoSelecionado;
-	private List<Servico> servicos;
+	private TipoOcupacaoSolo ocupacaoSelecionado;
+	private List<TipoOcupacaoSolo> ocupacoes;
 
 	private int indexTab;
 
 	@PostConstruct
 	public void init() {
 		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-		servicoDAO = new ServicoDAOImpl(em);
+		ocupacaoDAO = new TipoOcupacaoSoloDAOImpl(em);
 	}
 
 	public void alterTab(int newTab) {
@@ -40,24 +40,25 @@ public class ServicoBean implements Serializable {
 	}
 
 	public void reset() {
-		servicoSelecionado = new Servico();
+		ocupacaoSelecionado = new TipoOcupacaoSolo();
 	}
+
 	public void novo() {
 		this.reset();
 		alterTab(1);
 	}
 
-	public void excluir(Servico servico) {
+	public void excluir(TipoOcupacaoSolo ocupacao) {
 		try {
-			if (servico.getId() == 0) {
+			if (ocupacao.getId() == 0) {
 				return;
 			}
 
-			servicoDAO.removeById(servico.getId());
+			ocupacaoDAO.removeById(ocupacao.getId());
 			this.reset();
 			alterTab(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Servico excluído com sucesso");
+					"Sucesso", "Tipo de ocupação de solo excluído com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
@@ -67,30 +68,32 @@ public class ServicoBean implements Serializable {
 
 	public void salvar() {
 		try {
-			if (servicoSelecionado.getId() == 0) {
-				servicoDAO.insert(servicoSelecionado);
+			if (ocupacaoSelecionado.getId() == 0) {
+				ocupacaoDAO.insert(ocupacaoSelecionado);
 			} else {
-				servicoDAO.update(servicoSelecionado);
+				ocupacaoDAO.update(ocupacaoSelecionado);
 			}
 			this.reset();
 			alterTab(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Servico salvo com sucesso");
+					"Sucesso", "Tipo de ocupação de solo salvo com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+					"Erro", "Contate o administrador do sistema");
 		}
 	}
 
-	public Servico getServicoSelecionado() {
-		if (servicoSelecionado == null) {
-			servicoSelecionado = new Servico();
+	public TipoOcupacaoSolo getOcupacaoSelecionado() {
+		if (ocupacaoSelecionado == null) {
+			ocupacaoSelecionado = new TipoOcupacaoSolo();
 		}
-		return servicoSelecionado;
+		return ocupacaoSelecionado;
 	}
 
-	public List<Servico> getServicos() {
-		servicos = servicoDAO.getAll();
-		return servicos;
+	public List<TipoOcupacaoSolo> getOcupacoes() {
+		ocupacoes = ocupacaoDAO.getAll();
+		return ocupacoes;
 	}
 
 	public int getIndexTab() {
@@ -101,19 +104,12 @@ public class ServicoBean implements Serializable {
 		this.indexTab = indexTab;
 	}
 
-	public void setservicoSelecionado(Servico servicoSelecionado) {
-		this.servicoSelecionado = servicoSelecionado;
+	public void setOcupacaoSelecionado(TipoOcupacaoSolo ocupacaoSelecionado) {
+		this.ocupacaoSelecionado = ocupacaoSelecionado;
 	}
 
-	public void setServicoSelecionado(Servico servicoSelecionado) {
-		this.servicoSelecionado = servicoSelecionado;
+	public void setOcupacoes(List<TipoOcupacaoSolo> ocupacoes) {
+		this.ocupacoes = ocupacoes;
 	}
-
-	public void setServicos(List<Servico> servicos) {
-		this.servicos = servicos;
-	}
-
-
-
 
 }

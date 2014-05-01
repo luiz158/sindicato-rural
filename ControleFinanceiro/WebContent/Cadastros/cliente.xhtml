@@ -36,6 +36,11 @@
 							<p:outputLabel value="#{cli.id}" />
 						</p:column>
 
+						<p:column headerText="CPF" sortBy="cpf"
+							filterBy="cpf" width="120">
+							<p:outputLabel value="#{cli.cpf}" />
+						</p:column>
+
 						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
 							<p:outputLabel value="#{cli.nome}" />
 						</p:column>
@@ -43,13 +48,6 @@
 						<p:column headerText="Telefone" sortBy="telefone"
 							filterBy="telefone" width="120">
 							<p:outputLabel value="#{cli.telefone}" />
-						</p:column>
-
-						<p:column headerText="Data cadastro" sortBy="dataCadastro"
-							filterBy="dataCadastro" width="120">
-							<p:outputLabel value="#{cli.dataCadastro.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</p:outputLabel>
 						</p:column>
 
 						<p:column headerText="É sócio?" sortBy="socio" filterBy="socio"

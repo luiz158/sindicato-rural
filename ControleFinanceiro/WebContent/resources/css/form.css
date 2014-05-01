@@ -26,5 +26,16 @@
 }
 .container-action .ui-button{
 	margin: 20px;
+	height: 50px;
+	width: 200px;
+}
+
+.container-action-novo{
+	text-align: left;
+}
+.container-action-novo .ui-button{
+	margin: 20px;
+	height: 40px;
+	width: 150px;
 }
 
