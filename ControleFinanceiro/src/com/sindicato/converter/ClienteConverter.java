@@ -20,7 +20,7 @@ public class ClienteConverter implements Converter {
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String id) {
 		Cliente cliente = null;
-		if (id.isEmpty()) {
+		if (id.isEmpty() || id.equals("Selecione o cliente...")) {
 			return cliente;
 		}
 		try {

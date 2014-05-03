@@ -123,7 +123,11 @@ public class Recebimento {
 		}
 		
 		Recebimento o = (Recebimento) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.valor.compareTo(this.valor) == 0
+				&& o.dataLiquidacao.compareTo(this.dataLiquidacao) == 0
+				&& o.debito.getId() == debito.getId()
+				&& o.tipoRecebimento.equals(tipoRecebimento)){
 			return true;
 		}
 		return false;

@@ -59,7 +59,10 @@ public class Menu {
 		}
 		
 		Menu o = (Menu) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.descricao.equals(descricao)
+				&& o.menuPai == menuPai
+				&& o.url.equals(url)){
 			return true;
 		}
 		return false;

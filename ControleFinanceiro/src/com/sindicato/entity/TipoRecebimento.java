@@ -43,7 +43,8 @@ public class TipoRecebimento {
 		}
 		
 		TipoRecebimento o = (TipoRecebimento) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.descricao.equals(descricao)){
 			return true;
 		}
 		return false;

@@ -63,7 +63,10 @@ public class InformacaoSocio {
 		}
 		
 		InformacaoSocio o = (InformacaoSocio) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.socio == this.socio
+				&& o.cliente.equals(this.cliente)
+				&& o.dataEvento.compareTo(this.dataEvento) == 0){
 			return true;
 		}
 		return false;

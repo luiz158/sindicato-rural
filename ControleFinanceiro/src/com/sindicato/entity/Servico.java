@@ -64,7 +64,11 @@ public class Servico {
 		}
 		
 		Servico o = (Servico) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.mensalidade == mensalidade
+				&& o.retencao == retencao
+				&& o.descricao.equals(descricao)
+				&& o.quantosMesesVale == quantosMesesVale){
 			return true;
 		}
 		return false;

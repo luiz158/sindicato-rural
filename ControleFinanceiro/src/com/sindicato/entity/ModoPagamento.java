@@ -42,7 +42,8 @@ public class ModoPagamento {
 		}
 		
 		ModoPagamento o = (ModoPagamento) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.descricao.equals(this.descricao)){
 			return true;
 		}
 		return false;

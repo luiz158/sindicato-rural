@@ -116,7 +116,11 @@ public class Debito {
 		}
 		
 		Debito o = (Debito) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.dataBase.compareTo(this.dataBase) == 0
+				&& o.status.equals(this.status)
+				&& o.cliente.equals(this.cliente)
+				&& o.getTotalDebitos().compareTo(this.getTotalDebitos()) == 0){
 			return true;
 		}
 		return false;

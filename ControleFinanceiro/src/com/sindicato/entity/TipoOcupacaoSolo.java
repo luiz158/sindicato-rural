@@ -47,7 +47,8 @@ public class TipoOcupacaoSolo implements Serializable {
 		}
 		
 		TipoOcupacaoSolo o = (TipoOcupacaoSolo) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.descricao.equals(descricao)){
 			return true;
 		}
 		return false;

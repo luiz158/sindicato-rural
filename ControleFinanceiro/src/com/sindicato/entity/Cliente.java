@@ -282,7 +282,9 @@ public class Cliente {
 		}
 
 		Cliente o = (Cliente) obj;
-		if (o.hashCode() == this.hashCode()) {
+		if (o.hashCode() == this.hashCode() 
+				&& o.getNome().equals(this.nome)
+				&& o.getCpf().equals(this.cpf)) {
 			return true;
 		}
 		return false;

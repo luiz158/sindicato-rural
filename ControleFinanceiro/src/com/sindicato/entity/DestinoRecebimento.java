@@ -42,7 +42,8 @@ public class DestinoRecebimento {
 		}
 		
 		DestinoRecebimento o = (DestinoRecebimento) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.descricao.equals(this.descricao)){
 			return true;
 		}
 		return false;

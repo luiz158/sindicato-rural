@@ -83,7 +83,10 @@ public class Usuario {
 		}
 		
 		Usuario o = (Usuario) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.email.equals(email)
+				&& o.nome.equals(nome)
+				&& o.senha.equals(senha)){
 			return true;
 		}
 		return false;

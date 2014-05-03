@@ -114,7 +114,7 @@ function data(v) {
 }
 
 function moeda(v) {
-	v = v.replace(/\D/g, ""); // permite digitar apenas numero
+	v = v.replace(/[+-]?\d+/g, ""); // permite digitar apenas numero
 	v = v.replace(/(\d{1})(\d{15})$/, "$1.$2"); // coloca ponto antes dos
 												// ultimos digitos
 	v = v.replace(/(\d{1})(\d{11})$/, "$1.$2"); // coloca ponto antes dos

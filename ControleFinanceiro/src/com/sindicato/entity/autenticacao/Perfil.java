@@ -57,7 +57,9 @@ public class Perfil {
 		}
 		
 		Perfil o = (Perfil) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.descricao.equals(descricao)
+				&& o.getMenus().size() == menus.size()){
 			return true;
 		}
 		return false;

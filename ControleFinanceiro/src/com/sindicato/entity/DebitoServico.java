@@ -78,7 +78,10 @@ public class DebitoServico {
 		}
 		
 		DebitoServico o = (DebitoServico) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.debito.equals(this.debito)
+				&& o.servico.equals(this.servico)
+				&& o.valor.compareTo(this.valor) == 0){
 			return true;
 		}
 		return false;

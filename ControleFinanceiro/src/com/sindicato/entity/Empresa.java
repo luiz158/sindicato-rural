@@ -137,7 +137,8 @@ public class Empresa {
 		}
 		
 		Empresa o = (Empresa) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.cnpj.equals(this.cnpj)){
 			return true;
 		}
 		return false;

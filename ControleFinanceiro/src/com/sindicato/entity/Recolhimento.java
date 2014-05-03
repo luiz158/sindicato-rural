@@ -78,7 +78,11 @@ public class Recolhimento {
 		}
 		
 		Recolhimento o = (Recolhimento) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.data.compareTo(data) == 0
+				&& o.modoPagamento.equals(modoPagamento)
+				&& o.valor.compareTo(valor) == 0
+				&& o.servico.getId() == servico.getId()){
 			return true;
 		}
 		return false;

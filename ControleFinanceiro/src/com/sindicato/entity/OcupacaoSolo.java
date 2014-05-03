@@ -52,7 +52,9 @@ public class OcupacaoSolo {
 		}
 		
 		OcupacaoSolo o = (OcupacaoSolo) obj;
-		if(o.hashCode() == this.hashCode()){
+		if(o.hashCode() == this.hashCode()
+				&& o.areaOcupada.equals(areaOcupada)
+				&& o.tipoOcupacaoSolo.equals(this.tipoOcupacaoSolo)){
 			return true;
 		}
 		return false;
