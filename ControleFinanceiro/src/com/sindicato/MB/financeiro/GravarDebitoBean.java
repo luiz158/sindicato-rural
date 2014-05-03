@@ -80,9 +80,8 @@ public class GravarDebitoBean implements Serializable {
 						"Sucesso", "Nota de cobrança criada com sucesso");
 			} else {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
-						"Erro", result.getMessage());
+						"Atenção", result.getMessage());
 			}
-
 		} catch (Exception e) {
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
 					"Erro",

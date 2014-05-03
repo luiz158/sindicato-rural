@@ -106,7 +106,7 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 	@Override
 	public ResultOperation gerarNotaDeCobranca(Debito debito) {
 		debito.setDataEmissaoNotaCobranca(Calendar.getInstance());
-		ResultOperation result = this.alterarStatusDoDebitoPara(debito, StatusDebitoEnum.NOTAFISCALGERADA);
+		ResultOperation result = this.alterarStatusDoDebitoPara(debito, StatusDebitoEnum.NOTACOBRANCAGERADA);
 		if(result.isSuccess()){
 			result.setMessage("Nota de cobrança gerada com sucesso.");
 		}else{
@@ -149,9 +149,5 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 		}
 		return result;
 	}
-
-	
-
-	
 
 }

@@ -159,7 +159,7 @@ public class TestFinanceiro {
 		}
 		
 		Assert.assertTrue(result.isSuccess());
-		Assert.assertEquals(em.find(Debito.class, debito.getId()).getStatus(), StatusDebitoEnum.NOTAFISCALGERADA);
+		Assert.assertEquals(em.find(Debito.class, debito.getId()).getStatus(), StatusDebitoEnum.NOTACOBRANCAGERADA);
 		Assert.assertNotNull(em.find(Debito.class, debito.getId()).getDataEmissaoNotaCobranca());
 		
 	}

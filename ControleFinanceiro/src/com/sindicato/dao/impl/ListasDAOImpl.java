@@ -55,7 +55,7 @@ public class ListasDAOImpl implements ListasDAO {
 		try {
 			String strQuery = "select d from Debito d where d.status = :status";
 			TypedQuery<Debito> query = em.createQuery(strQuery, Debito.class);
-			query.setParameter("status", StatusDebitoEnum.NOTAFISCALGERADA);
+			query.setParameter("status", StatusDebitoEnum.NOTACOBRANCAGERADA);
 			return query.getResultList();
 		} catch (NoResultException e) {
 			return null;
