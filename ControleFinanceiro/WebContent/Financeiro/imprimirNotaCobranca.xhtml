@@ -10,53 +10,59 @@
 	<h:head>
 		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
 		<h:outputStylesheet name="login.css" library="css"></h:outputStylesheet>
+		<style>
+			.header-nota{
+				width: 100%;
+				height: 120px;
+				border-bottom: 2px solid black;
+				position: relative;
+				top:0;
+			}
+			.header-nota .cabecalho{
+				position:absolute;
+				top:0;
+				font-size: 30px;
+				letter-spacing:16px;
+				font-weight: bold;
+			}
+			.header-nota .infsindicato{
+				position:absolute;
+				top:50px;
+			}
+		</style>
 	</h:head>
 	<h:body>
-		<div id="main-wrapper"
-			style="width: 600px; height: 450px; position: relative;">
-			<div id="logo" style="position: absolute; left: 130px;">
-				<h:graphicImage name="LogoSindRCotia.jpg" library="imagens"></h:graphicImage>
+		<div style="width: 900px;margin: auto;">
+			<div class="header-nota">
+				<h:graphicImage name="Logo_nota.jpg" library="imagens"></h:graphicImage>
+				<font class="cabecalho">Sindicato Rural de Cotia</font> <font
+					class="infsindicato"> Carta Sindical:
+					#{loginBean.usuarioLogado.empresa.cartaSindical} - CNPJ nº:
+					#{loginBean.usuarioLogado.empresa.cnpj} <br />
+					#{loginBean.usuarioLogado.empresa.endereco} -
+					#{loginBean.usuarioLogado.empresa.bairro} - CEP
+					#{loginBean.usuarioLogado.empresa.cep} -
+					#{loginBean.usuarioLogado.empresa.cidade}/#{loginBean.usuarioLogado.empresa.estado}<br />
+					Telefones: #{loginBean.usuarioLogado.empresa.telefone} /
+					#{loginBean.usuarioLogado.empresa.telefone2} - Fax:
+					#{loginBean.usuarioLogado.empresa.fax} - Email:
+					#{loginBean.usuarioLogado.empresa.email}
+				</font>
 			</div>
-			<center>
-				<div id="content"
-					style="position: absolute; top: 220px; left: 180px;">
-					<h:form>
-						<p:growl showDetail="true" life="15000" />
-						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
-							<f:facet name="start">
-								<p:graphicImage alt="carregando" library="imagens"
-									name="loading.gif"
-									style="position:fixed;right:10%;top:80%;z-index:100000;" />
-							</f:facet>
-
-							<f:facet name="complete">
-								<h:outputText value="" />
-							</f:facet>
-						</p:ajaxStatus>
-						<p:panelGrid width="300" columns="2">
-							<f:facet name="header">
-								<p:row>
-									<p:column colspan="2">Login</p:column>
-								</p:row>
-							</f:facet>
-							<h:outputText value="E-mail:"></h:outputText>
-							<p:inputText required="true"
-								requiredMessage="Nome de usuário é um campo obrigatório"
-								size="20" value="#{loginBean.usuario}"></p:inputText>
-							<h:outputText value="Senha:"></h:outputText>
-							<p:password id="senha" value="#{loginBean.senha}" />
-						</p:panelGrid>
-						<br />
-
-						<p:commandButton value="Entrar" styleClass="panel_button_center"
-							action="#{loginBean.autenticar}" update="@form" />
-
-						<p align="left">
-							<h:outputLink value="#">Esqueceu sua senha?</h:outputLink>
-						</p>
-					</h:form>
+			<div class="content-nota">
+				<div class="header-content-nota">
+					<font>
+						<p:outputLabel value="#{notaCobrancaBean.debitoSelecionado.cliente.id}" />
+						<p:outputLabel value="#{notaCobrancaBean.debitoSelecionado.cliente.nome}" />
+						Sócio: 
+							<p:outputLabel value="Sim" rendered="#{notaCobrancaBean.debitoSelecionado.cliente.socio}" />
+							<p:outputLabel value="Não" rendered="#{!notaCobrancaBean.debitoSelecionado.cliente.socio}" />
+					</font>
 				</div>
-			</center>
+				<div class="body-content-nota"></div>
+				<div class="footer-content-nota"></div>
+			</div>
+			<div class="footer-nota"></div>
 		</div>
 	</h:body>
 </f:view>
