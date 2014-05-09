@@ -97,8 +97,12 @@
 			</p:fieldset>
 
 			<div class="container-action">
-				<p:commandButton action="#{notaCobrancaBean.salvar}" update="@form"
-					icon="ui-icon-print" value="Imprimir nota de cobrança"
+				<p:commandLink action="#{notaCobrancaBean.imprimirNota}" update="@form"
+					icon="ui-icon-print" value="Imprimir nota de cobrança" ajax="false"
+					rendered="#{notaCobrancaBean.debitoSelecionado != null}" target="_blank" />
+			
+				<p:commandButton action="#{notaCobrancaBean.imprimirNota}" update="@form"
+					icon="ui-icon-print" value="Imprimir nota de cobrança" ajax="false"
 					rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
 			</div>
 
