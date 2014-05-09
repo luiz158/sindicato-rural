@@ -52,11 +52,11 @@
 			<div class="content-nota">
 				<div class="header-content-nota">
 					<font>
-						<p:outputLabel value="#{notaCobrancaBean.debitoSelecionado.cliente.id}" />
-						<p:outputLabel value="#{notaCobrancaBean.debitoSelecionado.cliente.nome}" />
+						<p:outputLabel value="#{flash.keep.debitoImpressao.cliente.id}" />
+						<p:outputLabel value="#{flash.keep.debitoImpressao.cliente.nome}" />
 						Sócio: 
-							<p:outputLabel value="Sim" rendered="#{notaCobrancaBean.debitoSelecionado.cliente.socio}" />
-							<p:outputLabel value="Não" rendered="#{!notaCobrancaBean.debitoSelecionado.cliente.socio}" />
+							<p:outputLabel value="Sim" rendered="#{flash.keep.debitoImpressao.cliente.socio}" />
+							<p:outputLabel value="Não" rendered="#{!flash.keep.debitoImpressao.cliente.socio}" />
 					</font>
 				</div>
 				<div class="body-content-nota"></div>

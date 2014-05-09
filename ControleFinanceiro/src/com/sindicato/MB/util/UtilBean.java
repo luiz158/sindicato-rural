@@ -38,4 +38,38 @@ public class UtilBean {
 		return loginBean.getUsuarioLogado();
 	}
 
+	public static void addValorSessaoFlash(String name, Object value){
+		ExternalContext externalContext = UtilBean.getFacesContext().getExternalContext();
+		externalContext.getFlash().put(name, value);
+		externalContext.getFlash().setKeepMessages(true);
+	}
+
+	public static Object getValorSessaoFlash(String name){
+		ExternalContext externalContext = UtilBean.getFacesContext().getExternalContext();
+		return externalContext.getFlash().get(name);
+	}
+	
+	public static void addValorSessao(String name, Object value){
+		UtilBean.getFacesContext().getExternalContext().getSessionMap().put(name, value); 
+	}
+
+	public static Object getValorSessao(String name){
+		ExternalContext ec = UtilBean.getFacesContext().getExternalContext();
+		if (ec.getSessionMap().containsKey(name)){  
+            Object object = ec.getSessionMap().get(name);  
+            return object;
+        }
+		return null;
+	}
+	
+	public static Object getERemoveValorSessao(String name){
+		ExternalContext ec = UtilBean.getFacesContext().getExternalContext();
+		if (ec.getSessionMap().containsKey(name)){  
+            Object object = ec.getSessionMap().get(name);  
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("meuObjetoId");
+            return object;
+        }
+		return null;
+	}
+	
 }

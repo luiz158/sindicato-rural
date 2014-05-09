@@ -68,7 +68,8 @@
 			<p:fieldset legend="Informações da nota" style="margin-top:15px;"
 				rendered="#{notaCobrancaBean.debitoSelecionado != null}">
 
-				<p:dataTable var="debito" id="servicos" style="margin-top:15px;margin-bottom:15px;"
+				<p:dataTable var="debito" id="servicos"
+					style="margin-top:15px;margin-bottom:15px;"
 					emptyMessage="Nenhum serviço cadastrado"
 					value="#{notaCobrancaBean.debitoSelecionado.debitoServicos}">
 
@@ -97,14 +98,17 @@
 			</p:fieldset>
 
 			<div class="container-action">
-				<p:commandLink action="#{notaCobrancaBean.imprimirNota}" update="@form"
-					icon="ui-icon-print" value="Imprimir nota de cobrança" ajax="false"
-					rendered="#{notaCobrancaBean.debitoSelecionado != null}" target="_blank" />
-			
-				<p:commandButton action="#{notaCobrancaBean.imprimirNota}" update="@form"
-					icon="ui-icon-print" value="Imprimir nota de cobrança" ajax="false"
+				<p:commandButton action="#{notaCobrancaBean.gerarNotaDeCobranca}"
+					update="@form" icon="ui-icon-print"
+					value="Imprimir nota de cobrança" oncomplete="PF('dlg').show();"
 					rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
 			</div>
+
+			<p:dialog id="dialog" header="Imprimir nota de cobrança" widgetVar="dlg"
+				dynamic="true" modal="true" width="500" height="300">
+				<h:outputText value="#{impressaoNota.debito.cliente.nome}" />
+			</p:dialog>
+
 
 		</h:form>
 
