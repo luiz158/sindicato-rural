@@ -104,12 +104,12 @@
 					rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
 			</div>
 
-			<p:dialog id="dialog" header="Imprimir nota de cobrança" widgetVar="dlg"
-				dynamic="true" modal="true" width="500" height="300">
-				<h:outputText value="#{impressaoNota.debito.cliente.nome}" />
+			<p:dialog id="dialog" header="Imprimir nota de cobrança" widgetVar="dlg" showEffect="fade" 
+				modal="true" width="950" height="300">
+				<!-- <ui:include src="imprimirNotaCobranca.xhtml"></ui:include> -->
 			</p:dialog>
 
-
+<ui:include src="imprimirNotaCobranca.xhtml"></ui:include>
 		</h:form>
 
 	</ui:define>

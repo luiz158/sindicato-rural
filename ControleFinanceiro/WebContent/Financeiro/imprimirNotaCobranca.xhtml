@@ -6,33 +6,55 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
 
-<f:view>
-	<h:head>
-		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
-		<h:outputStylesheet name="login.css" library="css"></h:outputStylesheet>
-		<style>
-			.header-nota{
-				width: 100%;
-				height: 120px;
-				border-bottom: 2px solid black;
-				position: relative;
-				top:0;
-			}
-			.header-nota .cabecalho{
-				position:absolute;
-				top:0;
-				font-size: 30px;
-				letter-spacing:16px;
-				font-weight: bold;
-			}
-			.header-nota .infsindicato{
-				position:absolute;
-				top:50px;
-			}
-		</style>
-	</h:head>
-	<h:body>
-		<div style="width: 900px;margin: auto;">
+<h:body>
+	<ui:composition>
+		<h:outputStylesheet name="layout.css" library="css"></h:outputStylesheet>
+		
+		<style type="text/css" media="print">
+.header-nota {
+	width: 100%;
+	height: 120px;
+	border-bottom: 2px solid black;
+	position: relative;
+	top: 0;
+}
+
+.header-nota .cabecalho {
+	position: absolute;
+	top: 0;
+	font-size: 30px;
+	letter-spacing: 14px;
+	font-weight: bold;
+}
+
+.header-nota .infsindicato {
+	position: absolute;
+	top: 50px;
+}
+</style>
+<style>
+.header-nota {
+	width: 100%;
+	height: 120px;
+	border-bottom: 2px solid black;
+	position: relative;
+	top: 0;
+}
+
+.header-nota .cabecalho {
+	position: absolute;
+	top: 0;
+	font-size: 30px;
+	letter-spacing: 14px;
+	font-weight: bold;
+}
+
+.header-nota .infsindicato {
+	position: absolute;
+	top: 50px;
+}
+</style>
+		<p:outputPanel style="width: 900px; margin: auto;" id="panelPrint">
 			<div class="header-nota">
 				<h:graphicImage name="Logo_nota.jpg" library="imagens"></h:graphicImage>
 				<font class="cabecalho">Sindicato Rural de Cotia</font> <font
@@ -51,20 +73,24 @@
 			</div>
 			<div class="content-nota">
 				<div class="header-content-nota">
-					<font>
-						<p:outputLabel value="#{flash.keep.debitoImpressao.cliente.id}" />
-						<p:outputLabel value="#{flash.keep.debitoImpressao.cliente.nome}" />
-						Sócio: 
-							<p:outputLabel value="Sim" rendered="#{flash.keep.debitoImpressao.cliente.socio}" />
-							<p:outputLabel value="Não" rendered="#{!flash.keep.debitoImpressao.cliente.socio}" />
+					<font> <p:outputLabel
+							value="#{impressaoNota.debito.cliente.id}" /> <p:outputLabel
+							value="#{impressaoNota.debito.cliente.nome}" /> Sócio: <p:outputLabel
+							value="Sim" rendered="#{impressaoNota.debito.cliente.socio}" />
+						<p:outputLabel value="Não"
+							rendered="#{impressaoNota.debito.cliente.socio}" />
 					</font>
 				</div>
 				<div class="body-content-nota"></div>
 				<div class="footer-content-nota"></div>
 			</div>
 			<div class="footer-nota"></div>
-		</div>
-	</h:body>
-</f:view>
+		</p:outputPanel>
+		<p:commandButton value="Imprimir" icon="ui-icon-print" iconPos="left">
+			<p:printer target="panelPrint" />
+		</p:commandButton>
+
+	</ui:composition>
+</h:body>
 
 </html>
