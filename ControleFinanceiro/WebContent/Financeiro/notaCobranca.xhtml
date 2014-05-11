@@ -100,16 +100,10 @@
 			<div class="container-action">
 				<p:commandButton action="#{notaCobrancaBean.gerarNotaDeCobranca}"
 					update="@form" icon="ui-icon-print"
-					value="Imprimir nota de cobrança" oncomplete="PF('dlg').show();"
+					value="Imprimir nota de cobrança" ajax="false"
 					rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
 			</div>
 
-			<p:dialog id="dialog" header="Imprimir nota de cobrança" widgetVar="dlg" showEffect="fade" 
-				modal="true" width="950" height="300">
-				<!-- <ui:include src="imprimirNotaCobranca.xhtml"></ui:include> -->
-			</p:dialog>
-
-<ui:include src="imprimirNotaCobranca.xhtml"></ui:include>
 		</h:form>
 
 	</ui:define>

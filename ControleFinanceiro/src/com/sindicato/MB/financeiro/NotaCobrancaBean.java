@@ -1,16 +1,27 @@
 package com.sindicato.MB.financeiro;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.FinanceiroDAO;
@@ -20,6 +31,7 @@ import com.sindicato.dao.impl.ListasDAOImpl;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.ResultOperation;
 
 @ManagedBean
@@ -28,6 +40,8 @@ public class NotaCobrancaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
+	
 	private EntityManager em;
 	private FinanceiroDAO financeiroDAO;
 	private ListasDAO listasDAO;
@@ -58,7 +72,7 @@ public class NotaCobrancaBean implements Serializable {
 	}
 
 
-	public void gerarNotaDeCobranca() {
+	public void gerarNotaDeCobranca() throws JRException {
 		ResultOperation result;
 		try {
 			UtilBean.addValorSessao("debitoImpressao", debitoSelecionado);
@@ -66,6 +80,7 @@ public class NotaCobrancaBean implements Serializable {
 			//result = financeiroDAO.gerarNotaDeCobranca(debitoSelecionado);
 			//if (result.isSuccess()) {
 			if (true) {
+				
 				this.reset();
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", "Nota de cobrança gerada com sucesso");
@@ -81,7 +96,63 @@ public class NotaCobrancaBean implements Serializable {
 			e.printStackTrace();
 		}
 	}
+	
+	@SuppressWarnings("unused")
+	private void imprimirNotaCobranca() throws JRException, IOException{
+		GeradorReports gerador = preparaValoresReport();
+		
+		FacesContext context = UtilBean.getFacesContext();
 
+		HttpServletResponse httpServletResponse = (HttpServletResponse) context
+				.getExternalContext().getResponse();
+
+		httpServletResponse.setContentType("application/pdf");
+
+		ServletOutputStream servletOutputStream = httpServletResponse
+				.getOutputStream();
+		
+		JasperExportManager.exportReportToPdfStream(gerador.getJasperPrint(),
+				servletOutputStream);
+		
+		servletOutputStream.flush();  
+        servletOutputStream.close();
+		
+		context.responseComplete();
+	}
+	
+	private GeradorReports preparaValoresReport() throws JRException{
+		StringBuilder telefones = new StringBuilder();
+		telefones.append(usuarioLogado.getEmpresa().getTelefone());
+		telefones.append(" / ");
+		telefones.append(usuarioLogado.getEmpresa().getTelefone2());
+		
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("cartaSindical", usuarioLogado.getEmpresa().getCartaSindical());
+		parameters.put("cnpj", usuarioLogado.getEmpresa().getCnpj());
+		parameters.put("endereco", this.getEnderecoCompletoUsuario(usuarioLogado));
+		parameters.put("telefones", telefones.toString());
+		parameters.put("fax", usuarioLogado.getEmpresa().getFax());
+		parameters.put("email", usuarioLogado.getEmpresa().getEmail());
+		
+		GeradorReports gerador = new GeradorReports("notaCobranca.jasper", parameters, new JRBeanCollectionDataSource(
+				debitoSelecionado.getDebitoServicos()));
+		return gerador;
+	}
+	
+	private String getEnderecoCompletoUsuario(Usuario usuario){
+		StringBuilder endereco = new StringBuilder();
+		endereco.append(usuario.getEmpresa().getEndereco());
+		endereco.append(" - ");
+		endereco.append(usuario.getEmpresa().getBairro());
+		endereco.append(" - CEP ");
+		endereco.append(usuario.getEmpresa().getCep());
+		endereco.append(" - ");
+		endereco.append(usuario.getEmpresa().getCidade());
+		endereco.append("/");
+		endereco.append(usuario.getEmpresa().getEstado());
+		return endereco.toString();
+	}
+	
 	public List<Cliente> getClientes() {
 		clientes = listasDAO
 				.getClientesComDebitosNoStatus(StatusDebitoEnum.DEBITOCRIADO);
