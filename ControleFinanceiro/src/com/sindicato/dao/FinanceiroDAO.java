@@ -16,4 +16,6 @@ public interface FinanceiroDAO{
 
 	ResultOperation registrarRecolhimentos(Debito debito);
 	
+	ResultOperation salvarAlteracaoNotaCobranca(Debito debito);
+	
 }

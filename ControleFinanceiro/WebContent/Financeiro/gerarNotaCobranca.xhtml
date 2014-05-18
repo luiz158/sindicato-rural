@@ -16,7 +16,7 @@
 			<p:menuitem value="Gerar nota de cobrança" url="#" />
 		</p:breadCrumb>
 
-		<h:form>
+		<h:form target="_blank">
 			<p:growl id="growl" showDetail="true" life="15000" />
 			<p:fieldset legend="Selecione o débito" style="margin-top:15px;">
 				<p:panelGrid styleClass="panelForm"
@@ -99,8 +99,8 @@
 
 			<div class="container-action">
 				<p:commandButton action="#{notaCobrancaBean.gerarNotaDeCobranca}"
-					update="@form" icon="ui-icon-print"
-					value="Imprimir nota de cobrança" ajax="false"
+					update="@form" icon="ui-icon-print" ajax="false" 
+					value="Imprimir nota de cobrança" onclick="location.replace('./gerarNotaCobranca.xhtml')"
 					rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
 			</div>
 

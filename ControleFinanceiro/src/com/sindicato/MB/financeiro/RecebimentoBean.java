@@ -3,7 +3,6 @@ package com.sindicato.MB.financeiro;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+import org.primefaces.component.commandbutton.CommandButton;
+
 import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.EntityManagerFactorySingleton;
@@ -28,8 +29,10 @@ import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.dao.impl.FinanceiroDAOImpl;
 import com.sindicato.dao.impl.ListasDAOImpl;
-import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
+import com.sindicato.entity.DebitoServico;
+import com.sindicato.entity.Recebimento;
+import com.sindicato.entity.Servico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.ResultOperation;
@@ -37,68 +40,62 @@ import com.sindicato.util.Extenso;
 
 @ManagedBean
 @ViewScoped
-public class NotaCobrancaBean implements Serializable {
+public class RecebimentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
-	
+
 	private EntityManager em;
-	private FinanceiroDAO financeiroDAO;
 	private ListasDAO listasDAO;
+	private FinanceiroDAO financeiroDAO;
 
-	private List<Cliente> clientes;
-	private List<Debito> debitos;
-	private Cliente clienteSelecionado;
+	private Recebimento recebimento;
+	
 	private Debito debitoSelecionado;
+	private List<Debito> debitos;
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	private int indexTab;
 
 	@PostConstruct
 	public void init() {
 		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-		financeiroDAO = new FinanceiroDAOImpl(em);
 		listasDAO = new ListasDAOImpl(em);
-
+		financeiroDAO = new FinanceiroDAOImpl(em);
 	}
 
-	public void selecionaCliente() {
-		debitos = listasDAO.getDebitosDoClienteNoStatus(clienteSelecionado,
-				StatusDebitoEnum.DEBITOCRIADO);
+	public void alterTab(int newTab) {
+		indexTab = newTab;
 	}
 
 	public void reset() {
 		debitoSelecionado = new Debito();
-		clienteSelecionado = new Cliente();
 	}
 
-
-	public void gerarNotaDeCobranca() throws JRException {
-		ResultOperation result;
-		try {
-			UtilBean.addValorSessao("debitoImpressao", debitoSelecionado);
-			
-			result = financeiroDAO.gerarNotaDeCobranca(debitoSelecionado);
-			if (result.isSuccess()) {
-			//if (true) {
-				this.imprimirNotaCobranca();
-				this.reset();
-				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-						"Sucesso", "Nota de cobrança gerada com sucesso");
-			} else {
-				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
-						"Atenção", result.getMessage());
-			}
-
-		} catch (Exception e) {
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
-					"Erro",
-					"Nota de cobrança não foi criada, contate o administrador");
-			e.printStackTrace();
-		}
+	public void salvarRecebimento(){
+		recebimento.setDebito(debitoSelecionado);
+		debitoSelecionado.getRecebimentos().add(recebimento);
+		recebimento = new Recebimento();
 	}
 	
-	private void imprimirNotaCobranca() throws JRException, IOException{
+	public void removerRecebimento(Recebimento recebimento){
+		debitoSelecionado.getRecebimentos().remove(recebimento);
+	}
+	
+	public void salvar() {
+		try {
+			ResultOperation result = financeiroDAO.registrarRecebimento(debitoSelecionado);
+			if(result.isSuccess()){
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", result.getMessage());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+					"Erro", "Contate o administrador do sistema");
+		}
+	}
+
+	public void imprimirNotaCobranca() throws JRException, IOException{
 		GeradorReports gerador = preparaValoresReport();
 		
 		FacesContext context = UtilBean.getFacesContext();
@@ -139,9 +136,9 @@ public class NotaCobrancaBean implements Serializable {
 		parameters.put("fax", usuarioLogado.getEmpresa().getFax());
 		parameters.put("email", usuarioLogado.getEmpresa().getEmail());
 
-		parameters.put("clienteId", clienteSelecionado.getId());
-		parameters.put("clienteNome", clienteSelecionado.getNome());
-		parameters.put("socio", (clienteSelecionado.isSocio()) ? "Sim" : "Não");
+		parameters.put("clienteId", debitoSelecionado.getCliente().getId());
+		parameters.put("clienteNome", debitoSelecionado.getCliente().getNome());
+		parameters.put("socio", (debitoSelecionado.getCliente().isSocio()) ? "Sim" : "Não");
 		parameters.put("valorPorExtenso", extenso.toString());
 		parameters.put("valorNota", debitoSelecionado.getTotalDebitos());
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
@@ -166,52 +163,62 @@ public class NotaCobrancaBean implements Serializable {
 		endereco.append(usuario.getEmpresa().getEstado());
 		return endereco.toString();
 	}
-	
-	public List<Cliente> getClientes() {
-		clientes = listasDAO
-				.getClientesComDebitosNoStatus(StatusDebitoEnum.DEBITOCRIADO);
-		return clientes;
-	}
-
-	public List<Debito> getDebitos() {
-		if (debitos == null) {
-			debitos = new ArrayList<Debito>();
-		}
-		return debitos;
-	}
-
-	public Cliente getClienteSelecionado() {
-		if (clienteSelecionado == null) {
-			clienteSelecionado = new Cliente();
-		}
-		return clienteSelecionado;
-	}
 
 	public Debito getDebitoSelecionado() {
-		/*
-		 * if(debitoSelecionado == null){ debitoSelecionado = new Debito(); }
-		 */
+		if(debitoSelecionado == null){
+			debitoSelecionado = new Debito();
+		}
 		return debitoSelecionado;
 	}
 
-	public SimpleDateFormat getSdf() {
-		return sdf;
+	public List<Debito> getDebitos() {
+		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.NOTACOBRANCAGERADA);
+		return debitos;
+	}
+ 
+	public int getIndexTab() {
+		return indexTab;
 	}
 
-	public void setClientes(List<Cliente> clientes) {
-		this.clientes = clientes;
+	public DebitoServico getDebitoServico() {
+		if(debitoServico == null){
+			debitoServico = new DebitoServico();
+		}
+		return debitoServico;
+	}
+
+	public List<Servico> getServicos() {
+		servicos = servicoDAO.getAll();
+		return servicos;
+	}
+
+
+	public CommandButton getBotaoImprimir() {
+		return botaoImprimir;
+	}
+
+	public void setBotaoImprimir(CommandButton botaoImprimir) {
+		this.botaoImprimir = botaoImprimir;
+	}
+
+	public void setServicos(List<Servico> servicos) {
+		this.servicos = servicos;
+	}
+
+	public void setDebitoServico(DebitoServico debitoServico) {
+		this.debitoServico = debitoServico;
+	}
+
+	public void setDebitoSelecionado(Debito debitoSelecionado) {
+		this.debitoSelecionado = debitoSelecionado;
 	}
 
 	public void setDebitos(List<Debito> debitos) {
 		this.debitos = debitos;
 	}
 
-	public void setClienteSelecionado(Cliente clienteSelecionado) {
-		this.clienteSelecionado = clienteSelecionado;
-	}
-
-	public void setDebitoSelecionado(Debito debitoSelecionado) {
-		this.debitoSelecionado = debitoSelecionado;
+	public void setIndexTab(int indexTab) {
+		this.indexTab = indexTab;
 	}
 
 }

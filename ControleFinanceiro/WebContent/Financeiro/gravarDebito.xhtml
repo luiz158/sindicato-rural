@@ -57,8 +57,9 @@
 								</p:commandLink>
 							</h:panelGroup>
 
-							<p:dialog id="modalDialog" header="Informações do cliente" widgetVar="dlg2"
-								modal="true" height="150" width="500" showEffect="fade" >
+							<p:dialog id="modalDialog" header="Informações do cliente"
+								widgetVar="dlg2" modal="true" height="150" width="500"
+								showEffect="fade">
 								<p:panelGrid style="width:100%;">
 									<p:row>
 										<p:column styleClass="colLabel">
@@ -133,7 +134,8 @@
 				</p:panelGrid>
 			</p:fieldset>
 
-			<p:fieldset style="margin-top:15px;" rendered="#{gravarDebitoBean.debito.cliente != null}" >
+			<p:fieldset style="margin-top:15px;"
+				rendered="#{gravarDebitoBean.debito.cliente != null}">
 				<p:commandButton id="effectsDialogButton" value="Adicionar serviço"
 					onclick="PF('dlg3').show();" type="button" icon="ui-icon-plus"
 					style="margin-bottom:15px;" />
@@ -188,7 +190,7 @@
 					</f:facet>
 					<f:facet name="footer">
 						<p:outputLabel value="Valor total de débitos:  " />
-						<p:outputLabel value="#{gravarDebitoBean.debito.totalDebitos}" >
+						<p:outputLabel value="#{gravarDebitoBean.debito.totalDebitos}">
 							<f:convertNumber locale="pt_BR" type="currency"
 								currencySymbol="R$ " />
 						</p:outputLabel>
@@ -206,7 +208,12 @@
 					<p:column headerText="" width="45">
 						<p:commandButton value="Excluir"
 							action="#{gravarDebitoBean.removerServico(debito)}"
-							update="servicos" />
+							update="servicos">
+							<p:confirm header="Excluir serviço"
+								message="Tem certeza que deseja excluir o serviço selecionado ?"
+								icon="ui-icon-trash" />
+						</p:commandButton>
+
 					</p:column>
 				</p:dataTable>
 
