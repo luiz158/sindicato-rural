@@ -176,49 +176,6 @@ public class RecebimentoBean implements Serializable {
 		return debitos;
 	}
  
-	public int getIndexTab() {
-		return indexTab;
-	}
 
-	public DebitoServico getDebitoServico() {
-		if(debitoServico == null){
-			debitoServico = new DebitoServico();
-		}
-		return debitoServico;
-	}
-
-	public List<Servico> getServicos() {
-		servicos = servicoDAO.getAll();
-		return servicos;
-	}
-
-
-	public CommandButton getBotaoImprimir() {
-		return botaoImprimir;
-	}
-
-	public void setBotaoImprimir(CommandButton botaoImprimir) {
-		this.botaoImprimir = botaoImprimir;
-	}
-
-	public void setServicos(List<Servico> servicos) {
-		this.servicos = servicos;
-	}
-
-	public void setDebitoServico(DebitoServico debitoServico) {
-		this.debitoServico = debitoServico;
-	}
-
-	public void setDebitoSelecionado(Debito debitoSelecionado) {
-		this.debitoSelecionado = debitoSelecionado;
-	}
-
-	public void setDebitos(List<Debito> debitos) {
-		this.debitos = debitos;
-	}
-
-	public void setIndexTab(int indexTab) {
-		this.indexTab = indexTab;
-	}
 
 }
