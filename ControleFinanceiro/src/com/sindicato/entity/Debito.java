@@ -72,6 +72,9 @@ public class Debito {
 		return debitoServicos;
 	}
 	public List<Recebimento> getRecebimentos() {
+		if(recebimentos == null){
+			recebimentos = new ArrayList<Recebimento>();
+		}
 		return recebimentos;
 	}
 	public Calendar getDataBase() {
