@@ -17,14 +17,16 @@ import com.sindicato.dao.impl.FinanceiroDAOImpl;
 import com.sindicato.dao.impl.ListasDAOImpl;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.DestinoRecebimento;
+import com.sindicato.entity.ModoPagamento;
 import com.sindicato.entity.Recebimento;
+import com.sindicato.entity.Recolhimento;
 import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.ResultOperation;
 
 @ManagedBean
 @ViewScoped
-public class RecebimentoBean implements Serializable {
+public class RecolhimentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,12 +34,9 @@ public class RecebimentoBean implements Serializable {
 	private ListasDAO listasDAO;
 	private FinanceiroDAO financeiroDAO;
 
-	private Recebimento recebimento;
-	
 	private Debito debitoSelecionado;
 	private List<Debito> debitos;
-	private List<DestinoRecebimento> destinos;
-	private List<TipoRecebimento> tiposRecebimento;
+	private List<ModoPagamento> tiposRecebimento;
 
 	private int indexTab;
 
@@ -90,7 +89,7 @@ public class RecebimentoBean implements Serializable {
 	}
 
 	public List<Debito> getDebitos() {
-		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.NOTACOBRANCAGERADA);
+		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.RECEBIDO);
 		return debitos;
 	}
 	public Recebimento getRecebimento() {

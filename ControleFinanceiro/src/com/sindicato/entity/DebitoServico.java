@@ -62,6 +62,9 @@ public class DebitoServico {
 		this.valor = valor;
 	}
 	public Recolhimento getRecolhimento() {
+		if(recolhimento == null){
+			recolhimento = new Recolhimento();
+		}
 		return recolhimento;
 	}
 	public void setRecolhimento(Recolhimento recolhimento) {
