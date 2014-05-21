@@ -106,9 +106,9 @@
 											<p:outputLabel value="Produtor rural desde" />
 										</p:column>
 										<p:column styleClass="colInput">
-											<p:calendar onkeyup="mascara(this,data)"
+											<p:calendar styleClass="date"
 												value="#{clienteBean.clienteSelecionado.produtorRuralDesde}"
-												pattern="dd/MM/yyyy" styleClass="date"
+												pattern="dd/MM/yyyy" 
 												converter="CalendarConverter" />
 
 										</p:column>
@@ -121,7 +121,6 @@
 										<p:column styleClass="colInput">
 											<p:calendar required="true"
 												requiredMessage="Data de nascimento é obrigatório"
-												onkeyup="mascara(this,data)"
 												value="#{clienteBean.clienteSelecionado.dataNascimento}"
 												pattern="dd/MM/yyyy" styleClass="date"
 												converter="CalendarConverter" />
@@ -135,7 +134,7 @@
 										<p:column styleClass="colInput">
 											<p:inputText value="#{clienteBean.clienteSelecionado.cpf}"
 												required="true" requiredMessage="CPF é obrigatório"
-												size="15" onkeyup="mascara(this,cpf)" />
+												size="15" styleClass="cpf" />
 										</p:column>
 									</p:row>
 									<p:row>
@@ -144,7 +143,7 @@
 										</p:column>
 										<p:column styleClass="colInput">
 											<p:inputText value="#{clienteBean.clienteSelecionado.rg}"
-												size="15" onkeyup="mascara(this,rg)" />
+												size="15" styleClass="rg" />
 										</p:column>
 									</p:row>
 									<p:row>
@@ -180,7 +179,7 @@
 										</p:column>
 										<p:column styleClass="colInput">
 											<p:inputText value="#{clienteBean.clienteSelecionado.cep}"
-												onkeyup="mascara(this,cep)" size="10" />
+												styleClass="cep" size="10" />
 										</p:column>
 									</p:row>
 									<p:row>
@@ -258,7 +257,7 @@
 										<p:column styleClass="colInput">
 											<p:inputText
 												value="#{clienteBean.clienteSelecionado.telefone}"
-												onkeyup="mascara(this,telefone)" />
+												styleClass="telefone" />
 										</p:column>
 									</p:row>
 									<p:row>
@@ -289,7 +288,7 @@
 											<p:column styleClass="colInput">
 												<p:inputText
 													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cnpj}"
-													onkeyup="mascara(this,cnpj)" required="true"
+													styleClass="cnpj" required="true"
 													requiredMessage="CNPJ é obrigatório" />
 											</p:column>
 										</p:row>
@@ -298,7 +297,7 @@
 												<p:outputLabel value="Inicio de atividade" />
 											</p:column>
 											<p:column styleClass="colInput">
-												<p:calendar onkeyup="mascara(this,data)"
+												<p:calendar
 													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.dataInicioAtividade}"
 													pattern="dd/MM/yyyy" styleClass="date"
 													converter="CalendarConverter" />
@@ -434,8 +433,7 @@
 											</p:column>
 											<p:column styleClass="colInput">
 												<p:inputText
-													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}"
-													onkeyup="mascara(this,cep)" size="10" />
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}" size="10" />
 											</p:column>
 										</p:row>
 										<p:row>
