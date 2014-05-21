@@ -412,9 +412,8 @@
 													<p:outputLabel value="Validade da Insc. estadual" />
 												</p:column>
 												<p:column styleClass="colInput">
-													<p:calendar onkeyup="mascara(this,data)"
+													<p:calendar pattern="dd/MM/yyyy" styleClass="date" 
 														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
-														pattern="dd/MM/yyyy" styleClass="date"
 														converter="CalendarConverter" />
 												</p:column>
 											</p:row>
