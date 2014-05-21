@@ -9,6 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManager;
 
+import org.primefaces.component.password.Password;
+
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.ListasDAO;
@@ -38,7 +40,9 @@ public class UsuarioBean implements Serializable {
 	private int indexTab;
 
 	private String senhaNova;
-
+	private Password senhaComponent;
+	
+	
 	@PostConstruct
 	public void init() {
 		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
@@ -63,7 +67,9 @@ public class UsuarioBean implements Serializable {
 
 	public void salvar() {
 		try {
-			
+			if(!senhaComponent.isValid()){
+				return;
+			}
 			alteracaoSenha();
 			
 			usuarioSelecionado.setEmpresa(usuarioLogado.getEmpresa());
@@ -105,15 +111,19 @@ public class UsuarioBean implements Serializable {
 	public String getSenhaNova() {
 		return senhaNova;
 	}
+	public Password getSenhaComponent() {
+		return senhaComponent;
+	}
 
+	public void setSenhaComponent(Password senhaComponent) {
+		this.senhaComponent = senhaComponent;
+	}
 	public void setSenhaNova(String senhaNova) {
 		this.senhaNova = senhaNova;
 	}
-
 	public void setIndexTab(int indexTab) {
 		this.indexTab = indexTab;
 	}
-
 	public void setPerfisDisponiveis(List<Perfil> perfis) {
 		this.perfisDisponiveis = perfis;
 	}

@@ -65,9 +65,13 @@ public class ClienteBean implements Serializable {
 	
 	public void reset(){
 		clienteSelecionado = null;
+		clientes = null;
+	}
+	public void novo() {
+		this.reset();
 		alterTab(1);
 	}
-
+	
 	public void salvarOcupacao(){
 		clienteSelecionado.getEstabelecimentoRural().getOcupacoesSolo().add(ocupacaoSolo);
 	}
@@ -84,6 +88,7 @@ public class ClienteBean implements Serializable {
 			}else{
 				clienteDAO.update(clienteSelecionado);
 			}
+			this.reset();
 			alterTab(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Sucesso", "Dados do cliente salvo com sucesso");
 		} catch (Exception e) {
@@ -93,7 +98,9 @@ public class ClienteBean implements Serializable {
 	}
 
 	public List<Cliente> getClientes() {
-		clientes = clienteDAO.getAll();
+		if(clientes == null){
+			clientes = clienteDAO.getAll();
+		}
 		return clientes;
 	}
 	public Cliente getClienteSelecionado() {

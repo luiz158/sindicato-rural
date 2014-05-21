@@ -57,10 +57,10 @@ body {
 	float: left;
 	padding: 5px;
 }
-
 .menu {
 	margin-left: 10px;
 	margin-right: 20px;
+	margin-bottom: 50px;
 	width: 15%;
 	float: left;
 }
@@ -68,12 +68,18 @@ body {
 .conteudo {
 	float: left;
 	width: 80%;
+	margin-bottom: 50px;
 	/* background-color: blue; */
 }
 
 /*-----------------------------footer------------------*/
 #footer {
-	clear: both;
-	width: auto;
-	height: 37px;
+	
+	position:fixed;
+	left:0px;
+	bottom:0px;
+	
+	height: 30px;
+	
+	width:100%;
 }

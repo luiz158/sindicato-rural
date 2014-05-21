@@ -85,7 +85,7 @@
 									<p:password value="#{usuarioBean.senhaNova}" id="ns1"
 										match="ns2" feedback="true" promptLabel="Insira a senha"
 										weakLabel="Senha fraca" goodLabel="Boa senha"
-										strongLabel="Ótima senha"
+										strongLabel="Ótima senha" binding="#{usuarioBean.senhaComponent}"
 										validatorMessage="Senhas não conferem" />
 
 								</p:column>

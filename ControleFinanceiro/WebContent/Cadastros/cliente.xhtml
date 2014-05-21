@@ -22,6 +22,12 @@
 			<p:tabView activeIndex="#{clienteBean.indexTab}"
 				style="margin-top:15px;">
 				<p:tab title="Lista de Clientes">
+
+					<div class="container-action-novo">
+						<p:commandButton value="Cadastrar novo" update="@form"
+							process="@this" actionListener="#{clienteBean.novo}" immediate="true" />
+					</div>
+
 					<p:dataTable var="cli" value="#{clienteBean.clientes}"
 						rowKey="#{cli.id}" paginator="true" rows="15"
 						paginatorPosition="bottom"
@@ -36,8 +42,7 @@
 							<p:outputLabel value="#{cli.id}" />
 						</p:column>
 
-						<p:column headerText="CPF" sortBy="cpf"
-							filterBy="cpf" width="120">
+						<p:column headerText="CPF" sortBy="cpf" filterBy="cpf" width="120">
 							<p:outputLabel value="#{cli.cpf}" />
 						</p:column>
 
@@ -563,7 +568,7 @@
 									style="width:200px;height:50px;" update="@form" process="@this"
 									actionListener="#{clienteBean.reset}" />
 
-								<p:commandButton action="#{clienteBean.salvar}" update="@form"
+								<p:commandButton action="#{clienteBean.salvar}" update="@form" process="@this"
 									value="Salvar alterações" style="width:200px;height:50px;" />
 							</div>
 

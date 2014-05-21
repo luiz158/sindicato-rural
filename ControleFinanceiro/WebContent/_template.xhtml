@@ -22,9 +22,9 @@
 
 	</h:head>
 	<h:body>
-	
 		<div class="header">
-			<h:graphicImage library="imagens" name="SindRCotia_topo.jpg" styleClass="logo-topo" />
+			<h:graphicImage library="imagens" name="SindRCotia_topo.jpg"
+				styleClass="logo-topo" />
 			<div class="infUsuario">
 				<h:form>
 					<p:button value="#{loginBean.usuarioLogado.email}"
@@ -45,18 +45,18 @@
 		<div class="conteudo">
 
 			<ui:insert name="conteudo">
-					Conteúdo!!	
-			</ui:insert>
+						Conteúdo!!	
+				</ui:insert>
 
 			<p:messages showDetail="true" closable="true" />
-			
+
 			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
 				<p:commandButton value="Sim" type="button"
 					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
 				<p:commandButton value="Não" type="button"
 					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
 			</p:confirmDialog>
-			
+
 			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
 				<f:facet name="start">
 					<p:graphicImage alt="carregando" library="imagens"
@@ -74,11 +74,10 @@
 		<div id="footer"
 			class="ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all">
 			<ui:insert name="footer">
-				<p style="text-align:center;">Sindicato Rural de Cotia - Copyright © 2014 - Todos os
-					direitos reservados</p>
+				<div style="text-align: center;margin-top: 5px;">Sindicato Rural de Cotia -
+					Copyright © 2014 - Todos os direitos reservados</div>
 			</ui:insert>
 		</div>
-
 	</h:body>
 </f:view>
 </html>
