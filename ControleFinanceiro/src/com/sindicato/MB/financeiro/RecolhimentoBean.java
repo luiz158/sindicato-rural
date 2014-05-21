@@ -1,6 +1,7 @@
 package com.sindicato.MB.financeiro;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -13,14 +14,13 @@ import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
+import com.sindicato.dao.ModoPagamentoDAO;
 import com.sindicato.dao.impl.FinanceiroDAOImpl;
 import com.sindicato.dao.impl.ListasDAOImpl;
+import com.sindicato.dao.impl.ModoPagamentoDAOImpl;
 import com.sindicato.entity.Debito;
-import com.sindicato.entity.DestinoRecebimento;
+import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.ModoPagamento;
-import com.sindicato.entity.Recebimento;
-import com.sindicato.entity.Recolhimento;
-import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.ResultOperation;
 
@@ -33,10 +33,12 @@ public class RecolhimentoBean implements Serializable {
 	private EntityManager em;
 	private ListasDAO listasDAO;
 	private FinanceiroDAO financeiroDAO;
+	private ModoPagamentoDAO modoPagamentoDAO;
 
 	private Debito debitoSelecionado;
+	private List<DebitoServico> servicosComRetencao;
 	private List<Debito> debitos;
-	private List<ModoPagamento> tiposRecebimento;
+	private List<ModoPagamento> modosPagamento;
 
 	private int indexTab;
 
@@ -45,6 +47,7 @@ public class RecolhimentoBean implements Serializable {
 		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
 		listasDAO = new ListasDAOImpl(em);
 		financeiroDAO = new FinanceiroDAOImpl(em);
+		modoPagamentoDAO = new ModoPagamentoDAOImpl(em);
 	}
 
 	public void alterTab(int newTab) {
@@ -55,19 +58,10 @@ public class RecolhimentoBean implements Serializable {
 		debitoSelecionado = new Debito();
 	}
 
-	public void salvarRecebimento(){
-		recebimento.setDebito(debitoSelecionado);
-		debitoSelecionado.getRecebimentos().add(recebimento);
-		recebimento = new Recebimento();
-	}
-	
-	public void removerRecebimento(Recebimento recebimento){
-		debitoSelecionado.getRecebimentos().remove(recebimento);
-	}
-	
 	public void salvar() {
 		try {
-			ResultOperation result = financeiroDAO.registrarRecebimento(debitoSelecionado);
+			this.mergeServicosComRetencao();
+			ResultOperation result = financeiroDAO.registrarRecolhimentos(debitoSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", result.getMessage());
@@ -81,6 +75,13 @@ public class RecolhimentoBean implements Serializable {
 		}
 	}
 
+	private void mergeServicosComRetencao(){
+		for (DebitoServico debito : servicosComRetencao) {
+			int index = debitoSelecionado.getDebitoServicos().indexOf(debito);
+			debitoSelecionado.getDebitoServicos().get(index).setRecolhimento(debito.getRecolhimento());
+		}
+	}
+	
 	public Debito getDebitoSelecionado() {
 		if(debitoSelecionado == null){
 			debitoSelecionado = new Debito();
@@ -92,35 +93,31 @@ public class RecolhimentoBean implements Serializable {
 		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.RECEBIDO);
 		return debitos;
 	}
-	public Recebimento getRecebimento() {
-		if(recebimento == null){
-			recebimento = new Recebimento();
-		}
-		return recebimento;
-	}
 	public int getIndexTab() {
 		return indexTab;
 	}
-	public List<DestinoRecebimento> getDestinos() {
-		if(destinos == null){
-			destinos = listasDAO.getTodosDestinosRecebimento();
+	public List<ModoPagamento> getModosPagamento() {
+		if(modosPagamento == null){
+			modosPagamento = modoPagamentoDAO.getAll();
 		}
-		return destinos;
+		return modosPagamento;
 	}
-	public List<TipoRecebimento> getTiposRecebimento() {
-		if(tiposRecebimento == null){
-			tiposRecebimento = listasDAO.getTodasFormasRecebimento();
+	public List<DebitoServico> getServicosComRetencao() {
+		servicosComRetencao = new ArrayList<DebitoServico>();
+		for (DebitoServico debito : debitoSelecionado.getDebitoServicos()) {
+			if(debito.getServico().isRetencao()){
+				servicosComRetencao.add(debito);
+			}
 		}
-		return tiposRecebimento;
+		return servicosComRetencao;
 	}
-	public void setDestinos(List<DestinoRecebimento> destinos) {
-		this.destinos = destinos;
+
+	public void setServicosComRetencao(
+			List<DebitoServico> servicosComRetencao) {
+		this.servicosComRetencao = servicosComRetencao;
 	}
-	public void setTiposRecebimento(List<TipoRecebimento> tiposRecebimento) {
-		this.tiposRecebimento = tiposRecebimento;
-	}
-	public void setRecebimento(Recebimento recebimento) {
-		this.recebimento = recebimento;
+	public void setModosPagamento(List<ModoPagamento> modosPagamento) {
+		this.modosPagamento = modosPagamento;
 	}
 	public void setDebitoSelecionado(Debito debitoSelecionado) {
 		this.debitoSelecionado = debitoSelecionado;

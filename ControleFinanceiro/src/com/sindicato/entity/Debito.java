@@ -32,6 +32,8 @@ public class Debito {
 	private List<DebitoServico> debitoServicos;
 	@Transient
 	private BigDecimal totalDebitos;
+	@Transient
+	private BigDecimal totalDebitosComRetencao;
 	
 	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true)
 	private List<Recebimento> recebimentos;
@@ -58,6 +60,18 @@ public class Debito {
 			totalDebitos = totalDebitos.add(debitoServico.getValor());
 		}
 		return totalDebitos;
+	}	
+	public BigDecimal getTotalDebitosComRetencao(){
+		if(debitoServicos == null || debitoServicos.size() == 0){
+			return BigDecimal.ZERO;
+		}
+		totalDebitosComRetencao = BigDecimal.ZERO;
+		for (DebitoServico debitoServico : debitoServicos) {
+			if(debitoServico.getServico().isRetencao()){
+				totalDebitosComRetencao = totalDebitosComRetencao.add(debitoServico.getValor());
+			}
+		}
+		return totalDebitosComRetencao;
 	}
 	public int getId() {
 		return id;
