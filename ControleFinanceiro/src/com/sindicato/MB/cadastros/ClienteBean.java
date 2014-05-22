@@ -9,6 +9,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.EntityManager;
 
+import org.primefaces.component.dialog.Dialog;
+import org.primefaces.component.tabview.TabView;
+
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.dao.EntityManagerFactorySingleton;
@@ -45,8 +48,8 @@ public class ClienteBean implements Serializable {
 	private OcupacaoSolo ocupacaoSolo;
 	List<TipoOcupacaoSolo> tiposOcupacaoSolo;
 	
-	
-	private int indexTab;
+	private TabView tabView;
+	private Dialog dialogOcupacao;
 	
 	@PostConstruct
 	public void init(){
@@ -63,7 +66,7 @@ public class ClienteBean implements Serializable {
 	}
 	
 	public void alterTab(int newTab){
-		indexTab = newTab;
+		tabView.setActiveIndex(newTab);
 	}
 	
 	public void reset(){
@@ -77,6 +80,7 @@ public class ClienteBean implements Serializable {
 	
 	public void salvarOcupacao(){
 		clienteSelecionado.getEstabelecimentoRural().getOcupacoesSolo().add(ocupacaoSolo);
+		ocupacaoSolo = new OcupacaoSolo();
 	}
 	
 	public void removerOcupacao(OcupacaoSolo ocupacao){
@@ -112,9 +116,6 @@ public class ClienteBean implements Serializable {
 		}
 		return clienteSelecionado;
 	}
-	public int getIndexTab() {
-		return indexTab;
-	}
 	public List<InformacaoSocio> getInformacoesSocio() {
 		return informacoesSocio;
 	}
@@ -131,10 +132,22 @@ public class ClienteBean implements Serializable {
 		tiposOcupacaoSolo = tipoOcupacaoSoloDAO.getAll();
 		return tiposOcupacaoSolo;
 	}
+	public TabView getTabView() {
+		return tabView;
+	}
+	public Dialog getDialogOcupacao() {
+		return dialogOcupacao;
+	}
 	public List<MensalidadePaga> getMensalidadesPagas() {
 		return mensalidadesPagas;
 	}
 
+	public void setDialogOcupacao(Dialog dialogOcupacao) {
+		this.dialogOcupacao = dialogOcupacao;
+	}
+	public void setTabView(TabView tabView) {
+		this.tabView = tabView;
+	}
 	public void setMensalidadesPagas(List<MensalidadePaga> mensalidadesPagas) {
 		this.mensalidadesPagas = mensalidadesPagas;
 	}
@@ -149,10 +162,6 @@ public class ClienteBean implements Serializable {
 	}
 	public void setInformacaoMensalidade(InformacaoMensalidade informacaoMensalidade) {
 		this.informacaoMensalidade = informacaoMensalidade;
-	}
-
-	public void setIndexTab(int indexTab) {
-		this.indexTab = indexTab;
 	}
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;

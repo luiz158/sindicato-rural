@@ -16,18 +16,18 @@
 			<p:menuitem value="Clientes" url="#" />
 		</p:breadCrumb>
 
-		<h:form>
-			<p:growl id="growl" showDetail="true" />
+		<p:growl id="growl" showDetail="true" />
 
-			<p:tabView activeIndex="#{clienteBean.indexTab}"
-				style="margin-top:15px;">
-				<p:tab title="Lista de Clientes">
+		<p:tabView binding="#{clienteBean.tabView}" style="margin-top:15px;"
+			id="tabView">
+			<p:tab title="Lista de Clientes">
 
-					<div class="container-action-novo">
-						<p:commandButton value="Cadastrar novo" update="@form"
-							process="@this" actionListener="#{clienteBean.novo}" immediate="true" />
-					</div>
+				<div class="container-action-novo">
+					<p:commandButton value="Cadastrar novo" update=":tabView"
+						actionListener="#{clienteBean.novo}" />
+				</div>
 
+				<h:form id="listaClientes">
 					<p:dataTable var="cli" value="#{clienteBean.clientes}"
 						rowKey="#{cli.id}" paginator="true" rows="15"
 						paginatorPosition="bottom"
@@ -35,7 +35,7 @@
 						selectionMode="single" id="clientes" draggableColumns="true"
 						emptyMessage="Nenhum cliente encontrado">
 
-						<p:ajax event="rowSelect" update="@(form)"
+						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{clienteBean.selecionaCliente}" />
 
 						<p:column headerText="Código" sortBy="id" filterBy="id" width="5">
@@ -62,11 +62,14 @@
 						</p:column>
 
 					</p:dataTable>
-				</p:tab>
-				<p:tab title="Informações do cliente">
+				</h:form>
+			</p:tab>
+			<p:tab title="Informações do cliente">
 
-					<p:tabView>
-						<p:tab title="Formulário">
+				<p:tabView>
+					<p:tab title="Formulário">
+						<h:form id="formularioCliente">
+
 							<p:fieldset legend="Informações basicas" style="margin-top:15px;">
 								<p:panelGrid styleClass="panelForm"
 									style="width:80%;margin-top:20px;">
@@ -108,8 +111,7 @@
 										<p:column styleClass="colInput">
 											<p:calendar styleClass="date"
 												value="#{clienteBean.clienteSelecionado.produtorRuralDesde}"
-												pattern="dd/MM/yyyy" 
-												converter="CalendarConverter" />
+												pattern="dd/MM/yyyy" converter="CalendarConverter" />
 
 										</p:column>
 									</p:row>
@@ -412,7 +414,7 @@
 													<p:outputLabel value="Validade da Insc. estadual" />
 												</p:column>
 												<p:column styleClass="colInput">
-													<p:calendar pattern="dd/MM/yyyy" styleClass="date" 
+													<p:calendar pattern="dd/MM/yyyy" styleClass="date"
 														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
 														converter="CalendarConverter" />
 												</p:column>
@@ -431,8 +433,9 @@
 												<p:outputLabel value="CEP" />
 											</p:column>
 											<p:column styleClass="colInput">
-												<p:inputText styleClass="cep"
-													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}" size="10" />
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cep}"
+													size="10" />
 											</p:column>
 										</p:row>
 										<p:row>
@@ -489,52 +492,6 @@
 										type="button" />
 									<p:spacer height="10" />
 
-									<p:dialog header="Cadastrar ocupação de solo" widgetVar="dlg3"
-										resizable="true" showEffect="fade" hideEffect="fade"
-										height="200" width="500" modal="true">
-										<p:panelGrid styleClass="panelForm" style="width:100%;">
-
-											<p:row>
-												<p:column styleClass="colLabel" style="width:210px;">
-													<p:outputLabel value="Código" />
-												</p:column>
-												<p:column styleClass="colInput">
-													<p:inputText value="#{clienteBean.ocupacaoSolo.id}"
-														size="5" readonly="true" />
-												</p:column>
-											</p:row>
-											<p:row>
-												<p:column styleClass="colLabel">
-													<p:outputLabel value="Tipo da ocupação do solo" />
-												</p:column>
-												<p:column styleClass="colInput">
-													<p:selectOneMenu converter="TipoOcupacaoSoloConverter"
-														id="tipoOcupacaoSolo"
-														value="#{clienteBean.ocupacaoSolo.tipoOcupacaoSolo}">
-														<f:selectItems value="#{clienteBean.tiposOcupacaoSolo}"
-															var="p" itemValue="#{p}" itemLabel="#{p.descricao}" />
-													</p:selectOneMenu>
-												</p:column>
-											</p:row>
-											<p:row>
-												<p:column styleClass="colLabel">
-													<p:outputLabel value="Área de ocupação" />
-												</p:column>
-												<p:column styleClass="colInput">
-													<p:inputText styleClass="soNumero"
-														value="#{clienteBean.ocupacaoSolo.areaOcupada}" />
-												</p:column>
-											</p:row>
-											<p:row>
-												<p:column styleClass="colLabel" colspan="2">
-													<p:commandButton value="Salvar"
-														actionListener="#{clienteBean.salvarOcupacao}"
-														oncomplete="PF('dlg3').hide();" update="ocupacaoes" />
-												</p:column>
-											</p:row>
-										</p:panelGrid>
-									</p:dialog>
-
 									<p:dataTable var="ocupacao" id="ocupacaoes"
 										emptyMessage="Nenhuma ocupação de solo cadastrada"
 										value="#{clienteBean.clienteSelecionado.estabelecimentoRural.ocupacoesSolo}">
@@ -556,96 +513,96 @@
 
 								</p:outputPanel>
 
-
-
 							</p:fieldset>
 
 							<div class="container-action">
 								<p:commandButton value="Limpar Formulário"
-									style="width:200px;height:50px;" update="@form" process="@this"
-									actionListener="#{clienteBean.reset}" />
+									style="width:200px;height:50px;" update="@form"
+									process="@(form)" actionListener="#{clienteBean.reset}" />
 
-								<p:commandButton action="#{clienteBean.salvar}" update="@this" 
-									value="Salvar alterações" style="width:200px;height:50px;" />
+								<p:commandButton action="#{clienteBean.salvar}"
+									update=":tabView,:growl" value="Salvar alterações"
+									style="width:200px;height:50px;" />
 							</div>
+						</h:form>
 
-						</p:tab>
-						<p:tab title="Situação do cliente">
-							<p:spacer height="25" />
-							<p:panelGrid styleClass="panelForm" style="width:100%;">
-								<p:row>
-									<p:column styleClass="colLabel" style="width:210px;">
-										<p:outputLabel value="Situação:" style="font-size:14px;" />
-									</p:column>
-									<p:column styleClass="colInput">
+					</p:tab>
+					<p:tab title="Situação do cliente">
+						<p:spacer height="25" />
+						<p:panelGrid styleClass="panelForm" style="width:100%;">
+							<p:row>
+								<p:column styleClass="colLabel" style="width:210px;">
+									<p:outputLabel value="Situação:" style="font-size:14px;" />
+								</p:column>
+								<p:column styleClass="colInput">
 
-										<p:outputLabel value="Em débito" style="color:red;"
-											rendered="#{clienteBean.informacaoMensalidade.atrasado}" />
-										<p:outputLabel value="Em dia" style="color:blue;"
-											rendered="#{!clienteBean.informacaoMensalidade.atrasado}" />
+									<p:outputLabel value="Em débito" style="color:red;"
+										rendered="#{clienteBean.informacaoMensalidade.atrasado}" />
+									<p:outputLabel value="Em dia" style="color:blue;"
+										rendered="#{!clienteBean.informacaoMensalidade.atrasado}" />
 
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel" style="width:210px;">
-										<p:outputLabel value="Mensalidades:" style="font-size:14px;" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:outputLabel
-											value="#{clienteBean.informacaoMensalidade.mensagem}"
-											style="color:red;"
-											rendered="#{clienteBean.informacaoMensalidade.atrasado}" />
-										<p:outputLabel
-											value="#{clienteBean.informacaoMensalidade.mensagem}"
-											style="color:blue;"
-											rendered="#{!clienteBean.informacaoMensalidade.atrasado}" />
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel" style="width:210px;">
-										<p:outputLabel value="Meses como sócio:"
-											style="font-size:14px;" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:outputLabel
-											value="#{clienteBean.informacaoMensalidade.mesesComoSocio}" />
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel" style="width:210px;">
-										<p:outputLabel value="Mensalidades pagas:"
-											style="font-size:14px;" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:outputLabel
-											value="#{clienteBean.informacaoMensalidade.mensalidadesPagas}" />
-									</p:column>
-								</p:row>
-							</p:panelGrid>
-							<p:spacer height="50" />
-							<p:fieldset legend="Histórico de sócio">
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel" style="width:210px;">
+									<p:outputLabel value="Mensalidades:" style="font-size:14px;" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:outputLabel
+										value="#{clienteBean.informacaoMensalidade.mensagem}"
+										style="color:red;"
+										rendered="#{clienteBean.informacaoMensalidade.atrasado}" />
+									<p:outputLabel
+										value="#{clienteBean.informacaoMensalidade.mensagem}"
+										style="color:blue;"
+										rendered="#{!clienteBean.informacaoMensalidade.atrasado}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel" style="width:210px;">
+									<p:outputLabel value="Meses como sócio:"
+										style="font-size:14px;" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:outputLabel
+										value="#{clienteBean.informacaoMensalidade.mesesComoSocio}" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel" style="width:210px;">
+									<p:outputLabel value="Mensalidades pagas:"
+										style="font-size:14px;" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:outputLabel
+										value="#{clienteBean.informacaoMensalidade.mensalidadesPagas}" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+						<p:spacer height="50" />
+						<p:fieldset legend="Histórico de sócio">
 
-								<p:dataTable var="inf" emptyMessage="Cliente nunca foi sócio"
-									value="#{clienteBean.informacoesSocio}">
-									<p:column headerText="Data de evento">
-										<h:outputText value="#{inf.dataEvento.time}">
-											<f:convertDateTime pattern="dd/MM/yyyy" />
-										</h:outputText>
-									</p:column>
+							<p:dataTable var="inf" emptyMessage="Cliente nunca foi sócio"
+								value="#{clienteBean.informacoesSocio}">
+								<p:column headerText="Data de evento">
+									<h:outputText value="#{inf.dataEvento.time}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
 
-									<p:column headerText="Tipo do evento">
-										<h:outputText value="Tornou-se sócio" rendered="#{inf.socio}" />
-										<h:outputText value="Deixou de ser sócio"
-											rendered="#{!inf.socio}" />
-									</p:column>
+								<p:column headerText="Tipo do evento">
+									<h:outputText value="Tornou-se sócio" rendered="#{inf.socio}" />
+									<h:outputText value="Deixou de ser sócio"
+										rendered="#{!inf.socio}" />
+								</p:column>
 
-								</p:dataTable>
+							</p:dataTable>
 
-							</p:fieldset>
-							<p:spacer height="30" />
-							<p:fieldset legend="Histórico de mensalidades">
+						</p:fieldset>
+						<p:spacer height="30" />
+						<p:fieldset legend="Histórico de mensalidades">
 
-								<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
+							<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
 									value="#{clienteBean.mensalidadesPagas}">
 									<p:column headerText="Data do pagamento">
 										<h:outputText value="#{inf.dataPagamento.time}">
@@ -659,16 +616,61 @@
 
 								</p:dataTable>
 
-							</p:fieldset>
+						</p:fieldset>
 
 
-						</p:tab>
-					</p:tabView>
+					</p:tab>
+				</p:tabView>
 
-				</p:tab>
-			</p:tabView>
-		</h:form>
+			</p:tab>
+		</p:tabView>
+		<p:dialog header="Cadastrar ocupação de solo" widgetVar="dlg3"
+			resizable="true" showEffect="fade" hideEffect="fade" height="200"
+			width="500" modal="true">
+			<h:form>
+				<p:panelGrid styleClass="panelForm" style="width:100%;"
+					id="formOcupacao">
 
+					<p:row>
+						<p:column styleClass="colLabel" style="width:210px;">
+							<p:outputLabel value="Código" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{clienteBean.ocupacaoSolo.id}" size="5"
+								readonly="true" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Tipo da ocupação do solo" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:selectOneMenu converter="TipoOcupacaoSoloConverter"
+								id="tipoOcupacaoSolo"
+								value="#{clienteBean.ocupacaoSolo.tipoOcupacaoSolo}">
+								<f:selectItems value="#{clienteBean.tiposOcupacaoSolo}" var="p"
+									itemValue="#{p}" itemLabel="#{p.descricao}" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Área de ocupação" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{clienteBean.ocupacaoSolo.areaOcupada}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel" colspan="2">
+							<p:commandButton value="Salvar"
+								actionListener="#{clienteBean.salvarOcupacao}"
+								update=":tabView:j_idt41:formularioCliente:ocupacaoes,:growl" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</h:form>
+		</p:dialog>
 	</ui:define>
 </ui:composition>
 
