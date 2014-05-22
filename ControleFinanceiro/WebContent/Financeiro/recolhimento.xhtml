@@ -132,26 +132,27 @@
 							<p:column headerText="Serviço">
 								<p:outputLabel value="#{debito.servico.descricao}" />
 							</p:column>
-							<p:column headerText="Valor" width="100" style="text-align:center;">
+							<p:column headerText="Valor" width="100"
+								style="text-align:center;">
 								<p:outputLabel value="#{debito.valor}">
 									<f:convertNumber locale="pt_BR" type="currency"
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
 							<p:column headerText="Data recolhimento" style="width:20px;">
-								<p:calendar onkeyup="mascara(this,data)"
-									value="#{debito.recolhimento.data}" pattern="dd/MM/yyyy"
-									styleClass="date" converter="CalendarConverter" />
+								<p:calendar value="#{debito.recolhimento.data}"
+									pattern="dd/MM/yyyy" styleClass="date"
+									converter="CalendarConverter" />
 							</p:column>
 							<p:column headerText="Modo de pagamento" style="width:20px;">
-								<p:selectOneMenu value="#{debito.recolhimento.modoPagamento}" 
+								<p:selectOneMenu value="#{debito.recolhimento.modoPagamento}"
 									converter="ModoPagamentoConverter" effect="fade" filter="true">
 									<f:selectItems value="#{recolhimentoBean.modosPagamento}"
 										var="m" itemValue="#{m}" itemLabel="#{m.descricao}" />
 								</p:selectOneMenu>
 							</p:column>
 							<p:column headerText="Valor recolhido (R$)" style="width:30px;">
-								<p:inputText onkeypress="mascara(this,moeda)"
+								<p:inputText styleClass="moeda"
 									value="#{debito.recolhimento.valor}">
 									<f:convertNumber pattern="#,##0.00" type="currency"
 										locale="pt_BR" />

@@ -121,8 +121,7 @@
 							<p:outputLabel value="Data base:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar onkeyup="mascara(this,data)"
-								value="#{gravarDebitoBean.debito.dataBase}" pattern="dd/MM/yyyy"
+							<p:calendar value="#{gravarDebitoBean.debito.dataBase}" pattern="dd/MM/yyyy"
 								styleClass="date" converter="CalendarConverter">
 
 							</p:calendar>
@@ -164,7 +163,7 @@
 								<p:outputLabel value="Valor" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText onkeypress="mascara(this,moeda)"
+								<p:inputText styleClass="moeda"
 									value="#{gravarDebitoBean.debitoServico.valor}">
 									<f:convertNumber pattern="#,##0.00" type="currency"
 										locale="pt_BR" />

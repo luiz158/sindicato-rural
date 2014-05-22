@@ -23,6 +23,7 @@ public class Menu {
 	private String descricao;
 	private String url;
 
+	private int ordem;
 	
 	public int getId() {
 		return id;
@@ -38,6 +39,12 @@ public class Menu {
 	}
 	public String getDescricao() {
 		return descricao;
+	}
+	public int getOrdem() {
+		return ordem;
+	}
+	public void setOrdem(int ordem) {
+		this.ordem = ordem;
 	}
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;

@@ -144,7 +144,7 @@ public class LoginBean implements Serializable {
             public int compare(Object o1, Object o2) {  
                 Menu p1 = (Menu) o1;  
                 Menu p2 = (Menu) o2;  
-                return p1.getId() < p2.getId() ? -1 : (p1.getId() > p2.getId() ? +1 : 0);  
+                return p1.getOrdem() < p2.getOrdem() ? -1 : (p1.getOrdem() > p2.getOrdem() ? +1 : 0);  
             }  
         }); 
 		

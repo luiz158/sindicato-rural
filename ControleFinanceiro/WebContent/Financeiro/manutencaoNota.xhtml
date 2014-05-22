@@ -119,7 +119,7 @@
 										<p:outputLabel value="Valor" />
 									</p:column>
 									<p:column styleClass="colInput">
-										<p:inputText onkeypress="mascara(this,moeda)"
+										<p:inputText styleClass="moeda"
 											value="#{manutencaoNotaBean.debitoServico.valor}">
 											<f:convertNumber pattern="#,##0.00" type="currency"
 												locale="pt_BR" />

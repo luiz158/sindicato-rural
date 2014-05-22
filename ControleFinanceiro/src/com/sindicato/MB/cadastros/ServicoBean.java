@@ -14,6 +14,7 @@ import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.ServicoDAO;
 import com.sindicato.dao.impl.ServicoDAOImpl;
 import com.sindicato.entity.Servico;
+import com.sindicato.result.ResultOperation;
 
 @ManagedBean
 @ViewScoped
@@ -50,14 +51,21 @@ public class ServicoBean implements Serializable {
 	public void excluir(Servico servico) {
 		try {
 			if (servico.getId() == 0) {
+				this.reset();
 				return;
 			}
 
-			servicoDAO.removeById(servico.getId());
-			this.reset();
-			alterTab(0);
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Servico excluído com sucesso");
+			ResultOperation result = servicoDAO.remove(servico);
+			if(result.isSuccess()){
+				this.reset();
+				alterTab(0);
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", "Servico excluído com sucesso");
+			}else{
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+						"Atenção", result.getMessage());
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,

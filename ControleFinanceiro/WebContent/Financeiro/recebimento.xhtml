@@ -167,7 +167,7 @@
 										<p:outputLabel value="Valor (R$)" />
 									</p:column>
 									<p:column styleClass="colInput">
-										<p:inputText onkeypress="mascara(this,moeda)"
+										<p:inputText styleClass="moeda"
 											value="#{recebimentoBean.recebimento.valor}">
 											<f:convertNumber pattern="#,##0.00" type="currency"
 												locale="pt_BR" />
@@ -231,7 +231,7 @@
 											<p:column styleClass="colInput">
 												<p:calendar
 													value="#{recebimentoBean.recebimento.vencimentoCheque}"
-													onkeyup="mascara(this,data)" pattern="dd/MM/yyyy"
+													pattern="dd/MM/yyyy"
 													styleClass="date" converter="CalendarConverter" />
 											</p:column>
 										</p:row>
@@ -242,7 +242,7 @@
 											<p:column styleClass="colInput">
 												<p:calendar
 													value="#{recebimentoBean.recebimento.dataLiquidacao}"
-													onkeyup="mascara(this,data)" pattern="dd/MM/yyyy"
+													pattern="dd/MM/yyyy"
 													styleClass="date" converter="CalendarConverter" />
 											</p:column>
 										</p:row>

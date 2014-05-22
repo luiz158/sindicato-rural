@@ -1,7 +1,20 @@
 package com.sindicato.dao;
 
-import com.sindicato.entity.Servico;
+import java.util.List;
 
-public interface ServicoDAO extends DAO<Servico, Integer> {
+import com.sindicato.entity.Servico;
+import com.sindicato.result.ResultOperation;
+
+public interface ServicoDAO{
+
+	ResultOperation remove(Servico servico);
+	
+	void insert(Servico entity);
+	
+	Servico searchByID(Integer id);
+	
+	void update(Servico entity);
+	
+	List<Servico> getAll();
 
 }
