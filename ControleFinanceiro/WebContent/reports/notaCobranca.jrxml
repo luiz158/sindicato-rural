@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notaCobranca" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7d2794a-ceb9-40ab-b279-3b778f5f42b5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="ireport.zoom" value="1.4641000000000006"/>
@@ -32,11 +33,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="81" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="142" height="81" uuid="74b0bcec-19a0-4d0a-9f9d-880addad02ef"/>
-				<imageExpression><![CDATA["D:\\Projetos\\Sindicato\\ControleFinanceiro\\WebContent\\resources\\imagens\\LogoSindRCotia.jpg"]]></imageExpression>
-			</image>
+		<band height="96" splitType="Stretch">
 			<staticText>
 				<reportElement x="142" y="0" width="413" height="28" uuid="1f300d10-2883-428a-966e-2a03a7cd8451"/>
 				<textElement>
@@ -121,6 +118,10 @@
 				</textElement>
 				<text><![CDATA[E-mail:]]></text>
 			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="141" height="96" uuid="098c4d4e-9563-46be-a0f8-5b3199ef5f1a"/>
+				<imageExpression><![CDATA["WebContent/resources/imagens/LogoSindRCotia.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<pageHeader>
@@ -198,7 +199,7 @@
 				<textFieldExpression><![CDATA[""+$F{servico.descricao}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="0" y="0" width="555" height="1" uuid="10969ac8-3f3f-488f-8f78-ce12cba8dc28"/>
+				<reportElement x="0" y="-6" width="555" height="1" uuid="10969ac8-3f3f-488f-8f78-ce12cba8dc28"/>
 			</line>
 		</band>
 	</detail>

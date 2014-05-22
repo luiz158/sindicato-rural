@@ -21,6 +21,7 @@ import com.sindicato.entity.OcupacaoSolo;
 import com.sindicato.entity.TipoOcupacaoSolo;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.InformacaoMensalidade;
+import com.sindicato.result.MensalidadePaga;
 
 @ManagedBean
 @ViewScoped
@@ -38,6 +39,7 @@ public class ClienteBean implements Serializable {
 	private Cliente clienteSelecionado;
 	
 	private List<InformacaoSocio> informacoesSocio;
+	private List<MensalidadePaga> mensalidadesPagas;
 	private InformacaoMensalidade informacaoMensalidade;
 	
 	private OcupacaoSolo ocupacaoSolo;
@@ -55,6 +57,7 @@ public class ClienteBean implements Serializable {
 	
 	public void selecionaCliente(){
 		alterTab(1);
+		mensalidadesPagas = clienteDAO.getInformacoesMensalidade(clienteSelecionado);
 		informacoesSocio = clienteDAO.getInformacoesSocio(clienteSelecionado);
 		informacaoMensalidade = clienteDAO.estaEmDiaComAsMensalidades(clienteSelecionado);
 	}
@@ -128,7 +131,13 @@ public class ClienteBean implements Serializable {
 		tiposOcupacaoSolo = tipoOcupacaoSoloDAO.getAll();
 		return tiposOcupacaoSolo;
 	}
+	public List<MensalidadePaga> getMensalidadesPagas() {
+		return mensalidadesPagas;
+	}
 
+	public void setMensalidadesPagas(List<MensalidadePaga> mensalidadesPagas) {
+		this.mensalidadesPagas = mensalidadesPagas;
+	}
 	public void setTiposOcupacaoSolo(List<TipoOcupacaoSolo> tiposOcupacaoSolo) {
 		this.tiposOcupacaoSolo = tiposOcupacaoSolo;
 	}

@@ -17,6 +17,7 @@ import com.sindicato.entity.Cliente;
 import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.InformacaoMensalidade;
+import com.sindicato.result.MensalidadePaga;
 
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements ClienteDAO {
 
@@ -212,4 +213,40 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		return retorno;
 	}
 
+	
+	@Override
+	public List<MensalidadePaga> getInformacoesMensalidade(Cliente cliente) {
+		
+		String strQuery = " select " +
+				" ds.servico.descricao, ds.debito.dataEmissaoNotaCobranca " +
+				" from DebitoServico ds " +
+				" where ds.debito.cliente = :cliente " +
+				" and ds.servico.mensalidade = :mensalidade" +
+				" and ds.debito.status in (:status)";
+		
+		List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
+		statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
+		statusPermitido.add(StatusDebitoEnum.RECEBIDO);
+		statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
+		
+		TypedQuery<Object[]> query = em.createQuery(strQuery, Object[].class);
+		query.setParameter("cliente", cliente);
+		query.setParameter("mensalidade", true);
+		query.setParameter("status", statusPermitido);
+		
+		List<Object[]> result = query.getResultList();
+		List<MensalidadePaga> mensalidadesPagas = new ArrayList<MensalidadePaga>();
+		for (Object[] objects : result) {
+			MensalidadePaga inf = new MensalidadePaga();
+			inf.setDataPagamento((Calendar)objects[1]);
+			inf.setDescricaoMensalidade(objects[0].toString());
+			
+			mensalidadesPagas.add(inf);
+		}
+		
+		return mensalidadesPagas;
+	}
+
+	
+	
 }

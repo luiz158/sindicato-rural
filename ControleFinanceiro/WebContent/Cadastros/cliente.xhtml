@@ -565,10 +565,9 @@
 									style="width:200px;height:50px;" update="@form" process="@this"
 									actionListener="#{clienteBean.reset}" />
 
-								<p:commandButton action="#{clienteBean.salvar}" update="@form" process="@this"
+								<p:commandButton action="#{clienteBean.salvar}" update="@this" 
 									value="Salvar alterações" style="width:200px;height:50px;" />
 							</div>
-
 
 						</p:tab>
 						<p:tab title="Situação do cliente">
@@ -646,13 +645,16 @@
 							<p:spacer height="30" />
 							<p:fieldset legend="Histórico de mensalidades">
 
-								<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga">
+								<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
+									value="#{clienteBean.mensalidadesPagas}">
 									<p:column headerText="Data do pagamento">
-										<h:outputText />
+										<h:outputText value="#{inf.dataPagamento.time}">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
 									</p:column>
 
 									<p:column headerText="Tipo da mensalidade">
-										<h:outputText />
+										<h:outputText value="#{inf.descricaoMensalidade}" />
 									</p:column>
 
 								</p:dataTable>
