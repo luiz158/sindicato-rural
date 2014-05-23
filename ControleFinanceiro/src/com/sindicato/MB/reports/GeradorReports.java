@@ -1,7 +1,6 @@
 package com.sindicato.MB.reports;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -19,6 +18,8 @@ import com.sindicato.MB.util.UtilBean;
 public class GeradorReports {
 
 	private final String CAMINHO_REPORTS = "/reports/";
+	private final String CAMINHO_IMAGENS = UtilBean.getFacesContext().getExternalContext().getRealPath("/reports/imagens/");
+	
 	private JasperPrint jasperPrint;
 
 	private Map<String, Object> parameters;
@@ -27,6 +28,8 @@ public class GeradorReports {
 	
 	public GeradorReports(String report, Map<String, Object> parameters, JRBeanCollectionDataSource beanCollectionDataSource) throws JRException{
 		this.parameters = parameters;
+		this.parameters.put("logo", CAMINHO_IMAGENS + "/Logo_nota.jpg");
+		
 		this.beanCollectionDataSource = beanCollectionDataSource;
 		this.report = CAMINHO_REPORTS + report;
 		this.initReport();

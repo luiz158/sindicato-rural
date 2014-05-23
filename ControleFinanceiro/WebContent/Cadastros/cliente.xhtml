@@ -507,7 +507,7 @@
 										<p:column headerText="" width="45">
 											<p:commandButton value="Excluir"
 												action="#{clienteBean.removerOcupacao(ocupacao)}"
-												update="ocupacaoes" />
+												update="ocupacaoes" immediate="true" />
 										</p:column>
 									</p:dataTable>
 
@@ -658,14 +658,14 @@
 							<p:outputLabel value="Área de ocupação" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:inputText value="#{clienteBean.ocupacaoSolo.areaOcupada}" />
+							<p:inputText value="#{clienteBean.ocupacaoSolo.areaOcupada}" styleClass="soNumero" />
 						</p:column>
 					</p:row>
 					<p:row>
 						<p:column styleClass="colLabel" colspan="2">
-							<p:commandButton value="Salvar"
+							<p:commandButton value="Salvar" onsuccess="PF('dlg3').hide();"
 								actionListener="#{clienteBean.salvarOcupacao}"
-								update=":tabView:j_idt41:formularioCliente:ocupacaoes,:growl" />
+								update=":tabView:j_idt41:formularioCliente:ocupacaoes,:growl,formOcupacao" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>

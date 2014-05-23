@@ -78,9 +78,9 @@ public class NotaCobrancaBean implements Serializable {
 		try {
 			UtilBean.addValorSessao("debitoImpressao", debitoSelecionado);
 			
-			result = financeiroDAO.gerarNotaDeCobranca(debitoSelecionado);
-			if (result.isSuccess()) {
-			//if (true) {
+			//result = financeiroDAO.gerarNotaDeCobranca(debitoSelecionado);
+			//if (result.isSuccess()) {
+			if (true) {
 				this.imprimirNotaCobranca();
 				this.reset();
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
