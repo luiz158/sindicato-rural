@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notaCobranca" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7d2794a-ceb9-40ab-b279-3b778f5f42b5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="140"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="cartaSindical" class="java.lang.String"/>
 	<parameter name="cnpj" class="java.lang.String"/>
 	<parameter name="endereco" class="java.lang.String"/>
@@ -19,6 +18,7 @@
 	<parameter name="numeroNota" class="java.lang.Integer"/>
 	<parameter name="valorPorExtenso" class="java.lang.String"/>
 	<parameter name="data" class="java.lang.String"/>
+	<parameter name="logo" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -119,8 +119,8 @@
 				<text><![CDATA[E-mail:]]></text>
 			</staticText>
 			<image>
-				<reportElement x="0" y="0" width="141" height="96" uuid="098c4d4e-9563-46be-a0f8-5b3199ef5f1a"/>
-				<imageExpression><![CDATA["WebContent/resources/imagens/LogoSindRCotia.jpg"]]></imageExpression>
+				<reportElement x="0" y="0" width="142" height="96" uuid="192dbdbe-7c38-4d99-a3b6-c56ac263cbb7"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 		</band>
 	</title>
