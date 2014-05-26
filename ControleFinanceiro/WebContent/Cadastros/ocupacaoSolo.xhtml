@@ -30,16 +30,16 @@
 						rowKey="#{ocupacao.id}" paginator="true" rows="10"
 						paginatorPosition="bottom"
 						selection="#{ocupacaoSoloBean.ocupacaoSelecionado}"
-						selectionMode="single" id="ocupacoes">
+						selectionMode="single" id="ocupacoes" draggableColumns="true" emptyMessage="Nenhuma ocupação de solo encontrada" resizableColumns="true" >
 
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{ocupacaoSoloBean.alterTab(1)}" />
 
-						<p:column headerText="Código" sortBy="id" filterBy="id">
+						<p:column headerText="Código" filterBy="#{ocupacao.id}">
 							<p:outputLabel value="#{ocupacao.id}" />
 						</p:column>
-						<p:column headerText="Descrição" sortBy="descricao"
-							filterBy="descricao">
+						<p:column headerText="Descrição"
+							filterBy="#{ocupacao.descricao}">
 							<p:outputLabel value="#{ocupacao.descricao}" />
 						</p:column>
 

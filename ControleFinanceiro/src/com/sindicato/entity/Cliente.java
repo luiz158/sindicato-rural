@@ -33,7 +33,7 @@ public class Cliente {
 	@ManyToOne(optional = false)
 	private Empresa empresa;
 
-	@OneToOne(optional = false, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(optional = true, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name="estabelecimentorural_id")
 	private EstabelecimentoRural estabelecimentoRural;
 

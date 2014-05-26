@@ -19,6 +19,7 @@ import com.sindicato.dao.TipoOcupacaoSoloDAO;
 import com.sindicato.dao.impl.ClienteDAOImpl;
 import com.sindicato.dao.impl.TipoOcupacaoSoloDAOImpl;
 import com.sindicato.entity.Cliente;
+import com.sindicato.entity.EstabelecimentoRural;
 import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.entity.OcupacaoSolo;
 import com.sindicato.entity.TipoOcupacaoSolo;
@@ -59,6 +60,9 @@ public class ClienteBean implements Serializable {
 	}
 	
 	public void selecionaCliente(){
+		if(clienteSelecionado.getEstabelecimentoRural() == null){
+			clienteSelecionado.setEstabelecimentoRural(new EstabelecimentoRural());
+		}
 		alterTab(1);
 		mensalidadesPagas = clienteDAO.getInformacoesMensalidade(clienteSelecionado);
 		informacoesSocio = clienteDAO.getInformacoesSocio(clienteSelecionado);
