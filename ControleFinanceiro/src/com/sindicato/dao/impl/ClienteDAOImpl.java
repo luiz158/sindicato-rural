@@ -3,14 +3,20 @@ package com.sindicato.dao.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.joda.time.DateTime;
 import org.joda.time.Months;
+import org.primefaces.model.SortOrder;
 
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.entity.Cliente;
@@ -247,6 +253,64 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements Cliente
 		return mensalidadesPagas;
 	}
 
+	
+	@Override
+	public int count(Map<String, String> filters) {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Cliente> myObj = cq.from(Cliente.class);
+        cq.where(this.getFilterCondition(cb, myObj, filters));
+        cq.select(cb.count(myObj));
+        return em.createQuery(cq).getSingleResult().intValue();
+	}
+
+
+    private Predicate getFilterCondition(CriteriaBuilder cb, Root<Cliente> myObj, Map<String, String> filters) {
+        Predicate filterCondition = cb.conjunction();
+        for (Map.Entry<String, String> filter : filters.entrySet()) {
+            
+            if (!filter.getValue().equals("")) {
+                javax.persistence.criteria.Path<String> path = myObj.get(filter.getKey());
+                myObj.get(filter.getKey()).getJavaType();
+                try {
+                	String columnType = myObj.get(filter.getKey()).getJavaType().toString();
+                    if(columnType.contains("String")){
+                    	String value = "%" + filter.getValue().toUpperCase() + "%";
+                    	filterCondition = cb.and(filterCondition, cb.like(cb.upper(path), value));
+                    } 
+                    else{
+                    	filterCondition = cb.and(filterCondition, cb.equal(path, filter.getValue()));
+                    }
+				} catch (Exception e) {
+					filterCondition = cb.and(filterCondition, cb.equal(path, filter.getValue()));
+				}
+            }
+        }
+        return filterCondition;
+    }
+
+    @Override
+	public List<Cliente> getResultListFiltered(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Cliente> cq = cb.createQuery(Cliente.class);
+        Root<Cliente> myObj = cq.from(Cliente.class);
+        cq.where(this.getFilterCondition(cb, myObj, filters));
+        if (sortField != null) {
+            if (sortOrder == SortOrder.ASCENDING) {
+                cq.orderBy(cb.asc(myObj.get(sortField)));
+            } else if (sortOrder == SortOrder.DESCENDING) {
+                cq.orderBy(cb.desc(myObj.get(sortField)));
+            }
+        }
+
+		List<Cliente> clientes = em.createQuery(cq).setFirstResult(first).setMaxResults(pageSize).getResultList();
+		for (Cliente cliente : clientes) {
+			if(cliente != null){
+				cliente.setSocio(this.isSocio(cliente));
+			}
+		}
+		return clientes;
+    }
 	
 	
 }

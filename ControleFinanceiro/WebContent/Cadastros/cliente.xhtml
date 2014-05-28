@@ -31,9 +31,10 @@
 					<p:dataTable var="cli" value="#{clienteBean.clientes}"
 						rowKey="#{cli.id}" paginator="true" rows="15"
 						paginatorPosition="bottom"
+						rowsPerPageTemplate="10,50,100"
 						selection="#{clienteBean.clienteSelecionado}"
 						selectionMode="single" id="clientes" draggableColumns="true"
-						emptyMessage="Nenhum cliente encontrado">
+						emptyMessage="Nenhum cliente encontrado" lazy="true">
 
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{clienteBean.selecionaCliente}" />
@@ -55,8 +56,7 @@
 							<p:outputLabel value="#{cli.telefone}" />
 						</p:column>
 
-						<p:column headerText="É sócio?" sortBy="socio" filterBy="socio"
-							width="5">
+						<p:column headerText="É sócio?" width="70" style="text-align:center;">
 							<p:outputLabel value="Sim" rendered="#{cli.socio == true}" />
 							<p:outputLabel value="Não" rendered="#{cli.socio == false}" />
 						</p:column>
@@ -603,18 +603,18 @@
 						<p:fieldset legend="Histórico de mensalidades">
 
 							<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
-									value="#{clienteBean.mensalidadesPagas}">
-									<p:column headerText="Data do pagamento">
-										<h:outputText value="#{inf.dataPagamento.time}">
-											<f:convertDateTime pattern="dd/MM/yyyy" />
-										</h:outputText>
-									</p:column>
+								value="#{clienteBean.mensalidadesPagas}">
+								<p:column headerText="Data do pagamento">
+									<h:outputText value="#{inf.dataPagamento.time}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
 
-									<p:column headerText="Tipo da mensalidade">
-										<h:outputText value="#{inf.descricaoMensalidade}" />
-									</p:column>
+								<p:column headerText="Tipo da mensalidade">
+									<h:outputText value="#{inf.descricaoMensalidade}" />
+								</p:column>
 
-								</p:dataTable>
+							</p:dataTable>
 
 						</p:fieldset>
 
@@ -658,7 +658,8 @@
 							<p:outputLabel value="Área de ocupação" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:inputText value="#{clienteBean.ocupacaoSolo.areaOcupada}" styleClass="soNumero" />
+							<p:inputText value="#{clienteBean.ocupacaoSolo.areaOcupada}"
+								styleClass="soNumero" />
 						</p:column>
 					</p:row>
 					<p:row>

@@ -8,39 +8,39 @@ import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.DAO;
 
-public class DAOImpl<T,K> implements DAO<T,K>{
+public class DAOImpl<T, K> implements DAO<T, K> {
 
 	protected EntityManager em;
-	
+
 	private Class<T> entityClass;
-	
+
 	@SuppressWarnings("all")
-	public DAOImpl(EntityManager entityManager){
-		this.entityClass = (Class<T>) ((ParameterizedType) getClass() 
-				.getGenericSuperclass()).getActualTypeArguments()[0]; 
+	public DAOImpl(EntityManager entityManager) {
+		this.entityClass = (Class<T>) ((ParameterizedType) getClass()
+				.getGenericSuperclass()).getActualTypeArguments()[0];
 		this.em = entityManager;
 	}
-	
+
 	@Override
 	public void insert(T entity) {
 		em.getTransaction().begin();
 		em.persist(entity);
 		em.getTransaction().commit();
-		
+
 	}
-	
+
 	@Override
-	public void removeById(K id){
+	public void removeById(K id) {
 		em.getTransaction().begin();
-		T entity = em.find(entityClass,id);
+		T entity = em.find(entityClass, id);
 		em.remove(entity);
 		em.getTransaction().commit();
 	}
-	
+
 	@Override
 	public void remove(T entity) {
 		em.getTransaction().begin();
-		//para forçar a entidade ser gerenciada pelo em
+		// para forçar a entidade ser gerenciada pelo em
 		em.merge(entity);
 		em.remove(entity);
 		em.getTransaction().commit();
@@ -59,11 +59,12 @@ public class DAOImpl<T,K> implements DAO<T,K>{
 	}
 
 	@Override
-	public List<T> getAll(){
+	public List<T> getAll() {
 		String strQuery = "Select u from " + entityClass.getName() + " u ";
 		TypedQuery<T> query = null;
 		query = em.createQuery(strQuery, entityClass);
 		return query.getResultList();
-	}	
-	
+	}
+
+
 }

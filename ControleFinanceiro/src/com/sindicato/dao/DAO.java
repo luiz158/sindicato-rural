@@ -15,4 +15,6 @@ public interface DAO<T, K> {
 	void update(T entity);
 	
 	List<T> getAll();
+	
+
 }
