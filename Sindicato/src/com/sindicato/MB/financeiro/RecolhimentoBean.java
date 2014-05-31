@@ -4,20 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.persistence.EntityManager;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.dao.ModoPagamentoDAO;
-import com.sindicato.dao.impl.FinanceiroDAOImpl;
-import com.sindicato.dao.impl.ListasDAOImpl;
-import com.sindicato.dao.impl.ModoPagamentoDAOImpl;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.ModoPagamento;
@@ -30,10 +25,9 @@ public class RecolhimentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager em;
-	private ListasDAO listasDAO;
-	private FinanceiroDAO financeiroDAO;
-	private ModoPagamentoDAO modoPagamentoDAO;
+	@EJB private ListasDAO listasDAO;
+	@EJB private FinanceiroDAO financeiroDAO;
+	@EJB private ModoPagamentoDAO modoPagamentoDAO;
 
 	private Debito debitoSelecionado;
 	private List<DebitoServico> servicosComRetencao;
@@ -41,14 +35,6 @@ public class RecolhimentoBean implements Serializable {
 	private List<ModoPagamento> modosPagamento;
 
 	private int indexTab;
-
-	@PostConstruct
-	public void init() {
-		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-		listasDAO = new ListasDAOImpl(em);
-		financeiroDAO = new FinanceiroDAOImpl(em);
-		modoPagamentoDAO = new ModoPagamentoDAOImpl(em);
-	}
 
 	public void alterTab(int newTab) {
 		indexTab = newTab;

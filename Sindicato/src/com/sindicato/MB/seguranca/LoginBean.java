@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.ToDoubleFunction;
+import java.util.function.ToIntFunction;
+import java.util.function.ToLongFunction;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
 
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
@@ -18,9 +22,8 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
+import com.sindicato.dao.MenuDAO;
 import com.sindicato.dao.UsuarioDAO;
-import com.sindicato.dao.impl.UsuarioDAOImpl;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
@@ -30,21 +33,17 @@ import com.sindicato.result.ResultOperation;
 @SessionScoped
 public class LoginBean implements Serializable {
 
-	public LoginBean() {
-	}
-
 	private static final long serialVersionUID = 1L;
+
+	@EJB UsuarioDAO usuarioDAO;
+	@EJB MenuDAO menuDAO;
 	private Usuario usuarioLogado;
 	private String usuario;
 	private String senha;
 	private MenuModel model;
 
-	private EntityManager em = EntityManagerFactorySingleton.getInstance()
-			.createEntityManager();
-
 	public String autenticar() {
 
-		UsuarioDAO usuarioDAO = new UsuarioDAOImpl(em);
 		usuarioLogado = null;
 		String retorno = null;
 		ResultOperation result = new ResultOperation();
@@ -54,16 +53,19 @@ public class LoginBean implements Serializable {
 
 			if (result.isSuccess()) {
 				usuarioLogado = usuarioDAO.getUsuarioAutenticado();
-				
+
 				carregaMenu();
 
-				retorno = "/faces/index?faces-redirect=true";
+				retorno = "index";
 			} else {
-				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Atenção", result.getMessage());
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Atenção", result.getMessage());
 				retorno = "";
 			}
 		} catch (Exception e) {
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR, "Erro", "Falha na autenticação do usuário. Contate o administrador do sistema");
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+					"Erro",
+					"Falha na autenticação do usuário. Contate o administrador do sistema");
 			e.printStackTrace();
 		}
 		usuarioDAO = null;
@@ -134,20 +136,64 @@ public class LoginBean implements Serializable {
 	private List<Menu> carregaMenusPermitidos() {
 		List<Menu> menusPermitidos = new ArrayList<Menu>();
 		for (Perfil perfil : usuarioLogado.getPerfis()) {
-			for (Menu menu : perfil.getMenus()) {
+			List<Menu> menus = menuDAO.getMenusPorPerfil(perfil);
+			for (Menu menu : menus) {
 				if (!menusPermitidos.contains(menu))
 					menusPermitidos.add(menu);
 			}
 		}
-		
-		Collections.sort (menusPermitidos, new Comparator<Object>() {  
-            public int compare(Object o1, Object o2) {  
-                Menu p1 = (Menu) o1;  
-                Menu p2 = (Menu) o2;  
-                return p1.getOrdem() < p2.getOrdem() ? -1 : (p1.getOrdem() > p2.getOrdem() ? +1 : 0);  
-            }  
-        }); 
-		
+
+		Collections.sort(menusPermitidos, new Comparator<Object>() {
+			public int compare(Object o1, Object o2) {
+				Menu p1 = (Menu) o1;
+				Menu p2 = (Menu) o2;
+				return p1.getOrdem() < p2.getOrdem() ? -1 : (p1.getOrdem() > p2
+						.getOrdem() ? +1 : 0);
+			}
+
+			@Override
+			public Comparator<Object> reversed() {
+				return null;
+			}
+
+			@Override
+			public Comparator<Object> thenComparing(
+					Comparator<? super Object> other) {
+				return null;
+			}
+
+			@Override
+			public <U> Comparator<Object> thenComparing(
+					Function<? super Object, ? extends U> keyExtractor,
+					Comparator<? super U> keyComparator) {
+				return null;
+			}
+
+			@Override
+			public <U extends Comparable<? super U>> Comparator<Object> thenComparing(
+					Function<? super Object, ? extends U> keyExtractor) {
+				return null;
+			}
+
+			@Override
+			public Comparator<Object> thenComparingInt(
+					ToIntFunction<? super Object> keyExtractor) {
+				return null;
+			}
+
+			@Override
+			public Comparator<Object> thenComparingLong(
+					ToLongFunction<? super Object> keyExtractor) {
+				return null;
+			}
+
+			@Override
+			public Comparator<Object> thenComparingDouble(
+					ToDoubleFunction<? super Object> keyExtractor) {
+				return null;
+			}
+		});
+
 		return menusPermitidos;
 	}
 

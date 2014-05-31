@@ -2,7 +2,6 @@ package com.sindicato.MB.cadastros;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -13,7 +12,6 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.SortOrder;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ClienteDAO;
@@ -24,6 +22,7 @@ import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.entity.OcupacaoSolo;
 import com.sindicato.entity.TipoOcupacaoSolo;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.lazyDataModel.LazyClienteDataModel;
 import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
 
@@ -57,18 +56,7 @@ public class ClienteBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		clientes = new LazyDataModel<Cliente>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public List<Cliente> load(int first, int pageSize, String sortField,
-					SortOrder sortOrder, Map<String, String> filters) {
-				List<Cliente> result = clienteDAO.getResultListFiltered(first,
-						pageSize, sortField, sortOrder, filters);
-				clientes.setRowCount(clienteDAO.count(filters));
-				return result;
-			}
-		};
+		
 	}
 
 	public void selecionaCliente() {
@@ -169,6 +157,9 @@ public class ClienteBean implements Serializable {
 	}
 
 	public LazyDataModel<Cliente> getClientes() {
+		if(clientes == null){
+			clientes = new LazyClienteDataModel(clienteDAO.getAll());
+		}
 		return clientes;
 	}
 

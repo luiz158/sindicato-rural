@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Permissão" url="#" />
+			<p:menuitem value="Usuários" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+
+		<p:growl id="growl" showDetail="true" />
+		<p:tabView activeIndex="#{usuarioBean.indexTab}" id="tabView">
+			<p:tab title="Lista de Usuários">
+
+				<h:form>
+					<div class="container-action-novo">
+						<p:commandButton value="Cadastrar novo" update=":tabView"
+							actionListener="#{usuarioBean.novo}" />
+					</div>
+
+					<p:dataTable var="usuario" value="#{usuarioBean.usuarios}"
+						rowKey="#{usuario.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						selection="#{usuarioBean.usuarioSelecionado}"
+						selectionMode="single" id="usuarios">
+
+						<p:ajax event="rowSelect" update=":tabView"
+							listener="#{usuarioBean.alterTab(1)}" />
+
+						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
+							<p:outputLabel value="#{usuario.nome}" />
+						</p:column>
+
+						<p:column headerText="E-mail" sortBy="email" filterBy="email">
+							<p:outputLabel value="#{usuario.email}" />
+						</p:column>
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Informações do usuário">
+				<h:form>
+					<p:fieldset legend="Informações basicas">
+						<p:panelGrid styleClass="panelForm">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:300px !important;">
+									<p:outputLabel value="Código" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{usuarioBean.usuarioSelecionado.id}"
+										readonly="true" size="5" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Nome" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{usuarioBean.usuarioSelecionado.nome}" size="50" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="E-mail" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{usuarioBean.usuarioSelecionado.email}" size="40" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+
+					</p:fieldset>
+					<p:spacer height="20" />
+					<p:fieldset legend="Alteração de senha">
+						<p:panelGrid styleClass="panelForm">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:300px !important;">
+									<p:outputLabel value="Nova senha" />
+								</p:column>
+								<p:column styleClass="colInput">
+
+									<p:password value="#{usuarioBean.senhaNova}" id="ns1"
+										match="ns2" feedback="true" promptLabel="Insira a senha"
+										weakLabel="Senha fraca" goodLabel="Boa senha"
+										strongLabel="Ótima senha"
+										binding="#{usuarioBean.senhaComponent}"
+										validatorMessage="Senhas não conferem" />
+
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Confirme a nova senha" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:password value="#{usuarioBean.senhaNova}" id="ns2" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:fieldset>
+					<p:spacer height="20" />
+					<p:fieldset legend="Controle de acesso do usuário">
+						<p:panelGrid styleClass="panelForm">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:300px !important;">
+									<p:outputLabel value="Perfis" />
+								</p:column>
+								<p:column styleClass="colInput">
+
+									<p:selectCheckboxMenu required="true" requiredMessage="Selecione pelo menos um perfil para o usuário"
+										value="#{usuarioBean.usuarioSelecionado.perfis}" style="width:250px;"
+										converter="PerfilConverter" label="Perfis" filter="true"
+										filterText="Filter" filterMatchMode="startsWith"
+										panelStyle="width:220px">
+
+										<f:attribute name="collectionType" value="java.util.ArrayList" />
+										<f:selectItems value="#{usuarioBean.perfisDisponiveis}"
+											var="p" itemValue="#{p}" itemLabel="#{p.descricao}" />
+									</p:selectCheckboxMenu>
+
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:fieldset>
+
+					<div class="container-action">
+						<p:commandButton value="Limpar Formulário"
+							style="width:200px;height:50px;" update="@form" process="@this"
+							actionListener="#{usuarioBean.reset}" />
+
+						<p:commandButton action="#{usuarioBean.salvar}" update=":tabView,:growl"
+							value="Salvar alterações" style="width:200px;height:50px;" />
+					</div>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>
+
+</html>

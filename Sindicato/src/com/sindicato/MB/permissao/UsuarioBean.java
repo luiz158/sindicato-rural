@@ -3,20 +3,16 @@ package com.sindicato.MB.permissao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.persistence.EntityManager;
 
 import org.primefaces.component.password.Password;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.dao.UsuarioDAO;
-import com.sindicato.dao.impl.ListasDAOImpl;
-import com.sindicato.dao.impl.UsuarioDAOImpl;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
 
@@ -28,9 +24,8 @@ public class UsuarioBean implements Serializable {
 
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 
-	private EntityManager em;
-	private UsuarioDAO usuarioDAO;
-	private ListasDAO listasDAO;
+	@EJB private UsuarioDAO usuarioDAO;
+	@EJB private ListasDAO listasDAO;
 
 	private Usuario usuarioSelecionado;
 	private List<Usuario> usuarios;
@@ -42,14 +37,6 @@ public class UsuarioBean implements Serializable {
 	private String senhaNova;
 	private Password senhaComponent;
 	
-	
-	@PostConstruct
-	public void init() {
-		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-
-		usuarioDAO = new UsuarioDAOImpl(em);
-		listasDAO = new ListasDAOImpl(em);
-	}
 
 	public void alterTab(int newTab) {
 		indexTab = newTab;

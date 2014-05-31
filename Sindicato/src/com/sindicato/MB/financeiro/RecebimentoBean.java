@@ -3,18 +3,14 @@ package com.sindicato.MB.financeiro;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.persistence.EntityManager;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
-import com.sindicato.dao.impl.FinanceiroDAOImpl;
-import com.sindicato.dao.impl.ListasDAOImpl;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.Recebimento;
@@ -28,9 +24,8 @@ public class RecebimentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager em;
-	private ListasDAO listasDAO;
-	private FinanceiroDAO financeiroDAO;
+	@EJB private ListasDAO listasDAO;
+	@EJB private FinanceiroDAO financeiroDAO;
 
 	private Recebimento recebimento;
 	
@@ -41,12 +36,6 @@ public class RecebimentoBean implements Serializable {
 
 	private int indexTab;
 
-	@PostConstruct
-	public void init() {
-		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-		listasDAO = new ListasDAOImpl(em);
-		financeiroDAO = new FinanceiroDAOImpl(em);
-	}
 
 	public void alterTab(int newTab) {
 		indexTab = newTab;

@@ -3,18 +3,14 @@ package com.sindicato.MB.permissao;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.persistence.EntityManager;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.dao.PerfilDAO;
-import com.sindicato.dao.impl.ListasDAOImpl;
-import com.sindicato.dao.impl.PerfilDAOImpl;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 
@@ -24,9 +20,8 @@ public class PerfilBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private EntityManager em;
-	private PerfilDAO perfilDAO;
-	private ListasDAO listasDAO;
+	@EJB private PerfilDAO perfilDAO;
+	@EJB private ListasDAO listasDAO;
 
 	private Perfil perfilSelecionado;
 	private List<Perfil> perfis;
@@ -35,13 +30,6 @@ public class PerfilBean implements Serializable {
 
 	private int indexTab;
 
-	@PostConstruct
-	public void init() {
-		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-
-		perfilDAO = new PerfilDAOImpl(em);
-		listasDAO = new ListasDAOImpl(em);
-	}
 
 	public void novo() {
 		this.reset();

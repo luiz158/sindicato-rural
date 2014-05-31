@@ -7,12 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,13 +23,9 @@ import org.primefaces.component.commandbutton.CommandButton;
 
 import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.dao.ServicoDAO;
-import com.sindicato.dao.impl.FinanceiroDAOImpl;
-import com.sindicato.dao.impl.ListasDAOImpl;
-import com.sindicato.dao.impl.ServicoDAOImpl;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.Servico;
@@ -46,10 +41,9 @@ public class ManutencaoNotaBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 
-	private EntityManager em;
-	private ListasDAO listasDAO;
-	private FinanceiroDAO financeiroDAO;
-	private ServicoDAO servicoDAO;
+	@EJB private ListasDAO listasDAO;
+	@EJB private FinanceiroDAO financeiroDAO;
+	@EJB private ServicoDAO servicoDAO;
 
 	private List<Servico> servicos;
 
@@ -62,14 +56,6 @@ public class ManutencaoNotaBean implements Serializable {
 
 	private CommandButton botaoImprimir;
 	
-	@PostConstruct
-	public void init() {
-		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-		listasDAO = new ListasDAOImpl(em);
-		financeiroDAO = new FinanceiroDAOImpl(em);
-		servicoDAO = new ServicoDAOImpl(em);
-	}
-
 	public void alterTab(int newTab) {
 		indexTab = newTab;
 	}

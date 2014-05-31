@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Cadastros" url="#" />
+			<p:menuitem value="Sindicato" url="#" />
+		</p:breadCrumb>
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" />
+			<p:fieldset legend="Informações basicas" style="margin-top:15px;">
+				<p:panelGrid styleClass="panelForm"
+					style="width:80%;margin-top:20px;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:250px;">
+							<p:outputLabel value="Razão Social" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.razaoSocial}"
+								required="true" requiredMessage="Campo Obrigatório" size="30" />
+						</p:column>
+					</p:row>
+					<p:row>
+
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="CNPJ" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.cnpj}"
+								styleClass="cnpj" size="20" />
+						</p:column>
+
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Carta Sindical" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.cartaSindical}"
+								size="30" />
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+
+			<p:fieldset legend="Endereço" style="margin-top:15px;">
+				<p:panelGrid styleClass="panelForm"
+					style="width:80%;margin-top:20px;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:250px;">
+							<p:outputLabel value="CEP" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.cep}"
+								styleClass="cep" size="10" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Endereço" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.endereco}" size="70" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Bairro" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.bairro}" size="40" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Cidade" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.cidade}" size="40" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Estado" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:selectOneMenu value="#{sindicatoBean.empresa.estado}">
+								<f:selectItem itemLabel="São Paulo" itemValue="SP" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<p:fieldset legend="Informações de contato" style="margin-top:15px;">
+				<p:panelGrid styleClass="panelForm"
+					style="width:80%;margin-top:20px;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:250px;">
+							<p:outputLabel value="Telefone" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.telefone}"
+								styleClass="telefone" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Telefone 2" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.telefone2}"
+								styleClass="telefone" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Fax" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.fax}"
+								styleClass="telefone" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="E-mail" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{sindicatoBean.empresa.email}" size="35" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton action="#{sindicatoBean.salvar}" update="@form"
+					value="Salvar alterações" style="width:200px;height:50px;" />
+			</div>
+
+
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -8,12 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -23,11 +22,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.EntityManagerFactorySingleton;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
-import com.sindicato.dao.impl.FinanceiroDAOImpl;
-import com.sindicato.dao.impl.ListasDAOImpl;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
@@ -43,9 +39,8 @@ public class NotaCobrancaBean implements Serializable {
 
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 	
-	private EntityManager em;
-	private FinanceiroDAO financeiroDAO;
-	private ListasDAO listasDAO;
+	@EJB private FinanceiroDAO financeiroDAO;
+	@EJB private ListasDAO listasDAO;
 
 	private List<Cliente> clientes;
 	private List<Debito> debitos;
@@ -54,13 +49,6 @@ public class NotaCobrancaBean implements Serializable {
 
 	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-	@PostConstruct
-	public void init() {
-		em = EntityManagerFactorySingleton.getInstance().createEntityManager();
-		financeiroDAO = new FinanceiroDAOImpl(em);
-		listasDAO = new ListasDAOImpl(em);
-
-	}
 
 	public void selecionaCliente() {
 		debitos = listasDAO.getDebitosDoClienteNoStatus(clienteSelecionado,
