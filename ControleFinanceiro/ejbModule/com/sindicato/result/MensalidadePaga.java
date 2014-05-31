@@ -1,9 +1,11 @@
 package com.sindicato.result;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class MensalidadePaga {
+public class MensalidadePaga implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private Calendar dataPagamento;
 	private String descricaoMensalidade;
 

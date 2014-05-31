@@ -1,7 +1,10 @@
 package com.sindicato.result;
 
-public class InformacaoMensalidade {
+import java.io.Serializable;
 
+public class InformacaoMensalidade implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private boolean atrasado;
 	private int mensalidadesPagas;
 	private int mesesComoSocio;

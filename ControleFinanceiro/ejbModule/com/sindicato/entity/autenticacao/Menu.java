@@ -1,5 +1,7 @@
 package com.sindicato.entity.autenticacao;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,7 +12,9 @@ import javax.persistence.SequenceGenerator;
 
 @Entity
 @SequenceGenerator(allocationSize=1, name="seqMenu", sequenceName="SEQ_MENU")
-public class Menu {
+public class Menu implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqMenu")

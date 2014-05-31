@@ -1,6 +1,11 @@
 package com.sindicato.result;
 
-public class ResultOperation {
+import java.io.Serializable;
+
+public class ResultOperation implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 
 	public ResultOperation() { }
 	public ResultOperation(boolean success, String message) { 

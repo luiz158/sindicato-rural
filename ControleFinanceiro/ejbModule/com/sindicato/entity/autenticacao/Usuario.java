@@ -1,5 +1,6 @@
 package com.sindicato.entity.autenticacao;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +17,10 @@ import com.sindicato.entity.Empresa;
 
 @Entity
 @SequenceGenerator(allocationSize=1, name="seqUsuario", sequenceName="SEQ_USUARIO")
-public class Usuario {
+public class Usuario implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqUsuario")
 	private int id;
