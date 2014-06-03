@@ -34,7 +34,7 @@ public class LazyDebitoDataModel extends LazyDataModel<Debito> {
         }
         return null;
     }
- 
+
     @Override
     public Object getRowKey(Debito debito) {
         return debito.getId();

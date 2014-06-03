@@ -70,9 +70,11 @@ public class RecolhimentoBean implements Serializable {
 
 	private void mergeServicosComRetencao() {
 		for (DebitoServico debito : servicosComRetencao) {
-			debitoSelecionado.getDebitoServicos().stream()
-					.filter(deb -> deb.getId() == debito.getId()).findFirst()
-					.get().setRecolhimento(debito.getRecolhimento());
+			for(DebitoServico debitoSelecionado : debitoSelecionado.getDebitoServicos()){
+				if(debitoSelecionado.equals(debito)){
+					debitoSelecionado.setRecolhimento(debito.getRecolhimento());
+				}
+			}
 		}
 	}
 
