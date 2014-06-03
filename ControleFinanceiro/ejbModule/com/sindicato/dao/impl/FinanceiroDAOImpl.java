@@ -63,20 +63,16 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 		}
 		
 		try {
-			em.getTransaction().begin();
-			
 			if(debito.getId() == 0){
 				em.persist(debito);
 			}else{
 				em.merge(debito);
 			}
 			
-			em.getTransaction().commit();
 			result.setMessage("Debito foi gravado com sucesso.");
 			result.setSuccess(true);
 		} catch (Exception e) {
 			e.printStackTrace();
-			em.getTransaction().rollback();
 			result.setSuccess(false);
 			result.setMessage("Debito não foi gravado com sucesso. Contate o administrados do sistema.");
 		}
@@ -88,16 +84,11 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 		ResultOperation result = new ResultOperation();
 		try {
 			debito.setStatus(status);
-			
-			em.getTransaction().begin();
 			em.merge(debito);
-			em.getTransaction().commit();
-			
 			result.setSuccess(true);
 			result.setMessage("Status do debito foi alterado com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			em.getTransaction().rollback();
 			result.setSuccess(false);
 			result.setMessage("Status do debito não foi alterado com sucesso. Contate o administrador do sistema.");
 		}

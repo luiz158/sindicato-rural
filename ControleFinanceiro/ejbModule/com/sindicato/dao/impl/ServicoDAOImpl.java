@@ -33,10 +33,8 @@ public class ServicoDAOImpl implements ServicoDAO {
 			result.setSuccess(false);
 		} else {
 			try {
-				em.getTransaction().begin();
 				em.merge(servico);
 				em.remove(servico);
-				em.getTransaction().commit();
 
 				result.setMessage("Serviço removido com sucesso.");
 				result.setSuccess(true);
@@ -51,9 +49,7 @@ public class ServicoDAOImpl implements ServicoDAO {
 	
 	@Override
 	public void insert(Servico entity) {
-		em.getTransaction().begin();
 		em.persist(entity);
-		em.getTransaction().commit();
 		
 	}
 	
@@ -64,9 +60,7 @@ public class ServicoDAOImpl implements ServicoDAO {
 
 	@Override
 	public void update(Servico entity) {
-		em.getTransaction().begin();
 		em.merge(entity);
-		em.getTransaction().commit();
 	}
 
 	@Override

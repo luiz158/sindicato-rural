@@ -15,7 +15,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.swing.SortOrder;
 
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.entity.Cliente;
@@ -72,29 +71,23 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	@Override
 	public void update(Cliente cliente) {
 		try {
-			em.getTransaction().begin();
 			em.merge(cliente);
 			if (this.isSocio(cliente) != cliente.isSocio()) {
 				inseriRegistroSocio(cliente);
 			}
-			em.getTransaction().commit();
 		} catch (Exception e) {
 			e.printStackTrace();
-			em.getTransaction().rollback();
 		}
 	}
 
 	@Override
 	public void insert(Cliente cliente) {
 		try {
-			em.getTransaction().begin();
 			em.persist(cliente);
 			if (cliente.isSocio()) {
 				inseriRegistroSocio(cliente);
 			}
-			em.getTransaction().commit();
 		} catch (Exception e) {
-			em.getTransaction().rollback();
 			e.printStackTrace();
 		}
 	}
@@ -146,12 +139,12 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 			if(i % 2 > 0){
 				dataVirouSocio = LocalDate.of(
 						informacaoSocio.getDataEvento().get(Calendar.YEAR), 
-						informacaoSocio.getDataEvento().get(Calendar.MONTH), 
+						informacaoSocio.getDataEvento().get(Calendar.MONTH) + 1, 
 						informacaoSocio.getDataEvento().get(Calendar.DAY_OF_MONTH));
 			}else{
 				dataDeixouDeSerSocio = LocalDate.of(
 						informacaoSocio.getDataEvento().get(Calendar.YEAR), 
-						informacaoSocio.getDataEvento().get(Calendar.MONTH), 
+						informacaoSocio.getDataEvento().get(Calendar.MONTH) + 1, 
 						informacaoSocio.getDataEvento().get(Calendar.DAY_OF_MONTH)); 
 				calcula = true;
 			}
@@ -264,7 +257,7 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	}
 
 	@Override
-	public int count(Map<String, String> filters) {
+	public int count(Map<String, Object> filters) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
 		Root<Cliente> myObj = cq.from(Cliente.class);
@@ -274,9 +267,9 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	}
 
 	private Predicate getFilterCondition(CriteriaBuilder cb,
-			Root<Cliente> myObj, Map<String, String> filters) {
+			Root<Cliente> myObj, Map<String, Object> filters) {
 		Predicate filterCondition = cb.conjunction();
-		for (Map.Entry<String, String> filter : filters.entrySet()) {
+		for (Map.Entry<String, Object> filter : filters.entrySet()) {
 
 			if (!filter.getValue().equals("")) {
 				javax.persistence.criteria.Path<String> path = myObj.get(filter
@@ -286,7 +279,7 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 					String columnType = myObj.get(filter.getKey())
 							.getJavaType().toString();
 					if (columnType.contains("String")) {
-						String value = "%" + filter.getValue().toUpperCase()
+						String value = "%" + filter.getValue().toString().toUpperCase()
 								+ "%";
 						filterCondition = cb.and(filterCondition,
 								cb.like(cb.upper(path), value));
@@ -305,15 +298,15 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 
 	@Override
 	public List<Cliente> getResultListFiltered(int first, int pageSize,
-			String sortField, SortOrder sortOrder, Map<String, String> filters) {
+			String sortField, String sortOrder, Map<String, Object> filters) {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Cliente> cq = cb.createQuery(Cliente.class);
 		Root<Cliente> myObj = cq.from(Cliente.class);
 		cq.where(this.getFilterCondition(cb, myObj, filters));
 		if (sortField != null) {
-			if (sortOrder == SortOrder.ASCENDING) {
+			if (sortOrder == "ASCENDING") {
 				cq.orderBy(cb.asc(myObj.get(sortField)));
-			} else if (sortOrder == SortOrder.DESCENDING) {
+			} else if (sortOrder == "DESCENDING") {
 				cq.orderBy(cb.desc(myObj.get(sortField)));
 			}
 		}
