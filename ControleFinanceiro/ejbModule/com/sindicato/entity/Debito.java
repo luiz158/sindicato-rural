@@ -2,13 +2,14 @@ package com.sindicato.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,15 +32,15 @@ public class Debito implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqDebito")
 	private int id;
 	
-	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true)
-	private List<DebitoServico> debitoServicos;
+	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true, fetch=FetchType.EAGER)
+	private Set<DebitoServico> debitoServicos;
 	@Transient
 	private BigDecimal totalDebitos;
 	@Transient
 	private BigDecimal totalDebitosComRetencao;
 	
-	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true)
-	private List<Recebimento> recebimentos;
+	@OneToMany(targetEntity=Recebimento.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true, fetch=FetchType.EAGER)
+	private Set<Recebimento> recebimentos;
 
 	@ManyToOne
 	private Cliente cliente;
@@ -82,15 +83,15 @@ public class Debito implements Serializable {
 	public StatusDebitoEnum getStatus() {
 		return status;
 	}
-	public List<DebitoServico> getDebitoServicos() {
+	public Set<DebitoServico> getDebitoServicos() {
 		if(debitoServicos == null){
-			debitoServicos = new ArrayList<DebitoServico>();
+			debitoServicos = new HashSet<DebitoServico>();
 		}
 		return debitoServicos;
 	}
-	public List<Recebimento> getRecebimentos() {
+	public Set<Recebimento> getRecebimentos() {
 		if(recebimentos == null){
-			recebimentos = new ArrayList<Recebimento>();
+			recebimentos = new HashSet<Recebimento>();
 		}
 		return recebimentos;
 	}
@@ -118,10 +119,10 @@ public class Debito implements Serializable {
 	public void setStatus(StatusDebitoEnum status) {
 		this.status = status;
 	}
-	public void setDebitoServicos(List<DebitoServico> debitoServicos) {
+	public void setDebitoServicos(Set<DebitoServico> debitoServicos) {
 		this.debitoServicos = debitoServicos;
 	}
-	public void setRecebimentos(List<Recebimento> recebimentos) {
+	public void setRecebimentos(Set<Recebimento> recebimentos) {
 		this.recebimentos = recebimentos;
 	}
 	

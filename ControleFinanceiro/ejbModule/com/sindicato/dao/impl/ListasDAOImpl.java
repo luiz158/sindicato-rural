@@ -51,9 +51,9 @@ public class ListasDAOImpl implements ListasDAO {
 	}
 
 	@Override
-	public List<Debito> getDebitosNoStatus(StatusDebitoEnum status) {
+	public List<Debito> getDebitosNoStatus(List<StatusDebitoEnum> status) {
 		try {
-			String strQuery = " select d from Debito d where d.status = :status ";
+			String strQuery = " select d from Debito d where d.status in (:status) ";
 			TypedQuery<Debito> query = em.createQuery(strQuery, Debito.class);
 			query.setParameter("status", status);
 			return query.getResultList();

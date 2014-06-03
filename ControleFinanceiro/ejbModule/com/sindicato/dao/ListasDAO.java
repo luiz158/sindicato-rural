@@ -18,7 +18,7 @@ public interface ListasDAO {
 
 	List<Cliente> getClientesComDebitosNoStatus(StatusDebitoEnum status);
 	List<Debito> getDebitosDoClienteNoStatus(Cliente cliente, StatusDebitoEnum status);
-	List<Debito> getDebitosNoStatus(StatusDebitoEnum status);
+	List<Debito> getDebitosNoStatus(List<StatusDebitoEnum> status);
 	
 	List<Debito> getTodasNotasDeCobranca();
 	
