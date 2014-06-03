@@ -3,6 +3,7 @@ package com.sindicato.MB.financeiro;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
@@ -31,6 +33,7 @@ import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.Servico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.lazyDataModel.LazyDebitoDataModel;
 import com.sindicato.result.ResultOperation;
 import com.sindicato.util.Extenso;
 
@@ -48,7 +51,7 @@ public class ManutencaoNotaBean implements Serializable {
 	private List<Servico> servicos;
 
 	private Debito debitoSelecionado;
-	private List<Debito> debitos;
+	private LazyDataModel<Debito> debitos;
 
 	private DebitoServico debitoServico;
 	
@@ -183,8 +186,15 @@ public class ManutencaoNotaBean implements Serializable {
 		return debitoSelecionado;
 	}
 
-	public List<Debito> getDebitos() {
-		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.NOTACOBRANCAGERADA);
+	public LazyDataModel<Debito> getDebitos() {
+		if(debitos == null){
+			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
+			statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
+			statusPermitido.add(StatusDebitoEnum.RECEBIDO);
+			statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
+			
+			debitos = new LazyDebitoDataModel(statusPermitido);
+		}
 		return debitos;
 	}
  
@@ -225,7 +235,7 @@ public class ManutencaoNotaBean implements Serializable {
 		this.debitoSelecionado = debitoSelecionado;
 	}
 
-	public void setDebitos(List<Debito> debitos) {
+	public void setDebitos(LazyDataModel<Debito> debitos) {
 		this.debitos = debitos;
 	}
 

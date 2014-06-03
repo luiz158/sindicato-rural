@@ -158,7 +158,7 @@ public class ClienteBean implements Serializable {
 
 	public LazyDataModel<Cliente> getClientes() {
 		if(clientes == null){
-			clientes = new LazyClienteDataModel(clienteDAO.getAll());
+			clientes = new LazyClienteDataModel();
 		}
 		return clientes;
 	}

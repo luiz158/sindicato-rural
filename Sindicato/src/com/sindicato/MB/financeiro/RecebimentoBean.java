@@ -1,12 +1,15 @@
 package com.sindicato.MB.financeiro;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
+import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.FinanceiroDAO;
@@ -16,6 +19,7 @@ import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.Recebimento;
 import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.lazyDataModel.LazyDebitoDataModel;
 import com.sindicato.result.ResultOperation;
 
 @ManagedBean
@@ -30,7 +34,7 @@ public class RecebimentoBean implements Serializable {
 	private Recebimento recebimento;
 	
 	private Debito debitoSelecionado;
-	private List<Debito> debitos;
+	private LazyDataModel<Debito> debitos;
 	private List<DestinoRecebimento> destinos;
 	private List<TipoRecebimento> tiposRecebimento;
 
@@ -78,8 +82,12 @@ public class RecebimentoBean implements Serializable {
 		return debitoSelecionado;
 	}
 
-	public List<Debito> getDebitos() {
-		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.NOTACOBRANCAGERADA);
+	public LazyDataModel<Debito> getDebitos() {
+		if(debitos == null){
+			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
+			statusPermitido.add(StatusDebitoEnum.RECEBIDO);
+			debitos = new LazyDebitoDataModel(statusPermitido);
+		}
 		return debitos;
 	}
 	public Recebimento getRecebimento() {
@@ -115,7 +123,7 @@ public class RecebimentoBean implements Serializable {
 	public void setDebitoSelecionado(Debito debitoSelecionado) {
 		this.debitoSelecionado = debitoSelecionado;
 	}
-	public void setDebitos(List<Debito> debitos) {
+	public void setDebitos(LazyDataModel<Debito> debitos) {
 		this.debitos = debitos;
 	}
 	public void setIndexTab(int indexTab) {

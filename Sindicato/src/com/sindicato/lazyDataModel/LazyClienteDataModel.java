@@ -19,8 +19,7 @@ public class LazyClienteDataModel extends LazyDataModel<Cliente> {
  
 	private ClienteDAO clienteDAO;
 	
-    public LazyClienteDataModel(List<Cliente> datasource) {
-        this.datasource = datasource;
+    public LazyClienteDataModel() {
 		clienteDAO = (ClienteDAO) UtilBean.getClassLookup("ControleFinanceiro/ClienteDAOImpl");
     }
      
@@ -35,21 +34,21 @@ public class LazyClienteDataModel extends LazyDataModel<Cliente> {
     }
  
     @Override
-    public Object getRowKey(Cliente Cliente) {
-        return Cliente.getId();
+    public Object getRowKey(Cliente cliente) {
+        return cliente.getId();
     }
  
     @Override
     public List<Cliente> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) {
         
     	//filter
-    	List<Cliente> data = clienteDAO.getResultListFiltered(first, pageSize, sortField, sortOrder.toString(), filters);
+    	datasource = clienteDAO.getResultListFiltered(first, pageSize, sortField, sortOrder.toString(), filters);
  
         //rowCount
         this.setRowCount(clienteDAO.count(filters));
  
         //paginate
-        return data;
+        return datasource;
     }
 
 	@Override

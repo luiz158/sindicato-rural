@@ -5,8 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.PerfilDAO;
-import com.sindicato.dao.impl.PerfilDAOImpl;
 import com.sindicato.entity.autenticacao.Perfil;
 
 @FacesConverter(value = "PerfilConverter")
@@ -21,7 +21,7 @@ public class PerfilConverter implements Converter {
 			return perfil;
 		}
 		try {
-			perfilDAO = new PerfilDAOImpl();
+			perfilDAO = (PerfilDAO) UtilBean.getClassLookup("ControleFinanceiro/PerfilDAOImpl");
 			perfil = perfilDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

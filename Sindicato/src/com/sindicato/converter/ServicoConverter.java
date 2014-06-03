@@ -5,8 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ServicoDAO;
-import com.sindicato.dao.impl.ServicoDAOImpl;
 import com.sindicato.entity.Servico;
 
 @FacesConverter(value = "ServicoConverter")
@@ -21,7 +21,7 @@ public class ServicoConverter implements Converter {
 			return servico;
 		}
 		try {
-			servicoDAO = new ServicoDAOImpl();
+			servicoDAO = (ServicoDAO) UtilBean.getClassLookup("ControleFinanceiro/ServicoDAOImpl");
 			servico = servicoDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

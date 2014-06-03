@@ -25,26 +25,25 @@
 						rowKey="#{debito.id}" paginator="true" rows="10"
 						paginatorPosition="bottom"
 						selection="#{recebimentoBean.debitoSelecionado}"
-						selectionMode="single" id="debitos">
+						selectionMode="single" id="debitos" lazy="true" 
+						resizableColumns="true" emptyMessage="Nenhum nota de cobrança aguardando recebimento">
 
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{recebimentoBean.alterTab(1)}" />
 
-						<p:column headerText="Número da nota" sortBy="id" filterBy="id">
+						<p:column headerText="Número da nota" sortBy="#{debito.id}" filterBy="#{debito.id}">
 							<p:outputLabel value="#{debito.id}" />
 						</p:column>
-						<p:column headerText="Nome do cliente" sortBy="cliente.nome"
-							filterBy="cliente.nome">
+						<p:column headerText="Nome do cliente" sortBy="#{debito.cliente.nome}"
+							filterBy="#{debito.cliente.nome}">
 							<p:outputLabel value="#{debito.cliente.nome}" />
 						</p:column>
-						<p:column headerText="Data base" sortBy="dataBase"
-							filterBy="dataBase">
+						<p:column headerText="Data base" sortBy="#{debito.dataBase}" >
 							<p:outputLabel value="#{debito.dataBase.time}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
-						<p:column headerText="Valor" sortBy="totalDebitos"
-							filterBy="totalDebitos">
+						<p:column headerText="Valor" >
 							<p:outputLabel value="#{debito.totalDebitos}">
 								<f:convertNumber locale="pt_BR" type="currency"
 									currencySymbol="R$ " />

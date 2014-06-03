@@ -9,6 +9,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.model.LazyDataModel;
+
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
@@ -17,6 +19,7 @@ import com.sindicato.entity.Debito;
 import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.ModoPagamento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.lazyDataModel.LazyDebitoDataModel;
 import com.sindicato.result.ResultOperation;
 
 @ManagedBean
@@ -25,13 +28,16 @@ public class RecolhimentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@EJB private ListasDAO listasDAO;
-	@EJB private FinanceiroDAO financeiroDAO;
-	@EJB private ModoPagamentoDAO modoPagamentoDAO;
+	@EJB
+	private ListasDAO listasDAO;
+	@EJB
+	private FinanceiroDAO financeiroDAO;
+	@EJB
+	private ModoPagamentoDAO modoPagamentoDAO;
 
 	private Debito debitoSelecionado;
 	private List<DebitoServico> servicosComRetencao;
-	private List<Debito> debitos;
+	private LazyDataModel<Debito> debitos;
 	private List<ModoPagamento> modosPagamento;
 
 	private int indexTab;
@@ -47,8 +53,9 @@ public class RecolhimentoBean implements Serializable {
 	public void salvar() {
 		try {
 			this.mergeServicosComRetencao();
-			ResultOperation result = financeiroDAO.registrarRecolhimentos(debitoSelecionado);
-			if(result.isSuccess()){
+			ResultOperation result = financeiroDAO
+					.registrarRecolhimentos(debitoSelecionado);
+			if (result.isSuccess()) {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", result.getMessage());
 				this.reset();
@@ -61,56 +68,67 @@ public class RecolhimentoBean implements Serializable {
 		}
 	}
 
-	private void mergeServicosComRetencao(){
+	private void mergeServicosComRetencao() {
 		for (DebitoServico debito : servicosComRetencao) {
-			int index = debitoSelecionado.getDebitoServicos().indexOf(debito);
-			debitoSelecionado.getDebitoServicos().get(index).setRecolhimento(debito.getRecolhimento());
+			debitoSelecionado.getDebitoServicos().stream()
+					.filter(deb -> deb.getId() == debito.getId()).findFirst()
+					.get().setRecolhimento(debito.getRecolhimento());
 		}
 	}
-	
+
 	public Debito getDebitoSelecionado() {
-		if(debitoSelecionado == null){
+		if (debitoSelecionado == null) {
 			debitoSelecionado = new Debito();
 		}
 		return debitoSelecionado;
 	}
 
-	public List<Debito> getDebitos() {
-		debitos = listasDAO.getDebitosNoStatus(StatusDebitoEnum.RECEBIDO);
+	public LazyDataModel<Debito> getDebitos() {
+		if (debitos == null) {
+			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
+			statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
+			debitos = new LazyDebitoDataModel(statusPermitido);
+		}
 		return debitos;
 	}
+
 	public int getIndexTab() {
 		return indexTab;
 	}
+
 	public List<ModoPagamento> getModosPagamento() {
-		if(modosPagamento == null){
+		if (modosPagamento == null) {
 			modosPagamento = modoPagamentoDAO.getAll();
 		}
 		return modosPagamento;
 	}
+
 	public List<DebitoServico> getServicosComRetencao() {
 		servicosComRetencao = new ArrayList<DebitoServico>();
 		for (DebitoServico debito : debitoSelecionado.getDebitoServicos()) {
-			if(debito.getServico().isRetencao()){
+			if (debito.getServico().isRetencao()) {
 				servicosComRetencao.add(debito);
 			}
 		}
 		return servicosComRetencao;
 	}
 
-	public void setServicosComRetencao(
-			List<DebitoServico> servicosComRetencao) {
+	public void setServicosComRetencao(List<DebitoServico> servicosComRetencao) {
 		this.servicosComRetencao = servicosComRetencao;
 	}
+
 	public void setModosPagamento(List<ModoPagamento> modosPagamento) {
 		this.modosPagamento = modosPagamento;
 	}
+
 	public void setDebitoSelecionado(Debito debitoSelecionado) {
 		this.debitoSelecionado = debitoSelecionado;
 	}
-	public void setDebitos(List<Debito> debitos) {
+
+	public void setDebitos(LazyDataModel<Debito> debitos) {
 		this.debitos = debitos;
 	}
+
 	public void setIndexTab(int indexTab) {
 		this.indexTab = indexTab;
 	}

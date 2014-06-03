@@ -5,8 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ModoPagamentoDAO;
-import com.sindicato.dao.impl.ModoPagamentoDAOImpl;
 import com.sindicato.entity.ModoPagamento;
 
 @FacesConverter(value = "ModoPagamentoConverter")
@@ -21,7 +21,7 @@ public class ModoPagamentoConverter implements Converter {
 			return modo;
 		}
 		try {
-			modoPagamentoDAO = new ModoPagamentoDAOImpl();
+			modoPagamentoDAO = (ModoPagamentoDAO) UtilBean.getClassLookup("ControleFinanceiro/ModoPagamentoDAOImpl");
 			modo = modoPagamentoDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

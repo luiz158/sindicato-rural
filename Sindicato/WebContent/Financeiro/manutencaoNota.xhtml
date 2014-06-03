@@ -23,26 +23,30 @@
 
 					<p:dataTable var="debito" value="#{manutencaoNotaBean.debitos}"
 						rowKey="#{debito.id}" paginator="true" rows="10"
-						paginatorPosition="bottom"
+						paginatorPosition="bottom" widgetVar="debitos"
 						selection="#{manutencaoNotaBean.debitoSelecionado}"
-						selectionMode="single" id="debitos">
+						selectionMode="single" id="debitos" lazy="true"
+						draggableColumns="true"
+						emptyMessage="Nenhuma nota de cobrança encontrada"
+						resizableColumns="true">
 
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{manutencaoNotaBean.alterTab(1)}" />
 
-						<p:column headerText="Número da nota" sortBy="id" filterBy="id">
+						<p:column headerText="Número da nota" sortBy="#{debito.id}"
+							filterBy="#{debito.id}">
 							<p:outputLabel value="#{debito.id}" />
 						</p:column>
-						<p:column headerText="Nome do cliente" sortBy="cliente.nome"
-							filterBy="cliente.nome">
+						<p:column headerText="Nome do cliente"
+							sortBy="#{debito.cliente.nome}" filterBy="#{debito.cliente.nome}">
 							<p:outputLabel value="#{debito.cliente.nome}" />
 						</p:column>
-						<p:column headerText="Cpf do cliente" sortBy="cliente.cpf"
-							filterBy="cliente.cpf">
+						<p:column headerText="CPF" sortBy="#{debito.cliente.cpf}"
+							filterBy="#{debito.cliente.cpf}">
 							<p:outputLabel value="#{debito.cliente.cpf}" />
 						</p:column>
-						<p:column headerText="Data base" sortBy="dataBase"
-							filterBy="dataBase">
+						<p:column headerText="Data base" sortBy="#{debito.dataBase}">
+
 							<p:outputLabel value="#{debito.dataBase.time}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
@@ -186,7 +190,7 @@
 						<p:commandButton
 							action="#{manutencaoNotaBean.imprimirNotaCobranca}"
 							id="btnImprimir" icon="ui-icon-print" ajax="false"
-							binding="#{manutencaoNotaBean.botaoImprimir}" value="Imprimir" >
+							binding="#{manutencaoNotaBean.botaoImprimir}" value="Imprimir">
 						</p:commandButton>
 
 						<p:commandButton action="#{manutencaoNotaBean.salvar}"

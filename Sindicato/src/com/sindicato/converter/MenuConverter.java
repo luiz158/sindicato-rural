@@ -5,8 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.MenuDAO;
-import com.sindicato.dao.impl.MenuDAOImpl;
 import com.sindicato.entity.autenticacao.Menu;
 
 @FacesConverter(value = "MenuConverter")
@@ -21,7 +21,7 @@ public class MenuConverter implements Converter {
 			return menu;
 		}
 		try {
-			menuDAO = new MenuDAOImpl();
+			menuDAO = (MenuDAO) UtilBean.getClassLookup("ControleFinanceiro/MenuDAOImpl");
 			menu = menuDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();
