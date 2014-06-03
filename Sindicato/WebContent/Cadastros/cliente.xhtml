@@ -30,8 +30,7 @@
 				<h:form id="listaClientes">
 					<p:dataTable var="cli" value="#{clienteBean.clientes}"
 						rowKey="#{cli.id}" paginator="true" rows="15"
-						paginatorPosition="bottom"
-						rowsPerPageTemplate="10,50,100"
+						paginatorPosition="bottom" rowsPerPageTemplate="10,50,100"
 						selection="#{clienteBean.clienteSelecionado}"
 						selectionMode="single" id="clientes" draggableColumns="true"
 						emptyMessage="Nenhum cliente encontrado" lazy="true">
@@ -39,15 +38,18 @@
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{clienteBean.selecionaCliente}" />
 
-						<p:column headerText="Código" sortBy="#{cli.id}" filterBy="#{cli.id}" width="120">
+						<p:column headerText="Código" sortBy="#{cli.id}"
+							filterBy="#{cli.id}" width="120">
 							<p:outputLabel value="#{cli.id}" />
 						</p:column>
 
-						<p:column headerText="CPF" sortBy="#{cli.cpf}" filterBy="#{cli.cpf}" width="120">
+						<p:column headerText="CPF" sortBy="#{cli.cpf}"
+							filterBy="#{cli.cpf}" width="120">
 							<p:outputLabel value="#{cli.cpf}" />
 						</p:column>
 
-						<p:column headerText="Nome" sortBy="#{cli.nome}" filterBy="#{cli.nome}">
+						<p:column headerText="Nome" sortBy="#{cli.nome}"
+							filterBy="#{cli.nome}">
 							<p:outputLabel value="#{cli.nome}" />
 						</p:column>
 
@@ -56,7 +58,8 @@
 							<p:outputLabel value="#{cli.telefone}" />
 						</p:column>
 
-						<p:column headerText="É sócio?" width="70" style="text-align:center;">
+						<p:column headerText="É sócio?" width="70"
+							style="text-align:center;">
 							<p:outputLabel value="Sim" rendered="#{cli.socio == true}" />
 							<p:outputLabel value="Não" rendered="#{cli.socio == false}" />
 						</p:column>
@@ -604,9 +607,17 @@
 
 							<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
 								value="#{clienteBean.mensalidadesPagas}">
+
 								<p:column headerText="Data do pagamento">
 									<h:outputText value="#{inf.dataPagamento.time}">
 										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</p:column>
+
+								<p:column headerText="Valor pago">
+									<h:outputText value="#{inf.valor}">
+										<f:convertNumber locale="pt_BR" type="currency"
+											currencySymbol="R$ " />
 									</h:outputText>
 								</p:column>
 

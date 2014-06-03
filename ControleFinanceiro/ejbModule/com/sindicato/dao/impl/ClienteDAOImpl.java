@@ -1,5 +1,6 @@
 package com.sindicato.dao.impl;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -227,14 +228,14 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	public List<MensalidadePaga> getInformacoesMensalidade(Cliente cliente) {
 
 		String strQuery = " select "
-				+ " ds.servico.descricao, ds.debito.dataEmissaoNotaCobranca "
+				+ " ds.servico.descricao, ds.debito.dataBase, ds.valor "
 				+ " from DebitoServico ds "
 				+ " where ds.debito.cliente = :cliente "
 				+ " and ds.servico.mensalidade = :mensalidade"
 				+ " and ds.debito.status in (:status)";
 
 		List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
-		statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
+		//statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
 		statusPermitido.add(StatusDebitoEnum.RECEBIDO);
 		statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
 
@@ -249,7 +250,8 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 			MensalidadePaga inf = new MensalidadePaga();
 			inf.setDataPagamento((Calendar) objects[1]);
 			inf.setDescricaoMensalidade(objects[0].toString());
-
+			inf.setValor((BigDecimal) objects[2]);
+			
 			mensalidadesPagas.add(inf);
 		}
 
