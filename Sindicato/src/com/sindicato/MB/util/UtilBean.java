@@ -4,6 +4,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
 import com.sindicato.MB.seguranca.LoginBean;
@@ -70,6 +72,17 @@ public class UtilBean {
             return object;
         }
 		return null;
+	}
+	
+	public static Object getClassLookup(String lookup){
+		InitialContext ic;
+		try {
+			ic = new InitialContext();
+			return ic.lookup("java:global/Sindicato-ear/" + lookup);
+		} catch (NamingException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 }

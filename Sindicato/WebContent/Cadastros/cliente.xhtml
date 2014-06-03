@@ -39,20 +39,20 @@
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{clienteBean.selecionaCliente}" />
 
-						<p:column headerText="Código" sortBy="id" filterBy="id" width="5">
+						<p:column headerText="Código" sortBy="#{cli.id}" filterBy="#{cli.id}" width="120">
 							<p:outputLabel value="#{cli.id}" />
 						</p:column>
 
-						<p:column headerText="CPF" sortBy="cpf" filterBy="cpf" width="120">
+						<p:column headerText="CPF" sortBy="#{cli.cpf}" filterBy="#{cli.cpf}" width="120">
 							<p:outputLabel value="#{cli.cpf}" />
 						</p:column>
 
-						<p:column headerText="Nome" sortBy="nome" filterBy="nome">
+						<p:column headerText="Nome" sortBy="#{cli.nome}" filterBy="#{cli.nome}">
 							<p:outputLabel value="#{cli.nome}" />
 						</p:column>
 
-						<p:column headerText="Telefone" sortBy="telefone"
-							filterBy="telefone" width="120">
+						<p:column headerText="Telefone" sortBy="#{cli.telefone}"
+							filterBy="#{cli.telefone}" width="120">
 							<p:outputLabel value="#{cli.telefone}" />
 						</p:column>
 
