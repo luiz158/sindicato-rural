@@ -21,16 +21,23 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.fieldset.Fieldset;
+import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
+import com.sindicato.dao.ModoPagamentoDAO;
 import com.sindicato.dao.ServicoDAO;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.DebitoServico;
+import com.sindicato.entity.DestinoRecebimento;
+import com.sindicato.entity.ModoPagamento;
+import com.sindicato.entity.Recebimento;
 import com.sindicato.entity.Servico;
+import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.lazyDataModel.LazyDebitoDataModel;
@@ -47,37 +54,86 @@ public class ManutencaoNotaBean implements Serializable {
 	@EJB private ListasDAO listasDAO;
 	@EJB private FinanceiroDAO financeiroDAO;
 	@EJB private ServicoDAO servicoDAO;
-
+	@EJB private ModoPagamentoDAO modoPagamentoDAO;
+	
 	private List<Servico> servicos;
 
 	private Debito debitoSelecionado;
 	private LazyDataModel<Debito> debitos;
 
+	// servicos
 	private DebitoServico debitoServico;
+	
+	// recebimentos
+	private List<TipoRecebimento> tiposRecebimento;
+	private Recebimento recebimento;
+	private List<DestinoRecebimento> destinos;
+
+	// recolhimentos
+	private List<DebitoServico> servicosComRetencao;
+	private List<ModoPagamento> modosPagamento;
+
 	
 	private int indexTab;
 
+	private TabView tabView;
 	private CommandButton botaoImprimir;
+	private Fieldset fieldSetRecebimentos;
+	private Fieldset fieldSetRecolhimentos;
 	
-	public void alterTab(int newTab) {
-		indexTab = newTab;
+	public void selecionaDebito(){
+		tabView.setActiveIndex(1);
+		
+		if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)){
+			fieldSetRecebimentos.setRendered(true);
+			fieldSetRecolhimentos.setRendered(true);
+		} else if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECEBIDO)){
+			fieldSetRecebimentos.setRendered(true);
+			fieldSetRecolhimentos.setRendered(false);
+		} else{
+			fieldSetRecebimentos.setRendered(false);
+			fieldSetRecolhimentos.setRendered(false);
+		}
+		
 	}
-
+	
 	public void reset() {
 		debitoSelecionado = new Debito();
 	}
 
+	// SERVICOS
 	public void salvarServico(){
 		debitoServico.setDebito(debitoSelecionado);
 		debitoSelecionado.getDebitoServicos().add(debitoServico);
 		debitoServico = new DebitoServico();
 		botaoImprimir.setDisabled(true);
 	}
-	
 	public void removerServico(DebitoServico servico){
 		debitoSelecionado.getDebitoServicos().remove(servico);
 		botaoImprimir.setDisabled(true);
 	}
+	
+	// RECEBIMENTOS
+	public void salvarRecebimento(){
+		recebimento.setDebito(debitoSelecionado);
+		debitoSelecionado.getRecebimentos().add(recebimento);
+		recebimento = new Recebimento();
+	}
+	public void removerRecebimento(Recebimento recebimento){
+		debitoSelecionado.getRecebimentos().remove(recebimento);
+	}
+
+	// RECOLHIMENTOS
+	private void mergeServicosComRetencao() {
+		for (DebitoServico debito : servicosComRetencao) {
+			for(DebitoServico debitoSelecionado : debitoSelecionado.getDebitoServicos()){
+				if(debitoSelecionado.equals(debito)){
+					debitoSelecionado.setRecolhimento(debito.getRecolhimento());
+				}
+			}
+		}
+	}
+
 	
 	public void cancelar() {
 		try {
@@ -86,7 +142,7 @@ public class ManutencaoNotaBean implements Serializable {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", "Nota de cobrança " + debitoSelecionado.getId() + " foi cancelada com sucesso");
 				this.reset();
-				alterTab(0);
+				tabView.setActiveIndex(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,6 +153,9 @@ public class ManutencaoNotaBean implements Serializable {
 	
 	public void salvar() {
 		try {
+			
+			this.mergeServicosComRetencao();
+			
 			ResultOperation result = financeiroDAO.salvarAlteracaoNotaCobranca(debitoSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
@@ -219,26 +278,88 @@ public class ManutencaoNotaBean implements Serializable {
 		return botaoImprimir;
 	}
 
+	public List<TipoRecebimento> getTiposRecebimento() {
+		if(tiposRecebimento == null){
+			tiposRecebimento = listasDAO.getTodasFormasRecebimento();
+		}
+		return tiposRecebimento;
+	}
+	public Recebimento getRecebimento() {
+		if(recebimento == null){
+			recebimento = new Recebimento();
+		}
+		return recebimento;
+	}
+	public List<DestinoRecebimento> getDestinos() {
+		if(destinos == null){
+			destinos = listasDAO.getTodosDestinosRecebimento();
+		}
+		return destinos;
+	}
+	public List<DebitoServico> getServicosComRetencao() {
+		servicosComRetencao = new ArrayList<DebitoServico>();
+		for (DebitoServico debito : debitoSelecionado.getDebitoServicos()) {
+			if (debito.getServico().isRetencao()) {
+				servicosComRetencao.add(debito);
+			}
+		}
+		return servicosComRetencao;
+	}
+	public List<ModoPagamento> getModosPagamento() {
+		if (modosPagamento == null) {
+			modosPagamento = modoPagamentoDAO.getAll();
+		}
+		return modosPagamento;
+	}
+	public Fieldset getFieldSetRecebimentos() {
+		return fieldSetRecebimentos;
+	}
+	public Fieldset getFieldSetRecolhimentos() {
+		return fieldSetRecolhimentos;
+	}
+	public TabView getTabView() {
+		return tabView;
+	}
+
+	public void setTabView(TabView tabView) {
+		this.tabView = tabView;
+	}
+	public void setFieldSetRecebimentos(Fieldset fieldSetRecebimentos) {
+		this.fieldSetRecebimentos = fieldSetRecebimentos;
+	}
+	public void setFieldSetRecolhimentos(Fieldset fieldSetRecolhimentos) {
+		this.fieldSetRecolhimentos = fieldSetRecolhimentos;
+	}
+	public void setServicosComRetencao(List<DebitoServico> servicosComRetencao) {
+		this.servicosComRetencao = servicosComRetencao;
+	}
+	public void setModosPagamento(List<ModoPagamento> modosPagamento) {
+		this.modosPagamento = modosPagamento;
+	}
+	public void setTiposRecebimento(List<TipoRecebimento> tiposRecebimento) {
+		this.tiposRecebimento = tiposRecebimento;
+	}
+	public void setRecebimento(Recebimento recebimento) {
+		this.recebimento = recebimento;
+	}
+	public void setDestinos(List<DestinoRecebimento> destinos) {
+		this.destinos = destinos;
+	}
 	public void setBotaoImprimir(CommandButton botaoImprimir) {
 		this.botaoImprimir = botaoImprimir;
 	}
-
 	public void setServicos(List<Servico> servicos) {
 		this.servicos = servicos;
 	}
-
 	public void setDebitoServico(DebitoServico debitoServico) {
 		this.debitoServico = debitoServico;
 	}
-
 	public void setDebitoSelecionado(Debito debitoSelecionado) {
 		this.debitoSelecionado = debitoSelecionado;
 	}
-
 	public void setDebitos(LazyDataModel<Debito> debitos) {
 		this.debitos = debitos;
 	}
-
 	public void setIndexTab(int indexTab) {
 		this.indexTab = indexTab;
 	}

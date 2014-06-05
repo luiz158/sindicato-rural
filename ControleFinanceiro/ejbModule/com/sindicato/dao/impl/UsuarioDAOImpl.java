@@ -28,7 +28,7 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 	
 	@Override
 	public ResultOperation autenticar(String usuario, String senha) {
-		String strQuery = "select u from Usuario u " +
+		String strQuery = "select u from Usuario u join fetch u.perfis" +
 				" where u.email = :usuario ";
 		
 		TypedQuery<Usuario> query = em.createQuery(strQuery, Usuario.class);

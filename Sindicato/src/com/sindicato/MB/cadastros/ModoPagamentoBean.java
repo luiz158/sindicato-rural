@@ -3,6 +3,7 @@ package com.sindicato.MB.cadastros;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -17,7 +18,7 @@ public class ModoPagamentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private ModoPagamentoDAO pagamentoDAO;
+	@EJB private ModoPagamentoDAO pagamentoDAO;
 
 	private ModoPagamento pagamentoSelecionado;
 	private List<ModoPagamento> pagamentos;

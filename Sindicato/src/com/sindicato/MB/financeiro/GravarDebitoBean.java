@@ -48,7 +48,7 @@ public class GravarDebitoBean implements Serializable {
 	public void salvarServico(){
 		debitoServico.setDebito(debito);
 		debito.getDebitoServicos().add(debitoServico);
-		debitoServico = new DebitoServico();
+		debitoServico = null;
 	}
 	
 	public void removerServico(DebitoServico servico){

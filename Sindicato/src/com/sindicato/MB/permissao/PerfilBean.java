@@ -8,8 +8,11 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.component.tabview.TabView;
+
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ListasDAO;
+import com.sindicato.dao.MenuDAO;
 import com.sindicato.dao.PerfilDAO;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
@@ -21,6 +24,7 @@ public class PerfilBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EJB private PerfilDAO perfilDAO;
+	@EJB private MenuDAO menuDAO;
 	@EJB private ListasDAO listasDAO;
 
 	private Perfil perfilSelecionado;
@@ -28,16 +32,17 @@ public class PerfilBean implements Serializable {
 
 	private List<Menu> menusDisponiveis;
 
-	private int indexTab;
+	private TabView tabView;
 
 
 	public void novo() {
 		this.reset();
-		alterTab(1);
+		tabView.setActiveIndex(1);
 	}
 
-	public void alterTab(int newTab) {
-		indexTab = newTab;
+	public void selecionaPerfil() {
+		tabView.setActiveIndex(1);
+		perfilSelecionado.setMenus(menuDAO.getMenusPorPerfil(perfilSelecionado));
 	}
 
 	public void reset() {
@@ -52,7 +57,7 @@ public class PerfilBean implements Serializable {
 				perfilDAO.update(perfilSelecionado);
 			}
 			this.reset();
-			alterTab(0);
+			tabView.setActiveIndex(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 					"Sucesso", "Perfil salvo com sucesso");
 		} catch (Exception e) {
@@ -77,25 +82,22 @@ public class PerfilBean implements Serializable {
 		return menusDisponiveis;
 	}
 
-	public int getIndexTab() {
-		return indexTab;
-	}
-
-	public void setIndexTab(int indexTab) {
-		this.indexTab = indexTab;
-	}
-
 	public Perfil getPerfilSelecionado() {
 		if(perfilSelecionado == null){
 			perfilSelecionado = new Perfil();
 		}
 		return perfilSelecionado;
 	}
+	public TabView getTabView() {
+		return tabView;
+	}
 
+	public void setTabView(TabView tabView) {
+		this.tabView = tabView;
+	}
 	public void setPerfilSelecionado(Perfil perfilSelecionado) {
 		this.perfilSelecionado = perfilSelecionado;
 	}
-
 	public void setPerfis(List<Perfil> perfis) {
 		this.perfis = perfis;
 	}

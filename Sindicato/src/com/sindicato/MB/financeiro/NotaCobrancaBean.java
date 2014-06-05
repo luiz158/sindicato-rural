@@ -64,8 +64,6 @@ public class NotaCobrancaBean implements Serializable {
 	public void gerarNotaDeCobranca() throws JRException {
 		ResultOperation result;
 		try {
-			UtilBean.addValorSessao("debitoImpressao", debitoSelecionado);
-			
 			result = financeiroDAO.gerarNotaDeCobranca(debitoSelecionado);
 			if (result.isSuccess()) {
 			//if (true) {

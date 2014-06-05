@@ -27,7 +27,8 @@ public class ListasDAOImpl implements ListasDAO {
 	@Override
 	public List<Cliente> getClientesComDebitosNoStatus(StatusDebitoEnum status) {
 		try {
-			String strQuery = "select DISTINCT(d.cliente) from Debito d where d.status = :status";
+			String strQuery = "select DISTINCT(d.cliente) from Debito d "
+					+ " where d.status = :status ";
 			TypedQuery<Cliente> query = em.createQuery(strQuery, Cliente.class);
 			query.setParameter("status", status);
 			return query.getResultList();
@@ -40,7 +41,8 @@ public class ListasDAOImpl implements ListasDAO {
 	public List<Debito> getDebitosDoClienteNoStatus(Cliente cliente,
 			StatusDebitoEnum status) {
 		try {
-			String strQuery = " select d from Debito d where d.status = :status and d.cliente = :cliente ";
+			String strQuery = " select d from Debito d "
+					+ " where d.status = :status and d.cliente = :cliente ";
 			TypedQuery<Debito> query = em.createQuery(strQuery, Debito.class);
 			query.setParameter("status", status);
 			query.setParameter("cliente", cliente);
@@ -53,7 +55,8 @@ public class ListasDAOImpl implements ListasDAO {
 	@Override
 	public List<Debito> getDebitosNoStatus(List<StatusDebitoEnum> status) {
 		try {
-			String strQuery = " select d from Debito d where d.status in (:status) ";
+			String strQuery = " select d from Debito d "
+					+ " where d.status in (:status) ";
 			TypedQuery<Debito> query = em.createQuery(strQuery, Debito.class);
 			query.setParameter("status", status);
 			return query.getResultList();
@@ -65,7 +68,8 @@ public class ListasDAOImpl implements ListasDAO {
 	@Override
 	public List<Debito> getTodasNotasDeCobranca() {
 		try {
-			String strQuery = "select d from Debito d where d.status = :status";
+			String strQuery = "select d from Debito d "
+					+ " where d.status = :status";
 			TypedQuery<Debito> query = em.createQuery(strQuery, Debito.class);
 			query.setParameter("status", StatusDebitoEnum.NOTACOBRANCAGERADA);
 			return query.getResultList();
@@ -98,7 +102,8 @@ public class ListasDAOImpl implements ListasDAO {
 	public List<DebitoServico> getTodosOsServicosComRetencaoDoDebito(
 			Debito debito) {
 		try {
-			String strQuery = "select d from DebitoServico d where d.debito = :debito and d.servico.retencao = :retencao";
+			String strQuery = "select d from DebitoServico d "
+					+ " where d.debito = :debito and d.servico.retencao = :retencao";
 			
 			TypedQuery<DebitoServico> query = em.createQuery(strQuery, DebitoServico.class);
 			query.setParameter("debito", debito);
@@ -112,7 +117,8 @@ public class ListasDAOImpl implements ListasDAO {
 	@Override
 	public List<Perfil> getTodosOsPerfis() {
 		try {
-			String strQuery = " select p from Perfil p ";
+			String strQuery = " select p from Perfil p "
+					+ " join fetch p.menus";
 			TypedQuery<Perfil> query = em.createQuery(strQuery, Perfil.class);
 			return query.getResultList();
 		} catch (NoResultException e) {

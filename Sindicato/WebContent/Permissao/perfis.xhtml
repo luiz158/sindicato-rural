@@ -17,7 +17,7 @@
 		</p:breadCrumb>
 		<p:spacer height="15" />
 		<p:growl id="growl" showDetail="true" />
-		<p:tabView activeIndex="#{perfilBean.indexTab}" id="tabView">
+		<p:tabView binding="#{perfilBean.tabView}" id="tabView">
 			<p:tab title="Lista de perfis">
 				<h:form>
 					<div class="container-action-novo">
@@ -32,13 +32,13 @@
 						id="perfis">
 
 						<p:ajax event="rowSelect" update=":tabView"
-							listener="#{perfilBean.alterTab(1)}" />
+							listener="#{perfilBean.selecionaPerfil}" />
 
-						<p:column headerText="Código" sortBy="id" filterBy="id">
+						<p:column headerText="Código" sortBy="#{perfil.id}" filterBy="#{perfil.id}">
 							<p:outputLabel value="#{perfil.id}" />
 						</p:column>
-						<p:column headerText="Descrição" sortBy="descricao"
-							filterBy="descricao">
+						<p:column headerText="Descrição" sortBy="#{perfil.descricao}"
+							filterBy="#{perfil.descricao}">
 							<p:outputLabel value="#{perfil.descricao}" />
 						</p:column>
 
