@@ -134,7 +134,6 @@ public class ManutencaoNotaBean implements Serializable {
 		}
 	}
 
-	
 	public void cancelar() {
 		try {
 			ResultOperation result = financeiroDAO.cancelarNotaDeCobranca(debitoSelecionado);
@@ -154,13 +153,21 @@ public class ManutencaoNotaBean implements Serializable {
 	public void salvar() {
 		try {
 			
-			this.mergeServicosComRetencao();
+			if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)){
+				this.mergeServicosComRetencao();
+			}
 			
 			ResultOperation result = financeiroDAO.salvarAlteracaoNotaCobranca(debitoSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", result.getMessage());
-				botaoImprimir.setDisabled(false);
+				
+				if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.NOTACOBRANCAGERADA)){
+					botaoImprimir.setDisabled(false);
+				}else{
+					tabView.setActiveIndex(0);
+					debitoSelecionado = new Debito();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -272,7 +279,6 @@ public class ManutencaoNotaBean implements Serializable {
 		servicos = servicoDAO.getAll();
 		return servicos;
 	}
-
 
 	public CommandButton getBotaoImprimir() {
 		return botaoImprimir;

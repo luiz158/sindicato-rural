@@ -16,43 +16,45 @@
 			<p:menuitem value="Registrar recebimentos" url="#" />
 		</p:breadCrumb>
 		<p:spacer height="15" />
-		<h:form>
-			<p:growl id="growl" showDetail="true" />
-			<p:tabView activeIndex="#{recebimentoBean.indexTab}">
-				<p:tab title="Lista das notas de cobrança">
-
+		<p:growl id="growl" showDetail="true" />
+		<p:tabView id="tabView" binding="#{recebimentoBean.tabView}" >
+			<p:tab title="Lista das notas de cobrança">
+				<h:form>
 					<p:dataTable var="debito" value="#{recebimentoBean.debitos}"
 						rowKey="#{debito.id}" paginator="true" rows="10"
 						paginatorPosition="bottom"
 						selection="#{recebimentoBean.debitoSelecionado}"
-						selectionMode="single" id="debitos" lazy="true" 
-						resizableColumns="true" emptyMessage="Nenhum nota de cobrança aguardando recebimento">
+						selectionMode="single" id="debitos" lazy="true"
+						resizableColumns="true"
+						emptyMessage="Nenhum nota de cobrança aguardando recebimento">
 
-						<p:ajax event="rowSelect" update="@(form)"
+						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{recebimentoBean.alterTab(1)}" />
 
-						<p:column headerText="Número da nota" sortBy="#{debito.id}" filterBy="#{debito.id}">
+						<p:column headerText="Número da nota" sortBy="#{debito.id}"
+							filterBy="#{debito.id}">
 							<p:outputLabel value="#{debito.id}" />
 						</p:column>
-						<p:column headerText="Nome do cliente" sortBy="#{debito.cliente.nome}"
-							filterBy="#{debito.cliente.nome}">
+						<p:column headerText="Nome do cliente"
+							sortBy="#{debito.cliente.nome}" filterBy="#{debito.cliente.nome}">
 							<p:outputLabel value="#{debito.cliente.nome}" />
 						</p:column>
-						<p:column headerText="Data base" sortBy="#{debito.dataBase}" >
+						<p:column headerText="Data base" sortBy="#{debito.dataBase}">
 							<p:outputLabel value="#{debito.dataBase.time}">
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
-						<p:column headerText="Valor" >
+						<p:column headerText="Valor">
 							<p:outputLabel value="#{debito.totalDebitos}">
 								<f:convertNumber locale="pt_BR" type="currency"
 									currencySymbol="R$ " />
 							</p:outputLabel>
 						</p:column>
 					</p:dataTable>
-				</p:tab>
-				<p:tab title="Nota de cobrança selecionada">
-
+				</h:form>
+			</p:tab>
+			<p:tab title="Nota de cobrança selecionada" id="tabForm">
+				<h:form>
 					<p:fieldset legend="Informações da nota" style="margin-top:15px;">
 						<p:panelGrid styleClass="panelForm"
 							style="width:80%;margin-top:20px;">
@@ -94,7 +96,7 @@
 									<p:outputLabel
 										value="#{recebimentoBean.debitoSelecionado.totalDebitos}">
 										<f:convertNumber locale="pt_BR" type="currency"
-									currencySymbol="R$ " />
+											currencySymbol="R$ " />
 									</p:outputLabel>
 								</p:column>
 							</p:row>
@@ -125,143 +127,6 @@
 							value="Adicionar recebimento" onclick="PF('dlg3').show();"
 							type="button" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
-						<p:dialog header="Adicionar recebimento" widgetVar="dlg3"
-							modal="true" resizable="true" showEffect="fade" hideEffect="fade"
-							height="300" width="650">
-
-							<p:panelGrid styleClass="panelForm" style="width:100%;">
-
-								<p:row>
-									<p:column styleClass="colLabel" style="width:240px;">
-										<p:outputLabel value="Destino do recebimento" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:selectOneMenu style="width:300px"
-											value="#{recebimentoBean.recebimento.destino}"
-											converter="DestinoRecebimentoConverter" effect="fade"
-											filter="true">
-											<f:selectItem />
-											<f:selectItems value="#{recebimentoBean.destinos}" var="d"
-												itemValue="#{d}" itemLabel="#{d.descricao}" />
-										</p:selectOneMenu>
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel" style="">
-										<p:outputLabel value="Tipo do recebimento" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:selectOneMenu style="width:300px"
-											value="#{recebimentoBean.recebimento.tipoRecebimento}"
-											converter="TipoRecebimentoConverter" effect="fade"
-											filter="true" id="tipoRecebimento">
-											<f:selectItem />
-											<f:selectItems value="#{recebimentoBean.tiposRecebimento}"
-												var="d" itemValue="#{d}" itemLabel="#{d.descricao}" />
-										</p:selectOneMenu>
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Valor (R$)" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText styleClass="moeda"
-											value="#{recebimentoBean.recebimento.valor}">
-											<f:convertNumber pattern="#,##0.00" type="currency"
-												locale="pt_BR" />
-										</p:inputText>
-									</p:column>
-								</p:row>
-							</p:panelGrid>
-
-							<p:accordionPanel activeIndex="2" style="margin-top:20px;">
-								<p:tab title="Informações do cheque">
-									<p:panelGrid styleClass="panelForm" style="width:100%;">
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Banco do cheque" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:inputText
-													value="#{recebimentoBean.recebimento.bancoCheque}" />
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Cheque próprio?" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:selectBooleanButton offLabel="Não" onLabel="Sim"
-													value="#{recebimentoBean.recebimento.chequeProprio}" />
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Cheque pré?" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:selectBooleanButton offLabel="Não" onLabel="Sim"
-													value="#{recebimentoBean.recebimento.chequePre}" />
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Cheque pré?" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:selectBooleanButton offLabel="Não" onLabel="Sim"
-													value="#{recebimentoBean.recebimento.chequePre}" />
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Cheque devolvido?" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:selectBooleanButton offLabel="Não" onLabel="Sim"
-													value="#{recebimentoBean.recebimento.chequeDevolvido}" />
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Vencimento do cheque" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:calendar
-													value="#{recebimentoBean.recebimento.vencimentoCheque}"
-													pattern="dd/MM/yyyy"
-													styleClass="date" converter="CalendarConverter" />
-											</p:column>
-										</p:row>
-										<p:row>
-											<p:column styleClass="colLabel">
-												<p:outputLabel value="Data da liquidação" />
-											</p:column>
-											<p:column styleClass="colInput">
-												<p:calendar
-													value="#{recebimentoBean.recebimento.dataLiquidacao}"
-													pattern="dd/MM/yyyy"
-													styleClass="date" converter="CalendarConverter" />
-											</p:column>
-										</p:row>
-									</p:panelGrid>
-								</p:tab>
-							</p:accordionPanel>
-
-
-							<p:panelGrid styleClass="panelForm"
-								style="width:100%;margin-top:15px; margin-bottom:30px;">
-								<p:row>
-									<p:column styleClass="colLabel" colspan="2">
-										<p:commandButton value="Adicionar"
-											style="width:200px;height:40px;"
-											actionListener="#{recebimentoBean.salvarRecebimento}"
-											oncomplete="PF('dlg3').hide();" update="@(form)" />
-									</p:column>
-								</p:row>
-							</p:panelGrid>
-						</p:dialog>
 
 						<p:dataTable var="rec" id="recebimentos"
 							emptyMessage="Nenhum recebimento cadastrado"
@@ -294,12 +159,153 @@
 					</p:fieldset>
 					<div class="container-action">
 						<p:commandButton action="#{recebimentoBean.salvar}"
-							update="@(form)" value="Salvar recebimentos" />
+							update=":tabView" value="Salvar recebimentos" />
 					</div>
+				</h:form>
+				<h:form>
+					<p:dialog header="Adicionar recebimento" widgetVar="dlg3"
+						modal="true" resizable="true" showEffect="fade" hideEffect="fade"
+						height="300" width="650">
 
-				</p:tab>
-			</p:tabView>
-		</h:form>
+						<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:240px;">
+									<p:outputLabel value="Destino do recebimento" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:selectOneMenu style="width:300px"
+										value="#{recebimentoBean.recebimento.destino}"
+										converter="DestinoRecebimentoConverter" effect="fade"
+										filter="true">
+										<f:selectItem />
+										<f:selectItems value="#{recebimentoBean.destinos}" var="d"
+											itemValue="#{d}" itemLabel="#{d.descricao}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel" style="">
+									<p:outputLabel value="Tipo do recebimento" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:selectOneMenu style="width:300px"
+										value="#{recebimentoBean.recebimento.tipoRecebimento}"
+										converter="TipoRecebimentoConverter" effect="fade"
+										filter="true" id="tipoRecebimento">
+										<f:selectItem />
+										<f:selectItems value="#{recebimentoBean.tiposRecebimento}"
+											var="d" itemValue="#{d}" itemLabel="#{d.descricao}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Valor (R$)" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText styleClass="moeda"
+										value="#{recebimentoBean.recebimento.valor}">
+										<f:convertNumber pattern="#,##0.00" type="currency"
+											locale="pt_BR" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+
+						<p:accordionPanel activeIndex="2" style="margin-top:20px;">
+							<p:tab title="Informações do cheque">
+								<p:panelGrid styleClass="panelForm" style="width:100%;">
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Banco do cheque" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{recebimentoBean.recebimento.bancoCheque}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Cheque próprio?" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:selectBooleanButton offLabel="Não" onLabel="Sim"
+												value="#{recebimentoBean.recebimento.chequeProprio}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Cheque pré?" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:selectBooleanButton offLabel="Não" onLabel="Sim"
+												value="#{recebimentoBean.recebimento.chequePre}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Cheque pré?" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:selectBooleanButton offLabel="Não" onLabel="Sim"
+												value="#{recebimentoBean.recebimento.chequePre}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Cheque devolvido?" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:selectBooleanButton offLabel="Não" onLabel="Sim"
+												value="#{recebimentoBean.recebimento.chequeDevolvido}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Vencimento do cheque" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:calendar
+												value="#{recebimentoBean.recebimento.vencimentoCheque}"
+												pattern="dd/MM/yyyy" styleClass="date"
+												converter="CalendarConverter" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
+											<p:outputLabel value="Data da liquidação" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:calendar
+												value="#{recebimentoBean.recebimento.dataLiquidacao}"
+												pattern="dd/MM/yyyy" styleClass="date"
+												converter="CalendarConverter" />
+										</p:column>
+									</p:row>
+								</p:panelGrid>
+							</p:tab>
+						</p:accordionPanel>
+
+
+						<p:panelGrid styleClass="panelForm"
+							style="width:100%;margin-top:15px; margin-bottom:30px;">
+							<p:row>
+								<p:column styleClass="colLabel" colspan="2">
+									<p:commandButton value="Adicionar"
+										style="width:200px;height:40px;"
+										actionListener="#{recebimentoBean.salvarRecebimento}"
+										oncomplete="PF('dlg3').hide();" update=":tabView"  />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:dialog>
+
+				</h:form>
+
+
+			</p:tab>
+		</p:tabView>
 
 	</ui:define>
 </ui:composition>

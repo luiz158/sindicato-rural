@@ -57,9 +57,9 @@
 
 				<h:form target="_blank">
 					<p:fieldset legend="Informações da nota" style="margin-top:15px;">
-						<p:panelGrid styleClass="panelForm" columns="2"
-							columnClasses="colLabel,colInput"
-							style="width:60%;margin-top:20px;">
+						<p:panelGrid styleClass="panelForm" columns="4"
+							columnClasses="colLabel,colInput,colLabel,colInput"
+							style="width:100%;margin-top:20px;">
 
 							<p:outputLabel value="Número da nota:" />
 							<p:outputLabel value="#{manutencaoNotaBean.debitoSelecionado.id}" />
@@ -72,6 +72,19 @@
 							<p:outputLabel value="Nota de cobrança recolhida"
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECOLHIDO'}" />
 
+							<p:outputLabel value="Data base:" />
+							<p:outputLabel
+								value="#{manutencaoNotaBean.debitoSelecionado.dataBase.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Valor da nota:" />
+							<p:outputLabel
+								value="#{manutencaoNotaBean.debitoSelecionado.totalDebitos}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+
 							<p:outputLabel value="Nome do cliente:" />
 							<p:outputLabel
 								value="#{manutencaoNotaBean.debitoSelecionado.cliente.nome}" />
@@ -80,18 +93,14 @@
 							<p:outputLabel
 								value="#{manutencaoNotaBean.debitoSelecionado.cliente.cpf}" />
 
-							<p:outputLabel value="Data base:" />
-							<p:outputLabel
-								value="#{manutencaoNotaBean.debitoSelecionado.dataBase.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</p:outputLabel>
 						</p:panelGrid>
 					</p:fieldset>
 					<p:spacer height="20" />
 					<p:fieldset legend="Serviços da nota de cobrança">
 						<p:commandButton value="Adicionar serviço"
 							onclick="PF('dlg3').show();" type="button" icon="ui-icon-plus"
-							style="margin-bottom:15px;" />
+							style="margin-bottom:15px;"
+							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}" />
 
 						<p:dialog header="Adicionar serviço" widgetVar="dlg3" modal="true"
 							resizable="true" showEffect="fade" hideEffect="fade" height="150"
@@ -160,8 +169,9 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
-							<p:column headerText="" width="45">
+							<p:column headerText="" width="70">
 								<p:commandButton value="Excluir"
+									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}"
 									action="#{manutencaoNotaBean.removerServico(debito)}"
 									update="@(form)">
 									<p:confirm header="Excluir serviço"
@@ -175,7 +185,7 @@
 
 					<p:fieldset legend="Registrar recebimentos"
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
-						<p:commandButton id="effectsDialogButton"
+						<p:commandButton id="effectsDialogButton" disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
 							value="Adicionar recebimento" onclick="PF('dlg3').show();"
 							type="button" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
@@ -333,8 +343,8 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
-							<p:column headerText="" width="45">
-								<p:commandButton value="Excluir"
+							<p:column headerText="" width="70">
+								<p:commandButton value="Excluir" disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
 									update="@(form)">
 									<p:confirm header="Excluir recebimento"
@@ -352,7 +362,7 @@
 						binding="#{manutencaoNotaBean.fieldSetRecolhimentos}">
 
 						<p:spacer height="25" />
-						<p:dataTable var="debito" id="recolhimentos"
+						<p:dataTable var="debito" id="recolhimentos" value="#{manutencaoNotaBean.servicosComRetencao}"
 							emptyMessage="Nenhum serviço cadastrado">
 
 							<p:column headerText="Serviço">
@@ -365,19 +375,19 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
-							<p:column headerText="Data recolhimento" style="width:20px;">
+							<p:column headerText="Data recolhimento">
 								<p:calendar value="#{debito.recolhimento.data}"
 									pattern="dd/MM/yyyy" styleClass="date"
 									converter="CalendarConverter" />
 							</p:column>
-							<p:column headerText="Modo de pagamento" style="width:20px;">
+							<p:column headerText="Modo de pagamento">
 								<p:selectOneMenu value="#{debito.recolhimento.modoPagamento}"
 									converter="ModoPagamentoConverter" effect="fade" filter="true">
 									<f:selectItems value="#{manutencaoNotaBean.modosPagamento}"
 										var="m" itemValue="#{m}" itemLabel="#{m.descricao}" />
 								</p:selectOneMenu>
 							</p:column>
-							<p:column headerText="Valor recolhido (R$)" style="width:30px;">
+							<p:column headerText="Valor recolhido (R$)">
 								<p:inputText styleClass="moeda"
 									value="#{debito.recolhimento.valor}">
 									<f:convertNumber pattern="#,##0.00" type="currency"
@@ -402,7 +412,7 @@
 							binding="#{manutencaoNotaBean.botaoImprimir}" value="Imprimir">
 						</p:commandButton>
 
-						<p:commandButton action="#{manutencaoNotaBean.salvar}"
+						<p:commandButton action="#{manutencaoNotaBean.salvar}" icon="ui-icon-disk"
 							update=":growl,:tabView" value="Salvar alterações" />
 					</div>
 				</h:form>

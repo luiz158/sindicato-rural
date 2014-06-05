@@ -145,12 +145,6 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 	@Override
 	public ResultOperation salvarAlteracaoNotaCobranca(Debito debito) {
 		ResultOperation result = this.gravarDebito(debito);
-		if(debito.getStatus().equals(StatusDebitoEnum.NOTACOBRANCAGERADA) == false){
-			result.setSuccess(false);
-			result.setMessage("Apenas débitos com Status \"Nota de cobrança gerada\" podem ser alterados.");
-			return result;
-		}
-		result = this.gravarDebito(debito);
 		if(result.isSuccess()){
 			result.setMessage("Nota de cobrança alterada com sucesso.");
 		}else{

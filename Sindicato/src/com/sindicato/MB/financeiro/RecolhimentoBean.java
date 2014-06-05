@@ -88,7 +88,7 @@ public class RecolhimentoBean implements Serializable {
 	public LazyDataModel<Debito> getDebitos() {
 		if (debitos == null) {
 			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
-			statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
+			statusPermitido.add(StatusDebitoEnum.RECEBIDO);
 			debitos = new LazyDebitoDataModel(statusPermitido);
 		}
 		return debitos;

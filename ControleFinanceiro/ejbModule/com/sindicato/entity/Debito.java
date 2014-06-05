@@ -36,7 +36,7 @@ public class Debito implements Serializable {
 	private int id;
 	
 	@Fetch(FetchMode.SELECT)
-	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", orphanRemoval=true, fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=DebitoServico.class, mappedBy="debito", cascade={CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval=true, fetch=FetchType.EAGER)
 	private List<DebitoServico> debitoServicos;
 
 	@Transient

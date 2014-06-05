@@ -9,6 +9,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
+import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
@@ -38,11 +39,11 @@ public class RecebimentoBean implements Serializable {
 	private List<DestinoRecebimento> destinos;
 	private List<TipoRecebimento> tiposRecebimento;
 
-	private int indexTab;
+	private TabView tabView;
 
 
 	public void alterTab(int newTab) {
-		indexTab = newTab;
+		tabView.setActiveIndex(newTab);
 	}
 
 	public void reset() {
@@ -85,7 +86,7 @@ public class RecebimentoBean implements Serializable {
 	public LazyDataModel<Debito> getDebitos() {
 		if(debitos == null){
 			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
-			statusPermitido.add(StatusDebitoEnum.RECEBIDO);
+			statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
 			debitos = new LazyDebitoDataModel(statusPermitido);
 		}
 		return debitos;
@@ -95,9 +96,6 @@ public class RecebimentoBean implements Serializable {
 			recebimento = new Recebimento();
 		}
 		return recebimento;
-	}
-	public int getIndexTab() {
-		return indexTab;
 	}
 	public List<DestinoRecebimento> getDestinos() {
 		if(destinos == null){
@@ -110,6 +108,13 @@ public class RecebimentoBean implements Serializable {
 			tiposRecebimento = listasDAO.getTodasFormasRecebimento();
 		}
 		return tiposRecebimento;
+	}
+	public TabView getTabView() {
+		return tabView;
+	}
+
+	public void setTabView(TabView tabView) {
+		this.tabView = tabView;
 	}
 	public void setDestinos(List<DestinoRecebimento> destinos) {
 		this.destinos = destinos;
@@ -125,9 +130,6 @@ public class RecebimentoBean implements Serializable {
 	}
 	public void setDebitos(LazyDataModel<Debito> debitos) {
 		this.debitos = debitos;
-	}
-	public void setIndexTab(int indexTab) {
-		this.indexTab = indexTab;
 	}
 
 }
