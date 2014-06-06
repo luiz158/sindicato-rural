@@ -5,12 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import com.sindicato.entity.Empresa;
 
@@ -24,7 +28,8 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqUsuario")
 	private int id;
 	
-	@ManyToMany//(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Perfil> perfis;
 	
 	@ManyToOne

@@ -9,12 +9,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import org.primefaces.component.password.Password;
+import org.primefaces.component.tabview.TabView;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.dao.UsuarioDAO;
 import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.util.PasswordManager;
 
 @ManagedBean
 @ViewScoped
@@ -32,14 +34,14 @@ public class UsuarioBean implements Serializable {
 
 	private List<Perfil> perfisDisponiveis;
 
-	private int indexTab;
+	private TabView tabView;
 
 	private String senhaNova;
 	private Password senhaComponent;
 	
 
 	public void alterTab(int newTab) {
-		indexTab = newTab;
+		tabView.setActiveIndex(newTab);
 	}
 
 	public void reset() {
@@ -51,23 +53,26 @@ public class UsuarioBean implements Serializable {
 		alterTab(1);
 	}
 
-	private void alteracaoSenha(){
-		if((senhaNova != null && senhaNova != "")){
-			usuarioDAO.atualizarSenha(usuarioSelecionado, senhaNova);
-		}
-	}
-
 	public void salvar() {
 		try {
 			if(!senhaComponent.isValid()){
 				return;
 			}
-			alteracaoSenha();
 			
 			usuarioSelecionado.setEmpresa(usuarioLogado.getEmpresa());
 			if (usuarioSelecionado.getId() == 0) {
+				if(senhaNova == null || senhaNova == ""){
+					UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+							"Atenção!", "Não esqueça da senha do " + usuarioSelecionado.getNome() + ".");
+					senhaComponent.setValid(false);
+					return;
+				}
+				usuarioSelecionado.setSenha(senhaNova);
 				usuarioDAO.insert(usuarioSelecionado);
 			} else {
+				if(senhaNova != null && senhaNova != ""){
+					usuarioSelecionado.setSenha(PasswordManager.generated(usuarioSelecionado.getSenha()));
+				}
 				usuarioDAO.update(usuarioSelecionado);
 			}
 			usuarioSelecionado = new Usuario();
@@ -92,12 +97,10 @@ public class UsuarioBean implements Serializable {
 	}
 
 	public List<Perfil> getPerfisDisponiveis() {
-		perfisDisponiveis = listasDAO.getTodosOsPerfis();
+		if(perfisDisponiveis == null){
+			perfisDisponiveis = listasDAO.getTodosOsPerfis();
+		}
 		return perfisDisponiveis;
-	}
-
-	public int getIndexTab() {
-		return indexTab;
 	}
 
 	public String getSenhaNova() {
@@ -107,14 +110,19 @@ public class UsuarioBean implements Serializable {
 		return senhaComponent;
 	}
 
+	public TabView getTabView() {
+		return tabView;
+	}
+
+	public void setTabView(TabView tabView) {
+		this.tabView = tabView;
+	}
+
 	public void setSenhaComponent(Password senhaComponent) {
 		this.senhaComponent = senhaComponent;
 	}
 	public void setSenhaNova(String senhaNova) {
 		this.senhaNova = senhaNova;
-	}
-	public void setIndexTab(int indexTab) {
-		this.indexTab = indexTab;
 	}
 	public void setPerfisDisponiveis(List<Perfil> perfis) {
 		this.perfisDisponiveis = perfis;

@@ -12,6 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @SequenceGenerator(allocationSize=1, name="seqPerfil", sequenceName="SEQ_PERFIL")
 public class Perfil implements Serializable {
@@ -22,7 +25,8 @@ public class Perfil implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqPerfil")
 	private int id;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch=FetchType.EAGER)
 	private List<Menu> menus;
 	
 	private String descricao;

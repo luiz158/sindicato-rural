@@ -117,8 +117,7 @@ public class ListasDAOImpl implements ListasDAO {
 	@Override
 	public List<Perfil> getTodosOsPerfis() {
 		try {
-			String strQuery = " select p from Perfil p "
-					+ " join fetch p.menus";
+			String strQuery = " select p from Perfil p ";
 			TypedQuery<Perfil> query = em.createQuery(strQuery, Perfil.class);
 			return query.getResultList();
 		} catch (NoResultException e) {

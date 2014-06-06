@@ -25,7 +25,6 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 		super.insert(usuario);
 	}
 	
-	
 	@Override
 	public ResultOperation autenticar(String usuario, String senha) {
 		String strQuery = "select u from Usuario u join fetch u.perfis" +
@@ -85,8 +84,17 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 
 
 	@Override
-	public void atualizarSenha(Usuario usuario, String novaSenha) {
-		usuario.setSenha(PasswordManager.generated(novaSenha));
-		super.update(usuario);
+	public List<Perfil> getPerfisDoUsuario(Usuario usuario) {
+		
+		try {
+			String strQuery = "select u from Usuario u "
+					+ " join fetch u.perfis p"
+					+ " where u = :usuario";
+			TypedQuery<Usuario> query = em.createQuery(strQuery, Usuario.class);
+			query.setParameter("usuario", usuario);
+			return query.getSingleResult().getPerfis();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 }

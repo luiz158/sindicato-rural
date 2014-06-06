@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.sindicato.entity.autenticacao.Menu;
+import com.sindicato.entity.autenticacao.Perfil;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.ResultOperation;
 
@@ -16,6 +17,6 @@ public interface UsuarioDAO extends DAO<Usuario, Integer> {
 	Usuario getUsuarioAutenticado();
 	
 	List<Menu> getMenusPermitidos();
+	List<Perfil> getPerfisDoUsuario(Usuario usuario);
 
-	void atualizarSenha(Usuario usuario, String novaSenha);
 }
