@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notaCobranca" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e7d2794a-ceb9-40ab-b279-3b778f5f42b5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="ireport.zoom" value="1.4641000000000006"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="55"/>
+	<property name="ireport.y" value="162"/>
 	<parameter name="cartaSindical" class="java.lang.String"/>
 	<parameter name="cnpj" class="java.lang.String"/>
 	<parameter name="endereco" class="java.lang.String"/>
@@ -19,6 +19,7 @@
 	<parameter name="valorPorExtenso" class="java.lang.String"/>
 	<parameter name="data" class="java.lang.String"/>
 	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="dataEmissao" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[]]>
 	</queryString>
@@ -227,7 +228,7 @@
 	<pageFooter>
 		<band height="94" splitType="Stretch">
 			<rectangle>
-				<reportElement x="352" y="1" width="203" height="42" uuid="520b8a3b-1d52-4cdf-b10c-0d15dc737f72"/>
+				<reportElement x="330" y="1" width="225" height="22" uuid="520b8a3b-1d52-4cdf-b10c-0d15dc737f72"/>
 			</rectangle>
 			<rectangle>
 				<reportElement x="0" y="61" width="295" height="30" uuid="8697d3e9-c07d-4a2a-8ef8-fe669cce653d"/>
@@ -246,12 +247,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
 			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="356" y="23" width="204" height="20" uuid="a9ca5423-cac4-4b8e-a929-744a585a92d7"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="352" y="1" width="125" height="22" uuid="d25d547d-c886-421b-a29f-52e6e78e13ec"/>
+				<reportElement x="330" y="1" width="105" height="22" uuid="d25d547d-c886-421b-a29f-52e6e78e13ec"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -277,6 +274,13 @@
 			<textField>
 				<reportElement x="0" y="0" width="330" height="47" uuid="34faa905-7cf6-4eba-9680-b09161b1754b"/>
 				<textFieldExpression><![CDATA["Recebemos nesta data a importância de "+$P{valorPorExtenso}+", referente ao mes de "+$P{data} + "."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="435" y="3" width="120" height="20" uuid="445e5bdb-53b0-461a-8242-c5ec1d0ab93d"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{dataEmissao}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

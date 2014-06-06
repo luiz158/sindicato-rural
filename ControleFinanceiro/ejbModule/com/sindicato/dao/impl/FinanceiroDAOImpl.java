@@ -97,7 +97,9 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 
 	@Override
 	public ResultOperation gerarNotaDeCobranca(Debito debito) {
-		debito.setDataEmissaoNotaCobranca(Calendar.getInstance());
+		if(debito.getDataEmissaoNotaCobranca() == null){
+			debito.setDataEmissaoNotaCobranca(Calendar.getInstance());
+		}
 		ResultOperation result = this.alterarStatusDoDebitoPara(debito, StatusDebitoEnum.NOTACOBRANCAGERADA);
 		if(result.isSuccess()){
 			result.setMessage("Nota de cobrança gerada com sucesso.");

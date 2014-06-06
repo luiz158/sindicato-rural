@@ -24,7 +24,7 @@
 
 					<p:row>
 						<p:column styleClass="colLabel" style="width:250px;">
-							<p:outputLabel value="Selecione o cliente" />
+							<p:outputLabel value="Selecione o cliente:" />
 						</p:column>
 						<p:column styleClass="colInput">
 							<p:selectOneMenu value="#{notaCobrancaBean.clienteSelecionado}"
@@ -45,7 +45,7 @@
 					</p:row>
 					<p:row>
 						<p:column styleClass="colLabel" style="width:250px;">
-							<p:outputLabel value="Data base do débito" />
+							<p:outputLabel value="Data base do débito:" />
 						</p:column>
 						<p:column styleClass="colInput">
 							<p:selectOneMenu value="#{notaCobrancaBean.debitoSelecionado}"
@@ -61,7 +61,6 @@
 							</p:selectOneMenu>
 						</p:column>
 					</p:row>
-
 				</p:panelGrid>
 			</p:fieldset>
 
@@ -98,11 +97,31 @@
 			</p:fieldset>
 
 			<div class="container-action">
-				<p:commandButton action="#{notaCobrancaBean.gerarNotaDeCobranca}"
-					update="@form" icon="ui-icon-print" ajax="false" 
-					value="Imprimir nota de cobrança" onclick="location.replace('./notaCobranca.xhtml')"
-					rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
+				<p:commandButton value="Imprimir nota de cobrança" icon="ui-icon-print" 
+					onclick="PF('dlg2').show();" rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
 			</div>
+
+
+			<p:dialog
+				header="Emitir nota de cobrança" width="500"
+				widgetVar="dlg2" modal="true" height="150">
+
+				<p:panelGrid columns="1" style="width:100%;text-align:center;" styleClass="panelForm">
+					
+					<p:outputLabel value="Data de emissão da nota:" />
+					<p:calendar styleClass="date" 
+						value="#{notaCobrancaBean.debitoSelecionado.dataEmissaoNotaCobranca}"
+						pattern="dd/MM/yyyy" converter="CalendarConverter" />
+					
+					<p:commandButton action="#{notaCobrancaBean.gerarNotaDeCobranca}" 
+						icon="ui-icon-print" ajax="false" process="@(form)"
+						value="Imprimir nota de cobrança" style="width:300px;height:60px;margin-top:30px;"
+						onclick="location.replace('./notaCobranca.xhtml')" />
+
+				</p:panelGrid>
+
+			</p:dialog>
+
 
 		</h:form>
 

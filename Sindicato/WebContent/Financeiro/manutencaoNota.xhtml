@@ -102,47 +102,6 @@
 							style="margin-bottom:15px;"
 							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}" />
 
-						<p:dialog header="Adicionar serviço" widgetVar="dlg3" modal="true"
-							resizable="true" showEffect="fade" hideEffect="fade" height="150"
-							width="350">
-							<p:panelGrid styleClass="panelForm" style="width:100%;"
-								id="formServico">
-
-								<p:row>
-									<p:column styleClass="colLabel" style="">
-										<p:outputLabel value="Serviço" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:selectOneMenu
-											value="#{manutencaoNotaBean.debitoServico.servico}"
-											converter="ServicoConverter" effect="fade" filter="true">
-											<f:selectItems value="#{manutencaoNotaBean.servicos}"
-												var="ser" itemValue="#{ser}" itemLabel="#{ser.descricao}" />
-										</p:selectOneMenu>
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel">
-										<p:outputLabel value="Valor" />
-									</p:column>
-									<p:column styleClass="colInput">
-										<p:inputText styleClass="moeda"
-											value="#{manutencaoNotaBean.debitoServico.valor}">
-											<f:convertNumber pattern="#,##0.00" type="currency"
-												locale="pt_BR" />
-										</p:inputText>
-									</p:column>
-								</p:row>
-								<p:row>
-									<p:column styleClass="colLabel" colspan="2">
-										<p:commandButton value="Adicionar"
-											actionListener="#{manutencaoNotaBean.salvarServico}"
-											oncomplete="PF('dlg3').hide();"
-											update="servicos,formServico,btnImprimir" />
-									</p:column>
-								</p:row>
-							</p:panelGrid>
-						</p:dialog>
 
 						<p:dataTable var="debito" id="servicos"
 							emptyMessage="Nenhum serviço cadastrado"
@@ -185,7 +144,8 @@
 
 					<p:fieldset legend="Registrar recebimentos"
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
-						<p:commandButton id="effectsDialogButton" disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
+						<p:commandButton id="effectsDialogButton"
+							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
 							value="Adicionar recebimento" onclick="PF('dlg3').show();"
 							type="button" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
@@ -344,7 +304,8 @@
 								</p:outputLabel>
 							</p:column>
 							<p:column headerText="" width="70">
-								<p:commandButton value="Excluir" disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
+								<p:commandButton value="Excluir"
+									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
 									update="@(form)">
 									<p:confirm header="Excluir recebimento"
@@ -362,7 +323,8 @@
 						binding="#{manutencaoNotaBean.fieldSetRecolhimentos}">
 
 						<p:spacer height="25" />
-						<p:dataTable var="debito" id="recolhimentos" value="#{manutencaoNotaBean.servicosComRetencao}"
+						<p:dataTable var="debito" id="recolhimentos"
+							value="#{manutencaoNotaBean.servicosComRetencao}"
 							emptyMessage="Nenhum serviço cadastrado">
 
 							<p:column headerText="Serviço">
@@ -406,15 +368,78 @@
 								icon="ui-icon-trash" />
 						</p:commandButton>
 
-						<p:commandButton
-							action="#{manutencaoNotaBean.imprimirNotaCobranca}"
-							id="btnImprimir" icon="ui-icon-print" ajax="false"
-							binding="#{manutencaoNotaBean.botaoImprimir}" value="Imprimir">
-						</p:commandButton>
+						<p:commandButton value="Imprimir"
+							binding="#{manutencaoNotaBean.botaoImprimir}"
+							icon="ui-icon-print" onclick="PF('dlg2').show();" />
 
-						<p:commandButton action="#{manutencaoNotaBean.salvar}" icon="ui-icon-disk"
-							update=":growl,:tabView" value="Salvar alterações" />
+						<p:commandButton action="#{manutencaoNotaBean.salvar}"
+							icon="ui-icon-disk" update=":growl,:tabView" process="@(form)"
+							value="Salvar alterações" />
 					</div>
+
+					<p:dialog header="Emitir nota de cobrança" width="500"
+						widgetVar="dlg2" modal="true" height="150">
+
+						<p:panelGrid columns="1" style="width:100%;text-align:center;"
+							styleClass="panelForm">
+
+							<p:outputLabel value="Data de emissão da nota:" />
+							<p:calendar styleClass="date"
+								value="#{manutencaoNotaBean.debitoSelecionado.dataEmissaoNotaCobranca}"
+								pattern="dd/MM/yyyy" converter="CalendarConverter" />
+
+							<p:commandButton
+								action="#{manutencaoNotaBean.imprimirNotaCobranca}"
+								id="btnImprimir" icon="ui-icon-print" ajax="false"
+								value="Imprimir" style="width:300px;height:60px;margin-top:30px;">
+							</p:commandButton>
+
+						</p:panelGrid>
+
+					</p:dialog>
+				</h:form>
+				<h:form>
+					<p:dialog header="Adicionar serviço" widgetVar="dlg3" modal="true"
+						resizable="true" showEffect="fade" hideEffect="fade" height="150"
+						width="350">
+						<p:panelGrid styleClass="panelForm" style="width:100%;"
+							id="formServico">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="">
+									<p:outputLabel value="Serviço:" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:selectOneMenu
+										value="#{manutencaoNotaBean.debitoServico.servico}"
+										converter="ServicoConverter" effect="fade" filter="true">
+										<f:selectItems value="#{manutencaoNotaBean.servicos}"
+											var="ser" itemValue="#{ser}" itemLabel="#{ser.descricao}" />
+									</p:selectOneMenu>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Valor:" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText styleClass="moeda"
+										value="#{manutencaoNotaBean.debitoServico.valor}">
+										<f:convertNumber pattern="#,##0.00" type="currency"
+											locale="pt_BR" />
+									</p:inputText>
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel" colspan="2">
+									<p:commandButton value="Adicionar" process="@(form)"
+										actionListener="#{manutencaoNotaBean.salvarServico()}"
+										oncomplete="PF('dlg3').hide();" update=":tabView" />
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:dialog>
+
 				</h:form>
 			</p:tab>
 		</p:tabView>

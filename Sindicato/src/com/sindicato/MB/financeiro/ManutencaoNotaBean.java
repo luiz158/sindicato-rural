@@ -208,6 +208,7 @@ public class ManutencaoNotaBean implements Serializable {
 		extenso.setNumber(debitoSelecionado.getTotalDebitos());
 		
 		SimpleDateFormat format = new SimpleDateFormat("MMMMM/yyyy");
+		SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
 		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("cartaSindical", usuarioLogado.getEmpresa().getCartaSindical());
@@ -223,6 +224,7 @@ public class ManutencaoNotaBean implements Serializable {
 		parameters.put("valorPorExtenso", extenso.toString());
 		parameters.put("valorNota", debitoSelecionado.getTotalDebitos());
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
+		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));
 		parameters.put("usuario", usuarioLogado.getNome());
 		parameters.put("numeroNota", debitoSelecionado.getId());
 		
