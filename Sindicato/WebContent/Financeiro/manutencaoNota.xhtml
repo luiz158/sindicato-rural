@@ -16,7 +16,7 @@
 			<p:menuitem value="Manutenção de notas" url="#" />
 		</p:breadCrumb>
 		<p:spacer height="15" />
-		<p:growl id="growl" showDetail="true" />
+		<p:growl id="growl" showDetail="true" life="15000" />
 		<p:tabView binding="#{manutencaoNotaBean.tabView}" id="tabView">
 			<p:tab title="Lista das notas de cobrança">
 				<h:form>
@@ -50,6 +50,11 @@
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
+						<p:column headerText="Status" >
+							<p:outputLabel value="Aguardando recebimento" rendered="#{debito.status == 'NOTACOBRANCAGERADA'}" />
+							<p:outputLabel value="Aguardando recolhimento" rendered="#{debito.status == 'RECEBIDO'}" />
+							<p:outputLabel value="Nota recolhida" rendered="#{debito.status == 'RECOLHIDO'}" />
+						</p:column>
 					</p:dataTable>
 				</h:form>
 			</p:tab>
@@ -69,7 +74,7 @@
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'NOTACOBRANCAGERADA'}" />
 							<p:outputLabel value="Aguardando recolhimento"
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECEBIDO'}" />
-							<p:outputLabel value="Nota de cobrança recolhida"
+							<p:outputLabel value="Nota recolhida"
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECOLHIDO'}" />
 
 							<p:outputLabel value="Data base:" />
@@ -98,7 +103,7 @@
 					<p:spacer height="20" />
 					<p:fieldset legend="Serviços da nota de cobrança">
 						<p:commandButton value="Adicionar serviço"
-							onclick="PF('dlg3').show();" type="button" icon="ui-icon-plus"
+							onclick="PF('dlg_servicos').show();" type="button" icon="ui-icon-plus"
 							style="margin-bottom:15px;"
 							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}" />
 
@@ -146,10 +151,10 @@
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
 						<p:commandButton id="effectsDialogButton"
 							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
-							value="Adicionar recebimento" onclick="PF('dlg3').show();"
+							value="Adicionar recebimento" onclick="PF('dlg_recebimentos').show();"
 							type="button" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
-						<p:dialog header="Adicionar recebimento" widgetVar="dlg3"
+						<p:dialog header="Adicionar recebimento" widgetVar="dlg_recebimentos"
 							modal="true" resizable="true" showEffect="fade" hideEffect="fade"
 							height="300" width="650">
 
@@ -281,7 +286,7 @@
 										<p:commandButton value="Adicionar"
 											style="width:200px;height:40px;"
 											actionListener="#{manutencaoNotaBean.salvarRecebimento}"
-											oncomplete="PF('dlg3').hide();" update="@(form)" />
+											oncomplete="PF('dlg_recebimentos').hide();" update="@(form)" />
 									</p:column>
 								</p:row>
 							</p:panelGrid>
@@ -399,7 +404,7 @@
 					</p:dialog>
 				</h:form>
 				<h:form>
-					<p:dialog header="Adicionar serviço" widgetVar="dlg3" modal="true"
+					<p:dialog header="Adicionar serviço" widgetVar="dlg_servicos" modal="true"
 						resizable="true" showEffect="fade" hideEffect="fade" height="150"
 						width="350">
 						<p:panelGrid styleClass="panelForm" style="width:100%;"
@@ -434,7 +439,7 @@
 								<p:column styleClass="colLabel" colspan="2">
 									<p:commandButton value="Adicionar" process="@(form)"
 										actionListener="#{manutencaoNotaBean.salvarServico()}"
-										oncomplete="PF('dlg3').hide();" update=":tabView" />
+										oncomplete="PF('dlg_servicos').hide();" update=":tabView" />
 								</p:column>
 							</p:row>
 						</p:panelGrid>

@@ -17,7 +17,7 @@
 		</p:breadCrumb>
 		<p:spacer height="15" />
 		<h:form>
-			<p:growl id="growl" showDetail="true" />
+			<p:growl id="growl" showDetail="true" life="15000" />
 			<p:tabView activeIndex="#{recolhimentoBean.indexTab}">
 				<p:tab title="Lista das notas de cobrança">
 
@@ -60,62 +60,37 @@
 				<p:tab title="Nota de cobrança selecionada">
 
 					<p:fieldset legend="Informações da nota" style="margin-top:15px;">
-						<p:panelGrid styleClass="panelForm"
-							style="width:80%;margin-top:20px;">
+						<p:panelGrid styleClass="panelForm" columns="4"
+							columnClasses="colLabel,colInput,colLabel,colInput"
+							style="width:100%;margin-top:20px;">
 
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Nome do cliente:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:outputLabel
-										value="#{recolhimentoBean.debitoSelecionado.cliente.nome}" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Documento:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:outputLabel
-										value="#{recolhimentoBean.debitoSelecionado.cliente.cpf}" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Data base:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:outputLabel
-										value="#{recolhimentoBean.debitoSelecionado.dataBase.time}">
-										<f:convertDateTime pattern="dd/MM/yyyy" />
-									</p:outputLabel>
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Valor total da nota:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:outputLabel
-										value="#{recolhimentoBean.debitoSelecionado.totalDebitos}">
-										<f:convertNumber locale="pt_BR" type="currency"
-											currencySymbol="R$ " />
-									</p:outputLabel>
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel" style="width:250px;">
-									<p:outputLabel value="Valor total de retenções:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:outputLabel
-										value="#{recolhimentoBean.debitoSelecionado.totalDebitosComRetencao}">
-										<f:convertNumber locale="pt_BR" type="currency"
-											currencySymbol="R$ " />
-									</p:outputLabel>
-								</p:column>
-							</p:row>
+							<p:outputLabel value="Número da nota:" />
+							<p:outputLabel value="#{recolhimentoBean.debitoSelecionado.id}" />
+
+							<p:outputLabel value="Status da nota:" />
+							<p:outputLabel value="Aguardando recolhimento" />
+
+							<p:outputLabel value="Data base:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.dataBase.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Valor da nota:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.totalDebitos}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+
+							<p:outputLabel value="Nome do cliente:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.cliente.nome}" />
+
+							<p:outputLabel value="Documento:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.cliente.cpf}" />
+
 						</p:panelGrid>
 						<p:spacer height="25" />
 						<p:dataTable var="debito" id="servicos"
@@ -123,7 +98,7 @@
 							value="#{recolhimentoBean.servicosComRetencao}">
 
 							<f:facet name="header">
-								<p:outputLabel value="Recolhimentos pendentes" />
+								<p:outputLabel value="Serviços com retenção / Recolhimentos pendentes" />
 							</f:facet>
 
 							<p:column headerText="Serviço">

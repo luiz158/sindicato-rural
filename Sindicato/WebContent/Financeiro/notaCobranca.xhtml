@@ -67,6 +67,39 @@
 			<p:fieldset legend="Informações da nota" style="margin-top:15px;"
 				rendered="#{notaCobrancaBean.debitoSelecionado != null}">
 
+						<p:panelGrid styleClass="panelForm" columns="4"
+							columnClasses="colLabel,colInput,colLabel,colInput"
+							style="width:100%;margin-top:20px;">
+
+							<p:outputLabel value="Número da nota:" />
+							<p:outputLabel value="#{notaCobrancaBean.debitoSelecionado.id}" />
+
+							<p:outputLabel value="Status do débito:" />
+							<p:outputLabel value="Aguardando geração da nota" />
+
+							<p:outputLabel value="Data base:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.dataBase.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Valor da nota:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.totalDebitos}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+
+							<p:outputLabel value="Nome do cliente:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.cliente.nome}" />
+
+							<p:outputLabel value="Documento:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.cliente.cpf}" />
+
+						</p:panelGrid>
+
 				<p:dataTable var="debito" id="servicos"
 					style="margin-top:15px;margin-bottom:15px;"
 					emptyMessage="Nenhum serviço cadastrado"

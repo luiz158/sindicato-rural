@@ -157,6 +157,14 @@ public class ManutencaoNotaBean implements Serializable {
 				this.mergeServicosComRetencao();
 			}
 			
+			if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECEBIDO)){
+				if(!UtilBean.confereValorRecebimentos(debitoSelecionado)){
+					UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+							"Ooops...", "Verifique os valores de recebimento, pois não confere com o valor da Nota");
+					return;
+				}
+			}
+			
 			ResultOperation result = financeiroDAO.salvarAlteracaoNotaCobranca(debitoSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
@@ -165,8 +173,8 @@ public class ManutencaoNotaBean implements Serializable {
 				if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.NOTACOBRANCAGERADA)){
 					botaoImprimir.setDisabled(false);
 				}else{
-					tabView.setActiveIndex(0);
-					debitoSelecionado = new Debito();
+					//tabView.setActiveIndex(0);
+					//debitoSelecionado = new Debito();
 				}
 			}
 		} catch (Exception e) {

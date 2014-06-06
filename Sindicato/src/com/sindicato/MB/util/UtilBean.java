@@ -1,5 +1,7 @@
 package com.sindicato.MB.util;
 
+import java.math.BigDecimal;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.ExternalContext;
@@ -9,10 +11,26 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
 import com.sindicato.MB.seguranca.LoginBean;
+import com.sindicato.entity.Debito;
+import com.sindicato.entity.Recebimento;
 import com.sindicato.entity.autenticacao.Usuario;
 
 public class UtilBean {
 
+	public static boolean confereValorRecebimentos(Debito debito){
+		BigDecimal recebimentos = BigDecimal.ZERO;
+		
+		for (Recebimento recebimento : debito.getRecebimentos()) {
+			recebimentos = recebimentos.add(recebimento.getValor());
+		}
+		
+		if(recebimentos.compareTo(debito.getTotalDebitos()) == 0){
+			return true;
+		}
+		return false;
+	}
+
+	
 	public static FacesContext getFacesContext(){
 		return FacesContext.getCurrentInstance();
 	}

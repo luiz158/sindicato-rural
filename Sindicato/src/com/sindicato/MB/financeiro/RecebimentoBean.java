@@ -62,6 +62,12 @@ public class RecebimentoBean implements Serializable {
 	
 	public void salvar() {
 		try {
+			if(!UtilBean.confereValorRecebimentos(debitoSelecionado)){
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+						"Ooops...", "Verifique os valores de recebimento, pois não confere com o valor da Nota");
+				return;
+			}
+			
 			ResultOperation result = financeiroDAO.registrarRecebimento(debitoSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
