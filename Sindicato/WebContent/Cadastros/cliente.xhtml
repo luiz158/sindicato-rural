@@ -507,7 +507,7 @@
 										<p:column headerText="Área de ocupação">
 											<h:outputText value="#{ocupacao.areaOcupada}" />
 										</p:column>
-										<p:column headerText="" width="45">
+										<p:column headerText="" width="70">
 											<p:commandButton value="Excluir"
 												action="#{clienteBean.removerOcupacao(ocupacao)}"
 												update="ocupacaoes" immediate="true" />
@@ -598,15 +598,13 @@
 									<h:outputText value="Deixou de ser sócio"
 										rendered="#{!inf.socio}" />
 								</p:column>
-
 							</p:dataTable>
-
 						</p:fieldset>
 						<p:spacer height="30" />
 						<p:fieldset legend="Histórico de mensalidades">
 
 							<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
-								value="#{clienteBean.mensalidadesPagas}">
+								value="#{clienteBean.mensalidadesPagas}" paginator="true" rows="10">
 
 								<p:column headerText="Data do pagamento">
 									<h:outputText value="#{inf.dataPagamento.time}">

@@ -78,6 +78,8 @@ public class ClienteBean implements Serializable {
 
 	public void reset() {
 		clienteSelecionado = null;
+		informacoesSocio = null;
+		informacaoMensalidade = null;
 		clientes = null;
 	}
 

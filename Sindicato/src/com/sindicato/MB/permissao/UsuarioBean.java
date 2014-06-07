@@ -71,7 +71,7 @@ public class UsuarioBean implements Serializable {
 				usuarioDAO.insert(usuarioSelecionado);
 			} else {
 				if(senhaNova != null && senhaNova != ""){
-					usuarioSelecionado.setSenha(PasswordManager.generated(usuarioSelecionado.getSenha()));
+					usuarioSelecionado.setSenha(PasswordManager.generated(senhaNova));
 				}
 				usuarioDAO.update(usuarioSelecionado);
 			}
