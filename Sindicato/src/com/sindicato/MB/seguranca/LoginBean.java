@@ -56,7 +56,7 @@ public class LoginBean implements Serializable {
 
 				carregaMenu();
 
-				retorno = "index";
+				retorno = "/faces/index?faces-redirect=true";
 			} else {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Atenção", result.getMessage());

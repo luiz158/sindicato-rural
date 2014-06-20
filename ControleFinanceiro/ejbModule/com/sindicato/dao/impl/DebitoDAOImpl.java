@@ -6,14 +6,12 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.DebitoDAO;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.util.FiltroDataTable;
 
 @Stateless
 public class DebitoDAOImpl implements DebitoDAO {
@@ -31,71 +29,82 @@ public class DebitoDAOImpl implements DebitoDAO {
 			String sortField, String sortOrder, Map<String, Object> filters,
 			List<StatusDebitoEnum> statusPermitidos) {
 		
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Debito> cq = cb.createQuery(Debito.class);
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select d from Debito d ");
 		
-		Root<Debito> myObj = cq.from(Debito.class);
-		cq.where(this.getFilterCondition(cb, myObj, filters, statusPermitidos));
+		FiltroDataTable wheres = new FiltroDataTable();
+		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
+			wheres = this.getFilterCondition(filters, statusPermitidos);
+			jpql.append(wheres.getWhere());
+		}
+		
 		if (sortField != null) {
 			if (sortOrder == "ASCENDING") {
-				cq.orderBy(cb.asc(myObj.get(sortField)));
+				jpql.append("order by " + sortField);
 			} else if (sortOrder == "DESCENDING") {
-				cq.orderBy(cb.desc(myObj.get(sortField)));
+				jpql.append("order by " + sortField + " desc ");
 			}
 		}
 
-		List<Debito> debitos = em.createQuery(cq).setFirstResult(first)
-				.setMaxResults(pageSize).getResultList();
-		return debitos;
+		TypedQuery<Debito> debitos = em.createQuery(jpql.toString(), Debito.class).setFirstResult(first)
+				.setMaxResults(pageSize);
+		
+		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
+			if(wheres.getParameters().isEmpty() == false){
+				for (Map.Entry<String, Object> filter : wheres.getParameters().entrySet()) {
+					debitos.setParameter(filter.getKey(), filter.getValue());
+				}
+			}
+		}
+		
+		return debitos.getResultList();
 	
 	}
 
 	@Override
 	public int count(Map<String, Object> filters,
 			List<StatusDebitoEnum> statusPermitidos) {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<Long> cq = cb.createQuery(Long.class);
-		Root<Debito> myObj = cq.from(Debito.class);
-		cq.where(this.getFilterCondition(cb, myObj, filters, statusPermitidos));
-		cq.select(cb.count(myObj));
-		return em.createQuery(cq).getSingleResult().intValue();
-	}
-	
-	private Predicate getFilterCondition(CriteriaBuilder cb,
-			Root<Debito> myObj, Map<String, Object> filters, List<StatusDebitoEnum> statusPermitidos) {
+		StringBuilder jpql = new StringBuilder();
+		jpql.append("select COUNT(d) from Debito d ");
 		
-		Predicate filterCondition = cb.conjunction();
-		for (Map.Entry<String, Object> filter : filters.entrySet()) {
-
-			if (!filter.getValue().equals("")) {
-				javax.persistence.criteria.Path<String> path = myObj.get(filter
-						.getKey());
-				try {
-					String columnType = myObj.get(filter.getKey())
-							.getJavaType().toString();
-					if (columnType.contains("String")) {
-						String value = "%" + filter.getValue().toString().toUpperCase()
-								+ "%";
-						filterCondition = cb.and(filterCondition,
-								cb.like(cb.upper(path), value));
-					} else {
-						filterCondition = cb.and(filterCondition,
-								cb.equal(path, filter.getValue()));
-					}
-				} catch (Exception e) {
-					filterCondition = cb.and(filterCondition,
-							cb.equal(path, filter.getValue()));
+		FiltroDataTable wheres = new FiltroDataTable();
+		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
+			wheres = this.getFilterCondition(filters, statusPermitidos);
+			jpql.append(wheres.getWhere());
+		}
+		
+		TypedQuery<Long> debitos = em.createQuery(jpql.toString(), Long.class);
+		
+		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
+			if(wheres.getParameters().isEmpty() == false){
+				for (Map.Entry<String, Object> filter : wheres.getParameters().entrySet()) {
+					debitos.setParameter(filter.getKey(), filter.getValue());
 				}
 			}
 		}
 		
-		if(statusPermitidos != null){
-			javax.persistence.criteria.Path<String> status = myObj.get("status");
-			filterCondition = cb.and(filterCondition,
-					status.in(statusPermitidos));
+		return debitos.getSingleResult().intValue();
+	}
+	
+	private FiltroDataTable getFilterCondition(Map<String, Object> filters, List<StatusDebitoEnum> statusPermitidos) {
+		
+		StringBuilder where = new StringBuilder();
+		where.append("where 1 = 1 ");
+		FiltroDataTable filtro = new FiltroDataTable();
+		for (Map.Entry<String, Object> filter : filters.entrySet()) {
+			if (!filter.getValue().equals("")) {
+				System.out.print(filter.getKey() + ":");
+				System.out.println(filter.getValue());
+			}
 		}
 		
-		return filterCondition;
+		if(statusPermitidos.size() > 0){
+			where.append("and d.status in (:status) ");
+			filtro.getParameters().put("status", statusPermitidos);
+		}
+		
+		filtro.setWhere(where.toString());
+		return filtro;
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.sindicato.MB.reports;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 
 import javax.faces.context.FacesContext;
@@ -36,8 +37,8 @@ public class GeradorReports {
 	}
 
 	private void initReport() throws JRException {
-		String reportPath = FacesContext.getCurrentInstance()
-				.getExternalContext().getRealPath(report);
+		InputStream reportPath = FacesContext.getCurrentInstance()
+				.getExternalContext().getResourceAsStream(report);
 		
 		jasperPrint = JasperFillManager.fillReport(reportPath, parameters,
 				beanCollectionDataSource);
