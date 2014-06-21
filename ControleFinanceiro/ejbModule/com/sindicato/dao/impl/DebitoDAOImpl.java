@@ -6,12 +6,12 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.DebitoDAO;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
-import com.sindicato.util.FiltroDataTable;
+import com.uaihebert.factory.EasyCriteriaFactory;
+import com.uaihebert.model.EasyCriteria;
 
 @Stateless
 public class DebitoDAOImpl implements DebitoDAO {
@@ -29,92 +29,51 @@ public class DebitoDAOImpl implements DebitoDAO {
 			String sortField, String sortOrder, Map<String, Object> filters,
 			List<StatusDebitoEnum> statusPermitidos) {
 		
-		StringBuilder jpql = new StringBuilder();
-		jpql.append("select d from Debito d ");
-		
-		FiltroDataTable wheres = new FiltroDataTable();
-		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
-			wheres = this.getFilterCondition(filters, statusPermitidos);
-			jpql.append(wheres.getWhere());
-		}
+		EasyCriteria<Debito> easyCriteria = EasyCriteriaFactory.createQueryCriteria(em, Debito.class);
+		easyCriteria.innerJoin("cliente");
+		this.getFilterCondition(easyCriteria, filters, statusPermitidos);
 		
 		if (sortField != null) {
 			if (sortOrder == "ASCENDING") {
-				jpql.append("order by " + sortField);
+				easyCriteria.orderByAsc(sortField);
 			} else if (sortOrder == "DESCENDING") {
-				jpql.append("order by " + sortField + " desc ");
+				easyCriteria.orderByDesc(sortField);
 			}
 		}
 
-		TypedQuery<Debito> debitos = em.createQuery(jpql.toString(), Debito.class).setFirstResult(first)
-				.setMaxResults(pageSize);
-		
-		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
-			if(wheres.getParameters().isEmpty() == false){
-				for (Map.Entry<String, Object> filter : wheres.getParameters().entrySet()) {
-					debitos.setParameter(filter.getKey(), filter.getValue());
-				}
-			}
-		}
-		
-		return debitos.getResultList();
-	
+		List<Debito> debitos = easyCriteria.setFirstResult(first)
+				.setMaxResults(pageSize).getResultList();
+		return debitos;
 	}
 
 	@Override
 	public int count(Map<String, Object> filters,
 			List<StatusDebitoEnum> statusPermitidos) {
-		StringBuilder jpql = new StringBuilder();
-		jpql.append("select COUNT(d) from Debito d ");
-		
-		FiltroDataTable wheres = new FiltroDataTable();
-		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
-			wheres = this.getFilterCondition(filters, statusPermitidos);
-			jpql.append(wheres.getWhere());
-		}
-		
-		TypedQuery<Long> debitos = em.createQuery(jpql.toString(), Long.class);
-		
-		if(filters.isEmpty() == false || statusPermitidos.size() > 0){
-			if(wheres.getParameters().isEmpty() == false){
-				for (Map.Entry<String, Object> filter : wheres.getParameters().entrySet()) {
-					debitos.setParameter(filter.getKey(), filter.getValue());
-				}
-			}
-		}
-		
-		return debitos.getSingleResult().intValue();
+		EasyCriteria<Debito> easyCriteria = EasyCriteriaFactory.createQueryCriteria(em, Debito.class);
+		easyCriteria.innerJoin("cliente");
+		this.getFilterCondition(easyCriteria, filters, statusPermitidos);
+		return easyCriteria.count().intValue();
 	}
 	
-	private FiltroDataTable getFilterCondition(Map<String, Object> filters, List<StatusDebitoEnum> statusPermitidos) {
+	private void getFilterCondition(EasyCriteria<Debito> easyCriteria,
+			Map<String, Object> filters, List<StatusDebitoEnum> statusPermitidos) {
 		
-		StringBuilder where = new StringBuilder();
-		where.append("where 1 = 1 ");
-		FiltroDataTable filtro = new FiltroDataTable();
 		for (Map.Entry<String, Object> filter : filters.entrySet()) {
 			if (!filter.getValue().equals("")) {
-				where.append(" and d.");
-				where.append(filter.getKey());
-				where.append(" = :");
-				
-				if(filter.getKey().equals("id")){
-					filtro.getParameters().put(filter.getKey(), Integer.parseInt((String) filter.getValue()));
-				}else{
-					filtro.getParameters().put(filter.getKey().replace(".", ""), filter.getValue());
+				if (filter.getKey().equals("id")) {
+					easyCriteria.andEquals(filter.getKey(), filter.getValue());
+				} else {
+					boolean toLowerCase = true;
+					easyCriteria.andStringLike(toLowerCase, filter.getKey(), "%" + filter.getValue().toString() + "%");
 				}
-				
-				where.append(filter.getKey().replace(".", ""));
-				
 			}
 		}
 		
-		if(statusPermitidos.size() > 0){
-			where.append(" and d.status in (:status) ");
-			filtro.getParameters().put("status", statusPermitidos);
+		if(statusPermitidos != null){
+			for (StatusDebitoEnum statusDebitoEnum : statusPermitidos) {
+				easyCriteria.orEquals(1, "status", statusDebitoEnum.ordinal());
+			}
 		}
-		
-		filtro.setWhere(where.toString());
-		return filtro;
 	}
 
 }
