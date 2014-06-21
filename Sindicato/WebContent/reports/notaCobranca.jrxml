@@ -3,7 +3,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="ireport.zoom" value="1.4641000000000006"/>
 	<property name="ireport.x" value="55"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="cartaSindical" class="java.lang.String"/>
 	<parameter name="cnpj" class="java.lang.String"/>
 	<parameter name="endereco" class="java.lang.String"/>
@@ -38,7 +38,7 @@
 			<staticText>
 				<reportElement x="142" y="0" width="413" height="28" uuid="1f300d10-2883-428a-966e-2a03a7cd8451"/>
 				<textElement>
-					<font fontName="Elephant" size="22"/>
+					<font fontName="Arial" size="24"/>
 				</textElement>
 				<text><![CDATA[S i n d i c a t o   R u r a l   d e   C o t i a]]></text>
 			</staticText>

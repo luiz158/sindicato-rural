@@ -9,6 +9,8 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/jboss-eap/standalone/lib/ext"/>
 	<classpathentry kind="lib" path="lib/hibernate-annotations.jar"/>
+	<classpathentry kind="lib" path="lib/EasyCriteria-3.0.0_2013-08-02.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
