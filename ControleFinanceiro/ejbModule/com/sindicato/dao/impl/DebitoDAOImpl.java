@@ -93,13 +93,23 @@ public class DebitoDAOImpl implements DebitoDAO {
 		FiltroDataTable filtro = new FiltroDataTable();
 		for (Map.Entry<String, Object> filter : filters.entrySet()) {
 			if (!filter.getValue().equals("")) {
-				System.out.print(filter.getKey() + ":");
-				System.out.println(filter.getValue());
+				where.append(" and d.");
+				where.append(filter.getKey());
+				where.append(" = :");
+				
+				if(filter.getKey().equals("id")){
+					filtro.getParameters().put(filter.getKey(), Integer.parseInt((String) filter.getValue()));
+				}else{
+					filtro.getParameters().put(filter.getKey().replace(".", ""), filter.getValue());
+				}
+				
+				where.append(filter.getKey().replace(".", ""));
+				
 			}
 		}
 		
 		if(statusPermitidos.size() > 0){
-			where.append("and d.status in (:status) ");
+			where.append(" and d.status in (:status) ");
 			filtro.getParameters().put("status", statusPermitidos);
 		}
 		
