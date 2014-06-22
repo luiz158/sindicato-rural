@@ -403,7 +403,8 @@
 										<h4>Inscrição Estadual</h4>
 
 										<p:panelGrid styleClass="panelForm"
-											style="width:100%;margin-bottom:20px;">
+											style="width:100%;margin-bottom:20px;"
+											columnClasses="colLabel,colInput">
 											<p:row>
 												<p:column styleClass="colLabel">
 													<p:outputLabel value="Inscrição estadual" />
@@ -413,6 +414,8 @@
 														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.inscricaoEstadual}"
 														size="30" />
 												</p:column>
+											</p:row>
+											<p:row>
 												<p:column styleClass="colLabel">
 													<p:outputLabel value="Validade da Insc. estadual" />
 												</p:column>
@@ -420,8 +423,12 @@
 													<p:calendar pattern="dd/MM/yyyy" styleClass="date"
 														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
 														converter="CalendarConverter" />
+														<p:spacer width="20" />
+													<p:outputLabel value="Indeterminada:" style="font-" />
+													<p:selectBooleanCheckbox value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscEstIndeter}"></p:selectBooleanCheckbox>
 												</p:column>
 											</p:row>
+
 										</p:panelGrid>
 									</p:outputPanel>
 								</p:outputPanel>
@@ -604,7 +611,8 @@
 						<p:fieldset legend="Histórico de mensalidades">
 
 							<p:dataTable var="inf" emptyMessage="Nenhuma mensalidade paga"
-								value="#{clienteBean.mensalidadesPagas}" paginator="true" rows="10">
+								value="#{clienteBean.mensalidadesPagas}" paginator="true"
+								rows="10">
 
 								<p:column headerText="Data do pagamento">
 									<h:outputText value="#{inf.dataPagamento.time}">

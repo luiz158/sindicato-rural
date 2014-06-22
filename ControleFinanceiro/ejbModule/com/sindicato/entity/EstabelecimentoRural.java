@@ -42,6 +42,8 @@ public class EstabelecimentoRural implements Serializable {
 
 	@Temporal(TemporalType.DATE)
 	private Calendar validadeInscricaoEstadual;
+	
+	private boolean validadeInscEstIndeter;
 
 	// @NotNull
 	private String cnpj;
@@ -143,6 +145,14 @@ public class EstabelecimentoRural implements Serializable {
 
 	public Calendar getDataInicioAtividade() {
 		return dataInicioAtividade;
+	}
+
+	public boolean isValidadeInscEstIndeter() {
+		return validadeInscEstIndeter;
+	}
+
+	public void setValidadeInscEstIndeter(boolean validadeInscEstIndeter) {
+		this.validadeInscEstIndeter = validadeInscEstIndeter;
 	}
 
 	public void setDataInicioAtividade(Calendar dataInicioAtividade) {
