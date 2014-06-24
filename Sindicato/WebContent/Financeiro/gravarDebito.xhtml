@@ -30,12 +30,12 @@
 							<p:selectOneMenu value="#{gravarDebitoBean.debito.cliente}"
 								converter="ClienteConverter" effect="fade" filter="true"
 								id="clientes" required="true"
-								requiredMessage="Selecione o cliente">
+								requiredMessage="Selecione o cliente" >
 
 								<f:selectItem itemValue="" itemLabel="Selecione o cliente..." />
 
 								<f:selectItems value="#{gravarDebitoBean.clientes}" var="cli"
-									itemValue="#{cli}" itemLabel="#{cli.nome}" />
+									itemValue="#{cli}" itemLabel="#{cli.nome}"  />
 
 								<p:ajax update="@form"
 									listener="#{gravarDebitoBean.selecionaCliente}" />

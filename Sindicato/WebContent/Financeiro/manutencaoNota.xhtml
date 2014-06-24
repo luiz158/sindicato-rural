@@ -27,7 +27,7 @@
 						selectionMode="single" id="debitos" lazy="true"
 						draggableColumns="true"
 						emptyMessage="Nenhuma nota de cobrança encontrada"
-						resizableColumns="true">
+						resizableColumns="true" sortBy="#{debito.id}" sortOrder="DESCENDING">
 
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{manutencaoNotaBean.selecionaDebito()}" />

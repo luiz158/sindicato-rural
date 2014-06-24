@@ -49,7 +49,7 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		String subQuerySocio = "select socio from InformacaoSocio s "
 				+ "Where s.id = (select MAX(s2.id) from InformacaoSocio s2 Where s2.cliente.id = c.id) ";
 
-		String strQuery = "Select c, (" + subQuerySocio + ") from Cliente c ";
+		String strQuery = "Select c, (" + subQuerySocio + ") from Cliente c order by c.nome asc";
 		TypedQuery<Object[]> query = null;
 		query = em.createQuery(strQuery, Object[].class);
 

@@ -29,7 +29,7 @@
 	<field name="valor" class="java.math.BigDecimal">
 		<fieldDescription><![CDATA[valor]]></fieldDescription>
 	</field>
-	<field name="servico.descricao" class="java.lang.Object"/>
+	<field name="servico.descricao" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
