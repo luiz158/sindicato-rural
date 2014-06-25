@@ -100,6 +100,11 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 		if(debito.getDataEmissaoNotaCobranca() == null){
 			debito.setDataEmissaoNotaCobranca(Calendar.getInstance());
 		}
+		if(debito.getNumeroNota() == 0){
+			String jpql = "select MAX(d.numeroNota) from Debito d ";
+			int ultimaNota = (Integer) em.createQuery(jpql).getSingleResult();
+			debito.setNumeroNota(++ultimaNota);
+		}
 		ResultOperation result = this.alterarStatusDoDebitoPara(debito, StatusDebitoEnum.NOTACOBRANCAGERADA);
 		if(result.isSuccess()){
 			result.setMessage("Nota de cobrança gerada com sucesso.");

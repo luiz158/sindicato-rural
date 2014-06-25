@@ -22,6 +22,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
+import com.sindicato.dao.DebitoDAO;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
 import com.sindicato.entity.Cliente;
@@ -41,6 +42,7 @@ public class NotaCobrancaBean implements Serializable {
 	
 	@EJB private FinanceiroDAO financeiroDAO;
 	@EJB private ListasDAO listasDAO;
+	@EJB private DebitoDAO debitoDAO;
 
 	private List<Cliente> clientes;
 	private List<Debito> debitos;
@@ -66,7 +68,7 @@ public class NotaCobrancaBean implements Serializable {
 		try {
 			result = financeiroDAO.gerarNotaDeCobranca(debitoSelecionado);
 			if (result.isSuccess()) {
-			//if (true) {
+				debitoSelecionado = debitoDAO.searchByID(debitoSelecionado.getId());
 				this.imprimirNotaCobranca();
 				this.reset();
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
@@ -134,7 +136,7 @@ public class NotaCobrancaBean implements Serializable {
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
 		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));
 		parameters.put("usuario", usuarioLogado.getNome());
-		parameters.put("numeroNota", debitoSelecionado.getId());
+		parameters.put("numeroNota", debitoSelecionado.getNumeroNota());
 		
 		GeradorReports gerador = new GeradorReports("notaCobranca.jasper", parameters, new JRBeanCollectionDataSource(
 				debitoSelecionado.getDebitoServicos()));

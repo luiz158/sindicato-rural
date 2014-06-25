@@ -71,8 +71,13 @@
 							columnClasses="colLabel,colInput,colLabel,colInput"
 							style="width:100%;margin-top:20px;">
 
-							<p:outputLabel value="Número da nota:" />
-							<p:outputLabel value="#{notaCobrancaBean.debitoSelecionado.id}" />
+							<p:outputLabel value="Nome do cliente:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.cliente.nome}" />
+
+							<p:outputLabel value="Documento:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.cliente.cpf}" />
 
 							<p:outputLabel value="Status do débito:" />
 							<p:outputLabel value="Aguardando geração da nota" />
@@ -89,14 +94,6 @@
 								<f:convertNumber locale="pt_BR" type="currency"
 									currencySymbol="R$ " />
 							</p:outputLabel>
-
-							<p:outputLabel value="Nome do cliente:" />
-							<p:outputLabel
-								value="#{notaCobrancaBean.debitoSelecionado.cliente.nome}" />
-
-							<p:outputLabel value="Documento:" />
-							<p:outputLabel
-								value="#{notaCobrancaBean.debitoSelecionado.cliente.cpf}" />
 
 						</p:panelGrid>
 

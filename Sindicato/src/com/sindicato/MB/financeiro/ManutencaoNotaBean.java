@@ -139,7 +139,7 @@ public class ManutencaoNotaBean implements Serializable {
 			ResultOperation result = financeiroDAO.cancelarNotaDeCobranca(debitoSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-						"Sucesso", "Nota de cobrança " + debitoSelecionado.getId() + " foi cancelada com sucesso");
+						"Sucesso", "Nota de cobrança " + debitoSelecionado.getNumeroNota() + " foi cancelada com sucesso");
 				this.reset();
 				tabView.setActiveIndex(0);
 			}
@@ -234,7 +234,7 @@ public class ManutencaoNotaBean implements Serializable {
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
 		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));
 		parameters.put("usuario", usuarioLogado.getNome());
-		parameters.put("numeroNota", debitoSelecionado.getId());
+		parameters.put("numeroNota", debitoSelecionado.getNumeroNota());
 		
 		GeradorReports gerador = new GeradorReports("notaCobranca.jasper", parameters, new JRBeanCollectionDataSource(
 				debitoSelecionado.getDebitoServicos()));

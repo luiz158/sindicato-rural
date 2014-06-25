@@ -31,8 +31,8 @@
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{recolhimentoBean.alterTab(1)}" />
 
-						<p:column headerText="Número da nota" sortBy="#{debito.id}" filterBy="#{debito.id}">
-							<p:outputLabel value="#{debito.id}" />
+						<p:column headerText="Número da nota" sortBy="#{debito.numeroNota}" filterBy="#{debito.numeroNota}">
+							<p:outputLabel value="#{debito.numeroNota}" />
 						</p:column>
 						<p:column headerText="Nome do cliente" sortBy="#{debito.cliente.nome}"
 							filterBy="#{debito.cliente.nome}">
@@ -65,7 +65,7 @@
 							style="width:100%;margin-top:20px;">
 
 							<p:outputLabel value="Número da nota:" />
-							<p:outputLabel value="#{recolhimentoBean.debitoSelecionado.id}" />
+							<p:outputLabel value="#{recolhimentoBean.debitoSelecionado.numeroNota}" />
 
 							<p:outputLabel value="Status da nota:" />
 							<p:outputLabel value="Aguardando recolhimento" />

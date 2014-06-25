@@ -27,14 +27,14 @@
 						selectionMode="single" id="debitos" lazy="true"
 						draggableColumns="true"
 						emptyMessage="Nenhuma nota de cobrança encontrada"
-						resizableColumns="true" sortBy="#{debito.id}" sortOrder="DESCENDING">
+						resizableColumns="true" sortBy="#{debito.numeroNota}" sortOrder="DESCENDING">
 
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{manutencaoNotaBean.selecionaDebito()}" />
 
-						<p:column headerText="Número da nota" sortBy="#{debito.id}"
-							filterBy="#{debito.id}">
-							<p:outputLabel value="#{debito.id}" />
+						<p:column headerText="Número da nota" sortBy="#{debito.numeroNota}"
+							filterBy="#{debito.numeroNota}">
+							<p:outputLabel value="#{debito.numeroNota}" />
 						</p:column>
 						<p:column headerText="Nome do cliente"
 							sortBy="#{debito.cliente.nome}" filterBy="#{debito.cliente.nome}">
@@ -67,7 +67,7 @@
 							style="width:100%;margin-top:20px;">
 
 							<p:outputLabel value="Número da nota:" />
-							<p:outputLabel value="#{manutencaoNotaBean.debitoSelecionado.id}" />
+							<p:outputLabel value="#{manutencaoNotaBean.debitoSelecionado.numeroNota}" />
 
 							<p:outputLabel value="Status da nota:" />
 							<p:outputLabel value="Aguardando recebimento"

@@ -25,6 +25,10 @@ import org.hibernate.annotations.FetchMode;
 
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 
+/**
+ * @author Alysson
+ *
+ */
 @Entity
 @SequenceGenerator(allocationSize = 1, name = "seqDebito", sequenceName = "SEQ_DEBITO")
 public class Debito implements Serializable {
@@ -63,6 +67,8 @@ public class Debito implements Serializable {
 	@Column(nullable = false)
 	private StatusDebitoEnum status = StatusDebitoEnum.DEBITOCRIADO;
 
+	private int numeroNota = 0;
+	
 	public BigDecimal getTotalDebitos() {
 		if (debitoServicos == null || debitoServicos.size() == 0) {
 			return BigDecimal.ZERO;
@@ -120,6 +126,14 @@ public class Debito implements Serializable {
 
 	public Calendar getDataEmissaoNotaCobranca() {
 		return dataEmissaoNotaCobranca;
+	}
+
+	public int getNumeroNota() {
+		return numeroNota;
+	}
+
+	public void setNumeroNota(int numeroNota) {
+		this.numeroNota = numeroNota;
 	}
 
 	public void setDataEmissaoNotaCobranca(Calendar dataEmissaoNotaCobranca) {
