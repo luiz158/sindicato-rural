@@ -69,7 +69,7 @@
 			</p:tab>
 			<p:tab title="Informações do cliente">
 
-				<p:tabView>
+				<p:tabView id="tabViewFormulario">
 					<p:tab title="Formulário">
 						<h:form id="formularioCliente">
 
@@ -280,8 +280,7 @@
 
 							<p:fieldset legend="Estabelecimento rural"
 								style="margin-top:15px;">
-								<p:outputPanel>
-									<h4>Dados gerais</h4>
+								<p:panel header="Dados gerais">
 
 									<p:panelGrid styleClass="panelForm" style="width:100%;">
 
@@ -398,10 +397,48 @@
 											</p:column>
 										</p:row>
 									</p:panelGrid>
-									<p:spacer height="10" />
-									<p:outputPanel>
-										<h4>Inscrição Estadual</h4>
+								</p:panel>
+								<p:spacer height="20" />
+								<p:panel header="Inscrição Estadual">
 
+									<p:panelGrid styleClass="panelForm"
+										style="width:50%;margin-bottom:20px;"
+										columnClasses="colLabel,colInput">
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Inscrição estadual" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:inputText
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.inscricaoEstadual}"
+													size="30" />
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Validade indeterminada" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:selectBooleanButton onLabel="Sim" offLabel="Não"
+													id="validadeInd"
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscEstIndeter}">
+													<p:ajax event="change" update="validadeInscricao" />
+												</p:selectBooleanButton>
+											</p:column>
+										</p:row>
+										<p:row>
+											<p:column styleClass="colLabel">
+												<p:outputLabel value="Validade da Insc. estadual" />
+											</p:column>
+											<p:column styleClass="colInput">
+												<p:calendar pattern="dd/MM/yyyy" styleClass="date"
+													id="validadeInscricao"
+													disabled="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscEstIndeter}"
+													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
+													converter="CalendarConverter" />
+												<p:spacer width="20" />
+											</p:column>
+										</p:row>
 										<p:panelGrid styleClass="panelForm"
 											style="width:100%;margin-bottom:20px;"
 											columnClasses="colLabel,colInput">
@@ -430,10 +467,11 @@
 											</p:row>
 
 										</p:panelGrid>
-									</p:outputPanel>
-								</p:outputPanel>
-								<p:outputPanel>
-									<h4>Informações de localização</h4>
+
+									</p:panelGrid>
+								</p:panel>
+								<p:spacer height="20" />
+								<p:panel header="Informações de localização">
 
 									<p:panelGrid styleClass="panelForm"
 										style="width:100%;margin-top:20px;">
@@ -492,14 +530,14 @@
 										</p:row>
 									</p:panelGrid>
 
-								</p:outputPanel>
-
-								<p:outputPanel>
-									<h4>Ocupação do solo</h4>
+								</p:panel>
+								<p:spacer height="20" />
+								<p:panel header="Ocupação do solo">
 
 									<p:commandButton id="effectsDialogButton"
+										style="margin-top:20px;margin-bottom:20px;"
 										value="Adicionar ocupação" onclick="PF('dlg3').show();"
-										type="button" />
+										type="button" icon="ui-icon-plusthick" />
 									<p:spacer height="10" />
 
 									<p:dataTable var="ocupacao" id="ocupacaoes"
@@ -521,7 +559,7 @@
 										</p:column>
 									</p:dataTable>
 
-								</p:outputPanel>
+								</p:panel>
 
 							</p:fieldset>
 
@@ -683,7 +721,7 @@
 						<p:column styleClass="colLabel" colspan="2">
 							<p:commandButton value="Salvar" onsuccess="PF('dlg3').hide();"
 								actionListener="#{clienteBean.salvarOcupacao}"
-								update=":tabView:j_idt41:formularioCliente:ocupacaoes,:growl,formOcupacao" />
+								update=":tabView:tabViewFormulario:formularioCliente:ocupacaoes,:growl,formOcupacao" />
 						</p:column>
 					</p:row>
 				</p:panelGrid>
