@@ -8,7 +8,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.FinanceiroDAO;
-import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.ResultOperation;
@@ -19,14 +18,18 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 	@PersistenceContext(name="ControleFinanceiro")
 	private EntityManager em;
 	
-	private boolean existirDebitoParaClienteNaMesmaDataBase(Cliente cliente, Calendar dataBase){
+	private boolean existirDebitoParaClienteNaMesmaDataBase(Debito debito){
 		String strQuery = "select COUNT(d) from Debito d " +
-				"Where d.cliente = :cliente AND d.dataBase = :dataBase AND d.status != :cancelado";
+				"Where d.cliente = :cliente "
+				+ "AND d.dataBase = :dataBase "
+				+ "AND d.status != :cancelado "
+				+ "AND d.id <> :id";
 		
 		TypedQuery<Long> query = em.createQuery(strQuery, Long.class);
-		query.setParameter("cliente", cliente);
-		query.setParameter("dataBase", dataBase);
+		query.setParameter("cliente", debito.getCliente());
+		query.setParameter("dataBase", debito.getDataBase());
 		query.setParameter("cancelado", StatusDebitoEnum.CANCELADO);
+		query.setParameter("id", debito.getId());
 		
 		if(query.getSingleResult() > 0){
 			return true;
@@ -46,7 +49,7 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 			result.setMessage("Os serviços do debito devem ser declarados.");
 			return result;
 		}
-		if(debito.getId() == 0 && existirDebitoParaClienteNaMesmaDataBase(debito.getCliente(), debito.getDataBase())){
+		if(existirDebitoParaClienteNaMesmaDataBase(debito)){
 			result.setSuccess(false);
 			result.setMessage("Cliente ja possui Debito nesta data base.");
 			return result;

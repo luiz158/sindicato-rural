@@ -43,7 +43,7 @@ public class EstabelecimentoRural implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Calendar validadeInscricaoEstadual;
 	
-	private boolean validadeInscEstIndeter;
+	private boolean validadeInscEstIndeter = false;
 
 	// @NotNull
 	private String cnpj;
