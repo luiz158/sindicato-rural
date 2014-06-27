@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notaCobrancaMain" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="06297ee0-7faa-4944-9173-9f432815a9a9">
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notaCobrancaMain" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="06297ee0-7faa-4944-9173-9f432815a9a9">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
@@ -20,7 +21,7 @@
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="dataEmissao" class="java.lang.String"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:\\Projetos\\Sindicato\\ControleFinanceiro\\WebContent\\reports\\"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["D:/Projetos/Sindicato/ControleFinanceiro/WebContent/reports/imagens/"]]></defaultValueExpression>
 	</parameter>
 	<field name="id" class="java.lang.Integer"/>
 	<field name="valor" class="java.math.BigDecimal"/>
@@ -29,102 +30,38 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="278">
-			<subreport runToBottom="false">
-				<reportElement x="0" y="139" width="555" height="139" uuid="09557343-aac8-4c41-b4d7-42a4294a97ff"/>
-				<subreportParameter name="logo">
-					<subreportParameterExpression><![CDATA[$P{logo}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="cartaSindical">
-					<subreportParameterExpression><![CDATA[$P{cartaSindical}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="fax">
-					<subreportParameterExpression><![CDATA[$P{fax}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="usuario">
-					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="telefones">
-					<subreportParameterExpression><![CDATA[$P{telefones}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="data">
-					<subreportParameterExpression><![CDATA[$P{data}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="cnpj">
-					<subreportParameterExpression><![CDATA[$P{cnpj}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="valorPorExtenso">
-					<subreportParameterExpression><![CDATA[$P{valorPorExtenso}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="valorNota">
-					<subreportParameterExpression><![CDATA[$P{valorNota}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="dataEmissao">
-					<subreportParameterExpression><![CDATA[$P{dataEmissao}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="email">
-					<subreportParameterExpression><![CDATA[$P{email}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="socio">
-					<subreportParameterExpression><![CDATA[$P{socio}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="clienteId">
-					<subreportParameterExpression><![CDATA[$P{clienteId}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="numeroNota">
-					<subreportParameterExpression><![CDATA[$P{numeroNota}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="clienteNome">
+		<band height="304">
+			<textField>
+				<reportElement x="617" y="119" width="100" height="20" uuid="d07084dc-da12-41a7-991c-4c32818664df"/>
+				<textFieldExpression><![CDATA[$P{clienteNome}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="0" width="362" height="278" uuid="0ac57197-0313-497e-affe-4c6499f10e58"/>
+				<subreportParameter name="cliente">
 					<subreportParameterExpression><![CDATA[$P{clienteNome}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="endereco">
-					<subreportParameterExpression><![CDATA[$P{endereco}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "notaCobranca.jrxml"]]></subreportExpression>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["D:/Projetos/Sindicato/ControleFinanceiro/WebContent/reports/imagens/teste.jasper"]]></subreportExpression>
 			</subreport>
-			<subreport runToBottom="true">
-				<reportElement x="0" y="0" width="555" height="139" uuid="eaeb751b-ecaa-4da2-88b3-f50b2f21132d"/>
-				<subreportParameter name="logo">
-					<subreportParameterExpression><![CDATA[$P{logo}]]></subreportParameterExpression>
-				</subreportParameter>
+			<subreport>
+				<reportElement x="481" y="104" width="200" height="200" uuid="8d6b1574-d734-4391-8074-b8870561b683"/>
 				<subreportParameter name="cartaSindical">
 					<subreportParameterExpression><![CDATA[$P{cartaSindical}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="fax">
-					<subreportParameterExpression><![CDATA[$P{fax}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="usuario">
-					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="telefones">
-					<subreportParameterExpression><![CDATA[$P{telefones}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="data">
-					<subreportParameterExpression><![CDATA[$P{data}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="cnpj">
 					<subreportParameterExpression><![CDATA[$P{cnpj}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				<subreportParameter name="endereco">
+					<subreportParameterExpression><![CDATA[$P{endereco}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="valorPorExtenso">
-					<subreportParameterExpression><![CDATA[$P{valorPorExtenso}]]></subreportParameterExpression>
+				<subreportParameter name="telefones">
+					<subreportParameterExpression><![CDATA[$P{telefones}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="valorNota">
-					<subreportParameterExpression><![CDATA[$P{valorNota}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="dataEmissao">
-					<subreportParameterExpression><![CDATA[$P{dataEmissao}]]></subreportParameterExpression>
+				<subreportParameter name="fax">
+					<subreportParameterExpression><![CDATA[$P{fax}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="email">
 					<subreportParameterExpression><![CDATA[$P{email}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="socio">
-					<subreportParameterExpression><![CDATA[$P{socio}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="clienteId">
 					<subreportParameterExpression><![CDATA[$P{clienteId}]]></subreportParameterExpression>
@@ -132,14 +69,35 @@
 				<subreportParameter name="clienteNome">
 					<subreportParameterExpression><![CDATA[$P{clienteNome}]]></subreportParameterExpression>
 				</subreportParameter>
+				<subreportParameter name="socio">
+					<subreportParameterExpression><![CDATA[$P{socio}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="valorNota">
+					<subreportParameterExpression><![CDATA[$P{valorNota}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="usuario">
+					<subreportParameterExpression><![CDATA[$P{usuario}]]></subreportParameterExpression>
+				</subreportParameter>
 				<subreportParameter name="numeroNota">
 					<subreportParameterExpression><![CDATA[$P{numeroNota}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportParameter name="endereco">
-					<subreportParameterExpression><![CDATA[$P{endereco}]]></subreportParameterExpression>
+				<subreportParameter name="valorPorExtenso">
+					<subreportParameterExpression><![CDATA[$P{valorPorExtenso}]]></subreportParameterExpression>
 				</subreportParameter>
-				<dataSourceExpression><![CDATA[]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "notaCobranca.jasper"]]></subreportExpression>
+				<subreportParameter name="data">
+					<subreportParameterExpression><![CDATA[$P{data}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="logo">
+					<subreportParameterExpression><![CDATA[$P{logo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="dataEmissao">
+					<subreportParameterExpression><![CDATA[$P{dataEmissao}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression><![CDATA["teste.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

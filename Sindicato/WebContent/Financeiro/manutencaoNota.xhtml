@@ -150,7 +150,6 @@
 					<p:fieldset legend="Registrar recebimentos"
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
 						<p:commandButton id="effectsDialogButton"
-							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
 							value="Adicionar recebimento" onclick="PF('dlg_recebimentos').show();"
 							type="button" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
@@ -310,7 +309,6 @@
 							</p:column>
 							<p:column headerText="" width="70">
 								<p:commandButton value="Excluir"
-									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'RECEBIDO'}"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
 									update="@(form)">
 									<p:confirm header="Excluir recebimento"

@@ -60,7 +60,7 @@ public class DebitoDAOImpl implements DebitoDAO {
 		
 		for (Map.Entry<String, Object> filter : filters.entrySet()) {
 			if (!filter.getValue().equals("")) {
-				if (filter.getKey().equals("id")) {
+				if (filter.getKey().equals("numeroNota")) {
 					easyCriteria.andEquals(filter.getKey(), filter.getValue());
 				} else {
 					boolean toLowerCase = true;
