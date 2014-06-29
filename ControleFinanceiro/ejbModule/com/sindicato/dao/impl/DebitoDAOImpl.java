@@ -17,7 +17,7 @@ import com.uaihebert.model.EasyCriteria;
 public class DebitoDAOImpl implements DebitoDAO {
 
 	@PersistenceContext(name="ControleFinanceiro")
-	EntityManager em;
+	private EntityManager em;
 	
 	@Override
 	public Debito searchByID(Integer id) {
@@ -30,7 +30,10 @@ public class DebitoDAOImpl implements DebitoDAO {
 			List<StatusDebitoEnum> statusPermitidos) {
 		
 		EasyCriteria<Debito> easyCriteria = EasyCriteriaFactory.createQueryCriteria(em, Debito.class);
+		easyCriteria.setDistinctTrue();
 		easyCriteria.innerJoin("cliente");
+		easyCriteria.innerJoin("debitoServicos.servico");
+		
 		this.getFilterCondition(easyCriteria, filters, statusPermitidos);
 		
 		if (sortField != null) {
@@ -50,7 +53,9 @@ public class DebitoDAOImpl implements DebitoDAO {
 	public int count(Map<String, Object> filters,
 			List<StatusDebitoEnum> statusPermitidos) {
 		EasyCriteria<Debito> easyCriteria = EasyCriteriaFactory.createQueryCriteria(em, Debito.class);
+		easyCriteria.setDistinctTrue();
 		easyCriteria.innerJoin("cliente");
+		easyCriteria.innerJoin("debitoServicos.servico");
 		this.getFilterCondition(easyCriteria, filters, statusPermitidos);
 		return easyCriteria.count().intValue();
 	}
@@ -60,11 +65,12 @@ public class DebitoDAOImpl implements DebitoDAO {
 		
 		for (Map.Entry<String, Object> filter : filters.entrySet()) {
 			if (!filter.getValue().equals("")) {
-				if (filter.getKey().equals("numeroNota")) {
-					easyCriteria.andEquals(filter.getKey(), filter.getValue());
-				} else {
+				
+				if (filter.getKey().equals("cliente.nome") || filter.getKey().equals("cliente.cpf")) {
 					boolean toLowerCase = true;
 					easyCriteria.andStringLike(toLowerCase, filter.getKey(), "%" + filter.getValue().toString() + "%");
+				} else {
+					easyCriteria.andEquals(filter.getKey(), filter.getValue());
 				}
 			}
 		}

@@ -20,10 +20,18 @@ public class LazyDebitoDataModel extends LazyDataModel<Debito> {
 	private List<StatusDebitoEnum> statusPermitidos;
 	
 	private DebitoDAO debitoDAO;
+	private boolean listaRecolhimento;
 	
+	
+    public LazyDebitoDataModel(List<StatusDebitoEnum> statusPermitidos, boolean listaRecolhimento) {
+		debitoDAO = (DebitoDAO) UtilBean.getClassLookup("ControleFinanceiro/DebitoDAOImpl");
+		this.statusPermitidos = statusPermitidos;
+		this.listaRecolhimento = listaRecolhimento;
+    }
     public LazyDebitoDataModel(List<StatusDebitoEnum> statusPermitidos) {
 		debitoDAO = (DebitoDAO) UtilBean.getClassLookup("ControleFinanceiro/DebitoDAOImpl");
 		this.statusPermitidos = statusPermitidos;
+		this.listaRecolhimento = false;
     }
 	
     @Override
@@ -43,6 +51,10 @@ public class LazyDebitoDataModel extends LazyDataModel<Debito> {
     @Override
     public List<Debito> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String,Object> filters) {
         
+    	if(listaRecolhimento){
+    		filters.put("debitoServicos.servico.retencao", true);
+    	}
+    	
     	//filter
     	datasource = debitoDAO.getResultListFiltered(first, pageSize, sortField, sortOrder.toString(), filters, statusPermitidos);
  
@@ -57,4 +69,5 @@ public class LazyDebitoDataModel extends LazyDataModel<Debito> {
 
 	@Override
 	public Spliterator<Debito> spliterator() { return null; }
+
 }

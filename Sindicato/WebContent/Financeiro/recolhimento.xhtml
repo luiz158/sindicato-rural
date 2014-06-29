@@ -26,16 +26,18 @@
 						paginatorPosition="bottom"
 						selection="#{recolhimentoBean.debitoSelecionado}"
 						selectionMode="single" id="debitos" lazy="true"
-						resizableColumns="true" emptyMessage="Nenhuma nota de cobrança aguardando recolhimento">
+						resizableColumns="true"
+						emptyMessage="Nenhuma nota encontrada">
 
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{recolhimentoBean.alterTab(1)}" />
 
-						<p:column headerText="Número da nota" sortBy="#{debito.numeroNota}" filterBy="#{debito.numeroNota}">
+						<p:column headerText="Número da nota"
+							sortBy="#{debito.numeroNota}" filterBy="#{debito.numeroNota}">
 							<p:outputLabel value="#{debito.numeroNota}" />
 						</p:column>
-						<p:column headerText="Nome do cliente" sortBy="#{debito.cliente.nome}"
-							filterBy="#{debito.cliente.nome}">
+						<p:column headerText="Nome do cliente"
+							sortBy="#{debito.cliente.nome}" filterBy="#{debito.cliente.nome}">
 							<p:outputLabel value="#{debito.cliente.nome}" />
 						</p:column>
 						<p:column headerText="Data base" sortBy="#{debito.dataBase}">
@@ -65,7 +67,8 @@
 							style="width:100%;margin-top:20px;">
 
 							<p:outputLabel value="Número da nota:" />
-							<p:outputLabel value="#{recolhimentoBean.debitoSelecionado.numeroNota}" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.numeroNota}" />
 
 							<p:outputLabel value="Status da nota:" />
 							<p:outputLabel value="Aguardando recolhimento" />
@@ -98,7 +101,8 @@
 							value="#{recolhimentoBean.servicosComRetencao}">
 
 							<f:facet name="header">
-								<p:outputLabel value="Serviços com retenção / Recolhimentos pendentes" />
+								<p:outputLabel
+									value="Serviços com retenção / Recolhimentos pendentes" />
 							</f:facet>
 
 							<p:column headerText="Serviço">
@@ -111,19 +115,19 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
-							<p:column headerText="Data recolhimento" >
+							<p:column headerText="Data recolhimento">
 								<p:calendar value="#{debito.recolhimento.data}"
 									pattern="dd/MM/yyyy" styleClass="date"
 									converter="CalendarConverter" />
 							</p:column>
-							<p:column headerText="Modo de pagamento" >
+							<p:column headerText="Modo de pagamento">
 								<p:selectOneMenu value="#{debito.recolhimento.modoPagamento}"
 									converter="ModoPagamentoConverter" effect="fade" filter="true">
 									<f:selectItems value="#{recolhimentoBean.modosPagamento}"
 										var="m" itemValue="#{m}" itemLabel="#{m.descricao}" />
 								</p:selectOneMenu>
 							</p:column>
-							<p:column headerText="Valor recolhido (R$)" >
+							<p:column headerText="Valor recolhido (R$)">
 								<p:inputText styleClass="moeda"
 									value="#{debito.recolhimento.valor}">
 									<f:convertNumber pattern="#,##0.00" type="currency"
