@@ -1,5 +1,6 @@
 package com.sindicato.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 
 import javax.ejb.Stateless;
@@ -9,6 +10,7 @@ import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.entity.Debito;
+import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.ResultOperation;
 
@@ -142,7 +144,21 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 
 	@Override
 	public ResultOperation registrarRecolhimentos(Debito debito) {
-		debito.setStatus(StatusDebitoEnum.RECOLHIDO);
+		
+		boolean alteraStatus = true;
+		for (DebitoServico debitoServico : debito.getDebitoServicos()) {
+			if(debitoServico.getServico().isRetencao()){
+				if(debitoServico.getRecolhimento().getValor().compareTo(BigDecimal.ZERO) == 0){
+					alteraStatus = false;
+					break;
+				}
+			}
+		}
+		
+		if(alteraStatus){
+			debito.setStatus(StatusDebitoEnum.RECOLHIDO);
+		}
+		
 		ResultOperation result = this.gravarDebito(debito);
 		if(result.isSuccess()){
 			result.setMessage("Recolhimentos gravados com sucesso.");
