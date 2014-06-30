@@ -17,7 +17,7 @@
 		</p:breadCrumb>
 		<p:spacer height="15" />
 		<p:growl id="growl" showDetail="true" life="15000" />
-		<p:tabView id="tabView" binding="#{recebimentoBean.tabView}" >
+		<p:tabView id="tabView" binding="#{recebimentoBean.tabView}">
 			<p:tab title="Lista das notas de cobrança">
 				<h:form>
 					<p:dataTable var="debito" value="#{recebimentoBean.debitos}"
@@ -31,8 +31,8 @@
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{recebimentoBean.alterTab(1)}" />
 
-						<p:column headerText="Número da nota" sortBy="#{debito.numeroNota}"
-							filterBy="#{debito.numeroNota}">
+						<p:column headerText="Número da nota"
+							sortBy="#{debito.numeroNota}" filterBy="#{debito.numeroNota}">
 							<p:outputLabel value="#{debito.numeroNota}" />
 						</p:column>
 						<p:column headerText="Nome do cliente"
@@ -56,12 +56,13 @@
 			<p:tab title="Nota de cobrança selecionada" id="tabForm">
 				<h:form>
 					<p:fieldset legend="Informações da nota" style="margin-top:15px;">
-												<p:panelGrid styleClass="panelForm" columns="4"
+						<p:panelGrid styleClass="panelForm" columns="4"
 							columnClasses="colLabel,colInput,colLabel,colInput"
 							style="width:100%;margin-top:20px;">
 
 							<p:outputLabel value="Número da nota:" />
-							<p:outputLabel value="#{recebimentoBean.debitoSelecionado.numeroNota}" />
+							<p:outputLabel
+								value="#{recebimentoBean.debitoSelecionado.numeroNota}" />
 
 							<p:outputLabel value="Status da nota:" />
 							<p:outputLabel value="Aguardando recebimento" />
@@ -124,6 +125,11 @@
 							</p:column>
 							<p:column headerText="Tipo">
 								<p:outputLabel value="#{rec.tipoRecebimento.descricao}" />
+							</p:column>
+							<p:column headerText="Data recebimento" >
+								<p:outputLabel value="#{rec.dataRecebimento.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</p:outputLabel>
 							</p:column>
 							<p:column headerText="Valor">
 								<p:outputLabel value="#{rec.valor}">
@@ -188,6 +194,17 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
+									<p:outputLabel value="Data recebimento" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:calendar
+										value="#{recebimentoBean.recebimento.dataRecebimento}"
+										pattern="dd/MM/yyyy" styleClass="date"
+										converter="CalendarConverter" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
 									<p:outputLabel value="Valor (R$)" />
 								</p:column>
 								<p:column styleClass="colInput">
@@ -214,20 +231,20 @@
 									</p:row>
 									<p:row>
 										<p:column styleClass="colLabel">
+											<p:outputLabel value="Número do cheque" />
+										</p:column>
+										<p:column styleClass="colInput">
+											<p:inputText
+												value="#{recebimentoBean.recebimento.numeroCheque}" />
+										</p:column>
+									</p:row>
+									<p:row>
+										<p:column styleClass="colLabel">
 											<p:outputLabel value="Cheque próprio?" />
 										</p:column>
 										<p:column styleClass="colInput">
 											<p:selectBooleanButton offLabel="Não" onLabel="Sim"
 												value="#{recebimentoBean.recebimento.chequeProprio}" />
-										</p:column>
-									</p:row>
-									<p:row>
-										<p:column styleClass="colLabel">
-											<p:outputLabel value="Cheque pré?" />
-										</p:column>
-										<p:column styleClass="colInput">
-											<p:selectBooleanButton offLabel="Não" onLabel="Sim"
-												value="#{recebimentoBean.recebimento.chequePre}" />
 										</p:column>
 									</p:row>
 									<p:row>
@@ -282,7 +299,7 @@
 									<p:commandButton value="Adicionar"
 										style="width:200px;height:40px;"
 										actionListener="#{recebimentoBean.salvarRecebimento}"
-										oncomplete="PF('dlg3').hide();" update=":tabView"  />
+										oncomplete="PF('dlg3').hide();" update=":tabView" />
 								</p:column>
 							</p:row>
 						</p:panelGrid>

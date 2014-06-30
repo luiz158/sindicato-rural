@@ -33,6 +33,7 @@ public class Recebimento implements Serializable {
 	@ManyToOne(optional=false)
 	private TipoRecebimento tipoRecebimento;
 	
+	private String numeroCheque;
 	private String bancoCheque;
 	private boolean chequeProprio;
 	private boolean chequePre;
@@ -46,6 +47,9 @@ public class Recebimento implements Serializable {
 	
 	@Column(precision=18, scale=2, nullable=false)
 	private BigDecimal valor;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Calendar dataRecebimento;
 
 	
 	public int getId() {
@@ -80,6 +84,19 @@ public class Recebimento implements Serializable {
 	}
 	public Calendar getVencimentoCheque() {
 		return vencimentoCheque;
+	}
+	
+	public String getNumeroCheque() {
+		return numeroCheque;
+	}
+	public Calendar getDataRecebimento() {
+		return dataRecebimento;
+	}
+	public void setNumeroCheque(String numeroCheque) {
+		this.numeroCheque = numeroCheque;
+	}
+	public void setDataRecebimento(Calendar dataRecebimento) {
+		this.dataRecebimento = dataRecebimento;
 	}
 	public void setVencimentoCheque(Calendar vencimentoCheque) {
 		this.vencimentoCheque = vencimentoCheque;
