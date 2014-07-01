@@ -21,6 +21,7 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.primefaces.component.commandbutton.CommandButton;
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.LazyDataModel;
@@ -67,8 +68,10 @@ public class ManutencaoNotaBean implements Serializable {
 	// recebimentos
 	private List<TipoRecebimento> tiposRecebimento;
 	private Recebimento recebimento;
+	private Recebimento recebimentoSelecionado;
 	private List<DestinoRecebimento> destinos;
-
+	private Dialog dialogInfRecebimento;
+	
 	// recolhimentos
 	private List<DebitoServico> servicosComRetencao;
 	private List<ModoPagamento> modosPagamento;
@@ -95,6 +98,11 @@ public class ManutencaoNotaBean implements Serializable {
 			fieldSetRecolhimentos.setRendered(false);
 		}
 		
+	}
+	
+	public void selecionaRecebimento(Recebimento recebimento){
+		this.recebimentoSelecionado = recebimento;
+		this.dialogInfRecebimento.setVisible(true);
 	}
 	
 	public void reset() {
@@ -334,7 +342,19 @@ public class ManutencaoNotaBean implements Serializable {
 	public TabView getTabView() {
 		return tabView;
 	}
+	public Recebimento getRecebimentoSelecionado() {
+		return recebimentoSelecionado;
+	}
+	public Dialog getDialogInfRecebimento() {
+		return dialogInfRecebimento;
+	}
 
+	public void setDialogInfRecebimento(Dialog dialogInfRecebimento) {
+		this.dialogInfRecebimento = dialogInfRecebimento;
+	}
+	public void setRecebimentoSelecionado(Recebimento recebimentoSelecionado) {
+		this.recebimentoSelecionado = recebimentoSelecionado;
+	}
 	public void setTabView(TabView tabView) {
 		this.tabView = tabView;
 	}

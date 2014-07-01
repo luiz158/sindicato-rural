@@ -329,6 +329,11 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
+							<p:column headerText="" width="115">
+								<p:commandButton value="Detalhes" icon="ui-icon-search"
+									action="#{manutencaoNotaBean.selecionaRecebimento(rec)}"
+									update=":dlg_inf_recebimentos" />
+							</p:column>
 							<p:column headerText="" width="70">
 								<p:commandButton value="Excluir"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
@@ -469,6 +474,78 @@
 				</h:form>
 			</p:tab>
 		</p:tabView>
+
+		<p:dialog header="Informações do recebimento" closeOnEscape="true"
+			id="dlg_inf_recebimentos" closable="true"
+			widgetVar="dlg_inf_recebimentos" modal="true"
+			binding="#{manutencaoNotaBean.dialogInfRecebimento}"
+			showEffect="fade" hideEffect="fade" height="300" width="650">
+
+			<p:panelGrid styleClass="panelForm" style="width:70%;"
+				columnClasses="colLabel,colInput" columns="2">
+
+				<p:outputLabel value="Destino do recebimento:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.destino.descricao}" />
+
+				<p:outputLabel value="Tipo do recebimento:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.tipoRecebimento.descricao}" />
+
+				<p:outputLabel value="Data recebimento:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.dataRecebimento.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Valor:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.valor}">
+					<f:convertNumber locale="pt_BR" type="currency"
+						currencySymbol="R$ " />
+				</p:outputLabel>
+
+				<p:outputLabel value="Banco do cheque:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.bancoCheque}" />
+
+				<p:outputLabel value="Número do cheque:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.numeroCheque}" />
+
+				<p:outputLabel value="Cheque próprio:" />
+				<p:outputLabel value="Sim"
+					rendered="#{manutencaoNotaBean.recebimentoSelecionado.chequeProprio}" />
+				<p:outputLabel value="Não"
+					rendered="#{!manutencaoNotaBean.recebimentoSelecionado.chequeProprio}" />
+
+				<p:outputLabel value="Cheque pré:" />
+				<p:outputLabel value="Sim"
+					rendered="#{manutencaoNotaBean.recebimentoSelecionado.chequePre}" />
+				<p:outputLabel value="Não"
+					rendered="#{!manutencaoNotaBean.recebimentoSelecionado.chequePre}" />
+
+				<p:outputLabel value="Cheque devolvido:" />
+				<p:outputLabel value="Sim"
+					rendered="#{manutencaoNotaBean.recebimentoSelecionado.chequeDevolvido}" />
+				<p:outputLabel value="Não"
+					rendered="#{!manutencaoNotaBean.recebimentoSelecionado.chequeDevolvido}" />
+
+				<p:outputLabel value="Vencimento do cheque:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.vencimentoCheque.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+
+				<p:outputLabel value="Data da liquidação:" />
+				<p:outputLabel
+					value="#{manutencaoNotaBean.recebimentoSelecionado.dataLiquidacao.time}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</p:outputLabel>
+
+			</p:panelGrid>
+		</p:dialog>
+
 
 	</ui:define>
 </ui:composition>
