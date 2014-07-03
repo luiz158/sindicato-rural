@@ -1,17 +1,18 @@
 package com.sindicato.report.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RelatorioAssociados {
+public class RelatorioAssociados implements Serializable {
 
 	public RelatorioAssociados(){
 		this.detalhesAssociado = new ArrayList<DetalhesAssociado>();
 	}
 	
-	private int totalAssociados;
+	private static final long serialVersionUID = 1L;	private int totalAssociados;
 	private int totalAssociadosEmDia;
-	private int totalAssociadosEmAtrazo;
+	private int totalAssociadosEmAtraso;
 	
 	List<DetalhesAssociado> detalhesAssociado;
 
@@ -22,8 +23,8 @@ public class RelatorioAssociados {
 	public int getTotalAssociadosEmDia() {
 		return totalAssociadosEmDia;
 	}
-	public int getTotalAssociadosEmAtrazo() {
-		return totalAssociadosEmAtrazo;
+	public int getTotalAssociadosEmAtraso() {
+		return totalAssociadosEmAtraso;
 	}
 	public List<DetalhesAssociado> getDetalhesAssociado() {
 		return detalhesAssociado;
@@ -34,8 +35,8 @@ public class RelatorioAssociados {
 	public void setTotalAssociadosEmDia(int totalAssociadosEmDia) {
 		this.totalAssociadosEmDia = totalAssociadosEmDia;
 	}
-	public void setTotalAssociadosEmAtrazo(int totalAssociadosEmAtrazo) {
-		this.totalAssociadosEmAtrazo = totalAssociadosEmAtrazo;
+	public void setTotalAssociadosEmAtraso(int totalAssociadosEmAtraso) {
+		this.totalAssociadosEmAtraso = totalAssociadosEmAtraso;
 	}
 	public void setDetalhesAssociado(List<DetalhesAssociado> detalhesAssociado) {
 		this.detalhesAssociado = detalhesAssociado;

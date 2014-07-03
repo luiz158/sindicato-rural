@@ -212,13 +212,13 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		} else if (retorno.getMesesComoSocio() > retorno.getMensalidadesPagas()) {
 			int diferenca = retorno.getMesesComoSocio()
 					- retorno.getMensalidadesPagas();
-			retorno.setMensagem(diferenca + " mensalidades atrasadas");
+			retorno.setMensagem(diferenca + " mensalidade(s) atrasada(s)");
 			retorno.setAtrasado(true);
 		} else {
 			int diferenca = retorno.getMensalidadesPagas()
 					- retorno.getMesesComoSocio();
-			retorno.setMensagem("Cliente possui " + diferenca
-					+ " mensalidades de crédito");
+			retorno.setMensagem(diferenca
+					+ " mensalidade(s) de crédito");
 			retorno.setAtrasado(false);
 		}
 		return retorno;

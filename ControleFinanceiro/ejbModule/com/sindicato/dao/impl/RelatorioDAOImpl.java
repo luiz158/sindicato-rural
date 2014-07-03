@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.dao.RelatorioDAO;
@@ -16,6 +16,7 @@ import com.sindicato.report.model.DetalhesAssociado;
 import com.sindicato.report.model.RelatorioAssociados;
 import com.sindicato.result.InformacaoMensalidade;
 
+@Stateful
 public class RelatorioDAOImpl implements RelatorioDAO {
 
 	@PersistenceContext(name="ControleFinanceiro")
@@ -32,17 +33,17 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		
 		int associadosEmDia = 0;
 		int associadosEmAtraso = 0;
+		int totalAssociados = 0;
 		
-		String strQuery = "Select distinct i.cliente, MIN(i.dataEvento) from InformacaoSocio i "
-				+ "join fetch cliente "
-				+ "order by i.cliente.nome asc ";
-		TypedQuery<Object[]> query = null;
-		query = em.createQuery(strQuery, Object[].class);
-
-		List<Object[]> objects = query.getResultList();
-		for (Object[] o : objects) {
-			Cliente cliente = (Cliente) o[0];
-			Calendar dataSocio = (Calendar) o[1];
+		List<Cliente> clientes = clienteDAO.getAll();
+		for (Cliente cliente : clientes) {
+			if(!cliente.isSocio()){
+				continue;
+			}
+				
+			totalAssociados++;
+			
+			Calendar dataSocio = cliente.getDataCadastro();
 			
 			InformacaoMensalidade infMensalid = clienteDAO.estaEmDiaComAsMensalidades(cliente);
 			DetalhesAssociado detalhes = new DetalhesAssociado();
@@ -59,15 +60,19 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			detalhes.setMatricula(cliente.getId());
 			detalhes.setNome(cliente.getNome());
 			detalhes.setObservacao(cliente.getObservacao());
-			detalhes.setProdutorRuralDesde(formatData.format(cliente.getProdutorRuralDesde().getTime()));
-			detalhes.setSocioDesde(formatData.format(dataSocio.getTime()));
 			detalhes.setTelefone(cliente.getTelefone());
+
+			if(cliente.getProdutorRuralDesde() != null)
+				detalhes.setProdutorRuralDesde(formatData.format(cliente.getProdutorRuralDesde().getTime()));
+			
+			if(dataSocio != null)
+				detalhes.setSocioDesde(formatData.format(dataSocio.getTime()));
 			
 			relatorio.getDetalhesAssociado().add(detalhes);
 		}
 
-		relatorio.setTotalAssociados(objects.size());
-		relatorio.setTotalAssociadosEmAtrazo(associadosEmAtraso);
+		relatorio.setTotalAssociados(totalAssociados);
+		relatorio.setTotalAssociadosEmAtraso(associadosEmAtraso);
 		relatorio.setTotalAssociadosEmDia(associadosEmDia);
 		return relatorio;
 	}
