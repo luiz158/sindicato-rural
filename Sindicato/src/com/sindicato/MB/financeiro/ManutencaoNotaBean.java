@@ -200,6 +200,11 @@ public class ManutencaoNotaBean implements Serializable {
 
 		httpServletResponse.setContentType("application/pdf");
 
+		//Código abaixo gerar o relatório e disponibiliza diretamente na página   
+        //res.setHeader("Content-disposition", "inline;filename=arquivo.pdf");  
+        //Código abaixo gerar o relatório e disponibiliza para o cliente baixar ou salvar   
+		//httpServletResponse.setHeader("Content-disposition", "attachment;filename=nota_"+ debitoSelecionado.getNumeroNota() +".pdf");
+		
 		ServletOutputStream servletOutputStream = httpServletResponse
 				.getOutputStream();
 		
