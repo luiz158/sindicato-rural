@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+
+		<h:form target="_blank">
+
+			<p:fieldset legend="Informações de associados">
+
+				<p:panelGrid styleClass="panelForm" columns="2"
+					columnClasses="colLabel,colInput"
+					style="margin-top:20px;width:50%;">
+
+					<p:outputLabel value="Total de associados:" />
+					<p:outputLabel value="#{associadosBean.relatorio.totalAssociados}" />
+
+					<p:outputLabel value="Total de associados em atraso:" />
+					<p:outputLabel style="color:red;"
+						value="#{associadosBean.relatorio.totalAssociadosEmAtraso}" />
+
+					<p:outputLabel value="Total de associados em dia:" />
+					<p:outputLabel style="color:blue;"
+						value="#{associadosBean.relatorio.totalAssociadosEmDia}" />
+
+				</p:panelGrid>
+
+				<div class="container-action">
+					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+						ajax="false" style="width:250px;height:50px;"
+						update="@form" process="@this"
+						actionListener="#{associadosBean.imprimirRelatorio()}" />
+				</div>
+				</p:fieldset>
+				<p:spacer height="30" />
+				<p:fieldset legend="Lista de associados">
+				<p:dataTable var="cli"
+					value="#{associadosBean.relatorio.detalhesAssociado}"
+					rowKey="#{cli.matricula}" paginator="true" rows="15"
+					paginatorPosition="bottom" rowsPerPageTemplate="10,50,100"
+					emptyMessage="Nenhum cliente encontrado">
+
+					<p:column headerText="Matrícula" sortBy="#{cli.matricula}"
+						filterBy="#{cli.matricula}">
+						<p:outputLabel value="#{cli.matricula}" />
+					</p:column>
+					<p:column headerText="Nome" sortBy="#{cli.nome}"
+						filterBy="#{cli.nome}">
+						<p:outputLabel value="#{cli.nome}" />
+					</p:column>
+
+					<p:column headerText="Telefone" width="75">
+						<p:outputLabel value="#{cli.telefone}" />
+					</p:column>
+
+					<p:column headerText="Status" sortBy="#{cli.statusAssociado}"
+						filterBy="#{cli.statusAssociado}">
+						<p:outputLabel value="#{cli.statusAssociado}" />
+					</p:column>
+
+					<p:column headerText="Situação" sortBy="#{cli.situacao}"
+						filterBy="#{cli.situacao}">
+						<p:outputLabel value="#{cli.situacao}" />
+					</p:column>
+					<p:column headerText="Sócio desde" width="80">
+						<p:outputLabel value="#{cli.socioDesde}" />
+					</p:column>
+					<p:column headerText="Produtor rural desde" width="100">
+						<p:outputLabel value="#{cli.produtorRuralDesde}" />
+					</p:column>
+				</p:dataTable>
+
+			</p:fieldset>
+		</h:form>
+
+
+
+	</ui:define>
+</ui:composition>
+</html>
