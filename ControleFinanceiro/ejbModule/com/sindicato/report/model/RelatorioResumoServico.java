@@ -2,26 +2,25 @@ package com.sindicato.report.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RelatorioResumoServico implements Serializable {
 
 	public RelatorioResumoServico() {
-		retencoesSocios = new HashMap<String, BigDecimal>();
-		retencoesNaoSocios = new HashMap<String, BigDecimal>();
-		receitasSocios = new HashMap<String, BigDecimal>();
-		receitasNaoSocios = new HashMap<String, BigDecimal>();
+		retencoesSocios = new ArrayList<DetalhesServico>();
+		retencoesNaoSocios = new ArrayList<DetalhesServico>();
+		receitasSocios = new ArrayList<DetalhesServico>();
+		receitasNaoSocios = new ArrayList<DetalhesServico>();
 	}
 
 	private static final long serialVersionUID = 1L;
 
-	private Map<String, BigDecimal> retencoesSocios;
-	private Map<String, BigDecimal> retencoesNaoSocios;
+	private List<DetalhesServico> retencoesSocios;
+	private List<DetalhesServico> retencoesNaoSocios;
 
-	private Map<String, BigDecimal> receitasSocios;
-	private Map<String, BigDecimal> receitasNaoSocios;
+	private List<DetalhesServico> receitasSocios;
+	private List<DetalhesServico> receitasNaoSocios;
 
 	private BigDecimal totalRetencoesSocios;
 	private BigDecimal totalRetencoesNaoSocios;
@@ -29,32 +28,19 @@ public class RelatorioResumoServico implements Serializable {
 	private BigDecimal totalReceitasSocios;
 	private BigDecimal totalReceitasNaoSocios;
 
+	private BigDecimal totalReceitas;
+	private BigDecimal totalRetencoes;
 	private BigDecimal totalGeral;
 
-	public Map<String, BigDecimal> getRetencoesSocios() {
-		return retencoesSocios;
-	}
-
-	public Map<String, BigDecimal> getRetencoesNaoSocios() {
-		return retencoesNaoSocios;
-	}
-
-	public Map<String, BigDecimal> getReceitasSocios() {
-		return receitasSocios;
-	}
-
-	public Map<String, BigDecimal> getReceitasNaoSocios() {
-		return receitasNaoSocios;
-	}
-
+	
 	public BigDecimal getTotalRetencoesSocios() {
 		totalRetencoesSocios = BigDecimal.ZERO;
 		if (retencoesSocios == null || retencoesSocios.size() == 0) {
 			return totalRetencoesSocios;
 		}
 
-		for (Entry<String, BigDecimal> item : retencoesSocios.entrySet()) {
-			totalRetencoesSocios = totalRetencoesSocios.add(item.getValue());
+		for (DetalhesServico item : retencoesSocios) {
+			totalRetencoesSocios = totalRetencoesSocios.add(item.getValor());
 		}
 
 		return totalRetencoesSocios;
@@ -66,9 +52,9 @@ public class RelatorioResumoServico implements Serializable {
 			return totalRetencoesNaoSocios;
 		}
 
-		for (Entry<String, BigDecimal> item : retencoesNaoSocios.entrySet()) {
+		for (DetalhesServico item : retencoesNaoSocios) {
 			totalRetencoesNaoSocios = totalRetencoesNaoSocios.add(item
-					.getValue());
+					.getValor());
 		}
 
 		return totalRetencoesNaoSocios;
@@ -80,8 +66,8 @@ public class RelatorioResumoServico implements Serializable {
 			return totalReceitasSocios;
 		}
 
-		for (Entry<String, BigDecimal> item : receitasSocios.entrySet()) {
-			totalReceitasSocios = totalReceitasSocios.add(item.getValue());
+		for (DetalhesServico item : receitasSocios) {
+			totalReceitasSocios = totalReceitasSocios.add(item.getValor());
 		}
 
 		return totalReceitasSocios;
@@ -93,9 +79,9 @@ public class RelatorioResumoServico implements Serializable {
 			return totalReceitasNaoSocios;
 		}
 
-		for (Entry<String, BigDecimal> item : receitasNaoSocios.entrySet()) {
+		for (DetalhesServico item : receitasNaoSocios) {
 			totalReceitasNaoSocios = totalReceitasNaoSocios
-					.add(item.getValue());
+					.add(item.getValor());
 		}
 
 		return totalReceitasNaoSocios;
@@ -107,19 +93,53 @@ public class RelatorioResumoServico implements Serializable {
 		return totalGeral;
 	}
 
-	public void setRetencoesSocios(Map<String, BigDecimal> retencoesSocios) {
+	public List<DetalhesServico> getRetencoesSocios() {
+		return retencoesSocios;
+	}
+
+	public List<DetalhesServico> getRetencoesNaoSocios() {
+		return retencoesNaoSocios;
+	}
+
+	public List<DetalhesServico> getReceitasSocios() {
+		return receitasSocios;
+	}
+
+	public List<DetalhesServico> getReceitasNaoSocios() {
+		return receitasNaoSocios;
+	}
+
+	public BigDecimal getTotalReceitas() {
+		totalReceitas = this.getTotalReceitasSocios().add(this.getTotalReceitasNaoSocios());
+		return totalReceitas;
+	}
+
+	public BigDecimal getTotalRetencoes() {
+		totalRetencoes = this.getTotalRetencoesNaoSocios().add(this.getTotalRetencoesSocios());
+		return totalRetencoes;
+	}
+
+	public void setTotalReceitas(BigDecimal totalReceitas) {
+		this.totalReceitas = totalReceitas;
+	}
+
+	public void setTotalRetencoes(BigDecimal totalRetencoes) {
+		this.totalRetencoes = totalRetencoes;
+	}
+
+	public void setRetencoesSocios(List<DetalhesServico> retencoesSocios) {
 		this.retencoesSocios = retencoesSocios;
 	}
 
-	public void setRetencoesNaoSocios(Map<String, BigDecimal> retencoesNaoSocios) {
+	public void setRetencoesNaoSocios(List<DetalhesServico> retencoesNaoSocios) {
 		this.retencoesNaoSocios = retencoesNaoSocios;
 	}
 
-	public void setReceitasSocios(Map<String, BigDecimal> receitasSocios) {
+	public void setReceitasSocios(List<DetalhesServico> receitasSocios) {
 		this.receitasSocios = receitasSocios;
 	}
 
-	public void setReceitasNaoSocios(Map<String, BigDecimal> receitasNaoSocios) {
+	public void setReceitasNaoSocios(List<DetalhesServico> receitasNaoSocios) {
 		this.receitasNaoSocios = receitasNaoSocios;
 	}
 

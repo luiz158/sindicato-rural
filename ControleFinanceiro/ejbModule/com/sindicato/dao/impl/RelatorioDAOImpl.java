@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -19,6 +17,7 @@ import com.sindicato.dao.RelatorioDAO;
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.report.model.DetalhesAssociado;
+import com.sindicato.report.model.DetalhesServico;
 import com.sindicato.report.model.RelatorioAssociados;
 import com.sindicato.report.model.RelatorioResumoServico;
 import com.sindicato.result.InformacaoMensalidade;
@@ -117,7 +116,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		return relResumoServico;
 	}
 
-	private Map<String, BigDecimal> getValoresServicosPeriodo(
+	private List<DetalhesServico> getValoresServicosPeriodo(
 			Calendar dataDe, Calendar dataAte, boolean socio, boolean retencao) {
 
 		TypedQuery<Object[]> query = em.createQuery(
@@ -128,12 +127,16 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		query.setParameter("retencao", retencao);
 		query.setParameter("status", this.getStatusPermitidosResumoServicos());
 
-		List<Object[]> retencoesSocios = query.getResultList();
-		HashMap<String, BigDecimal> hashMap = new HashMap<String, BigDecimal>();
-		for (Object[] item : retencoesSocios) {
-			hashMap.put(item[0].toString(), (BigDecimal) item[1]);
+		List<Object[]> resultSet = query.getResultList();
+		List<DetalhesServico> result = new ArrayList<DetalhesServico>();
+		for (Object[] item : resultSet) {
+			DetalhesServico detalhe = new DetalhesServico();
+			detalhe.setServico(item[0].toString());
+			detalhe.setValor((BigDecimal) item[1]);
+			
+			result.add(detalhe);
 		}
-		return hashMap;
+		return result;
 	}
 
 }
