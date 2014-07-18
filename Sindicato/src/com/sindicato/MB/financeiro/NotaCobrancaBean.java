@@ -20,7 +20,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.DebitoDAO;
 import com.sindicato.dao.FinanceiroDAO;
@@ -29,6 +28,7 @@ import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.reports.GeradorReports;
 import com.sindicato.result.ResultOperation;
 import com.sindicato.util.Extenso;
 

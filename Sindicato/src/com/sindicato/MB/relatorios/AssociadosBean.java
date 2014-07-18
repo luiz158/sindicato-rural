@@ -1,6 +1,7 @@
 package com.sindicato.MB.relatorios;
 
 import java.io.IOException;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +20,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.RelatorioDAO;
 import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.report.model.RelatorioResumoServico;
 import com.sindicato.reports.GeradorReports;
 
 @ManagedBean
@@ -32,6 +34,13 @@ public class AssociadosBean {
 	@PostConstruct
 	public void init(){
 		relatorio = relatorioDAO.getAssociados();
+		
+		// 2013-12-01' and '2013-12-31 23:59:59'
+		GregorianCalendar dataDe = new GregorianCalendar(2013, 12, 01);
+		GregorianCalendar dataAte = new GregorianCalendar(2013, 12, 31, 23, 59, 59);
+		
+		RelatorioResumoServico resumoServico = relatorioDAO.getResumoServico(dataDe, dataAte);
+		
 	}
 	
 	public void imprimirRelatorio() throws JRException, IOException{

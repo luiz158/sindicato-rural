@@ -26,7 +26,6 @@ import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.LazyDataModel;
 
-import com.sindicato.MB.reports.GeradorReports;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.FinanceiroDAO;
 import com.sindicato.dao.ListasDAO;
@@ -42,6 +41,7 @@ import com.sindicato.entity.TipoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.lazyDataModel.LazyDebitoDataModel;
+import com.sindicato.reports.GeradorReports;
 import com.sindicato.result.ResultOperation;
 import com.sindicato.util.Extenso;
 
@@ -200,11 +200,6 @@ public class ManutencaoNotaBean implements Serializable {
 
 		httpServletResponse.setContentType("application/pdf");
 
-		//Código abaixo gerar o relatório e disponibiliza diretamente na página   
-        //res.setHeader("Content-disposition", "inline;filename=arquivo.pdf");  
-        //Código abaixo gerar o relatório e disponibiliza para o cliente baixar ou salvar   
-		//httpServletResponse.setHeader("Content-disposition", "attachment;filename=nota_"+ debitoSelecionado.getNumeroNota() +".pdf");
-		
 		ServletOutputStream servletOutputStream = httpServletResponse
 				.getOutputStream();
 		
