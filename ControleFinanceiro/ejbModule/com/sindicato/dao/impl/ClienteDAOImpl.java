@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -39,41 +38,15 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	@Override
 	public Cliente searchByID(Integer id) {
 		Cliente cliente = em.find(Cliente.class, id);
-		cliente.setSocio(this.isSocio(cliente));
 		return cliente;
-	}
-
-	@Override
-	public List<Cliente> getAll() {
-
-		String subQuerySocio = "select socio from InformacaoSocio s "
-				+ "Where s.id = (select MAX(s2.id) from InformacaoSocio s2 Where s2.cliente.id = c.id) ";
-
-		String strQuery = "Select c, (" + subQuerySocio + ") from Cliente c order by c.nome asc";
-		TypedQuery<Object[]> query = null;
-		query = em.createQuery(strQuery, Object[].class);
-
-		List<Cliente> clientes = new ArrayList<Cliente>();
-		try {
-			List<Object[]> objects = query.getResultList();
-			for (Object[] o : objects) {
-				Cliente cliente = (Cliente) o[0];
-				if (o[1] != null) {
-					cliente.setSocio((Boolean) o[1]);
-				}
-				clientes.add(cliente);
-			}
-		} catch (NoResultException e) {
-		}
-
-		return clientes;
 	}
 
 	@Override
 	public void update(Cliente cliente) {
 		try {
+			boolean socio_old = em.find(Cliente.class, cliente.getId()).isSocio();
 			em.merge(cliente);
-			if (this.isSocio(cliente) != cliente.isSocio()) {
+			if (socio_old != cliente.isSocio()) {
 				inseriRegistroSocio(cliente);
 			}
 		} catch (Exception e) {
@@ -91,20 +64,6 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public boolean isSocio(Cliente cliente) {
-		String strQuery = "select socio from InformacaoSocio s "
-				+ "Where s.id = (select MAX(s2.id) from InformacaoSocio s2 Where s2.cliente = :cliente) ";
-		Query query = em.createQuery(strQuery);
-		query.setParameter("cliente", cliente);
-		boolean socio = false;
-		try {
-			socio = (Boolean) query.getSingleResult();
-		} catch (NoResultException e) {
-		}
-		return socio;
 	}
 
 	@Override
@@ -315,11 +274,6 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 
 		List<Cliente> clientes = em.createQuery(cq).setFirstResult(first)
 				.setMaxResults(pageSize).getResultList();
-		for (Cliente cliente : clientes) {
-			if (cliente != null) {
-				cliente.setSocio(this.isSocio(cliente));
-			}
-		}
 		return clientes;
 	}
 

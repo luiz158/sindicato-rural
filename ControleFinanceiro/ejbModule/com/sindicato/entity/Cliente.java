@@ -17,7 +17,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 
 @Entity
 @SequenceGenerator(allocationSize = 1, name = "seqCliente", sequenceName = "SEQ_CLIENTE")
@@ -40,7 +39,7 @@ public class Cliente implements Serializable {
 	@JoinColumn(name="estabelecimentorural_id")
 	private EstabelecimentoRural estabelecimentoRural;
 
-	@Transient
+	@Column(nullable = false)
 	private boolean socio = false;
 	
 	@OneToMany(targetEntity = Debito.class, mappedBy = "cliente")
