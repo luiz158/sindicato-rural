@@ -43,13 +43,13 @@ public class Recebimento implements Serializable {
 	
 	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataLiquidacao = Calendar.getInstance();
+	private Calendar dataLiquidacao;
 	
 	@Column(precision=18, scale=2, nullable=false)
 	private BigDecimal valor;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar dataRecebimento;
+	private Calendar dataRecebimento = Calendar.getInstance();
 
 	
 	public int getId() {

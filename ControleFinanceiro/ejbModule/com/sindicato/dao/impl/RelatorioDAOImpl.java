@@ -13,12 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sindicato.dao.ClienteDAO;
+import com.sindicato.dao.DestinoRecebimentoDAO;
 import com.sindicato.dao.RelatorioDAO;
 import com.sindicato.entity.Cliente;
+import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.report.model.DetalhesAssociado;
+import com.sindicato.report.model.DetalhesDestinoRecebimento;
 import com.sindicato.report.model.DetalhesServico;
+import com.sindicato.report.model.RecebimentoDia;
 import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.report.model.RelatorioResumoRecebimentos;
 import com.sindicato.report.model.RelatorioResumoServico;
 import com.sindicato.result.InformacaoMensalidade;
 
@@ -28,9 +33,11 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 	@PersistenceContext(name = "ControleFinanceiro")
 	private EntityManager em;
 
-	@EJB
-	private ClienteDAO clienteDAO;
+	@EJB private ClienteDAO clienteDAO;
 
+	@EJB private DestinoRecebimentoDAO destinoDAO;
+
+	
 	SimpleDateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Override
@@ -115,7 +122,6 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 
 		return relResumoServico;
 	}
-
 	private List<DetalhesServico> getValoresServicosPeriodo(
 			Calendar dataDe, Calendar dataAte, boolean socio, boolean retencao) {
 
@@ -139,4 +145,53 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		return result;
 	}
 
+	
+	@Override
+	public RelatorioResumoRecebimentos getResumoRecebimentos(Calendar dataDe, Calendar dataAte){
+		
+		List<DestinoRecebimento> destinos = destinoDAO.getAll();
+		RelatorioResumoRecebimentos relatorio = new RelatorioResumoRecebimentos();
+
+		String jpql = " select r.dataRecebimento, SUM(r.valor) "
+				+ " from Recebimento r "
+				+ " where r.dataRecebimento between :dataDe and :dataAte "
+				+ "	and r.destino.id = :destino "
+				+ " group by r.dataRecebimento "
+				+ " order by r.dataRecebimento ";
+		
+		for (DestinoRecebimento destino : destinos) {
+			
+			TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
+			query.setParameter("dataDe", dataDe);
+			query.setParameter("dataAte", dataAte);
+			query.setParameter("destino", destino.getId());
+			
+			List<Object[]> result = query.getResultList();
+
+			// caso o destino não tenha ainda nenhum recebimento
+			if(result.size() == 0){
+				continue;
+			}
+			
+			DetalhesDestinoRecebimento detalhe = new DetalhesDestinoRecebimento();
+			detalhe.setDestino(destino.getDescricao());
+			
+			for (Object[] row : result) {
+				Calendar data = (Calendar) row[0];
+				BigDecimal valor = (BigDecimal) row[1];
+				
+				RecebimentoDia recebimentoDia = new RecebimentoDia();
+				recebimentoDia.setDataRecebimento(data);
+				recebimentoDia.setValorRecebido(valor);
+				
+				detalhe.getRecebimentosDestino().add(recebimentoDia);
+			}
+			
+			relatorio.getDetalhesDestino().add(detalhe);
+		}
+		
+		return relatorio;
+	}
+	
+	
 }
