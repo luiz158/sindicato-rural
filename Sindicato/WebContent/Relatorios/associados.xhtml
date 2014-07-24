@@ -38,18 +38,26 @@
 
 				<div class="container-action">
 					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
-						ajax="false" style="width:250px;height:50px;"
-						update="@form" process="@this"
+						ajax="false" style="width:250px;height:50px;" update="@form"
+						process="@this"
 						actionListener="#{associadosBean.imprimirRelatorio()}" />
 				</div>
-				</p:fieldset>
-				<p:spacer height="30" />
-				<p:fieldset legend="Lista de associados">
-				<p:dataTable var="cli"
+			</p:fieldset>
+			<p:spacer height="30" />
+			<p:fieldset legend="Lista de associados">
+				<p:dataTable var="cli" id="associados"
 					value="#{associadosBean.relatorio.detalhesAssociado}"
 					rowKey="#{cli.matricula}" paginator="true" rows="15"
 					paginatorPosition="bottom" rowsPerPageTemplate="10,50,100"
 					emptyMessage="Nenhum cliente encontrado">
+
+
+					<f:facet name="footer">
+						<h:commandLink>
+							<p:graphicImage name="/imagens/excel.png" />
+							<p:dataExporter type="xls" target="associados" fileName="associados"  />
+						</h:commandLink>
+					</f:facet>
 
 					<p:column headerText="Matrícula" sortBy="#{cli.matricula}"
 						filterBy="#{cli.matricula}">
@@ -79,6 +87,7 @@
 					<p:column headerText="Produtor rural desde" width="100">
 						<p:outputLabel value="#{cli.produtorRuralDesde}" />
 					</p:column>
+
 				</p:dataTable>
 
 			</p:fieldset>
