@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 
-import com.sindicato.carga.jdbc.DBManager;
+import com.sindicato.jdbc.DBManager;
 
 public class OrganizacaoMensalidades {
 

@@ -1,4 +1,4 @@
-package com.sindicato.carga.jdbc;
+package com.sindicato.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
