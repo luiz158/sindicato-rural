@@ -102,11 +102,12 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 	}
 	private String getJPQLResumoServicos() {
 		return "select ds.servico.descricao, SUM(ds.valor) from DebitoServico ds "
-				+ " where ds.debito.dataBase BETWEEN :dataDe and :dataAte "
+				+ " where ds.debito.dataEmissaoNotaCobranca BETWEEN :dataDe and :dataAte "
 				+ " and ds.debito.cliente.socio = :socio "
 				+ "	and ds.servico.retencao = :retencao "
 				+ " and ds.debito.status in (:status) "
-				+ " group by ds.servico.descricao ";
+				+ " group by ds.servico.descricao "
+				+ " order by ds.servico.descricao ";
 	}
 	@Override
 	public RelatorioResumoServico getResumoServico(Calendar dataDe,
@@ -153,7 +154,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 
 		String jpql = " select r.dataRecebimento, SUM(r.valor) "
 				+ " from Recebimento r "
-				+ " where r.debito.dataBase between :dataDe and :dataAte "
+				+ " where r.debito.dataEmissaoNotaCobranca between :dataDe and :dataAte "
 				+ "	and r.destino.id = :destino "
 				+ " group by r.dataRecebimento "
 				+ " order by r.dataRecebimento ";
