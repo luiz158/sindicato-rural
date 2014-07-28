@@ -145,7 +145,6 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		return result;
 	}
 
-	
 	@Override
 	public RelatorioResumoRecebimentos getResumoRecebimentos(Calendar dataDe, Calendar dataAte){
 		
@@ -154,7 +153,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 
 		String jpql = " select r.dataRecebimento, SUM(r.valor) "
 				+ " from Recebimento r "
-				+ " where r.dataRecebimento between :dataDe and :dataAte "
+				+ " where r.debito.dataBase between :dataDe and :dataAte "
 				+ "	and r.destino.id = :destino "
 				+ " group by r.dataRecebimento "
 				+ " order by r.dataRecebimento ";

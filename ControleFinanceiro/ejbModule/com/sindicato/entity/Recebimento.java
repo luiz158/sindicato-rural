@@ -41,13 +41,13 @@ public class Recebimento implements Serializable {
 	private Calendar vencimentoCheque;
 	private boolean chequeDevolvido;
 	
-	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataLiquidacao;
 	
 	@Column(precision=18, scale=2, nullable=false)
 	private BigDecimal valor;
 
+	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataRecebimento = Calendar.getInstance();
 

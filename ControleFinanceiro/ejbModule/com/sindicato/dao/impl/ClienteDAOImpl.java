@@ -27,6 +27,14 @@ import com.sindicato.result.MensalidadePaga;
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		ClienteDAO {
 
+	@Override
+	public List<Cliente> getAll(){
+		String strQuery = "Select c from Cliente c order by c.nome ";
+		TypedQuery<Cliente> query = null;
+		query = em.createQuery(strQuery, Cliente.class);
+		return query.getResultList();
+	}
+
 	private void inseriRegistroSocio(Cliente cliente) {
 		InformacaoSocio infSocio = new InformacaoSocio();
 		infSocio.setCliente(cliente);
