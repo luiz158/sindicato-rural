@@ -39,13 +39,13 @@ public class LazyDebitoSorter implements Comparator<Debito> {
 
 	@Override
 	public Comparator<Debito> reversed() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public Comparator<Debito> thenComparing(Comparator<? super Debito> other) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -53,35 +53,35 @@ public class LazyDebitoSorter implements Comparator<Debito> {
 	public <U> Comparator<Debito> thenComparing(
 			Function<? super Debito, ? extends U> keyExtractor,
 			Comparator<? super U> keyComparator) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public <U extends Comparable<? super U>> Comparator<Debito> thenComparing(
 			Function<? super Debito, ? extends U> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Comparator<Debito> thenComparingInt(
 			ToIntFunction<? super Debito> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Comparator<Debito> thenComparingLong(
 			ToLongFunction<? super Debito> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Comparator<Debito> thenComparingDouble(
 			ToDoubleFunction<? super Debito> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

@@ -39,13 +39,11 @@ public class LazyClienteSorter implements Comparator<Cliente> {
 
 	@Override
 	public Comparator<Cliente> reversed() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Comparator<Cliente> thenComparing(Comparator<? super Cliente> other) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -53,35 +51,34 @@ public class LazyClienteSorter implements Comparator<Cliente> {
 	public <U> Comparator<Cliente> thenComparing(
 			Function<? super Cliente, ? extends U> keyExtractor,
 			Comparator<? super U> keyComparator) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public <U extends Comparable<? super U>> Comparator<Cliente> thenComparing(
 			Function<? super Cliente, ? extends U> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Comparator<Cliente> thenComparingInt(
 			ToIntFunction<? super Cliente> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Comparator<Cliente> thenComparingLong(
 			ToLongFunction<? super Cliente> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public Comparator<Cliente> thenComparingDouble(
 			ToDoubleFunction<? super Cliente> keyExtractor) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
