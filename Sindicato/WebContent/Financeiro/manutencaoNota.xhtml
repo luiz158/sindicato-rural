@@ -154,14 +154,15 @@
 
 					<p:fieldset legend="Registrar recebimentos"
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
-						<p:commandButton id="effectsDialogButton"
+						<p:commandButton 
 							value="Adicionar recebimento"
-							onclick="PF('dlg_recebimentos').show();" type="button"
+							action="#{manutencaoNotaBean.adicionarRecebimento()}" update="@form"
 							icon="ui-icon-plus" style="margin-bottom:15px;" />
 
-						<p:dialog header="Adicionar recebimento"
-							widgetVar="dlg_recebimentos" modal="true" resizable="true"
-							showEffect="fade" hideEffect="fade" height="300" width="650">
+						<p:dialog header="Formulário de recebimento" id="formRecebimentos"
+							binding="#{manutencaoNotaBean.dialogFormRecebimento}"
+							modal="true" resizable="true" showEffect="fade" hideEffect="fade"
+							height="300" width="650">
 
 							<p:panelGrid styleClass="panelForm" style="width:100%;">
 
@@ -299,10 +300,10 @@
 								style="width:100%;margin-top:15px; margin-bottom:30px;">
 								<p:row>
 									<p:column styleClass="colLabel" colspan="2">
-										<p:commandButton value="Adicionar"
+										<p:commandButton value="Salvar"
 											style="width:200px;height:40px;"
 											actionListener="#{manutencaoNotaBean.salvarRecebimento}"
-											oncomplete="PF('dlg_recebimentos').hide();" update="@(form)" />
+											update="@(form)" />
 									</p:column>
 								</p:row>
 							</p:panelGrid>
@@ -329,13 +330,18 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
-							<p:column headerText="" width="115">
-								<p:commandButton value="Detalhes" icon="ui-icon-search"
+							<p:column headerText="Editar" width="115" style="text-align:center;">
+								<p:commandButton icon="ui-icon-wrench"
+									action="#{manutencaoNotaBean.editarRecebimento(rec)}"
+									update="@form" />
+							</p:column>
+							<p:column headerText="Detalhes" width="115" style="text-align:center;">
+								<p:commandButton icon="ui-icon-search"
 									action="#{manutencaoNotaBean.selecionaRecebimento(rec)}"
 									update=":dlg_inf_recebimentos" />
 							</p:column>
-							<p:column headerText="" width="70">
-								<p:commandButton value="Excluir"
+							<p:column headerText="Excluir" width="70" style="text-align:center;">
+								<p:commandButton icon="ui-icon-trash"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
 									update="@(form)">
 									<p:confirm header="Excluir recebimento"
@@ -344,7 +350,6 @@
 								</p:commandButton>
 							</p:column>
 						</p:dataTable>
-
 
 					</p:fieldset>
 					<p:spacer height="25" />

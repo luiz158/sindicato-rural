@@ -134,27 +134,87 @@ public class Recebimento implements Serializable {
 	
 	
 	@Override
-	public boolean equals(Object obj){
-		if(obj == null){
-			return false;
-		}
-		if(!(obj instanceof Recebimento)){
-			return false;
-		}
-		
-		Recebimento o = (Recebimento) obj;
-		if(o.hashCode() == this.hashCode()
-				&& o.valor.compareTo(this.valor) == 0
-				&& o.dataLiquidacao.compareTo(this.dataLiquidacao) == 0
-				&& o.debito.getId() == debito.getId()
-				&& o.tipoRecebimento.equals(tipoRecebimento)){
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		return false;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Recebimento other = (Recebimento) obj;
+		if (bancoCheque == null) {
+			if (other.bancoCheque != null)
+				return false;
+		} else if (!bancoCheque.equals(other.bancoCheque))
+			return false;
+		if (chequeDevolvido != other.chequeDevolvido)
+			return false;
+		if (chequePre != other.chequePre)
+			return false;
+		if (chequeProprio != other.chequeProprio)
+			return false;
+		if (dataLiquidacao == null) {
+			if (other.dataLiquidacao != null)
+				return false;
+		} else if (!dataLiquidacao.equals(other.dataLiquidacao))
+			return false;
+		if (dataRecebimento == null) {
+			if (other.dataRecebimento != null)
+				return false;
+		} else if (!dataRecebimento.equals(other.dataRecebimento))
+			return false;
+		if (debito == null) {
+			if (other.debito != null)
+				return false;
+		} else if (!debito.equals(other.debito))
+			return false;
+		if (destino == null) {
+			if (other.destino != null)
+				return false;
+		} else if (!destino.equals(other.destino))
+			return false;
+		if (id != other.id)
+			return false;
+		if (numeroCheque == null) {
+			if (other.numeroCheque != null)
+				return false;
+		} else if (!numeroCheque.equals(other.numeroCheque))
+			return false;
+		if (tipoRecebimento == null) {
+			if (other.tipoRecebimento != null)
+				return false;
+		} else if (!tipoRecebimento.equals(other.tipoRecebimento))
+			return false;
+		if (valor == null) {
+			if (other.valor != null)
+				return false;
+		} else if (!valor.equals(other.valor))
+			return false;
+		if (vencimentoCheque == null) {
+			if (other.vencimentoCheque != null)
+				return false;
+		} else if (!vencimentoCheque.equals(other.vencimentoCheque))
+			return false;
+		return true;
 	}
 	@Override
-	public int hashCode(){
-		return id;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((bancoCheque == null) ? 0 : bancoCheque.hashCode());
+		result = prime * result + (chequeDevolvido ? 1231 : 1237);
+		result = prime * result + (chequePre ? 1231 : 1237);
+		result = prime * result + (chequeProprio ? 1231 : 1237);
+		result = prime * result + ((dataLiquidacao == null) ? 0 : dataLiquidacao.hashCode());
+		result = prime * result + ((dataRecebimento == null) ? 0 : dataRecebimento.hashCode());
+		result = prime * result + ((debito == null) ? 0 : debito.hashCode());
+		result = prime * result + ((destino == null) ? 0 : destino.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((numeroCheque == null) ? 0 : numeroCheque.hashCode());
+		result = prime * result + ((tipoRecebimento == null) ? 0 : tipoRecebimento.hashCode());
+		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
+		result = prime * result + ((vencimentoCheque == null) ? 0 : vencimentoCheque.hashCode());
+		return result;
 	}
 	
 }

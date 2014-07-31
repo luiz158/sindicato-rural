@@ -48,182 +48,159 @@ import com.sindicato.util.Extenso;
 @ManagedBean
 @ViewScoped
 public class ManutencaoNotaBean implements Serializable {
-
 	private static final long serialVersionUID = 1L;
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
-
-	@EJB private ListasDAO listasDAO;
-	@EJB private FinanceiroDAO financeiroDAO;
-	@EJB private ServicoDAO servicoDAO;
-	@EJB private ModoPagamentoDAO modoPagamentoDAO;
-	
+	@EJB
+	private ListasDAO listasDAO;
+	@EJB
+	private FinanceiroDAO financeiroDAO;
+	@EJB
+	private ServicoDAO servicoDAO;
+	@EJB
+	private ModoPagamentoDAO modoPagamentoDAO;
 	private List<Servico> servicos;
-
 	private Debito debitoSelecionado;
 	private LazyDataModel<Debito> debitos;
-
 	// servicos
 	private DebitoServico debitoServico;
-	
 	// recebimentos
 	private List<TipoRecebimento> tiposRecebimento;
 	private Recebimento recebimento;
 	private Recebimento recebimentoSelecionado;
 	private List<DestinoRecebimento> destinos;
 	private Dialog dialogInfRecebimento;
-	
+	private Dialog dialogFormRecebimento;
 	// recolhimentos
 	private List<DebitoServico> servicosComRetencao;
 	private List<ModoPagamento> modosPagamento;
-
-	
 	private int indexTab;
-
 	private TabView tabView;
 	private CommandButton botaoImprimir;
 	private Fieldset fieldSetRecebimentos;
 	private Fieldset fieldSetRecolhimentos;
-	
-	public void selecionaDebito(){
+
+	public void selecionaDebito() {
 		tabView.setActiveIndex(1);
-		
-		if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)){
+		if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)) {
 			fieldSetRecebimentos.setRendered(true);
 			fieldSetRecolhimentos.setRendered(true);
-		} else if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECEBIDO)){
+		} else if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECEBIDO)) {
 			fieldSetRecebimentos.setRendered(true);
 			fieldSetRecolhimentos.setRendered(false);
-		} else{
+		} else {
 			fieldSetRecebimentos.setRendered(false);
 			fieldSetRecolhimentos.setRendered(false);
 		}
-		
 	}
-	
-	public void selecionaRecebimento(Recebimento recebimento){
+	public void selecionaRecebimento(Recebimento recebimento) {
 		this.recebimentoSelecionado = recebimento;
 		this.dialogInfRecebimento.setVisible(true);
 	}
-	
+	public void editarRecebimento(Recebimento recebimento) {
+		this.recebimento = recebimento;
+		this.dialogFormRecebimento.setVisible(true);
+	}
+	public void adicionarRecebimento() {
+		this.recebimento = new Recebimento();
+		this.dialogFormRecebimento.setVisible(true);
+	}
 	public void reset() {
 		debitoSelecionado = new Debito();
 	}
-
 	// SERVICOS
-	public void salvarServico(){
+	public void salvarServico() {
 		debitoServico.setDebito(debitoSelecionado);
 		debitoSelecionado.getDebitoServicos().add(debitoServico);
 		debitoServico = new DebitoServico();
 		botaoImprimir.setDisabled(true);
 	}
-	public void removerServico(DebitoServico servico){
+	public void removerServico(DebitoServico servico) {
 		debitoSelecionado.getDebitoServicos().remove(servico);
 		botaoImprimir.setDisabled(true);
 	}
-	
 	// RECEBIMENTOS
-	public void salvarRecebimento(){
-		recebimento.setDebito(debitoSelecionado);
-		debitoSelecionado.getRecebimentos().add(recebimento);
-		recebimento = new Recebimento();
+	public void salvarRecebimento() {
+		if (recebimento.getId() == 0 && !debitoSelecionado.getRecebimentos().contains(recebimento)) {
+			recebimento.setDebito(debitoSelecionado);
+			debitoSelecionado.getRecebimentos().add(recebimento);
+			recebimento = new Recebimento();
+		}
+		this.dialogFormRecebimento.setVisible(false);
 	}
-	public void removerRecebimento(Recebimento recebimento){
+	public void removerRecebimento(Recebimento recebimento) {
 		debitoSelecionado.getRecebimentos().remove(recebimento);
 	}
-
 	// RECOLHIMENTOS
 	private void mergeServicosComRetencao() {
 		for (DebitoServico debito : servicosComRetencao) {
-			for(DebitoServico debitoSelecionado : debitoSelecionado.getDebitoServicos()){
-				if(debitoSelecionado.equals(debito)){
+			for (DebitoServico debitoSelecionado : debitoSelecionado.getDebitoServicos()) {
+				if (debitoSelecionado.equals(debito)) {
 					debitoSelecionado.setRecolhimento(debito.getRecolhimento());
 				}
 			}
 		}
 	}
-
 	public void cancelar() {
 		try {
 			ResultOperation result = financeiroDAO.cancelarNotaDeCobranca(debitoSelecionado);
-			if(result.isSuccess()){
-				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-						"Sucesso", "Nota de cobrança " + debitoSelecionado.getNumeroNota() + " foi cancelada com sucesso");
+			if (result.isSuccess()) {
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Sucesso", "Nota de cobrança "
+						+ debitoSelecionado.getNumeroNota() + " foi cancelada com sucesso");
 				this.reset();
 				tabView.setActiveIndex(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
-					"Erro", "Contate o administrador do sistema");
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR, "Erro",
+					"Contate o administrador do sistema");
 		}
 	}
-	
 	public void salvar() {
 		try {
-			
-			if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)){
+			if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)) {
 				this.mergeServicosComRetencao();
 			}
-			
-			if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECEBIDO) ||
-					debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)){
-				if(!UtilBean.confereValorRecebimentos(debitoSelecionado)){
-					UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
-							"Ooops...", "Verifique os valores de recebimento, pois não confere com o valor da Nota");
+			if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECEBIDO)
+					|| debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)) {
+				if (!UtilBean.confereValorRecebimentos(debitoSelecionado)) {
+					UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN, "Ooops...",
+							"Verifique os valores de recebimento, pois não confere com o valor da Nota");
 					return;
 				}
 			}
-			
 			ResultOperation result = financeiroDAO.salvarAlteracaoNotaCobranca(debitoSelecionado);
-			if(result.isSuccess()){
-				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-						"Sucesso", result.getMessage());
-				
-				if(debitoSelecionado.getStatus().equals(StatusDebitoEnum.NOTACOBRANCAGERADA)){
+			if (result.isSuccess()) {
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO, "Sucesso", result.getMessage());
+				if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.NOTACOBRANCAGERADA)) {
 					botaoImprimir.setDisabled(false);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
-					"Erro", "Contate o administrador do sistema");
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR, "Erro",
+					"Contate o administrador do sistema");
 		}
 	}
-
-	public void imprimirNotaCobranca() throws JRException, IOException{
+	public void imprimirNotaCobranca() throws JRException, IOException {
 		GeradorReports gerador = preparaValoresReport();
-		
 		FacesContext context = UtilBean.getFacesContext();
-
-		HttpServletResponse httpServletResponse = (HttpServletResponse) context
-				.getExternalContext().getResponse();
-
+		HttpServletResponse httpServletResponse = (HttpServletResponse) context.getExternalContext().getResponse();
 		httpServletResponse.setContentType("application/pdf");
-
-		ServletOutputStream servletOutputStream = httpServletResponse
-				.getOutputStream();
-		
-		JasperExportManager.exportReportToPdfStream(gerador.getJasperPrint(),
-				servletOutputStream);
-		
-		servletOutputStream.flush();  
-        servletOutputStream.close();
-		
+		ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+		JasperExportManager.exportReportToPdfStream(gerador.getJasperPrint(), servletOutputStream);
+		servletOutputStream.flush();
+		servletOutputStream.close();
 		context.responseComplete();
 	}
-	
-	private GeradorReports preparaValoresReport() throws JRException{
+	private GeradorReports preparaValoresReport() throws JRException {
 		StringBuilder telefones = new StringBuilder();
 		telefones.append(usuarioLogado.getEmpresa().getTelefone());
 		telefones.append(" / ");
 		telefones.append(usuarioLogado.getEmpresa().getTelefone2());
-		
 		Extenso extenso = new Extenso();
 		extenso.setNumber(debitoSelecionado.getTotalDebitos());
-		
 		SimpleDateFormat format = new SimpleDateFormat("MMMMM/yyyy");
 		SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
-		
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("cartaSindical", usuarioLogado.getEmpresa().getCartaSindical());
 		parameters.put("cnpj", usuarioLogado.getEmpresa().getCnpj());
@@ -231,7 +208,6 @@ public class ManutencaoNotaBean implements Serializable {
 		parameters.put("telefones", telefones.toString());
 		parameters.put("fax", usuarioLogado.getEmpresa().getFax());
 		parameters.put("email", usuarioLogado.getEmpresa().getEmail());
-
 		parameters.put("clienteId", debitoSelecionado.getCliente().getId());
 		parameters.put("clienteNome", debitoSelecionado.getCliente().getNome());
 		parameters.put("socio", (debitoSelecionado.getCliente().isSocio()) ? "Sim" : "Não");
@@ -241,13 +217,11 @@ public class ManutencaoNotaBean implements Serializable {
 		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));
 		parameters.put("usuario", usuarioLogado.getNome());
 		parameters.put("numeroNota", debitoSelecionado.getNumeroNota());
-		
 		GeradorReports gerador = new GeradorReports("notaCobranca.jasper", parameters, new JRBeanCollectionDataSource(
 				debitoSelecionado.getDebitoServicos()));
 		return gerador;
 	}
-	
-	private String getEnderecoCompletoUsuario(Usuario usuario){
+	private String getEnderecoCompletoUsuario(Usuario usuario) {
 		StringBuilder endereco = new StringBuilder();
 		endereco.append(usuario.getEmpresa().getEndereco());
 		endereco.append(" - ");
@@ -260,60 +234,52 @@ public class ManutencaoNotaBean implements Serializable {
 		endereco.append(usuario.getEmpresa().getEstado());
 		return endereco.toString();
 	}
-
 	public Debito getDebitoSelecionado() {
-		if(debitoSelecionado == null){
+		if (debitoSelecionado == null) {
 			debitoSelecionado = new Debito();
 		}
 		return debitoSelecionado;
 	}
-
 	public LazyDataModel<Debito> getDebitos() {
-		if(debitos == null){
+		if (debitos == null) {
 			List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
 			statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
 			statusPermitido.add(StatusDebitoEnum.RECEBIDO);
 			statusPermitido.add(StatusDebitoEnum.RECOLHIDO);
-			
 			debitos = new LazyDebitoDataModel(statusPermitido);
 		}
 		return debitos;
 	}
- 
 	public int getIndexTab() {
 		return indexTab;
 	}
-
 	public DebitoServico getDebitoServico() {
-		if(debitoServico == null){
+		if (debitoServico == null) {
 			debitoServico = new DebitoServico();
 		}
 		return debitoServico;
 	}
-
 	public List<Servico> getServicos() {
 		servicos = servicoDAO.getAll();
 		return servicos;
 	}
-
 	public CommandButton getBotaoImprimir() {
 		return botaoImprimir;
 	}
-
 	public List<TipoRecebimento> getTiposRecebimento() {
-		if(tiposRecebimento == null){
+		if (tiposRecebimento == null) {
 			tiposRecebimento = listasDAO.getTodasFormasRecebimento();
 		}
 		return tiposRecebimento;
 	}
 	public Recebimento getRecebimento() {
-		if(recebimento == null){
+		if (recebimento == null) {
 			recebimento = new Recebimento();
 		}
 		return recebimento;
 	}
 	public List<DestinoRecebimento> getDestinos() {
-		if(destinos == null){
+		if (destinos == null) {
 			destinos = listasDAO.getTodosDestinosRecebimento();
 		}
 		return destinos;
@@ -348,7 +314,12 @@ public class ManutencaoNotaBean implements Serializable {
 	public Dialog getDialogInfRecebimento() {
 		return dialogInfRecebimento;
 	}
-
+	public Dialog getDialogFormRecebimento() {
+		return dialogFormRecebimento;
+	}
+	public void setDialogFormRecebimento(Dialog dialogEditRecebimento) {
+		this.dialogFormRecebimento = dialogEditRecebimento;
+	}
 	public void setDialogInfRecebimento(Dialog dialogInfRecebimento) {
 		this.dialogInfRecebimento = dialogInfRecebimento;
 	}
@@ -397,7 +368,4 @@ public class ManutencaoNotaBean implements Serializable {
 	public void setIndexTab(int indexTab) {
 		this.indexTab = indexTab;
 	}
-
-	
-
 }
