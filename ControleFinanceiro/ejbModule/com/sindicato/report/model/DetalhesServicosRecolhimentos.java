@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetalhesServicosRecolhimentos implements Serializable {
-	
-	public DetalhesServicosRecolhimentos(){
+	public DetalhesServicosRecolhimentos() {
 		detalhesCliente = new ArrayList<DetalhesClienteRecolhimentos>();
 	}
-	
+
 	private static final long serialVersionUID = 1L;
 	private String descricao;
 	private List<DetalhesClienteRecolhimentos> detalhesCliente;
