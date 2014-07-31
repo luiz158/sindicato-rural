@@ -3,7 +3,7 @@ package com.sindicato.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
@@ -14,7 +14,7 @@ import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.result.ResultOperation;
 import com.sindicato.util.PasswordManager;
 
-@Stateless
+@Stateful
 public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements UsuarioDAO {
 
 	private Usuario usuarioAutenticado = null;

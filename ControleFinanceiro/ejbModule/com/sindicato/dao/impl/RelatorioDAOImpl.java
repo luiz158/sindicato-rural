@@ -151,13 +151,11 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		}
 		return relatorio;
 	}
-
-	
 	private List<Servico> getServicosRecolhimento(Calendar dataDe, Calendar dataAte){
 		String jpql = " select DISTINCT(ds.servico) from DebitoServico ds "
-				+ " Where ds.recolhimento is not null "
+				+ " Where (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
 				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte "
-				+ " and ds.debito.status != :cancelado";
+				+ " and ds.debito.status != :cancelado ";
 		
 		TypedQuery<Servico> query = em.createQuery(jpql, Servico.class);
 		query.setParameter("dataDe", dataDe);
@@ -166,36 +164,26 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		
 		return query.getResultList();
 	}
-	
 	@Override
-	public RelatorioResumoRecolhimentos getResumoRecolhimentos(Calendar dataDe, Calendar dataAte){
-		
+	public RelatorioResumoRecolhimentos getResumoRecolhimentos(Calendar dataDe, Calendar dataAte) {
 		RelatorioResumoRecolhimentos relatorio = new RelatorioResumoRecolhimentos();
 		List<Servico> servicosRecolhimento = getServicosRecolhimento(dataDe, dataAte);
-		
-		String jpql = "select "
-				+ "	ds.debito.cliente.id, ds.debito.cliente.nome, "
-				+ " ds.recolhimento.valor, ds.recolhimento.data, "
-				+ " ds.debito.dataBase, ds.debito.numeroNota, "
-				+ " ds.debito.dataEmissaoNotaCobranca, ds.valor "
-				+ " from DebitoServico ds "
-				+ " Where ds.servico = :servico "
-				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte "
-				+ " and ds.debito.status != :cancelado ";
-		
-		servicosRecolhimento.forEach((s) -> {
+		String jpql = "select " + "	ds.debito.cliente.id, ds.debito.cliente.nome, "
+				+ " ds.recolhimento.valor, ds.recolhimento.data, " + " ds.debito.dataBase, ds.debito.numeroNota, "
+				+ " ds.debito.dataEmissaoNotaCobranca, ds.valor " + " from DebitoServico ds "
+				+ " Where ds.servico = :servico " + " and (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
+				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte " + " and ds.debito.status != :cancelado "
+				+ " order by ds.debito.cliente.nome ";
+		for (Servico servico : servicosRecolhimento) {
 			TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
-			query.setParameter("servico", s);
+			query.setParameter("servico", servico);
 			query.setParameter("dataDe", dataDe);
 			query.setParameter("dataAte", dataAte);
 			query.setParameter("cancelado", StatusDebitoEnum.CANCELADO);
-			
 			List<Object[]> recolhimentos = query.getResultList();
-			
 			DetalhesServicosRecolhimentos detalhes = new DetalhesServicosRecolhimentos();
-			detalhes.setDescricao(s.getDescricao());
-			
-			recolhimentos.forEach((r) -> {
+			detalhes.setDescricao(servico.getDescricao());
+			for (Object[] r : recolhimentos) {
 				DetalhesClienteRecolhimentos detalhesCliente = new DetalhesClienteRecolhimentos();
 				detalhesCliente.setMatricula((int) r[0]);
 				detalhesCliente.setNome((String) r[1]);
@@ -205,13 +193,10 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				detalhesCliente.setNumeroNota((int) r[5]);
 				detalhesCliente.setDataEmissaoNota((Calendar) r[6]);
 				detalhesCliente.setValorDoServico((BigDecimal) r[7]);
-				
 				detalhes.getDetalhesCliente().add(detalhesCliente);
-			});
-			
+			}
 			relatorio.getDetalhes().add(detalhes);
-		});
-		
+		}
 		return relatorio;
 	}
 }
