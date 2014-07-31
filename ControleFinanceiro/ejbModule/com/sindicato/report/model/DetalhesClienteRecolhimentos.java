@@ -6,19 +6,18 @@ import java.math.MathContext;
 import java.util.Calendar;
 
 public class DetalhesClienteRecolhimentos implements Serializable {
-
+	
 	private static final long serialVersionUID = 1L;
 	private int matricula;
 	private String nome;
 	private BigDecimal valorRecolhido;
-	private BigDecimal valorDoServico; 
+	private BigDecimal valorDoServico;
 	private Calendar dataRecolhimento;
 	private Calendar dataBase;
 	private int numeroNota;
 	private Calendar dataEmissaoNota;
 	private BigDecimal variacao;
-	
-	
+
 	public int getMatricula() {
 		return matricula;
 	}
@@ -63,10 +62,10 @@ public class DetalhesClienteRecolhimentos implements Serializable {
 	}
 	public BigDecimal getVariacao() {
 		variacao = BigDecimal.ZERO;
-		if(valorDoServico == null || valorDoServico.compareTo(BigDecimal.ZERO) == 0){
+		if (valorDoServico == null || valorDoServico.compareTo(BigDecimal.ZERO) == 0) {
 			return variacao;
 		}
-		if(valorRecolhido == null || valorRecolhido.compareTo(BigDecimal.ZERO) == 0){
+		if (valorRecolhido == null || valorRecolhido.compareTo(BigDecimal.ZERO) == 0) {
 			return variacao;
 		}
 		variacao = valorDoServico.subtract(valorRecolhido, MathContext.DECIMAL32);
@@ -81,5 +80,4 @@ public class DetalhesClienteRecolhimentos implements Serializable {
 	public void setValorDoServico(BigDecimal valorDoServico) {
 		this.valorDoServico = valorDoServico;
 	}
-
 }
