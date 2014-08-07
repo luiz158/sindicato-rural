@@ -238,23 +238,21 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 
 	
 	@Override
-	public RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(Calendar dataDe,
-			Calendar dataAte){
+	public RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(Calendar dataAte){
 		RelatorioRecolhimentosAberto relatorio = new RelatorioRecolhimentosAberto();
 		
-		List<Cliente> clientes = getClientesRecolhimentosAberto(dataDe, dataAte);
+		List<Cliente> clientes = getClientesRecolhimentosAberto(dataAte);
 		for (Cliente cliente : clientes) {
 			ClienteRecolhimentosAberto clienteRA = new ClienteRecolhimentosAberto();
 			clienteRA.setMatricula(cliente.getId());
 			clienteRA.setNome(cliente.getNome());
 			
-			String jpql = "select d from Debito d "
-					+ " where d.dataBase between :dataDe and :dataAte "
+			String jpql = "select distinct d from Debito d "
+					+ " where d.dataEmissaoNotaCobranca <= :dataAte "
 					+ " and d.status = :status "
 					+ " and d.cliente = :cliente ";
 			
 			TypedQuery<Debito> query = em.createQuery(jpql, Debito.class);
-			query.setParameter("dataDe", dataDe);
 			query.setParameter("dataAte", dataAte);
 			query.setParameter("status", StatusDebitoEnum.RECEBIDO);
 			query.setParameter("cliente", cliente);
@@ -266,6 +264,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				detalhesNota.setNumeroNota(debito.getNumeroNota());
 				
 				for (DebitoServico debitoServico : debito.getDebitoServicos()) {
+					
 					ServicoRecolhimentosAberto servico = new ServicoRecolhimentosAberto();
 					servico.setDescricao(debitoServico.getServico().getDescricao());
 					servico.setId(debitoServico.getServico().getId());
@@ -274,6 +273,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 					
 					// caso o serviço ja tenha sido recolhido, subtrai o valor
 					if(debitoServico.getRecolhimento() != null 
+							&& debitoServico.getRecolhimento().getValor() != null
 							&& debitoServico.getRecolhimento().getValor().compareTo(BigDecimal.ZERO) != 0){
 						servico.setValor(servico.getValor().subtract(
 								debitoServico.getRecolhimento().getValor(), 
@@ -292,14 +292,12 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		return relatorio;
 	}
 
-	private List<Cliente> getClientesRecolhimentosAberto(Calendar dataDe,
-			Calendar dataAte) {
+	private List<Cliente> getClientesRecolhimentosAberto(Calendar dataAte) {
 		String jpql = "select DISTINCT(d.cliente) from Debito d "
-				+ " where d.dataBase between :dataDe and :dataAte "
+				+ " where d.dataEmissaoNotaCobranca <= :dataAte "
 				+ " and d.status = :status ";
 		
 		TypedQuery<Cliente> query = em.createQuery(jpql, Cliente.class);
-		query.setParameter("dataDe", dataDe);
 		query.setParameter("dataAte", dataAte);
 		query.setParameter("status", StatusDebitoEnum.RECEBIDO);
 		List<Cliente> clientes = query.getResultList();

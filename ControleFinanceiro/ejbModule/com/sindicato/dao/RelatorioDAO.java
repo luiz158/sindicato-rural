@@ -16,5 +16,5 @@ public interface RelatorioDAO {
 	RelatorioResumoServico getResumoServico(Calendar dataDe, Calendar dataAte);
 	RelatorioResumoRecebimentos getResumoRecebimentos(Calendar dataDe, Calendar dataAte);
 	RelatorioResumoRecolhimentos getResumoRecolhimentos(Calendar dataDe, Calendar dataAte);
-	RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(Calendar dataDe, Calendar dataAte);
+	RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(Calendar dataAte);
 }
