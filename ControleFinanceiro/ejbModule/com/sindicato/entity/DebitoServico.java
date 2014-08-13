@@ -32,9 +32,8 @@ public class DebitoServico implements Serializable {
 	@JoinColumn(name="debito_id")
 	private Debito debito;
 	
-	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinColumn(name="recolhimento_id")
-	private Recolhimento recolhimento;
+	@OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE}, optional=true)
+	private Recolhimento recolhimento = null;
 	
 	@Column(precision=18, scale=2, nullable=false)
 	private BigDecimal valor;

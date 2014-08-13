@@ -35,7 +35,7 @@ public class Recolhimento implements Serializable {
 	@Column(nullable=false)
 	private Calendar data = Calendar.getInstance();
 	
-	@Column(precision=18, scale=2, nullable=false)
+	@Column(precision=18, scale=2)
 	private BigDecimal valor;
 
 	
