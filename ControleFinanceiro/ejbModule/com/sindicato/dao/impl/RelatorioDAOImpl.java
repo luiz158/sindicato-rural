@@ -17,9 +17,7 @@ import com.sindicato.dao.ClienteDAO;
 import com.sindicato.dao.DestinoRecebimentoDAO;
 import com.sindicato.dao.RelatorioDAO;
 import com.sindicato.entity.Cliente;
-import com.sindicato.entity.DebitoServico;
 import com.sindicato.entity.DestinoRecebimento;
-import com.sindicato.entity.Recolhimento;
 import com.sindicato.entity.Servico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.report.model.ClienteRecolhimentosAberto;
@@ -209,47 +207,57 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 	public RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(Calendar dataAte) {
 		RelatorioRecolhimentosAberto relatorio = new RelatorioRecolhimentosAberto();
 		
-		String jpql = "select ds from DebitoServico ds " + " left join fetch ds.recolhimento "
+		String jpql = "select "
+					+ " ds.servico.descricao,"
+					+ " ds.servico.id,"
+					+ " ds.valor,"
+					+ " r.valor, "
+					+ " ds.debito.numeroNota, "
+					+ " ds.debito.dataBase, "
+					+ " ds.debito.cliente.id, "
+					+ " ds.debito.cliente.nome "
+					+ " from DebitoServico ds " 
+				+ " left join ds.recolhimento r "
 				+ " where ds.debito.dataEmissaoNotaCobranca <= :dataAte " 
 				+ " and ds.debito.status = :status "
 				+ " and ds.servico.retencao = :retencao " 
 				+ " order by ds.debito.numeroNota ";
-		TypedQuery<DebitoServico> query = em.createQuery(jpql, DebitoServico.class);
+		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
 		query.setParameter("dataAte", dataAte);
 		query.setParameter("status", StatusDebitoEnum.RECEBIDO);
 		query.setParameter("retencao", true);
-		List<DebitoServico> debitoServicos = query.getResultList();
+		List<Object[]> debitoServicos = query.getResultList();
 
 		boolean novoCliente = true;
 		boolean novoDetalheNota = true;
 		ClienteRecolhimentosAberto clienteRA = new ClienteRecolhimentosAberto();
 		DetalhesNotaRecolhimentosAberto detalhesNota = new DetalhesNotaRecolhimentosAberto();
 
-		for (DebitoServico debitoServico : debitoServicos) {
+		for (Object[] debitoServico : debitoServicos) {
 
 			ServicoRecolhimentosAberto servico = new ServicoRecolhimentosAberto();
-			servico.setDescricao(debitoServico.getServico().getDescricao());
-			servico.setId(debitoServico.getServico().getId());
-			servico.setValor(debitoServico.getValor());
+			servico.setDescricao((String) debitoServico[0]);
+			servico.setId((int) debitoServico[1]);
+			servico.setValor((BigDecimal) debitoServico[2]);
 			if (servico.getValor() != null) {
-				Recolhimento rec = debitoServico.getRecolhimento();
+				BigDecimal valorRecolhido = (BigDecimal) debitoServico[3];
 				// caso o serviço ja tenha sido recolhido, subtrai o
 				// valor
-				if (rec != null && rec.getValor() != null && rec.getValor().compareTo(BigDecimal.ZERO) != 0) {
-					servico.setValor(servico.getValor().subtract(rec.getValor(), MathContext.DECIMAL32));
+				if (valorRecolhido != null && valorRecolhido.compareTo(BigDecimal.ZERO) != 0) {
+					servico.setValor(servico.getValor().subtract(valorRecolhido, MathContext.DECIMAL32));
 				}
 			}
-			int numeroNota = debitoServico.getDebito().getNumeroNota();
+			int numeroNota = (int) debitoServico[4];
 			novoDetalheNota = detalhesNota.getNumeroNota() != numeroNota;
 			if (novoDetalheNota) {
 				if (detalhesNota.getNumeroNota() != 0) {
 					clienteRA.getListaNotasPendentes().add(detalhesNota);
 				}
 				detalhesNota = new DetalhesNotaRecolhimentosAberto();
-				detalhesNota.setDataBase(debitoServico.getDebito().getDataBase());
-				detalhesNota.setNumeroNota(debitoServico.getDebito().getNumeroNota());
+				detalhesNota.setDataBase((Calendar) debitoServico[5]);
+				detalhesNota.setNumeroNota((int) debitoServico[4]);
 			}
-			int matricula = debitoServico.getDebito().getCliente().getId();
+			int matricula = (int) debitoServico[6];
 			novoCliente = clienteRA.getMatricula() != matricula;
 			if (novoCliente) {
 				if (clienteRA.getMatricula() != 0) {
@@ -257,7 +265,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				}
 				clienteRA = new ClienteRecolhimentosAberto();
 				clienteRA.setMatricula(matricula);
-				clienteRA.setNome(debitoServico.getDebito().getCliente().getNome());
+				clienteRA.setNome((String) debitoServico[7]);
 			}
 			detalhesNota.getServicos().add(servico);
 		}

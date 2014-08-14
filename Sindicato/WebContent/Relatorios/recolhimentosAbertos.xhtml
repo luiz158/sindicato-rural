@@ -68,12 +68,11 @@
 					<ui:repeat var="cliente"
 						value="#{recolhimentosAbertoBean.relatorio.listaPendenciasPorCliente}">
 
-<!-- 						<h3>Cliente: #{cliente.matricula} #{cliente.nome}</h3> -->
+						<h3>Cliente: #{cliente.matricula} #{cliente.nome}</h3>
+						
+						<ui:repeat var="notas" value="#{cliente.listaNotasPendentes}"></ui:repeat>
+						
 						<p:dataTable var="nota" value="#{cliente.listaNotasPendentes}">
-							<f:facet name="header">
-					            Cliente: #{cliente.matricula} #{cliente.nome}
-					        </f:facet>
-
 							<p:subTable var="servico" value="#{nota.servicos}">
 								<f:facet name="header">
 									<h:outputText value="Nota: #{nota.numeroNota}" />
