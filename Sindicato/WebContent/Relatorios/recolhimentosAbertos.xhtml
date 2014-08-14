@@ -9,6 +9,8 @@
 <ui:composition template="../_template.xhtml">
 	<ui:define name="conteudo">
 
+		<h:outputStylesheet name="relatorios.css" library="css" />
+
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/faces/index.xhtml" />
 			<p:menuitem value="Relatórios" url="#" />
@@ -65,41 +67,112 @@
 						</h:outputLabel>
 					</h2>
 
+					<p:dataTable var="cliente"
+						value="#{recolhimentosAbertoBean.relatorio.listaPendenciasPorCliente}">
+
+						<f:facet name="header">
+							<p:outputLabel value="Resumo geral de pendências"
+								style="font-weight: bold;" />
+						</f:facet>
+						<f:facet name="footer">
+							<p:outputLabel value="Total de pendências: "
+								style="font-weight: bold;" />
+							<h:outputText
+								value="#{recolhimentosAbertoBean.relatorio.totalPendencias}"
+								style="font-weight: bold;">
+								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+									type="currency" />
+							</h:outputText>
+						</f:facet>
+
+						<p:column headerText="Matricula" styleClass="font-menor">
+							<h:outputText value="#{cliente.matricula}" />
+						</p:column>
+						<p:column headerText="Cliente" styleClass="font-menor">
+							<h:outputText value="#{cliente.nome}" />
+						</p:column>
+						<p:column headerText="Valor pendente a recolher"
+							styleClass="font-menor">
+							<h:outputText value="#{cliente.totalPendencias}">
+								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+									type="currency" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+					<p:spacer height="50" />
+
 					<ui:repeat var="cliente"
 						value="#{recolhimentosAbertoBean.relatorio.listaPendenciasPorCliente}">
 
-						<h3>Cliente: #{cliente.matricula} #{cliente.nome}</h3>
-						
-						<ui:repeat var="notas" value="#{cliente.listaNotasPendentes}"></ui:repeat>
-						
-						<p:dataTable var="nota" value="#{cliente.listaNotasPendentes}">
-							<p:subTable var="servico" value="#{nota.servicos}">
-								<f:facet name="header">
-									<h:outputText value="Nota: #{nota.numeroNota}" />
-									<p:spacer height="20" />
-									<h:outputText value="Data base:" />
-									<h:outputText value="#{nota.dataBase.time}" >
-										<f:convertDateTime pattern="dd/MM/yyyy" />
-									</h:outputText>
-								</f:facet>
-								<p:column headerText="Descrição do serviço">
-									<h:outputText value="#{servico.id} #{servico.descricao}" />
-								</p:column>
-								<p:column headerText="Valor">
-									<h:outputText value="#{servico.valor}" >
-										<f:convertNumber currencySymbol="R$ " locale="pt_BR" type="currency" />
-									</h:outputText>
-								</p:column>
-								<p:columnGroup type="footer">
-									<p:row>
-										<p:column footerText="Valor da nota: " style="text-align:right" />
-										<p:column footerText="#{nota.valorNota}" />
-									</p:row>
-								</p:columnGroup>
-							</p:subTable>
-						</p:dataTable>
+						<p style="margin-bottom: 0 !important;">
+							<p:outputLabel
+								value="Matricula: "
+								style="font-size: 18px;font-weight: bold;" />
+							<p:outputLabel
+								value="#{cliente.matricula}"
+								style="font-size: 18px;font-weight: bold;" />
+								<p:spacer width="40" height="0" />
+							<p:outputLabel
+								value="Cliente:  "
+								style="font-size: 18px;font-weight: bold;" />
+							<p:outputLabel
+								value="#{cliente.nome}"
+								style="font-size: 18px;font-weight: bold;" />
+						</p>
 
-						<p:spacer height="10" />
+
+						<ui:repeat var="nota" value="#{cliente.listaNotasPendentes}">
+
+							<p:panelGrid style="border-style: hidden !important;">
+								<p:row>
+									<p:column
+										style="border-style: hidden !important;font-weight: bold;">
+										<h:outputText value="Nota:  " />
+										<h:outputText value="#{nota.numeroNota}"
+											style="font-size:15px;" />
+										<p:spacer width="60" height="20" />
+										<h:outputText value="Data base:  " />
+										<h:outputText value="#{nota.dataBase.time}"
+											style="font-size:15px;">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column style="border-style: hidden !important;">
+										<p:dataTable var="servico" value="#{nota.servicos}">
+											<p:column headerText="Código do serviço">
+												<h:outputText value="#{servico.id}" />
+											</p:column>
+											<p:column headerText="Descrição do serviço">
+												<h:outputText value="#{servico.descricao}" />
+											</p:column>
+											<p:column headerText="Valor a recolher">
+												<h:outputText value="#{servico.valor}">
+													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+														type="currency" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column
+										style="border-style: hidden !important;font-weight: bold;text-align:right;">
+										<p:outputLabel value="Total a recolher da nota: " />
+										<p:outputLabel value="#{nota.valorNota}"
+											style="font-size:15px;">
+											<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+												type="currency" />
+										</p:outputLabel>
+
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:spacer height="20" />
+						</ui:repeat>
+						<p:spacer height="50" />
 					</ui:repeat>
 
 					<h2>

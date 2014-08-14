@@ -221,7 +221,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				+ " where ds.debito.dataEmissaoNotaCobranca <= :dataAte " 
 				+ " and ds.debito.status = :status "
 				+ " and ds.servico.retencao = :retencao " 
-				+ " order by ds.debito.numeroNota ";
+				+ " order by ds.debito.cliente.nome ";
 		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
 		query.setParameter("dataAte", dataAte);
 		query.setParameter("status", StatusDebitoEnum.RECEBIDO);

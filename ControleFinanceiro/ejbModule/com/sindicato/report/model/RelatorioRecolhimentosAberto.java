@@ -20,6 +20,15 @@ public class RelatorioRecolhimentosAberto implements Serializable {
 		return serialVersionUID;
 	}
 	public BigDecimal getTotalPendencias() {
+		totalPendencias = BigDecimal.ZERO;
+		if(listaPendenciasPorCliente == null || listaPendenciasPorCliente.size() == 0){
+			return totalPendencias;
+		}
+		
+		for (ClienteRecolhimentosAberto cliente : listaPendenciasPorCliente) {
+			totalPendencias = totalPendencias.add(cliente.getTotalPendencias());
+		}
+		
 		return totalPendencias;
 	}
 	public List<ClienteRecolhimentosAberto> getListaPendenciasPorCliente() {
