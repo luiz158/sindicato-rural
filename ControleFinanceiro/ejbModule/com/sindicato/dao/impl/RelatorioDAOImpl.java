@@ -21,6 +21,7 @@ import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.Servico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.report.model.ClienteRecolhimentosAberto;
+import com.sindicato.report.model.ClienteRetencoesRecolher;
 import com.sindicato.report.model.DetalhesAssociado;
 import com.sindicato.report.model.DetalhesClienteRecolhimentos;
 import com.sindicato.report.model.DetalhesDestinoRecebimento;
@@ -33,7 +34,9 @@ import com.sindicato.report.model.RelatorioRecolhimentosAberto;
 import com.sindicato.report.model.RelatorioResumoRecebimentos;
 import com.sindicato.report.model.RelatorioResumoRecolhimentos;
 import com.sindicato.report.model.RelatorioResumoServico;
+import com.sindicato.report.model.RelatorioRetencoesRecolher;
 import com.sindicato.report.model.ServicoRecolhimentosAberto;
+import com.sindicato.report.model.ServicoRetencoesRecolher;
 import com.sindicato.result.InformacaoMensalidade;
 
 @Stateful
@@ -59,7 +62,8 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			}
 			totalAssociados++;
 			Calendar dataSocio = cliente.getDataCadastro();
-			InformacaoMensalidade infMensalid = clienteDAO.estaEmDiaComAsMensalidades(cliente);
+			InformacaoMensalidade infMensalid = clienteDAO
+					.estaEmDiaComAsMensalidades(cliente);
 			DetalhesAssociado detalhes = new DetalhesAssociado();
 			if (infMensalid.isAtrasado()) {
 				detalhes.setStatusAssociado("Em atraso");
@@ -74,7 +78,8 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			detalhes.setObservacao(cliente.getObservacao());
 			detalhes.setTelefone(cliente.getTelefone());
 			if (cliente.getProdutorRuralDesde() != null)
-				detalhes.setProdutorRuralDesde(formatData.format(cliente.getProdutorRuralDesde().getTime()));
+				detalhes.setProdutorRuralDesde(formatData.format(cliente
+						.getProdutorRuralDesde().getTime()));
 			if (dataSocio != null)
 				detalhes.setSocioDesde(formatData.format(dataSocio.getTime()));
 			relatorio.getDetalhesAssociado().add(detalhes);
@@ -84,6 +89,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		relatorio.setTotalAssociadosEmDia(associadosEmDia);
 		return relatorio;
 	}
+
 	private List<StatusDebitoEnum> getStatusPermitidosResumoServicos() {
 		List<StatusDebitoEnum> statusPermitidos = new ArrayList<StatusDebitoEnum>();
 		statusPermitidos.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
@@ -91,25 +97,36 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		statusPermitidos.add(StatusDebitoEnum.RECOLHIDO);
 		return statusPermitidos;
 	}
+
 	private String getJPQLResumoServicos() {
 		return "select ds.servico.descricao, SUM(ds.valor) from DebitoServico ds "
 				+ " where ds.debito.dataEmissaoNotaCobranca BETWEEN :dataDe and :dataAte "
-				+ " and ds.debito.cliente.socio = :socio " + "	and ds.servico.retencao = :retencao "
-				+ " and ds.debito.status in (:status) " + " group by ds.servico.descricao "
+				+ " and ds.debito.cliente.socio = :socio "
+				+ "	and ds.servico.retencao = :retencao "
+				+ " and ds.debito.status in (:status) "
+				+ " group by ds.servico.descricao "
 				+ " order by ds.servico.descricao ";
 	}
+
 	@Override
-	public RelatorioResumoServico getResumoServico(Calendar dataDe, Calendar dataAte) {
+	public RelatorioResumoServico getResumoServico(Calendar dataDe,
+			Calendar dataAte) {
 		RelatorioResumoServico relResumoServico = new RelatorioResumoServico();
-		relResumoServico.setRetencoesSocios(this.getValoresServicosPeriodo(dataDe, dataAte, true, true));
-		relResumoServico.setRetencoesNaoSocios(this.getValoresServicosPeriodo(dataDe, dataAte, false, true));
-		relResumoServico.setReceitasSocios(this.getValoresServicosPeriodo(dataDe, dataAte, true, false));
-		relResumoServico.setReceitasNaoSocios(this.getValoresServicosPeriodo(dataDe, dataAte, false, false));
+		relResumoServico.setRetencoesSocios(this.getValoresServicosPeriodo(
+				dataDe, dataAte, true, true));
+		relResumoServico.setRetencoesNaoSocios(this.getValoresServicosPeriodo(
+				dataDe, dataAte, false, true));
+		relResumoServico.setReceitasSocios(this.getValoresServicosPeriodo(
+				dataDe, dataAte, true, false));
+		relResumoServico.setReceitasNaoSocios(this.getValoresServicosPeriodo(
+				dataDe, dataAte, false, false));
 		return relResumoServico;
 	}
-	private List<DetalhesServico> getValoresServicosPeriodo(Calendar dataDe, Calendar dataAte, boolean socio,
-			boolean retencao) {
-		TypedQuery<Object[]> query = em.createQuery(this.getJPQLResumoServicos(), Object[].class);
+
+	private List<DetalhesServico> getValoresServicosPeriodo(Calendar dataDe,
+			Calendar dataAte, boolean socio, boolean retencao) {
+		TypedQuery<Object[]> query = em.createQuery(
+				this.getJPQLResumoServicos(), Object[].class);
 		query.setParameter("dataDe", dataDe);
 		query.setParameter("dataAte", dataAte);
 		query.setParameter("socio", socio);
@@ -125,13 +142,17 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		}
 		return result;
 	}
+
 	@Override
-	public RelatorioResumoRecebimentos getResumoRecebimentos(Calendar dataDe, Calendar dataAte) {
+	public RelatorioResumoRecebimentos getResumoRecebimentos(Calendar dataDe,
+			Calendar dataAte) {
 		List<DestinoRecebimento> destinos = destinoDAO.getAll();
 		RelatorioResumoRecebimentos relatorio = new RelatorioResumoRecebimentos();
-		String jpql = " select r.dataRecebimento, SUM(r.valor) " + " from Recebimento r "
+		String jpql = " select r.dataRecebimento, SUM(r.valor) "
+				+ " from Recebimento r "
 				+ " where r.debito.dataEmissaoNotaCobranca between :dataDe and :dataAte "
-				+ "	and r.destino.id = :destino and r.debito.status != :status" + " group by r.dataRecebimento "
+				+ "	and r.destino.id = :destino and r.debito.status != :status"
+				+ " group by r.dataRecebimento "
 				+ " order by r.dataRecebimento ";
 		for (DestinoRecebimento destino : destinos) {
 			TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
@@ -158,25 +179,36 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		}
 		return relatorio;
 	}
-	private List<Servico> getServicosRecolhimento(Calendar dataDe, Calendar dataAte) {
+
+	private List<Servico> getServicosRecolhimento(Calendar dataDe,
+			Calendar dataAte) {
 		String jpql = " select DISTINCT(ds.servico) from DebitoServico ds "
 				+ " Where (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
-				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte " + " and ds.debito.status != :cancelado ";
+				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte "
+				+ " and ds.debito.status != :cancelado ";
 		TypedQuery<Servico> query = em.createQuery(jpql, Servico.class);
 		query.setParameter("dataDe", dataDe);
 		query.setParameter("dataAte", dataAte);
 		query.setParameter("cancelado", StatusDebitoEnum.CANCELADO);
 		return query.getResultList();
 	}
+
 	@Override
-	public RelatorioResumoRecolhimentos getResumoRecolhimentos(Calendar dataDe, Calendar dataAte) {
+	public RelatorioResumoRecolhimentos getResumoRecolhimentos(Calendar dataDe,
+			Calendar dataAte) {
 		RelatorioResumoRecolhimentos relatorio = new RelatorioResumoRecolhimentos();
-		List<Servico> servicosRecolhimento = getServicosRecolhimento(dataDe, dataAte);
-		String jpql = "select " + "	ds.debito.cliente.id, ds.debito.cliente.nome, "
-				+ " ds.recolhimento.valor, ds.recolhimento.data, " + " ds.debito.dataBase, ds.debito.numeroNota, "
-				+ " ds.debito.dataEmissaoNotaCobranca, ds.valor " + " from DebitoServico ds "
-				+ " Where ds.servico = :servico " + " and (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
-				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte " + " and ds.debito.status != :cancelado "
+		List<Servico> servicosRecolhimento = getServicosRecolhimento(dataDe,
+				dataAte);
+		String jpql = "select "
+				+ "	ds.debito.cliente.id, ds.debito.cliente.nome, "
+				+ " ds.recolhimento.valor, ds.recolhimento.data, "
+				+ " ds.debito.dataBase, ds.debito.numeroNota, "
+				+ " ds.debito.dataEmissaoNotaCobranca, ds.valor "
+				+ " from DebitoServico ds "
+				+ " Where ds.servico = :servico "
+				+ " and (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
+				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte "
+				+ " and ds.debito.status != :cancelado "
 				+ " order by ds.debito.cliente.nome ";
 		for (Servico servico : servicosRecolhimento) {
 			TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
@@ -203,24 +235,20 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		}
 		return relatorio;
 	}
+
 	@Override
-	public RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(Calendar dataAte) {
+	public RelatorioRecolhimentosAberto getRelatorioRecolhimentosAberto(
+			Calendar dataAte) {
 		RelatorioRecolhimentosAberto relatorio = new RelatorioRecolhimentosAberto();
-		
-		String jpql = "select "
-					+ " ds.servico.descricao,"
-					+ " ds.servico.id,"
-					+ " ds.valor,"
-					+ " r.valor, "
-					+ " ds.debito.numeroNota, "
-					+ " ds.debito.dataBase, "
-					+ " ds.debito.cliente.id, "
-					+ " ds.debito.cliente.nome "
-					+ " from DebitoServico ds " 
+
+		String jpql = "select " + " ds.servico.descricao," + " ds.servico.id,"
+				+ " ds.valor," + " r.valor, " + " ds.debito.numeroNota, "
+				+ " ds.debito.dataBase, " + " ds.debito.cliente.id, "
+				+ " ds.debito.cliente.nome " + " from DebitoServico ds "
 				+ " left join ds.recolhimento r "
-				+ " where ds.debito.dataEmissaoNotaCobranca <= :dataAte " 
+				+ " where ds.debito.dataEmissaoNotaCobranca <= :dataAte "
 				+ " and ds.debito.status = :status "
-				+ " and ds.servico.retencao = :retencao " 
+				+ " and ds.servico.retencao = :retencao "
 				+ " order by ds.debito.cliente.nome ";
 		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
 		query.setParameter("dataAte", dataAte);
@@ -243,8 +271,10 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				BigDecimal valorRecolhido = (BigDecimal) debitoServico[3];
 				// caso o serviço ja tenha sido recolhido, subtrai o
 				// valor
-				if (valorRecolhido != null && valorRecolhido.compareTo(BigDecimal.ZERO) != 0) {
-					servico.setValor(servico.getValor().subtract(valorRecolhido, MathContext.DECIMAL32));
+				if (valorRecolhido != null
+						&& valorRecolhido.compareTo(BigDecimal.ZERO) != 0) {
+					servico.setValor(servico.getValor().subtract(
+							valorRecolhido, MathContext.DECIMAL32));
 				}
 			}
 			int numeroNota = (int) debitoServico[4];
@@ -271,4 +301,78 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		}
 		return relatorio;
 	}
+
+	@Override
+	public RelatorioRetencoesRecolher getRelatorioRetencoesRecolher(Calendar dataDe, Calendar dataAte) {
+		RelatorioRetencoesRecolher relatorio = new RelatorioRetencoesRecolher();
+
+		String jpql = " select  "
+					+ " ds.servico.descricao, "
+					+ " ds.debito.cliente.id, "
+					+ " ds.debito.cliente.nome, "
+					+ " ds.valor, "
+					+ " r.valor, "
+					+ " ds.debito.dataBase, "
+					+ " ds.debito.numeroNota, "
+					+ " ds.debito.dataEmissaoNotaCobranca "
+					+ " from DebitoServico ds "
+					+ " left join ds.recolhimento r "
+					+ " Where ds.servico.retencao = :retencao "
+					+ " and ds.debito.status = :status "
+					+ " and ds.debito.dataEmissaoNotaCobranca between :dataDe and :dataAte "
+					
+					+ " group by "
+					+ " ds.servico.descricao, "
+					+ " ds.debito.cliente.id, "
+					+ " ds.debito.cliente.nome, "
+					+ " ds.valor, "
+					+ " r.valor, "
+					+ " ds.debito.dataBase, "
+					+ " ds.debito.numeroNota, "
+					+ " ds.debito.dataEmissaoNotaCobranca "
+
+					+ " order by ds.servico.descricao, ds.debito.cliente.nome ";
+		
+		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
+		query.setParameter("dataDe", dataDe);
+		query.setParameter("dataAte", dataAte);
+		query.setParameter("status", StatusDebitoEnum.RECEBIDO);
+		query.setParameter("retencao", true);
+		List<Object[]> debitoServicos = query.getResultList();
+
+		boolean novoServico = true;
+		ServicoRetencoesRecolher servico = new ServicoRetencoesRecolher();
+		
+
+		for (Object[] ds : debitoServicos) {
+			ClienteRetencoesRecolher cliente = new ClienteRetencoesRecolher();
+			cliente.setDataBase((Calendar) ds[5]);
+			cliente.setDataEmissaoNota((Calendar) ds[7]);
+			cliente.setMatricula((int) ds[1]);
+			cliente.setNome((String) ds[2]);
+			cliente.setNumeroNota((int) ds[6]);
+
+			BigDecimal valorDebito = (BigDecimal) ds[3];
+			BigDecimal valorRecolhido = (BigDecimal) ds[4];
+			// caso o serviço ja tenha sido recolhido, subtrai o valor
+			if (valorRecolhido != null
+					&& valorRecolhido.compareTo(BigDecimal.ZERO) != 0) {
+				valorDebito = valorDebito.subtract(valorRecolhido, MathContext.DECIMAL32);
+			}
+			cliente.setValor(valorDebito);
+
+			String nomeServico = (String) ds[0];
+			novoServico = (servico.getNomeServico() == null || !servico.getNomeServico().equals(nomeServico));
+			if (novoServico) {
+				if(servico.getNomeServico() != null){
+					relatorio.getListaServicos().add(servico);
+				}
+				servico = new ServicoRetencoesRecolher();
+				servico.setNomeServico(nomeServico);
+			}
+			servico.getListaClientes().add(cliente);
+		}
+		return relatorio;
+	}
+
 }
