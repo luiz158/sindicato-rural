@@ -22,6 +22,7 @@ import com.sindicato.entity.Servico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.report.model.ClienteRecolhimentosAberto;
 import com.sindicato.report.model.ClienteRetencoesRecolher;
+import com.sindicato.report.model.DetalheInscricaoEstadual;
 import com.sindicato.report.model.DetalheNotasEmitidas;
 import com.sindicato.report.model.DetalhesAssociado;
 import com.sindicato.report.model.DetalhesClienteRecolhimentos;
@@ -31,6 +32,7 @@ import com.sindicato.report.model.DetalhesServico;
 import com.sindicato.report.model.DetalhesServicosRecolhimentos;
 import com.sindicato.report.model.RecebimentoDia;
 import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.report.model.RelatorioInscricaoEstadual;
 import com.sindicato.report.model.RelatorioNotasEmitidas;
 import com.sindicato.report.model.RelatorioRecolhimentosAberto;
 import com.sindicato.report.model.RelatorioResumoRecebimentos;
@@ -416,5 +418,40 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		return relatorio;
 	}
 	
-	
+	@Override
+	public RelatorioInscricaoEstadual getRelatorioInscricaoEstadual(){
+		RelatorioInscricaoEstadual relatorio = new RelatorioInscricaoEstadual();
+		
+		String jpql = " select  "
+				+ " c.estabelecimentoRural.validadeInscricaoEstadual, "
+				+ " c.id, "
+				+ " c.nome, "
+				+ " c.cpf "
+				+ " from Cliente c "
+				+ " Where c.socio = :socio "
+				+ " and c.estabelecimentoRural.validadeInscEstIndeter = :validadeIndeter "
+				+ " and c.estabelecimentoRural.validadeInscricaoEstadual <= :dataAviso "
+				+ " order by c.estabelecimentoRural.validadeInscricaoEstadual, c.nome ";
+
+		Calendar dataAviso = Calendar.getInstance();
+		dataAviso.add(Calendar.MONTH, 2);
+		
+		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
+		query.setParameter("socio", true);
+		query.setParameter("validadeIndeter", false);
+		query.setParameter("dataAviso", dataAviso);
+		List<Object[]> rs = query.getResultList();
+		
+		for (Object[] row : rs) {
+			DetalheInscricaoEstadual detalhe = new DetalheInscricaoEstadual();
+			detalhe.setDocumento((String) row[3]);
+			detalhe.setMatricula((int) row[1]);
+			detalhe.setNome((String) row[2]);
+			detalhe.setVencimentoInscricao((Calendar) row[0]);
+			
+			relatorio.getDetalhesAssociados().add(detalhe);
+		}
+		
+		return relatorio;
+	}
 }

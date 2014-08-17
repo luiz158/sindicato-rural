@@ -5,6 +5,7 @@ import java.util.Calendar;
 import javax.ejb.Remote;
 
 import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.report.model.RelatorioInscricaoEstadual;
 import com.sindicato.report.model.RelatorioNotasEmitidas;
 import com.sindicato.report.model.RelatorioRecolhimentosAberto;
 import com.sindicato.report.model.RelatorioResumoRecebimentos;
@@ -23,4 +24,5 @@ public interface RelatorioDAO {
 			Calendar dataAte);
 	RelatorioNotasEmitidas getRelatorioNotasEmitidas(Calendar dataDe,
 			Calendar dataAte);
+	RelatorioInscricaoEstadual getRelatorioInscricaoEstadual();
 }

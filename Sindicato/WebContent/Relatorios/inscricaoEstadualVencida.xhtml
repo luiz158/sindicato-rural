@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Associados" url="#" />
+		</p:breadCrumb>
+
+		<h:form target="_blank">
+			
+			<p:spacer height="15" />
+			<p:fieldset legend="Resumo de associados">
+
+				<p:panelGrid styleClass="panelForm" columns="2"
+					columnClasses="colLabel,colInput"
+					style="margin-top:20px;width:50%;">
+
+					<p:outputLabel value="Total de inscrições estaduais vencidas:" />
+					<p:outputLabel style="color:red;"
+						value="#{inscricaoEstadualVencidaBean.relatorio.qtdInscricoesVencidas}" />
+
+					<p:outputLabel
+						value="Total de inscrições estaduais próximas de vencer:" />
+					<p:outputLabel style="color:blue;"
+						value="#{inscricaoEstadualVencidaBean.relatorio.qtdInscricoesProximaVencer}" />
+
+				</p:panelGrid>
+
+				<div class="container-action">
+					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+						style="width:250px;height:50px;">
+						<p:printer target="painelServicos" />
+					</p:commandButton>
+				</div>
+			</p:fieldset>
+			<p:spacer height="30" />
+			<p:fieldset legend="Detalhes das inscrições estaduais">
+
+				<p:outputPanel id="painelServicos">
+
+					<h2 style="text-align: center;">
+						<p:outputLabel value="Relatório de inscrições estaduais" />
+					</h2>
+					
+					<p:dataTable var="detalhe"
+						value="#{inscricaoEstadualVencidaBean.relatorio.detalhesAssociados}"
+						emptyMessage="Nenhum associado com inscrição estadual vencida">
+
+						<p:column headerText="Matrícula">
+							<p:outputLabel value="#{detalhe.matricula}" />
+						</p:column>
+						<p:column headerText="Nome">
+							<p:outputLabel value="#{detalhe.nome}" />
+						</p:column>
+
+						<p:column headerText="CPF">
+							<p:outputLabel value="#{detalhe.documento}" />
+						</p:column>
+						<p:column headerText="Data de vencimento">
+							<p:outputLabel value="#{detalhe.vencimentoInscricao.time}"
+								style="color:red;" rendered="#{detalhe.inscricaoVencida}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+							<p:outputLabel value="#{detalhe.vencimentoInscricao.time}"
+								style="color:blue;" rendered="#{!detalhe.inscricaoVencida}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:fieldset>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
