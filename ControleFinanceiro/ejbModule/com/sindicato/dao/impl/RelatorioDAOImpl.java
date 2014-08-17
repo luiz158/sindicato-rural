@@ -22,6 +22,7 @@ import com.sindicato.entity.Servico;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.report.model.ClienteRecolhimentosAberto;
 import com.sindicato.report.model.ClienteRetencoesRecolher;
+import com.sindicato.report.model.DetalheNotasEmitidas;
 import com.sindicato.report.model.DetalhesAssociado;
 import com.sindicato.report.model.DetalhesClienteRecolhimentos;
 import com.sindicato.report.model.DetalhesDestinoRecebimento;
@@ -30,6 +31,7 @@ import com.sindicato.report.model.DetalhesServico;
 import com.sindicato.report.model.DetalhesServicosRecolhimentos;
 import com.sindicato.report.model.RecebimentoDia;
 import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.report.model.RelatorioNotasEmitidas;
 import com.sindicato.report.model.RelatorioRecolhimentosAberto;
 import com.sindicato.report.model.RelatorioResumoRecebimentos;
 import com.sindicato.report.model.RelatorioResumoRecolhimentos;
@@ -375,4 +377,44 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		return relatorio;
 	}
 
+	@Override
+	public RelatorioNotasEmitidas getRelatorioNotasEmitidas(Calendar dataDe, Calendar dataAte){
+		RelatorioNotasEmitidas relatorio = new RelatorioNotasEmitidas();
+		
+		String jpql = " select  "
+				+ " d.dataEmissaoNotaCobranca, "
+				+ " SUM(ds.valor), "
+				+ " MIN(d.numeroNota), "
+				+ " MAX(d.numeroNota) "
+				+ " from Debito d "
+				+ " left join d.debitoServicos ds "
+				+ " Where d.status not in (:status) "
+				+ " and d.dataEmissaoNotaCobranca between :dataDe and :dataAte "
+				+ " group by d.dataEmissaoNotaCobranca "
+				+ " order by d.dataEmissaoNotaCobranca ";
+
+		List<StatusDebitoEnum> statusNaoPermitidos = new ArrayList<StatusDebitoEnum>();	
+		statusNaoPermitidos.add(StatusDebitoEnum.DEBITOCRIADO);
+		statusNaoPermitidos.add(StatusDebitoEnum.CANCELADO);
+			
+		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
+		query.setParameter("dataDe", dataDe);
+		query.setParameter("dataAte", dataAte);
+		query.setParameter("status", statusNaoPermitidos);
+		List<Object[]> rs = query.getResultList();
+
+		for (Object[] notas : rs) {
+			DetalheNotasEmitidas detalhe = new DetalheNotasEmitidas();
+			detalhe.setDataEmissaoNota((Calendar) notas[0]);
+			detalhe.setValorTotalDia((BigDecimal) notas[1]);
+			detalhe.setPrimeiraNota((int) notas[2]);
+			detalhe.setUltimaNota((int) notas[3]);
+			
+			relatorio.getNotasEmitidas().add(detalhe);
+		}
+		
+		return relatorio;
+	}
+	
+	
 }
