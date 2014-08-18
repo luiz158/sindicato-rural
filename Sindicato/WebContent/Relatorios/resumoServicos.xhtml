@@ -30,8 +30,8 @@
 							<p:outputLabel value="Data inicial:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{resumoServicosBean.dataDe}" styleClass="date"
-								pattern="dd/MM/yyyy" required="true"
+							<p:calendar value="#{resumoServicosBean.dataDe}" 
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data inicial do relatório é obrigatório" />
 						</p:column>
@@ -41,8 +41,8 @@
 							<p:outputLabel value="Data final:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{resumoServicosBean.dataAte}" styleClass="date"
-								pattern="dd/MM/yyyy" required="true"
+							<p:calendar value="#{resumoServicosBean.dataAte}" 
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data final do relatório é obrigatório" />
 						</p:column>
@@ -63,18 +63,20 @@
 
 			<p:spacer height="15" />
 
-			<p:fieldset legend="Resumo dos serviços" id="resumoRelatorio"
+			<p:fieldset legend="Resumos de serviços" id="resumoRelatorio"
 				binding="#{resumoServicosBean.fieldSetResumo}" rendered="false">
 
 				<p:outputPanel id="painelServicos">
 
-					<h2 style="text-align:center;">
+					<h2 style="text-align: center;">
 						<p:outputLabel value="Resumo dos Serviços de " />
-						<p:outputLabel
-							value="#{resumoServicosBean.dataString.format(resumoServicosBean.dataDe.time)}" />
+						<p:outputLabel value="#{resumoServicosBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
 						<p:outputLabel value=" até " />
-						<p:outputLabel
-							value="#{resumoServicosBean.dataString.format(resumoServicosBean.dataAte.time)}" />
+						<p:outputLabel value="#{resumoServicosBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
 					</h2>
 
 					<h2>Retenções</h2>

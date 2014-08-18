@@ -29,8 +29,9 @@ public class RetencoesRecolherBean {
 	private CommandButton btnImprimir;
 	
 	public void carregaRelatorio(){
-		dataAte.add(Calendar.DAY_OF_YEAR, 1);
-		dataAte.add(Calendar.MILLISECOND, -1);
+		dataAte.add(Calendar.HOUR_OF_DAY, 23);
+		dataAte.add(Calendar.MINUTE, 59);
+		dataAte.add(Calendar.SECOND, 59);
 		
 		relatorio = relatorioDAO.getRelatorioRetencoesRecolher(dataDe, dataAte);
 		btnImprimir.setRendered(true);

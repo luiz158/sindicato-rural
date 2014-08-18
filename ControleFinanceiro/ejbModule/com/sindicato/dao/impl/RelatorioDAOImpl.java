@@ -32,6 +32,7 @@ import com.sindicato.report.model.DetalhesServico;
 import com.sindicato.report.model.DetalhesServicosRecolhimentos;
 import com.sindicato.report.model.RecebimentoDia;
 import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.report.model.RelatorioFolhaVotacao;
 import com.sindicato.report.model.RelatorioInscricaoEstadual;
 import com.sindicato.report.model.RelatorioNotasEmitidas;
 import com.sindicato.report.model.RelatorioRecolhimentosAberto;
@@ -452,6 +453,40 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			relatorio.getDetalhesAssociados().add(detalhe);
 		}
 		
+		return relatorio;
+	}
+
+	@Override
+	public RelatorioFolhaVotacao getRelatorioFolhaVotacao(){
+		RelatorioFolhaVotacao relatorio = new RelatorioFolhaVotacao();
+		List<Cliente> clientes = clienteDAO.getAll();
+		for (Cliente cliente : clientes) {
+			if (!cliente.isSocio()) {
+				continue;
+			}
+			InformacaoMensalidade infMensalid = clienteDAO
+					.estaEmDiaComAsMensalidades(cliente);
+			
+			if (infMensalid.isAtrasado()) {
+				continue;
+			}
+			
+			if(infMensalid.getMesesComoSocio() < 6){
+				continue;
+			}
+			
+			DetalhesAssociado detalhes = new DetalhesAssociado();
+			Calendar dataSocio = cliente.getDataCadastro();
+			detalhes.setMatricula(cliente.getId());
+			detalhes.setNome(cliente.getNome());
+			detalhes.setObservacao(cliente.getObservacao());
+			if (cliente.getProdutorRuralDesde() != null)
+				detalhes.setProdutorRuralDesde(formatData.format(cliente
+						.getProdutorRuralDesde().getTime()));
+			if (dataSocio != null)
+				detalhes.setSocioDesde(formatData.format(dataSocio.getTime()));
+			relatorio.getDetalhesAssociado().add(detalhes);
+		}
 		return relatorio;
 	}
 }

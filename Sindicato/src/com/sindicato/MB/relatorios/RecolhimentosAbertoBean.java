@@ -26,6 +26,10 @@ public class RecolhimentosAbertoBean {
 	private CommandButton btnImprimir;
 
 	public void carregaRelatorio() {
+		dataAte.add(Calendar.HOUR_OF_DAY, 23);
+		dataAte.add(Calendar.MINUTE, 59);
+		dataAte.add(Calendar.SECOND, 59);
+
 		relatorio = relatorioDAO.getRelatorioRecolhimentosAberto(dataAte);
 		btnImprimir.setRendered(true);
 		fieldSetResumo.setRendered(true);

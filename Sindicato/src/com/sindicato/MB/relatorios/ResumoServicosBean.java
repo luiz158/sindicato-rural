@@ -1,6 +1,5 @@
 package com.sindicato.MB.relatorios;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.ejb.EJB;
@@ -24,8 +23,6 @@ public class ResumoServicosBean {
 	private Calendar dataDe;
 	private Calendar dataAte;
 
-	private SimpleDateFormat dataString = new SimpleDateFormat("dd/MM/yyyy");
-	
 	private Fieldset fieldSetResumo; 
 	private Fieldset fieldSetFiltro; 
 	
@@ -33,8 +30,9 @@ public class ResumoServicosBean {
 	
 	public void carregaRelatorio(){
 		
-		dataAte.add(Calendar.DAY_OF_YEAR, 1);
-		dataAte.add(Calendar.MILLISECOND, -1);
+		dataAte.set(Calendar.HOUR_OF_DAY, 23);
+		dataAte.add(Calendar.MINUTE, 59);
+		dataAte.add(Calendar.SECOND, 59);
 		
 		relatorio = relatorioDAO.getResumoServico(dataDe, dataAte);
 		btnImprimir.setRendered(true);
@@ -60,13 +58,7 @@ public class ResumoServicosBean {
 	public CommandButton getBtnImprimir() {
 		return btnImprimir;
 	}
-	public SimpleDateFormat getDataString() {
-		return dataString;
-	}
 
-	public void setDataString(SimpleDateFormat dataString) {
-		this.dataString = dataString;
-	}
 	public void setBtnImprimir(CommandButton btnImprimir) {
 		this.btnImprimir = btnImprimir;
 	}

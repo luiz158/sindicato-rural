@@ -70,11 +70,13 @@
 
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Resumo dos recebimentos de " />
-						<p:outputLabel
-							value="#{resumoRecebimentosBean.dataString.format(resumoRecebimentosBean.dataDe.time)}" />
+						<p:outputLabel value="#{resumoRecebimentosBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
 						<p:outputLabel value=" até " />
-						<p:outputLabel
-							value="#{resumoRecebimentosBean.dataString.format(resumoRecebimentosBean.dataAte.time)}" />
+						<p:outputLabel value="#{resumoRecebimentosBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
 					</h2>
 
 					<ui:repeat var="relatorio"

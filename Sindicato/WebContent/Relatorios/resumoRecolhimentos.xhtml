@@ -71,11 +71,13 @@
 
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Resumo dos recolhimentos de " />
-						<p:outputLabel
-							value="#{resumoRecolhimentosBean.dataString.format(resumoRecolhimentosBean.dataDe.time)}" />
+						<p:outputLabel value="#{resumoRecolhimentosBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
 						<p:outputLabel value=" até " />
-						<p:outputLabel
-							value="#{resumoRecolhimentosBean.dataString.format(resumoRecolhimentosBean.dataAte.time)}" />
+						<p:outputLabel value="#{resumoRecolhimentosBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
 					</h2>
 
 					<p:dataTable var="detalhe"
