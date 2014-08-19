@@ -460,9 +460,10 @@
 													<p:calendar pattern="dd/MM/yyyy" styleClass="date"
 														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
 														converter="CalendarConverter" />
-														<p:spacer width="20" />
+													<p:spacer width="20" />
 													<p:outputLabel value="Indeterminada:" style="font-" />
-													<p:selectBooleanCheckbox value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscEstIndeter}"></p:selectBooleanCheckbox>
+													<p:selectBooleanCheckbox
+														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscEstIndeter}"></p:selectBooleanCheckbox>
 												</p:column>
 											</p:row>
 
@@ -565,12 +566,26 @@
 
 							<div class="container-action">
 								<p:commandButton value="Limpar Formulário"
-									style="width:200px;height:50px;" update="@form"
-									process="@(form)" actionListener="#{clienteBean.reset}" />
+									icon="ui-icon-refresh" style="width:200px;height:50px;"
+									update="@form" process="@(form)"
+									actionListener="#{clienteBean.reset}" />
+
+								<p:commandButton action="#{clienteBean.desativarCliente()}"
+									update=":tabView,:growl" value="Desativar cliente"
+									style="width:200px;height:50px;" icon="ui-icon-trash"
+									id="desativar" immediate="true" >
+									<p:confirm header="Desativar cliente"
+										message="Tem certeza que deseja desativar este cliente?"
+										icon="ui-icon-trash" />
+								</p:commandButton>
+								<p:tooltip id="toolTipTrack" for="desativar" 
+									value="Cliente não pode ser desativado enquanto possuir mensalidades atrasadas."
+									trackMouse="true"  />
+
 
 								<p:commandButton action="#{clienteBean.salvar}"
-									update=":tabView,:growl" value="Salvar alterações"
-									style="width:200px;height:50px;" />
+									icon="ui-icon-disk" update=":tabView,:growl"
+									value="Salvar alterações" style="width:200px;height:50px;" />
 							</div>
 						</h:form>
 

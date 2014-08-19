@@ -26,4 +26,6 @@ public interface ClienteDAO extends DAO<Cliente, Integer> {
 	List<Cliente> getResultListFiltered(int first, int pageSize, String sortField, String sortOrder, Map<String, Object> filters);
 
 	int count(Map<String, Object> filters);
+
+	void desativarCliente(Cliente cliente);
 }

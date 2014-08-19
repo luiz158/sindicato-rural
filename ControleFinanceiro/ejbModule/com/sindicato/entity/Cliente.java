@@ -82,6 +82,8 @@ public class Cliente implements Serializable {
 	//@Max(value=2)
 	private String ufExp;
 
+	private boolean ativo = true;
+	
 	public int getId() {
 		return id;
 	}
@@ -175,6 +177,18 @@ public class Cliente implements Serializable {
 
 	public String getEmail() {
 		return email;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 
 	public void setEmail(String email) {

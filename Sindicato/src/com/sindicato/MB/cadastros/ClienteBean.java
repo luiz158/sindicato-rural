@@ -38,8 +38,10 @@ public class ClienteBean implements Serializable {
 
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 
-	@EJB private ClienteDAO clienteDAO;
-	@EJB private TipoOcupacaoSoloDAO tipoOcupacaoSoloDAO;
+	@EJB
+	private ClienteDAO clienteDAO;
+	@EJB
+	private TipoOcupacaoSoloDAO tipoOcupacaoSoloDAO;
 
 	private LazyDataModel<Cliente> clientes;
 	private Cliente clienteSelecionado;
@@ -56,7 +58,7 @@ public class ClienteBean implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		
+
 	}
 
 	public void selecionaCliente() {
@@ -119,6 +121,26 @@ public class ClienteBean implements Serializable {
 		}
 	}
 
+	public void desativarCliente() {
+		try {
+			if(informacaoMensalidade.isAtrasado()){
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+						"Atenção", "Cliente não pode ser desativado enquanto possuir mensalidades em atraso.");
+			} else {
+				clienteDAO.desativarCliente(clienteSelecionado);
+				this.reset();
+				alterTab(0);
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", "Cliente desativado com sucesso.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+					"Erro",
+					"Erro ao salvar alterações. Contate o administrador.");
+		}
+	}
+
 	public Cliente getClienteSelecionado() {
 		if (clienteSelecionado == null) {
 			clienteSelecionado = new Cliente();
@@ -159,7 +181,7 @@ public class ClienteBean implements Serializable {
 	}
 
 	public LazyDataModel<Cliente> getClientes() {
-		if(clientes == null){
+		if (clientes == null) {
 			clientes = new LazyClienteDataModel();
 		}
 		return clientes;

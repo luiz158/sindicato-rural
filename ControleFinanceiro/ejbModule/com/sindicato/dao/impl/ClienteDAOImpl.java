@@ -29,7 +29,9 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 
 	@Override
 	public List<Cliente> getAll(){
-		String strQuery = "Select c from Cliente c order by c.nome ";
+		String strQuery = "Select c from Cliente c "
+				+ " Where c.ativo = true "
+				+ " order by c.nome ";
 		TypedQuery<Cliente> query = null;
 		query = em.createQuery(strQuery, Cliente.class);
 		return query.getResultList();
@@ -49,6 +51,21 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		return cliente;
 	}
 
+	@Override
+	public void desativarCliente(Cliente cliente){
+		try {
+			cliente.setAtivo(false);
+			em.merge(cliente);
+			if (cliente.isSocio()) {
+				cliente.setSocio(false);
+				inseriRegistroSocio(cliente);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 	@Override
 	public void update(Cliente cliente) {
 		try {
@@ -238,6 +255,10 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	private Predicate getFilterCondition(CriteriaBuilder cb,
 			Root<Cliente> myObj, Map<String, Object> filters) {
 		Predicate filterCondition = cb.conjunction();
+
+		// ignora clientes desativados
+		filters.put("ativo", Boolean.TRUE);
+		
 		for (Map.Entry<String, Object> filter : filters.entrySet()) {
 
 			if (!filter.getValue().equals("")) {
@@ -262,6 +283,7 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 				}
 			}
 		}
+		
 		return filterCondition;
 	}
 
