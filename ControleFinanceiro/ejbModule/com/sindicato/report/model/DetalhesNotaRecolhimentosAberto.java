@@ -2,6 +2,7 @@ package com.sindicato.report.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -18,7 +19,10 @@ public class DetalhesNotaRecolhimentosAberto implements Serializable {
 	private Calendar dataBase;
 	private List<ServicoRecolhimentosAberto> servicos;
 
-	private BigDecimal valorNota;
+	private BigDecimal valorARecolher;
+	private BigDecimal valorJaRecolhido;
+	
+	private BigDecimal totalPendente;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -36,27 +40,47 @@ public class DetalhesNotaRecolhimentosAberto implements Serializable {
 		return servicos;
 	}
 
-	public BigDecimal getValorNota() {
-		valorNota = BigDecimal.ZERO;
+	public BigDecimal getValorARecolher() {
+		valorARecolher = BigDecimal.ZERO;
 		if(servicos == null || servicos.size() == 0){
-			return valorNota;
+			return valorARecolher;
 		}
 		
 		for (ServicoRecolhimentosAberto servico : servicos) {
-			valorNota = valorNota.add(servico.getValor());
+			valorARecolher = valorARecolher.add(servico.getValorARecolher());
 		}
 		
-		return valorNota;
+		return valorARecolher;
+	}
+	public BigDecimal getValorJaRecolhido() {
+		valorJaRecolhido = BigDecimal.ZERO;
+		if(servicos == null || servicos.size() == 0){
+			return valorJaRecolhido;
+		}
+		
+		for (ServicoRecolhimentosAberto servico : servicos) {
+			if(servico.getValorJaRecolhido() == null) continue;
+			
+			valorJaRecolhido = valorJaRecolhido.add(servico.getValorJaRecolhido());
+		}
+		
+		return valorJaRecolhido;
 	}
 
-	public void setValorNota(BigDecimal valorNota) {
-		this.valorNota = valorNota;
+	public BigDecimal getTotalPendente() {
+		totalPendente = valorARecolher.subtract(valorJaRecolhido, MathContext.DECIMAL32);
+		return totalPendente;
 	}
 
+	public void setValorJaRecolhido(BigDecimal valorJaRecolhido) {
+		this.valorJaRecolhido = valorJaRecolhido;
+	}
+	public void setValorARecolher(BigDecimal valorNota) {
+		this.valorARecolher = valorNota;
+	}
 	public void setNumeroNota(int numeroNota) {
 		this.numeroNota = numeroNota;
 	}
-
 	public void setDataBase(Calendar dataBase) {
 		this.dataBase = dataBase;
 	}

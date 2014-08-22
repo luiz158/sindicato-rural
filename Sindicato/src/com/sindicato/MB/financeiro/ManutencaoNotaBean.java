@@ -2,6 +2,7 @@ package com.sindicato.MB.financeiro;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,8 +198,18 @@ public class ManutencaoNotaBean implements Serializable {
 		telefones.append(usuarioLogado.getEmpresa().getTelefone());
 		telefones.append(" / ");
 		telefones.append(usuarioLogado.getEmpresa().getTelefone2());
+		
+		BigDecimal valorNota = debitoSelecionado.getTotalDebitos();
+		String valorNotaExtenso;
 		Extenso extenso = new Extenso();
-		extenso.setNumber(debitoSelecionado.getTotalDebitos());
+		if(valorNota.compareTo(BigDecimal.ZERO) < 0){
+			extenso.setNumber(debitoSelecionado.getTotalDebitos().multiply(BigDecimal.valueOf(-1)));
+			valorNotaExtenso = extenso.toString() + " negativo";
+		}else{
+			extenso.setNumber(debitoSelecionado.getTotalDebitos());
+			valorNotaExtenso = extenso.toString();
+		}
+		
 		SimpleDateFormat format = new SimpleDateFormat("MMMMM/yyyy");
 		SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
 		Map<String, Object> parameters = new HashMap<String, Object>();
@@ -211,7 +222,7 @@ public class ManutencaoNotaBean implements Serializable {
 		parameters.put("clienteId", debitoSelecionado.getCliente().getId());
 		parameters.put("clienteNome", debitoSelecionado.getCliente().getNome());
 		parameters.put("socio", (debitoSelecionado.getCliente().isSocio()) ? "Sim" : "Não");
-		parameters.put("valorPorExtenso", extenso.toString());
+		parameters.put("valorPorExtenso", valorNotaExtenso);
 		parameters.put("valorNota", debitoSelecionado.getTotalDebitos());
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
 		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));

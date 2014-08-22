@@ -254,7 +254,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				+ " where ds.debito.dataEmissaoNotaCobranca <= :dataAte "
 				+ " and ds.debito.status = :status "
 				+ " and ds.servico.retencao = :retencao "
-				+ " order by ds.debito.cliente.nome ";
+				+ " order by ds.debito.cliente.nome,ds.servico.descricao ";
 		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
 		query.setParameter("dataAte", dataAte);
 		query.setParameter("status", StatusDebitoEnum.RECEBIDO);
@@ -271,17 +271,9 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			ServicoRecolhimentosAberto servico = new ServicoRecolhimentosAberto();
 			servico.setDescricao((String) debitoServico[0]);
 			servico.setId((int) debitoServico[1]);
-			servico.setValor((BigDecimal) debitoServico[2]);
-			if (servico.getValor() != null) {
-				BigDecimal valorRecolhido = (BigDecimal) debitoServico[3];
-				// caso o serviço ja tenha sido recolhido, subtrai o
-				// valor
-				if (valorRecolhido != null
-						&& valorRecolhido.compareTo(BigDecimal.ZERO) != 0) {
-					servico.setValor(servico.getValor().subtract(
-							valorRecolhido, MathContext.DECIMAL32));
-				}
-			}
+			servico.setValorARecolher((BigDecimal) debitoServico[2]);
+			servico.setValorJaRecolhido((debitoServico[3] != null) ? (BigDecimal) debitoServico[3] : BigDecimal.ZERO);
+
 			int numeroNota = (int) debitoServico[4];
 			novoDetalheNota = detalhesNota.getNumeroNota() != numeroNota;
 			if (novoDetalheNota) {
@@ -304,6 +296,8 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			}
 			detalhesNota.getServicos().add(servico);
 		}
+		clienteRA.getListaNotasPendentes().add(detalhesNota);
+		relatorio.getListaPendenciasPorCliente().add(clienteRA);
 		return relatorio;
 	}
 
@@ -377,6 +371,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			}
 			servico.getListaClientes().add(cliente);
 		}
+		relatorio.getListaServicos().add(servico);
 		return relatorio;
 	}
 

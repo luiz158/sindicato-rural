@@ -107,19 +107,18 @@
 						<p style="margin-bottom: 0 !important;">
 							<p:outputLabel
 								value="Matricula: "
-								style="font-size: 18px;font-weight: bold;" />
+								style="font-size: 12px;font-weight: bold;" />
 							<p:outputLabel
 								value="#{cliente.matricula}"
-								style="font-size: 18px;font-weight: bold;" />
+								style="font-size: 12px;font-weight: bold;" />
 								<p:spacer width="40" height="0" />
 							<p:outputLabel
 								value="Cliente:  "
-								style="font-size: 18px;font-weight: bold;" />
+								style="font-size: 12px;font-weight: bold;" />
 							<p:outputLabel
 								value="#{cliente.nome}"
-								style="font-size: 18px;font-weight: bold;" />
+								style="font-size: 12px;font-weight: bold;" />
 						</p>
-
 
 						<ui:repeat var="nota" value="#{cliente.listaNotasPendentes}">
 
@@ -129,11 +128,11 @@
 										style="border-style: hidden !important;font-weight: bold;">
 										<h:outputText value="Nota:  " />
 										<h:outputText value="#{nota.numeroNota}"
-											style="font-size:15px;" />
+											style="font-size:10px;" />
 										<p:spacer width="60" height="20" />
 										<h:outputText value="Data base:  " />
 										<h:outputText value="#{nota.dataBase.time}"
-											style="font-size:15px;">
+											style="font-size:10px;">
 											<f:convertDateTime pattern="dd/MM/yyyy" />
 										</h:outputText>
 
@@ -142,14 +141,20 @@
 								<p:row>
 									<p:column style="border-style: hidden !important;">
 										<p:dataTable var="servico" value="#{nota.servicos}">
-											<p:column headerText="Código do serviço">
+											<p:column headerText="Código do serviço" styleClass="font-menor">
 												<h:outputText value="#{servico.id}" />
 											</p:column>
-											<p:column headerText="Descrição do serviço">
+											<p:column headerText="Descrição do serviço" styleClass="font-menor">
 												<h:outputText value="#{servico.descricao}" />
 											</p:column>
-											<p:column headerText="Valor a recolher">
-												<h:outputText value="#{servico.valor}">
+											<p:column headerText="Valor a recolher" styleClass="font-menor">
+												<h:outputText value="#{servico.valorARecolher}">
+													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+														type="currency" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Valor ja recolhido" styleClass="font-menor">
+												<h:outputText value="#{servico.valorJaRecolhido}">
 													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
 														type="currency" />
 												</h:outputText>
@@ -160,9 +165,9 @@
 								<p:row>
 									<p:column
 										style="border-style: hidden !important;font-weight: bold;text-align:right;">
-										<p:outputLabel value="Total a recolher da nota: " />
-										<p:outputLabel value="#{nota.valorNota}"
-											style="font-size:15px;">
+										<p:outputLabel value="Pendente de recolhimento da nota: " />
+										<p:outputLabel value="#{nota.totalPendente}"
+											style="font-size:10px;">
 											<f:convertNumber currencySymbol="R$ " locale="pt_BR"
 												type="currency" />
 										</p:outputLabel>

@@ -2,6 +2,7 @@ package com.sindicato.report.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class ClienteRecolhimentosAberto implements Serializable {
 		}
 		
 		for (DetalhesNotaRecolhimentosAberto nota : listaNotasPendentes) {
-			totalPendencias = totalPendencias.add(nota.getValorNota());
+			BigDecimal pendente = nota.getValorARecolher().subtract(nota.getValorJaRecolhido(), MathContext.DECIMAL32);
+			totalPendencias = totalPendencias.add(pendente);
 		}
 		
 		return totalPendencias;
