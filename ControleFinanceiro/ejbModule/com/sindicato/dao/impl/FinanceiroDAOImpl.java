@@ -56,6 +56,26 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 			result.setMessage("Cliente ja possui Debito nesta data base.");
 			return result;
 		}
+		
+		// não permite repetir mesmo serviço para o débito
+		for (DebitoServico debitoServico : debito.getDebitoServicos()) {
+			if(debitoServico.getServico().isMensalidade()){
+				continue;
+			}
+			
+			for (DebitoServico debitoServico2 : debito.getDebitoServicos()) {
+				if(debitoServico2.equals(debitoServico)){ 
+					continue;
+				}
+				
+				if(debitoServico.getServico().equals(debitoServico2.getServico())){
+					result.setSuccess(false);
+					result.setMessage("Nota não foi salva com sucesso, pois possui dois serviços repetidos.");
+					return result;
+				}
+			}
+		}
+		
 		result.setSuccess(true);
 		return result;
 	}
@@ -173,8 +193,6 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 		ResultOperation result = this.gravarDebito(debito);
 		if(result.isSuccess()){
 			result.setMessage("Nota de cobrança alterada com sucesso.");
-		}else{
-			result.setMessage("Nota de cobrança não foi alterada com sucesso. Contate o administrador do sistema.");
 		}
 		return result;
 	}

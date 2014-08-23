@@ -175,6 +175,8 @@ public class ManutencaoNotaBean implements Serializable {
 				if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.NOTACOBRANCAGERADA)) {
 					botaoImprimir.setDisabled(false);
 				}
+			} else {
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR, "Atenção", result.getMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

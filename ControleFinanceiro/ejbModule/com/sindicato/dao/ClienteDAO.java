@@ -9,6 +9,7 @@ import com.sindicato.entity.Cliente;
 import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
+import com.sindicato.result.ResultOperation;
 
 @Remote
 public interface ClienteDAO extends DAO<Cliente, Integer> {
@@ -28,4 +29,6 @@ public interface ClienteDAO extends DAO<Cliente, Integer> {
 	int count(Map<String, Object> filters);
 
 	void desativarCliente(Cliente cliente);
+	
+	ResultOperation salvar(Cliente cliente);
 }

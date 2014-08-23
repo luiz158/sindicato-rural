@@ -22,6 +22,7 @@ import com.sindicato.entity.InformacaoSocio;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
+import com.sindicato.result.ResultOperation;
 
 @Stateless
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
@@ -305,6 +306,13 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		List<Cliente> clientes = em.createQuery(cq).setFirstResult(first)
 				.setMaxResults(pageSize).getResultList();
 		return clientes;
+	}
+
+	
+	@Override
+	public ResultOperation salvar(Cliente cliente) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
