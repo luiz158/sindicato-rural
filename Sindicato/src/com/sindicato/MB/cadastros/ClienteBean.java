@@ -25,6 +25,7 @@ import com.sindicato.entity.autenticacao.Usuario;
 import com.sindicato.lazyDataModel.LazyClienteDataModel;
 import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
+import com.sindicato.result.ResultOperation;
 
 /**
  * @author Alysson
@@ -104,15 +105,17 @@ public class ClienteBean implements Serializable {
 	public void salvar() {
 		try {
 			clienteSelecionado.setEmpresa(usuarioLogado.getEmpresa());
-			if (clienteSelecionado.getId() == 0) {
-				clienteDAO.insert(clienteSelecionado);
-			} else {
-				clienteDAO.update(clienteSelecionado);
+			ResultOperation result = clienteDAO.salvar(clienteSelecionado);
+			if(result.isSuccess()){
+				this.reset();
+				alterTab(0);
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", "Dados do cliente salvo com sucesso");
+			}else{
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+						"Atenção", result.getMessage());
 			}
-			this.reset();
-			alterTab(0);
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Dados do cliente salvo com sucesso");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,

@@ -93,6 +93,50 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 	}
 
 	@Override
+	public ResultOperation salvar(Cliente cliente) {
+		
+		ResultOperation result = new ResultOperation();
+		result.setSuccess(true);
+		try {
+			
+			this.validaCliente(cliente, result);
+			
+			if(!result.isSuccess()){
+				return result;
+			}
+			
+			if(cliente.getId() == 0){
+				this.insert(cliente);
+			} else {
+				this.update(cliente);
+			}
+			
+			result.setSuccess(true);
+			result.setMessage("Cliente salvo com sucesso");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+
+	private void validaCliente(Cliente cliente, ResultOperation result) {
+		String jpql = "select COUNT(c) from Cliente c "
+				+ " where c.id != :id and c.cpf = :cpf ";
+		
+		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
+		query.setParameter("id", cliente.getId());
+		query.setParameter("cpf", cliente.getCpf());
+		
+		Long singleResult = query.getSingleResult();
+		
+		if(singleResult > 0){
+			result.setSuccess(false);
+			result.setMessage("Já existe cliente com este CPF cadastrado.");
+		}
+	}
+
+	@Override
 	public List<InformacaoSocio> getInformacoesSocio(Cliente cliente) {
 		try {
 			String strQuery = " select i from InformacaoSocio i where i.cliente = :cliente "
@@ -306,13 +350,6 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		List<Cliente> clientes = em.createQuery(cq).setFirstResult(first)
 				.setMaxResults(pageSize).getResultList();
 		return clientes;
-	}
-
-	
-	@Override
-	public ResultOperation salvar(Cliente cliente) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
