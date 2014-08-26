@@ -33,7 +33,7 @@
 							<p:outputLabel value="Data inicial:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{retencoesRecolherBean.dataDe}"
+							<p:calendar locale="pt_BR" value="#{retencoesRecolherBean.dataDe}"
 								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data inicial do relatório é obrigatório" />
@@ -44,7 +44,7 @@
 							<p:outputLabel value="Data final:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{retencoesRecolherBean.dataAte}"
+							<p:calendar locale="pt_BR" value="#{retencoesRecolherBean.dataAte}"
 								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data final do relatório é obrigatório" />

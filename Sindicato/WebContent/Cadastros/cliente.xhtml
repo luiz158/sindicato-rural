@@ -112,7 +112,7 @@
 											<p:outputLabel value="Produtor rural desde" />
 										</p:column>
 										<p:column styleClass="colInput">
-											<p:calendar styleClass="date"
+											<p:calendar locale="pt_BR" styleClass="date"
 												value="#{clienteBean.clienteSelecionado.produtorRuralDesde}"
 												pattern="dd/MM/yyyy" converter="CalendarConverter" />
 
@@ -124,7 +124,7 @@
 											<p:outputLabel value=" *" style="color:red;" />
 										</p:column>
 										<p:column styleClass="colInput">
-											<p:calendar required="true"
+											<p:calendar locale="pt_BR" required="true"
 												requiredMessage="Data de nascimento é obrigatório"
 												value="#{clienteBean.clienteSelecionado.dataNascimento}"
 												pattern="dd/MM/yyyy" styleClass="date"
@@ -431,7 +431,7 @@
 												<p:outputLabel value="Validade da Insc. estadual" />
 											</p:column>
 											<p:column styleClass="colInput">
-												<p:calendar pattern="dd/MM/yyyy" styleClass="date"
+												<p:calendar locale="pt_BR" pattern="dd/MM/yyyy" styleClass="date"
 													id="validadeInscricao"
 													disabled="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscEstIndeter}"
 													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
@@ -457,7 +457,7 @@
 													<p:outputLabel value="Validade da Insc. estadual" />
 												</p:column>
 												<p:column styleClass="colInput">
-													<p:calendar pattern="dd/MM/yyyy" styleClass="date"
+													<p:calendar locale="pt_BR" pattern="dd/MM/yyyy" styleClass="date"
 														value="#{clienteBean.clienteSelecionado.estabelecimentoRural.validadeInscricaoEstadual}"
 														converter="CalendarConverter" />
 													<p:spacer width="20" />

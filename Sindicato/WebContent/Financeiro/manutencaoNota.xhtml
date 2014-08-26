@@ -16,7 +16,7 @@
 			<p:menuitem value="Manutenção de notas" url="#" />
 		</p:breadCrumb>
 		<p:spacer height="15" />
-		
+
 		<p:growl id="growl" showDetail="true" life="15000" />
 		<p:tabView binding="#{manutencaoNotaBean.tabView}" id="tabView">
 			<p:tab title="Lista das notas de cobrança">
@@ -84,10 +84,10 @@
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECOLHIDO'}" />
 
 							<p:outputLabel value="Data base:" />
-							<p:outputLabel
-								value="#{manutencaoNotaBean.debitoSelecionado.dataBase.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</p:outputLabel>
+							<p:calendar locale="pt_BR" required="true" requiredMessage="Data base não pode ficar vazio"
+								value="#{manutencaoNotaBean.debitoSelecionado.dataBase}"
+								pattern="dd/MM/yyyy" styleClass="date"
+								converter="CalendarConverter" />
 
 							<p:outputLabel value="Valor da nota:" />
 							<p:outputLabel
@@ -155,10 +155,9 @@
 
 					<p:fieldset legend="Registrar recebimentos"
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
-						<p:commandButton 
-							value="Adicionar recebimento"
-							action="#{manutencaoNotaBean.adicionarRecebimento()}" update="@form"
-							icon="ui-icon-plus" style="margin-bottom:15px;" />
+						<p:commandButton value="Adicionar recebimento"
+							action="#{manutencaoNotaBean.adicionarRecebimento()}"
+							update="@form" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
 						<p:dialog header="Formulário de recebimento" id="formRecebimentos"
 							binding="#{manutencaoNotaBean.dialogFormRecebimento}"
@@ -331,17 +330,20 @@
 										currencySymbol="R$ " />
 								</p:outputLabel>
 							</p:column>
-							<p:column headerText="Editar" width="115" style="text-align:center;">
+							<p:column headerText="Editar" width="115"
+								style="text-align:center;">
 								<p:commandButton icon="ui-icon-wrench"
 									action="#{manutencaoNotaBean.editarRecebimento(rec)}"
 									update="@form" />
 							</p:column>
-							<p:column headerText="Detalhes" width="115" style="text-align:center;">
+							<p:column headerText="Detalhes" width="115"
+								style="text-align:center;">
 								<p:commandButton icon="ui-icon-search"
 									action="#{manutencaoNotaBean.selecionaRecebimento(rec)}"
 									update=":dlg_inf_recebimentos" />
 							</p:column>
-							<p:column headerText="Excluir" width="70" style="text-align:center;">
+							<p:column headerText="Excluir" width="70"
+								style="text-align:center;">
 								<p:commandButton icon="ui-icon-trash"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
 									update="@(form)">
@@ -374,7 +376,7 @@
 								</p:outputLabel>
 							</p:column>
 							<p:column headerText="Data recolhimento">
-								<p:calendar value="#{debito.recolhimento.data}"
+								<p:calendar locale="pt_BR" value="#{debito.recolhimento.data}"
 									pattern="dd/MM/yyyy" styleClass="date"
 									converter="CalendarConverter" />
 							</p:column>
@@ -420,7 +422,7 @@
 							styleClass="panelForm">
 
 							<p:outputLabel value="Data de emissão da nota:" />
-							<p:calendar styleClass="date" showOn="button"
+							<p:calendar locale="pt_BR" styleClass="date" showOn="button"
 								value="#{manutencaoNotaBean.debitoSelecionado.dataEmissaoNotaCobranca}"
 								pattern="dd/MM/yyyy" converter="CalendarConverter" />
 

@@ -33,7 +33,7 @@
 							<p:outputLabel value="Recolhimentos de notas emitidas até:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{recolhimentosAbertoBean.dataAte}"
+							<p:calendar locale="pt_BR" value="#{recolhimentosAbertoBean.dataAte}"
 								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data final do relatório é obrigatório" />

@@ -30,7 +30,7 @@
 							requiredMessage="Título é um campo obrigatório" size="60" />
 
 						<p:outputLabel value="Data da eleição:" />
-						<p:calendar value="#{folhaVotacaoBean.dataEleicao}"
+						<p:calendar locale="pt_BR" value="#{folhaVotacaoBean.dataEleicao}"
 							styleClass="date" pattern="dd/MM/yyyy" required="true"
 							converter="CalendarConverter"
 							requiredMessage="Data da eleição é um campo obrigatório" />

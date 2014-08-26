@@ -139,7 +139,7 @@
 				<p:panelGrid columns="1" style="width:100%;text-align:center;" styleClass="panelForm">
 					
 					<p:outputLabel value="Data de emissão da nota:" />
-					<p:calendar styleClass="date" showOn="button"
+					<p:calendar locale="pt_BR" styleClass="date" showOn="button"
 						value="#{notaCobrancaBean.debitoSelecionado.dataEmissaoNotaCobranca}"
 						pattern="dd/MM/yyyy" converter="CalendarConverter" />
 					

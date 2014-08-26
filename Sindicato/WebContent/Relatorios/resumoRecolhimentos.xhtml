@@ -33,7 +33,7 @@
 							<p:outputLabel value="Data inicial:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{resumoRecolhimentosBean.dataDe}"
+							<p:calendar locale="pt_BR" value="#{resumoRecolhimentosBean.dataDe}"
 								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data inicial do relatório é obrigatório" />
@@ -44,7 +44,7 @@
 							<p:outputLabel value="Data final:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar value="#{resumoRecolhimentosBean.dataAte}"
+							<p:calendar locale="pt_BR" value="#{resumoRecolhimentosBean.dataAte}"
 								styleClass="date" pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data final do relatório é obrigatório" />
