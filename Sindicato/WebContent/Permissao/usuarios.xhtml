@@ -43,6 +43,10 @@
 						<p:column headerText="E-mail" sortBy="#{usuario.email}" filterBy="#{usuario.email}">
 							<p:outputLabel value="#{usuario.email}" />
 						</p:column>
+						<p:column headerText="Ativo?" width="10%">
+							<p:outputLabel value="Sim" rendered="#{usuario.ativo}" />
+							<p:outputLabel value="Não" rendered="#{!usuario.ativo}" />
+						</p:column>
 					</p:dataTable>
 				</h:form>
 			</p:tab>
@@ -53,7 +57,7 @@
 
 							<p:row>
 								<p:column styleClass="colLabel" style="width:300px !important;">
-									<p:outputLabel value="Código" />
+									<p:outputLabel value="Código:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{usuarioBean.usuarioSelecionado.id}"
@@ -62,7 +66,7 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
-									<p:outputLabel value="Nome" />
+									<p:outputLabel value="Nome:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{usuarioBean.usuarioSelecionado.nome}" size="50" />
@@ -70,10 +74,18 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
-									<p:outputLabel value="E-mail" />
+									<p:outputLabel value="E-mail:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{usuarioBean.usuarioSelecionado.email}" size="40" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Ativo?" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:selectBooleanButton onLabel="Sim" offLabel="Não" value="#{usuarioBean.usuarioSelecionado.ativo}" />
 								</p:column>
 							</p:row>
 						</p:panelGrid>

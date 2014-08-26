@@ -39,6 +39,7 @@ public class Usuario implements Serializable {
 	private String email;
 	private String senha;
 
+	private boolean ativo = true;
 	
 	public int getId() {
 		return id;
@@ -79,28 +80,69 @@ public class Usuario implements Serializable {
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public boolean isAtivo() {
+		return ativo;
+	}
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+	
 	
 	@Override
-	public boolean equals(Object obj){
-		if(obj == null){
-			return false;
-		}
-		if(!(obj instanceof Usuario)){
-			return false;
-		}
-		
-		Usuario o = (Usuario) obj;
-		if(o.hashCode() == this.hashCode()
-				&& o.email.equals(email)
-				&& o.nome.equals(nome)
-				&& o.senha.equals(senha)){
-			return true;
-		}
-		return false;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (ativo ? 1231 : 1237);
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((perfis == null) ? 0 : perfis.hashCode());
+		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
+		return result;
 	}
 	@Override
-	public int hashCode(){
-		return id;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		if (ativo != other.ativo)
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (empresa == null) {
+			if (other.empresa != null)
+				return false;
+		} else if (!empresa.equals(other.empresa))
+			return false;
+		if (id != other.id)
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		if (perfis == null) {
+			if (other.perfis != null)
+				return false;
+		} else if (!perfis.equals(other.perfis))
+			return false;
+		if (senha == null) {
+			if (other.senha != null)
+				return false;
+		} else if (!senha.equals(other.senha))
+			return false;
+		return true;
 	}
 	
 }

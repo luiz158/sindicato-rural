@@ -38,7 +38,10 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 		try {
 			usuarioAutenticado = query.getSingleResult();
 			
-			if(usuarioAutenticado.getSenha().equals(PasswordManager.generated(senha))){
+			if(!usuarioAutenticado.isAtivo()){
+				result.setMessage("Usuário desativado");
+				result.setSuccess(false);
+			}else if(usuarioAutenticado.getSenha().equals(PasswordManager.generated(senha))){
 				result.setMessage("Usuário autenticado");
 				result.setSuccess(true);
 			}else{
