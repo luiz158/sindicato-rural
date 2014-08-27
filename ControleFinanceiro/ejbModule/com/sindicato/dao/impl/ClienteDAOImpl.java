@@ -122,11 +122,12 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 
 	private void validaCliente(Cliente cliente, ResultOperation result) {
 		String jpql = "select COUNT(c) from Cliente c "
-				+ " where c.id != :id and c.cpf = :cpf ";
+				+ " where c.id != :id and c.cpf = :cpf and c.ativo = :ativo ";
 		
 		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
 		query.setParameter("id", cliente.getId());
 		query.setParameter("cpf", cliente.getCpf());
+		query.setParameter("ativo", true);
 		
 		Long singleResult = query.getSingleResult();
 		
