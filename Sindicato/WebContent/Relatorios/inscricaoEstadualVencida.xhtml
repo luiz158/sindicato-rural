@@ -51,14 +51,14 @@
 						<p:outputLabel value="Relatório de inscrições estaduais" />
 					</h2>
 					
-					<p:dataTable var="detalhe"
+					<p:dataTable var="detalhe" sortBy="#{detalhe.nome}"
 						value="#{inscricaoEstadualVencidaBean.relatorio.detalhesAssociados}"
 						emptyMessage="Nenhum associado com inscrição estadual vencida">
 
 						<p:column headerText="Matrícula">
 							<p:outputLabel value="#{detalhe.matricula}" />
 						</p:column>
-						<p:column headerText="Nome">
+						<p:column headerText="Nome" sortBy="#{detalhe.nome}">
 							<p:outputLabel value="#{detalhe.nome}" />
 						</p:column>
 
