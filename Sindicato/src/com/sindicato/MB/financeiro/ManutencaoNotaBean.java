@@ -3,10 +3,12 @@ package com.sindicato.MB.financeiro;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -225,7 +227,11 @@ public class ManutencaoNotaBean implements Serializable {
 		parameters.put("clienteNome", debitoSelecionado.getCliente().getNome());
 		parameters.put("socio", (debitoSelecionado.getCliente().isSocio()) ? "Sim" : "Não");
 		parameters.put("valorPorExtenso", valorNotaExtenso);
-		parameters.put("valorNota", debitoSelecionado.getTotalDebitos());
+		
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		String valorNotaFormatada = numberFormat.format(debitoSelecionado.getTotalDebitos());
+		
+		parameters.put("valorNota", valorNotaFormatada);
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
 		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));
 		parameters.put("usuario", usuarioLogado.getNome());
@@ -234,6 +240,7 @@ public class ManutencaoNotaBean implements Serializable {
 				debitoSelecionado.getDebitoServicos()));
 		return gerador;
 	}
+
 	private String getEnderecoCompletoUsuario(Usuario usuario) {
 		StringBuilder endereco = new StringBuilder();
 		endereco.append(usuario.getEmpresa().getEndereco());
@@ -247,6 +254,9 @@ public class ManutencaoNotaBean implements Serializable {
 		endereco.append(usuario.getEmpresa().getEstado());
 		return endereco.toString();
 	}
+	
+	
+	
 	public Debito getDebitoSelecionado() {
 		if (debitoSelecionado == null) {
 			debitoSelecionado = new Debito();

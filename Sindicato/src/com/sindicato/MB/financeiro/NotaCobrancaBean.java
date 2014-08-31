@@ -2,10 +2,12 @@ package com.sindicato.MB.financeiro;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -132,7 +134,11 @@ public class NotaCobrancaBean implements Serializable {
 		parameters.put("clienteNome", clienteSelecionado.getNome());
 		parameters.put("socio", (clienteSelecionado.isSocio()) ? "Sim" : "Não");
 		parameters.put("valorPorExtenso", extenso.toString());
-		parameters.put("valorNota", debitoSelecionado.getTotalDebitos());
+
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		String valorNotaFormatada = numberFormat.format(debitoSelecionado.getTotalDebitos());
+		parameters.put("valorNota", valorNotaFormatada);
+
 		parameters.put("data", format.format(debitoSelecionado.getDataBase().getTime()));
 		parameters.put("dataEmissao", format2.format(debitoSelecionado.getDataEmissaoNotaCobranca().getTime()));
 		parameters.put("usuario", usuarioLogado.getNome());
