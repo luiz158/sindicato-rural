@@ -287,13 +287,11 @@
 										<p:row>
 											<p:column styleClass="colLabel" style="width:210px;">
 												<p:outputLabel value="CNPJ" />
-												<p:outputLabel value=" *" style="color:red;" />
 											</p:column>
 											<p:column styleClass="colInput">
 												<p:inputText
 													value="#{clienteBean.clienteSelecionado.estabelecimentoRural.cnpj}"
-													styleClass="cnpj" required="true"
-													requiredMessage="CNPJ é obrigatório" />
+													styleClass="cnpj" />
 											</p:column>
 										</p:row>
 										<p:row>
@@ -534,7 +532,7 @@
 										emptyMessage="Nenhuma ocupação de solo cadastrada"
 										value="#{clienteBean.clienteSelecionado.estabelecimentoRural.ocupacoesSolo}">
 										<p:column headerText="Código">
-											<h:outputText value="#{ocupacao.id}" />
+											<h:outputText value="#{ocupacao.tipoOcupacaoSolo.id}" />
 										</p:column>
 										<p:column headerText="Tipo da ocupação">
 											<h:outputText value="#{ocupacao.tipoOcupacaoSolo.descricao}" />
@@ -684,21 +682,11 @@
 			</p:tab>
 		</p:tabView>
 		<p:dialog header="Cadastrar ocupação de solo" widgetVar="dlg3"
-			resizable="true" showEffect="fade" hideEffect="fade" height="200"
-			width="500" modal="true">
+			resizable="true" showEffect="fade" hideEffect="fade" modal="true">
 			<h:form>
 				<p:panelGrid styleClass="panelForm" style="width:100%;"
 					id="formOcupacao">
 
-					<p:row>
-						<p:column styleClass="colLabel" style="width:210px;">
-							<p:outputLabel value="Código" />
-						</p:column>
-						<p:column styleClass="colInput">
-							<p:inputText value="#{clienteBean.ocupacaoSolo.id}" size="5"
-								readonly="true" />
-						</p:column>
-					</p:row>
 					<p:row>
 						<p:column styleClass="colLabel">
 							<p:outputLabel value="Tipo da ocupação do solo" />
@@ -724,7 +712,7 @@
 					<p:row>
 						<p:column styleClass="colLabel" colspan="2">
 							<p:commandButton value="Salvar" onsuccess="PF('dlg3').hide();"
-								actionListener="#{clienteBean.salvarOcupacao}"
+								actionListener="#{clienteBean.salvarOcupacao}" icon="ui-icon-plus"
 								update=":tabView:tabViewFormulario:formularioCliente:ocupacaoes,:growl,formOcupacao" />
 						</p:column>
 					</p:row>
