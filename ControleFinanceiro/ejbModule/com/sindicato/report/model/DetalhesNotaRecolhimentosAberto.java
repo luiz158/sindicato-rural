@@ -47,9 +47,11 @@ public class DetalhesNotaRecolhimentosAberto implements Serializable {
 		}
 		
 		for (ServicoRecolhimentosAberto servico : servicos) {
+			
+//			if(servico.getValorJaRecolhido() != null ||
+//					servico.getValorJaRecolhido().compareTo(BigDecimal.ZERO) == 0)
 			valorARecolher = valorARecolher.add(servico.getValorARecolher());
 		}
-		
 		return valorARecolher;
 	}
 	public BigDecimal getValorJaRecolhido() {
@@ -59,9 +61,10 @@ public class DetalhesNotaRecolhimentosAberto implements Serializable {
 		}
 		
 		for (ServicoRecolhimentosAberto servico : servicos) {
-			if(servico.getValorJaRecolhido() == null) continue;
-			
-			valorJaRecolhido = valorJaRecolhido.add(servico.getValorJaRecolhido());
+			if(servico.getValorJaRecolhido() != null &&
+					servico.getValorJaRecolhido().compareTo(BigDecimal.ZERO) != 0) {
+				valorJaRecolhido = valorJaRecolhido.add(servico.getValorARecolher());
+			}
 		}
 		
 		return valorJaRecolhido;
