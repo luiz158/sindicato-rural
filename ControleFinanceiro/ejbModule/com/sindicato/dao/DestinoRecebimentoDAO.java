@@ -1,10 +1,10 @@
 package com.sindicato.dao;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.sindicato.entity.DestinoRecebimento;
 
-@Remote
+@Local
 public interface DestinoRecebimentoDAO extends DAO<DestinoRecebimento, Integer> {
 
 }

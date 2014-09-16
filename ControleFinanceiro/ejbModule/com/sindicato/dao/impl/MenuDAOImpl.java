@@ -2,7 +2,7 @@ package com.sindicato.dao.impl;
 
 import java.util.List;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
@@ -10,7 +10,7 @@ import com.sindicato.dao.MenuDAO;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 
-@Stateless
+@Stateful
 public class MenuDAOImpl extends DAOImpl<Menu, Integer> implements MenuDAO {
 
 	@Override

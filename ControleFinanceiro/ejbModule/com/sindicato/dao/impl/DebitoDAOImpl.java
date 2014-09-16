@@ -3,7 +3,7 @@ package com.sindicato.dao.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -13,7 +13,7 @@ import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.uaihebert.factory.EasyCriteriaFactory;
 import com.uaihebert.model.EasyCriteria;
 
-@Stateless
+@Stateful
 public class DebitoDAOImpl implements DebitoDAO {
 
 	@PersistenceContext(name="ControleFinanceiro")

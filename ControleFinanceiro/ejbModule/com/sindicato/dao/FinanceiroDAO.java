@@ -1,12 +1,12 @@
 package com.sindicato.dao;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.sindicato.entity.Debito;
 import com.sindicato.result.ResultOperation;
 
 
-@Remote
+@Local
 public interface FinanceiroDAO{
 
 	ResultOperation gravarDebito(Debito debito);

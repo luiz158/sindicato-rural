@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,7 +24,7 @@ import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
 import com.sindicato.result.ResultOperation;
 
-@Stateless
+@Stateful
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		ClienteDAO {
 

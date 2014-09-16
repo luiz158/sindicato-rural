@@ -53,7 +53,6 @@ public class LoginBean implements Serializable {
 
 			if (result.isSuccess()) {
 				usuarioLogado = usuarioDAO.getUsuarioAutenticado();
-
 				carregaMenu();
 
 				retorno = "/faces/index?faces-redirect=true";
@@ -68,7 +67,6 @@ public class LoginBean implements Serializable {
 					"Falha na autenticação do usuário. Contate o administrador do sistema");
 			e.printStackTrace();
 		}
-		usuarioDAO = null;
 
 		return retorno;
 	}

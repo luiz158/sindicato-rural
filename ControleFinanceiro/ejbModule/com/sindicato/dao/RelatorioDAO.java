@@ -2,7 +2,7 @@ package com.sindicato.dao;
 
 import java.util.Calendar;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.sindicato.report.model.RelatorioAssociados;
 import com.sindicato.report.model.RelatorioFolhaVotacao;
@@ -14,7 +14,7 @@ import com.sindicato.report.model.RelatorioResumoRecolhimentos;
 import com.sindicato.report.model.RelatorioResumoServico;
 import com.sindicato.report.model.RelatorioRetencoesRecolher;
 
-@Remote
+@Local
 public interface RelatorioDAO {
 	RelatorioAssociados getAssociados();
 	RelatorioResumoServico getResumoServico(Calendar dataDe, Calendar dataAte);

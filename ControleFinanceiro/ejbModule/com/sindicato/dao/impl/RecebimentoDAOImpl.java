@@ -1,6 +1,6 @@
 package com.sindicato.dao.impl;
 
-import javax.ejb.Stateless;
+import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -8,7 +8,7 @@ import com.sindicato.dao.RecebimentoDAO;
 import com.sindicato.entity.DestinoRecebimento;
 import com.sindicato.entity.TipoRecebimento;
 
-@Stateless
+@Stateful
 public class RecebimentoDAOImpl implements RecebimentoDAO {
 
 	@PersistenceContext(name="ControleFinanceiro")

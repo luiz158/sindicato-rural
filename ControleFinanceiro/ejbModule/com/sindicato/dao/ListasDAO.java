@@ -2,7 +2,7 @@ package com.sindicato.dao;
 
 import java.util.List;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 import com.sindicato.entity.Cliente;
 import com.sindicato.entity.Debito;
@@ -13,7 +13,7 @@ import com.sindicato.entity.Enum.StatusDebitoEnum;
 import com.sindicato.entity.autenticacao.Menu;
 import com.sindicato.entity.autenticacao.Perfil;
 
-@Remote
+@Local
 public interface ListasDAO {
 
 	List<Cliente> getClientesComDebitosNoStatus(StatusDebitoEnum status);

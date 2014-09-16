@@ -58,6 +58,12 @@ public class UtilBean {
 		return loginBean.getUsuarioLogado();
 	}
 
+	public static void setUsuarioLogado(Usuario usuario) {
+		ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+		HttpSession session = (HttpSession) externalContext.getSession(true);
+		session.setAttribute("usuarioLogado", usuario);
+	}
+	
 	public static void addValorSessaoFlash(String name, Object value){
 		ExternalContext externalContext = UtilBean.getFacesContext().getExternalContext();
 		externalContext.getFlash().put(name, value);
