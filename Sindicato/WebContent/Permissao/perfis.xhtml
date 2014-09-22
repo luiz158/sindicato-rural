@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Permissão" url="#" />
+			<p:menuitem value="Perfis" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+		<p:growl id="growl" showDetail="true" life="15000" />
+		<p:tabView binding="#{perfilBean.tabView}" id="tabView">
+			<p:tab title="Lista de perfis">
+				<h:form>
+					<div class="container-action-novo">
+						<p:commandButton value="Cadastrar novo" update=":tabView"
+							actionListener="#{perfilBean.novo}" />
+					</div>
+
+					<p:dataTable var="perfil" value="#{perfilBean.perfis}"
+						rowKey="#{perfil.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						selection="#{perfilBean.perfilSelecionado}" selectionMode="single"
+						id="perfis">
+
+						<p:ajax event="rowSelect" update=":tabView"
+							listener="#{perfilBean.selecionaPerfil}" />
+
+						<p:column headerText="Código" sortBy="#{perfil.id}" filterBy="#{perfil.id}">
+							<p:outputLabel value="#{perfil.id}" />
+						</p:column>
+						<p:column headerText="Descrição" sortBy="#{perfil.descricao}"
+							filterBy="#{perfil.descricao}">
+							<p:outputLabel value="#{perfil.descricao}" />
+						</p:column>
+
+					</p:dataTable>
+				</h:form>
+			</p:tab>
+			<p:tab title="Informações do perfil">
+				<h:form>
+
+					<p:fieldset legend="Perfil de acesso">
+
+						<p:panelGrid styleClass="panelForm" style="width:80%;">
+
+							<p:row>
+								<p:column styleClass="colLabel" style="width:290px;">
+									<p:outputLabel value="Código" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{perfilBean.perfilSelecionado.id}"
+										readonly="true" size="5" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Descrição" />
+								</p:column>
+								<p:column styleClass="colInput">
+									<p:inputText value="#{perfilBean.perfilSelecionado.descricao}"
+										size="50" />
+								</p:column>
+							</p:row>
+							<p:row>
+								<p:column styleClass="colLabel">
+									<p:outputLabel value="Menus" />
+								</p:column>
+								<p:column styleClass="colInput">
+
+									<p:selectCheckboxMenu
+										value="#{perfilBean.perfilSelecionado.menus}"
+										converter="MenuConverter" label="Menus" filter="true"
+										filterText="Filter" filterMatchMode="startsWith" style="width:350px;">
+
+										<f:attribute name="collectionType" value="java.util.ArrayList" />
+										<f:selectItems value="#{perfilBean.menusDisponiveis}" var="m"
+											itemValue="#{m}" itemLabel="#{m.descricao}" />
+									</p:selectCheckboxMenu>
+
+								</p:column>
+							</p:row>
+						</p:panelGrid>
+					</p:fieldset>
+
+					<div class="container-action">
+						<p:commandButton value="Limpar Formulário"
+							style="width:200px;height:50px;" update="@form" process="@this"
+							actionListener="#{perfilBean.reset}" />
+
+						<p:commandButton action="#{perfilBean.salvar}" update=":tabView,:growl"
+							value="Salvar alterações" style="width:200px;height:50px;" />
+					</div>
+				</h:form>
+			</p:tab>
+		</p:tabView>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Resumos de recebimentos" url="#" />
+		</p:breadCrumb>
+
+		<p:spacer height="10" />
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+
+			<p:fieldset legend="Filtro do relatório" toggleable="true"
+				binding="#{resumoRecebimentosBean.fieldSetFiltro}">
+
+				<p:panelGrid styleClass="panelForm"
+					style="margin-top:20px;width:100%;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:30%;">
+							<p:outputLabel value="Data inicial:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{resumoRecebimentosBean.dataDe}"
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data inicial do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Data final:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{resumoRecebimentosBean.dataAte}"
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data final do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align:right;">
+							<p:commandButton value="Exibir relatório" icon="ui-icon-search"
+								style="width:250px;height:50px;" update="@form"
+								action="#{resumoRecebimentosBean.carregaRelatorio()}" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+
+
+			</p:fieldset>
+
+			<p:spacer height="15" />
+
+			<p:fieldset legend="Resumo dos recebimentos" id="resumoRelatorio"
+				binding="#{resumoRecebimentosBean.fieldSetResumo}" rendered="false">
+
+				<p:outputPanel id="painelServicos">
+
+					<h2 style="text-align: center;">
+						<p:outputLabel value="Resumo dos recebimentos de " />
+						<p:outputLabel value="#{resumoRecebimentosBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+						<p:outputLabel value=" até " />
+						<p:outputLabel value="#{resumoRecebimentosBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</h2>
+
+					<ui:repeat var="relatorio"
+						value="#{resumoRecebimentosBean.relatorio.detalhesDestino}">
+
+						<h3 style="margin-bottom: none;">#{relatorio.destino}</h3>
+						<p:dataTable var="detalhe" styleClass="hover"
+							value="#{relatorio.recebimentosDestino}">
+
+							<p:column headerText="Data do recebimento">
+								<h:outputText value="#{detalhe.dataRecebimento.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Valor recebido (R$)">
+								<h:outputText value="#{detalhe.valorRecebido}">
+									<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+										type="currency" />
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+						<h3 style="text-align: right; margin-top: none;">
+							<p:outputLabel value="Sub-total: " />
+							<p:outputLabel value="#{relatorio.totalRecebido}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</h3>
+
+						<p:spacer height="10" />
+					</ui:repeat>
+
+					<h2>
+						<p:outputLabel value="Total recebimentos: " />
+						<p:outputLabel
+							value="#{resumoRecebimentosBean.relatorio.totalRecebido}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h2>
+
+				</p:outputPanel>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					style="width:250px;height:50px;" rendered="false"
+					binding="#{resumoRecebimentosBean.btnImprimir}">
+					<p:printer target="painelServicos" />
+				</p:commandButton>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

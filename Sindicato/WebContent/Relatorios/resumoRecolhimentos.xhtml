@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+
+		<h:outputStylesheet name="relatorios.css" library="css"></h:outputStylesheet>
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Resumos de recebimentos" url="#" />
+		</p:breadCrumb>
+
+		<p:spacer height="10" />
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+
+			<p:fieldset legend="Filtro do relatório" toggleable="true"
+				binding="#{resumoRecolhimentosBean.fieldSetFiltro}">
+
+				<p:panelGrid styleClass="panelForm"
+					style="margin-top:20px;width:100%;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:30%;">
+							<p:outputLabel value="Data inicial:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{resumoRecolhimentosBean.dataDe}"
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data inicial do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Data final:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{resumoRecolhimentosBean.dataAte}"
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data final do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align:right;">
+							<p:commandButton value="Exibir relatório" icon="ui-icon-search"
+								style="width:250px;height:50px;" update="@form"
+								action="#{resumoRecolhimentosBean.carregaRelatorio()}" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+			</p:fieldset>
+
+			<p:spacer height="15" />
+
+			<p:fieldset legend="Resumo dos serviços" id="resumoRelatorio"
+				binding="#{resumoRecolhimentosBean.fieldSetResumo}" rendered="false">
+
+				<p:outputPanel id="painelServicos">
+
+					<h2 style="text-align: center;">
+						<p:outputLabel value="Resumo dos recolhimentos de " />
+						<p:outputLabel value="#{resumoRecolhimentosBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+						<p:outputLabel value=" até " />
+						<p:outputLabel value="#{resumoRecolhimentosBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</h2>
+
+					<p:dataTable var="detalhe"
+						value="#{resumoRecolhimentosBean.relatorio.detalhes}">
+
+						<p:column headerText="Serviço" styleClass="font-menor">
+							<a href="##{detalhe.descricao}"><h:outputText value="#{detalhe.descricao} " /></a>
+							
+						</p:column>
+						<p:column headerText="Recolhimento (R$)" styleClass="font-menor">
+							<h:outputText value="#{detalhe.totalRecolhimentos}">
+								<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+									type="currency" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Valor Contábil (R$)" styleClass="font-menor">
+							<h:outputText value="#{detalhe.valorContabil}">
+								<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+									type="currency" />
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Variação (R$)" styleClass="font-menor">
+							<h:outputText value="#{detalhe.totalVariacao}">
+								<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+									type="currency" />
+							</h:outputText>
+						</p:column>
+
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column styleClass="font-menor"
+									footerText="Soma dos serviços:" />
+								<p:column styleClass="font-menor" style="text-align:left;"
+									footerText="R$ #{resumoRecolhimentosBean.relatorio.totalRecolhimentos}" />
+
+								<p:column styleClass="font-menor" style="text-align:left;"
+									footerText="R$ #{resumoRecolhimentosBean.relatorio.valorContabil}" />
+
+								<p:column styleClass="font-menor" style="text-align:left;"
+									footerText="R$ #{resumoRecolhimentosBean.relatorio.totalVariacao}" />
+							</p:row>
+						</p:columnGroup>
+
+
+
+					</p:dataTable>
+					<p:spacer height="15" />
+					<ui:repeat var="relatorio"
+						value="#{resumoRecolhimentosBean.relatorio.detalhes}">
+
+						<div id="#{relatorio.descricao}"><h3>#{relatorio.descricao}</h3></div>
+						<p:dataTable var="detalhe"
+							value="#{relatorio.detalhesCliente}">
+
+							<p:column headerText="Matricula" styleClass="font-menor">
+								<h:outputText value="#{detalhe.matricula} " />
+							</p:column>
+							<p:column headerText="Cliente" style="width:20%;"
+								styleClass="font-menor">
+								<h:outputText value=" #{detalhe.nome}" />
+							</p:column>
+							<p:column headerText="Valor (R$)" styleClass="font-menor">
+								<h:outputText value="#{detalhe.valorRecolhido}">
+									<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+										type="currency" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Data Recolh." styleClass="font-menor">
+								<h:outputText value="#{detalhe.dataRecolhimento.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Data Base" styleClass="font-menor">
+								<h:outputText value="#{detalhe.dataBase.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Nota" styleClass="font-menor">
+								<h:outputText value="#{detalhe.numeroNota}" />
+							</p:column>
+							<p:column headerText="Data Emissão" styleClass="font-menor">
+								<h:outputText value="#{detalhe.dataEmissaoNota.time}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</p:column>
+							<p:column headerText="Variação (R$)" styleClass="font-menor">
+								<h:outputText value="#{detalhe.variacao}">
+									<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+										type="currency" />
+								</h:outputText>
+							</p:column>
+
+							<p:columnGroup type="footer">
+								<p:row>
+									<p:column
+										footerText="Recolhimentos de #{relatorio.descricao}: R$ #{relatorio.totalRecolhimentos}"
+										style="text-align:right;" styleClass="font-menor" colspan="3" />
+
+									<p:column
+										footerText="Valor Contábil: R$ #{relatorio.valorContabil}"
+										colspan="3" style="text-align:right" styleClass="font-menor" />
+
+									<p:column footerText="R$ #{relatorio.totalVariacao}"
+										colspan="2" style="text-align:right" styleClass="font-menor" />
+								</p:row>
+							</p:columnGroup>
+
+						</p:dataTable>
+
+						<p:spacer height="10" />
+					</ui:repeat>
+
+					<h2>
+						<p:outputLabel value="Total recolhimentos: " />
+						<p:outputLabel
+							value="#{resumoRecolhimentosBean.relatorio.totalRecolhimentos}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h2>
+
+				</p:outputPanel>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					style="width:250px;height:50px;" rendered="false"
+					binding="#{resumoRecolhimentosBean.btnImprimir}">
+					<p:printer target="painelServicos" />
+
+				</p:commandButton>
+								
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

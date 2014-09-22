@@ -1,0 +1,22 @@
+@CHARSET "ISO-8859-1";
+
+.font-menor {  
+     font-size: 10px !important;   
+} 
+
+
+.align-right{
+	text-align: right;
+}
+.align-left{
+	text-align: left;
+}
+.align-center{
+	text-align: center;
+}
+.tittle10{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+

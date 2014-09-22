@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Folha de votação" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+
+		<h:form target="_blank">
+
+			<p:growl id="growl" showDetail="true" life="15000" />
+			<p:fieldset legend="Informações da folha de votação">
+				<f:view encoding="ISO-8859-1">
+					<p:panelGrid styleClass="panelForm" columns="2"
+						columnClasses="colLabel,colInput"
+						style="margin-top:20px;width:100%;">
+
+						<p:outputLabel value="Título:" />
+						<p:inputText value="#{folhaVotacaoBean.titulo}" required="true"
+							requiredMessage="Título é um campo obrigatório" size="60" />
+
+						<p:outputLabel value="Data da eleição:" />
+						<p:calendar locale="pt_BR" value="#{folhaVotacaoBean.dataEleicao}"
+							styleClass="date" pattern="dd/MM/yyyy" required="true"
+							converter="CalendarConverter"
+							requiredMessage="Data da eleição é um campo obrigatório" />
+					</p:panelGrid>
+				</f:view>
+				<div class="container-action">
+					<p:commandButton value="Gerar relatório" icon="ui-icon-print"
+						ajax="false" style="width:250px;height:50px;" update="@form"
+						process="@this"
+						actionListener="#{folhaVotacaoBean.imprimirRelatorio()}" />
+				</div>
+			</p:fieldset>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

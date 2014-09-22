@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Cadastros" url="#" />
+			<p:menuitem value="Tipo do recebimento" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+			<p:tabView activeIndex="#{tipoRecebimentoBean.indexTab}">
+				<p:tab title="Lista de tipos de recebimento">
+
+					<div class="container-action-novo">
+						<p:commandButton value="Cadastrar novo" update="@form"
+							process="@this" actionListener="#{tipoRecebimentoBean.novo}" />
+					</div>
+
+					<p:dataTable var="tipo"
+						value="#{tipoRecebimentoBean.tipos}" rowKey="#{tipo.id}"
+						paginator="true" rows="10" paginatorPosition="bottom"
+						selection="#{tipoRecebimentoBean.tipoSelecionado}"
+						selectionMode="single" id="tipos">
+
+						<p:ajax event="rowSelect" update="@(form)"
+							listener="#{tipoRecebimentoBean.alterTab(1)}" />
+
+						<p:column headerText="Código" sortBy="id" filterBy="id">
+							<p:outputLabel value="#{tipo.id}" />
+						</p:column>
+						<p:column headerText="Descrição" sortBy="descricao"
+							filterBy="descricao">
+							<p:outputLabel value="#{tipo.descricao}" />
+						</p:column>
+						<p:column style="width:10%; text-align:center;"
+							headerText="Excluir">
+							<p:commandButton icon="	ui-icon-trash" update="@form"
+								immediate="true"
+								action="#{tipoRecebimentoBean.excluir(tipo)}">
+								<p:confirm header="Excluir modo de tipo"
+									message="Tem certeza que deseja excluir o tipo de recebimento selecionado ?"
+									icon="ui-icon-trash" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Informações do tipo de recebimento">
+
+					<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Código" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText
+									value="#{tipoRecebimentoBean.tipoSelecionado.id}"
+									readonly="true" size="5" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Descrição" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText
+									value="#{tipoRecebimentoBean.tipoSelecionado.descricao}"
+									size="60" required="true"
+									requiredMessage="Descrição é um campo obrigatório" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+					<div class="container-action">
+						<p:commandButton icon="ui-icon-trash" value="Excluir"
+							update="@form"
+							action="#{tipoRecebimentoBean.excluir(tipoRecebimentoBean.tipoSelecionado)}">
+							<p:confirm header="Excluir tipo de recebimento"
+								message="Tem certeza que deseja excluir o tipo de recebimento selecionado ?" />
+						</p:commandButton>
+
+						<p:commandButton value="Limpar Formulário" update="@form"
+							process="@this" actionListener="#{tipoRecebimentoBean.reset}" />
+
+						<p:commandButton action="#{tipoRecebimentoBean.salvar}"
+							update="@form" value="Salvar alterações" />
+					</div>
+
+				</p:tab>
+			</p:tabView>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

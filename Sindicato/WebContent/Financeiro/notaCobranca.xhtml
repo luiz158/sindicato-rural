@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Financeiro" url="#" />
+			<p:menuitem value="Gerar nota de cobrança" url="#" />
+		</p:breadCrumb>
+
+		<h:form target="_blank">
+			<p:growl id="growl" showDetail="true" life="15000" />
+			<p:fieldset legend="Selecione o débito" style="margin-top:15px;">
+				<p:panelGrid styleClass="panelForm"
+					style="width:80%;margin-top:20px;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:250px;">
+							<p:outputLabel value="Selecione o cliente:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:selectOneMenu value="#{notaCobrancaBean.clienteSelecionado}"
+								converter="ClienteConverter" effect="fade" filter="true"
+								id="clientes" required="true"
+								requiredMessage="Selecione o cliente">
+
+								<f:selectItem itemValue="" itemLabel="Selecione o cliente..." />
+
+								<f:selectItems value="#{notaCobrancaBean.clientes}" var="cli"
+									itemValue="#{cli}" itemLabel="#{cli.nome}" />
+
+								<p:ajax update="debitos"
+									listener="#{notaCobrancaBean.selecionaCliente}" />
+
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel" style="width:250px;">
+							<p:outputLabel value="Data base do débito:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:selectOneMenu value="#{notaCobrancaBean.debitoSelecionado}"
+								converter="DebitoConverter" effect="fade" filter="true"
+								id="debitos" required="true"
+								requiredMessage="Selecione a data base do débito">
+
+								<f:selectItem itemValue="" itemLabel="Selecione a data base..." />
+								<f:selectItems value="#{notaCobrancaBean.debitos}" var="deb"
+									itemValue="#{deb}"
+									itemLabel="#{notaCobrancaBean.sdf.format(deb.dataBase.time)}" />
+								<p:ajax update="@form" />
+							</p:selectOneMenu>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+			</p:fieldset>
+
+			<p:fieldset legend="Informações da nota" style="margin-top:15px;"
+				rendered="#{notaCobrancaBean.debitoSelecionado != null}">
+
+						<p:panelGrid styleClass="panelForm" columns="4"
+							columnClasses="colLabel,colInput,colLabel,colInput"
+							style="width:100%;margin-top:20px;">
+
+							<p:outputLabel value="Nome do cliente:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.cliente.nome}" />
+
+							<p:outputLabel value="Documento:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.cliente.cpf}" />
+
+							<p:outputLabel value="Status do débito:" />
+							<p:outputLabel value="Aguardando geração da nota" />
+
+							<p:outputLabel value="Data base:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.dataBase.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Valor da nota:" />
+							<p:outputLabel
+								value="#{notaCobrancaBean.debitoSelecionado.totalDebitos}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+
+						</p:panelGrid>
+
+				<p:dataTable var="debito" id="servicos"
+					style="margin-top:15px;margin-bottom:15px;"
+					emptyMessage="Nenhum serviço cadastrado"
+					value="#{notaCobrancaBean.debitoSelecionado.debitoServicos}">
+
+					<f:facet name="header">
+						<p:outputLabel value="Lista de serviços" />
+					</f:facet>
+					<f:facet name="footer">
+						<p:outputLabel value="Valor total da nota:  " />
+						<p:outputLabel
+							value="#{notaCobrancaBean.debitoSelecionado.totalDebitos}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</f:facet>
+
+					<p:column headerText="Serviço">
+						<p:outputLabel value="#{debito.servico.descricao}" />
+					</p:column>
+					<p:column headerText="Valor">
+						<p:outputLabel value="#{debito.valor}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton value="Imprimir nota de cobrança" icon="ui-icon-print" 
+					onclick="PF('dlg2').show();" rendered="#{notaCobrancaBean.debitoSelecionado != null}" />
+			</div>
+
+
+			<p:dialog
+				header="Emitir nota de cobrança" width="500"
+				widgetVar="dlg2" modal="true" height="170">
+
+				<p:panelGrid columns="1" style="width:100%;text-align:center;" styleClass="panelForm">
+					
+					<p:outputLabel value="Data de emissão da nota:" />
+					<p:calendar locale="pt_BR" styleClass="date" showOn="button"
+						value="#{notaCobrancaBean.debitoSelecionado.dataEmissaoNotaCobranca}"
+						pattern="dd/MM/yyyy" converter="CalendarConverter" />
+					
+					<p:commandButton action="#{notaCobrancaBean.gerarNotaDeCobranca}" 
+						icon="ui-icon-print" ajax="false" process="@(form)"
+						value="Imprimir nota de cobrança" style="width:300px;height:60px;margin-top:30px;"
+						onclick="location.replace('./notaCobranca.xhtml')" />
+
+				</p:panelGrid>
+
+			</p:dialog>
+
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

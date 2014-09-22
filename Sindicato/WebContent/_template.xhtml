@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<h:head>
+		<meta http-equiv="Content-Type"
+			content="text/html; charset=ISO-8859-1" />
+		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
+
+		<h:outputScript name="jquery.maskedinput.min.js" library="scripts"></h:outputScript>
+		<h:outputScript name="jquery.maskMoney.min.js" library="scripts"></h:outputScript>
+		<h:outputScript name="locale-primefaces.js" library="scripts"></h:outputScript>
+
+		<h:outputStylesheet name="layout.css" library="css"></h:outputStylesheet>
+		<h:outputStylesheet name="form.css" library="css"></h:outputStylesheet>
+
+		<link rel="shortcut icon" type="image/x-icon" href="#{resource['imagens/favicon.ico']}"/>
+	</h:head>
+	<h:body>
+		<div class="header">
+			<a href="../index.xhtml">
+				<h:graphicImage library="imagens" name="SindRCotia_topo.jpg"
+					styleClass="logo-topo" />
+			</a>
+			<div class="infUsuario">
+				<h:form>
+					<p:button value="#{loginBean.usuarioLogado.email}"
+						icon="ui-icon-gear" iconPos="right" style="font-size: 13px;" />
+					<p:commandButton action="#{loginBean.logout}" value="Sair"
+						icon="ui-icon-power" iconPos="right"
+						style="font-size: 13px;float:right;" />
+				</h:form>
+			</div>
+		</div>
+
+		<div class="menu">
+			<h:form>
+				<p:menu model="#{loginBean.model}" styleClass="menu_principal" />
+				<p:growl globalOnly="true" showDetail="true" life="15000" />
+			</h:form>
+		</div>
+		<div class="conteudo">
+
+			<ui:insert name="conteudo">
+						Conteúdo!!	
+				</ui:insert>
+
+			<p:messages showDetail="true" closable="true" />
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+				<p:commandButton value="Sim" type="button"
+					styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			</p:confirmDialog>
+
+			<p:ajaxStatus oncomplete="mascaras();" />
+
+			<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+				<f:facet name="start">
+					<p:graphicImage alt="carregando" library="imagens"
+						name="loading.gif"
+						style="position:fixed;right:10%;top:80%;z-index:100000;" />
+				</f:facet>
+			</p:ajaxStatus>
+
+		</div>
+
+		<div id="footer"
+			class="ui-module ui-widget ui-widget-header ui-helper-clearfix ui-corner-all">
+			<ui:insert name="footer">
+				<div style="text-align: center; margin-top: 5px;">Sindicato
+					Rural de Cotia - Copyright © 2014 - Todos os direitos reservados</div>
+			</ui:insert>
+		</div>
+		
+		<h:outputScript name="geral.js" library="scripts"></h:outputScript>
+		
+	</h:body>
+</f:view>
+</html>

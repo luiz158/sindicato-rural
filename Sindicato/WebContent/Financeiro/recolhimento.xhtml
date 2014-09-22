@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Financeiro" url="#" />
+			<p:menuitem value="Registrar recolhimentos" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+			<p:tabView activeIndex="#{recolhimentoBean.indexTab}">
+				<p:tab title="Lista das notas de cobrança">
+
+					<p:dataTable var="debito" value="#{recolhimentoBean.debitos}"
+						rowKey="#{debito.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						selection="#{recolhimentoBean.debitoSelecionado}"
+						selectionMode="single" id="debitos" lazy="true"
+						resizableColumns="true"
+						emptyMessage="Nenhuma nota encontrada">
+
+						<p:ajax event="rowSelect" update="@(form)"
+							listener="#{recolhimentoBean.alterTab(1)}" />
+
+						<p:column headerText="Número da nota"
+							sortBy="#{debito.numeroNota}" filterBy="#{debito.numeroNota}">
+							<p:outputLabel value="#{debito.numeroNota}" />
+						</p:column>
+						<p:column headerText="Nome do cliente"
+							sortBy="#{debito.cliente.nome}" filterBy="#{debito.cliente.nome}">
+							<p:outputLabel value="#{debito.cliente.nome}" />
+						</p:column>
+						<p:column headerText="Data base" sortBy="#{debito.dataBase}">
+							<p:outputLabel value="#{debito.dataBase.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+						<p:column headerText="Valor total da nota">
+							<p:outputLabel value="#{debito.totalDebitos}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</p:column>
+						<p:column headerText="Valor total de retenções">
+							<p:outputLabel value="#{debito.totalDebitosComRetencao}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</p:column>
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Nota de cobrança selecionada">
+
+					<p:fieldset legend="Informações da nota" style="margin-top:15px;">
+						<p:panelGrid styleClass="panelForm" columns="4"
+							columnClasses="colLabel,colInput,colLabel,colInput"
+							style="width:100%;margin-top:20px;">
+
+							<p:outputLabel value="Número da nota:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.numeroNota}" />
+
+							<p:outputLabel value="Status da nota:" />
+							<p:outputLabel value="Aguardando recolhimento" />
+
+							<p:outputLabel value="Data base:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.dataBase.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+
+							<p:outputLabel value="Valor da nota:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.totalDebitos}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+
+							<p:outputLabel value="Nome do cliente:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.cliente.nome}" />
+
+							<p:outputLabel value="Documento:" />
+							<p:outputLabel
+								value="#{recolhimentoBean.debitoSelecionado.cliente.cpf}" />
+
+						</p:panelGrid>
+						<p:spacer height="25" />
+						<p:dataTable var="debito" id="servicos"
+							emptyMessage="Nenhum serviço cadastrado"
+							value="#{recolhimentoBean.servicosComRetencao}">
+
+							<f:facet name="header">
+								<p:outputLabel
+									value="Serviços com retenção / Recolhimentos pendentes" />
+							</f:facet>
+
+							<p:column headerText="Serviço">
+								<p:outputLabel value="#{debito.servico.descricao}" />
+							</p:column>
+							<p:column headerText="Valor" width="100"
+								style="text-align:center;">
+								<p:outputLabel value="#{debito.valor}">
+									<f:convertNumber locale="pt_BR" type="currency"
+										currencySymbol="R$ " />
+								</p:outputLabel>
+							</p:column>
+							<p:column headerText="Data recolhimento">
+								<p:calendar locale="pt_BR" value="#{debito.recolhimento.data}"
+									pattern="dd/MM/yyyy" styleClass="date"
+									converter="CalendarConverter" />
+							</p:column>
+							<p:column headerText="Modo de pagamento">
+								<p:selectOneMenu value="#{debito.recolhimento.modoPagamento}"
+									converter="ModoPagamentoConverter" effect="fade" filter="true">
+									<f:selectItems value="#{recolhimentoBean.modosPagamento}"
+										var="m" itemValue="#{m}" itemLabel="#{m.descricao}" />
+								</p:selectOneMenu>
+							</p:column>
+							<p:column headerText="Valor recolhido (R$)">
+								<p:inputText styleClass="moeda"
+									value="#{debito.recolhimento.valor}">
+									<f:convertNumber pattern="#,##0.00" type="currency"
+										locale="pt_BR" />
+								</p:inputText>
+							</p:column>
+						</p:dataTable>
+					</p:fieldset>
+					<p:spacer height="20" />
+					<div class="container-action">
+						<p:commandButton action="#{recolhimentoBean.salvar}"
+							update="@(form)" value="Salvar recolhimento" />
+					</div>
+				</p:tab>
+			</p:tabView>
+
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

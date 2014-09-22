@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+		
+		<h:outputStylesheet name="relatorios.css" library="css"></h:outputStylesheet>
+		
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Notas emitidas" url="#" />
+		</p:breadCrumb>
+
+		<p:spacer height="10" />
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+
+			<p:fieldset legend="Filtro do relatório" toggleable="true"
+				binding="#{notasEmitidasBean.fieldSetFiltro}">
+
+				<p:panelGrid styleClass="panelForm"
+					style="margin-top:20px;width:100%;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:30%;">
+							<p:outputLabel value="Data inicial:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{notasEmitidasBean.dataDe}"
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data inicial do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Data final:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{notasEmitidasBean.dataAte}"
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data final do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align:right;">
+							<p:commandButton value="Exibir relatório" icon="ui-icon-search"
+								style="width:250px;height:50px;" update="@form"
+								action="#{notasEmitidasBean.carregaRelatorio()}" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+
+
+			</p:fieldset>
+
+			<p:spacer height="15" />
+
+			<p:fieldset legend="Notas emitidas" id="resumoRelatorio"
+				binding="#{notasEmitidasBean.fieldSetResumo}" rendered="false">
+
+				<p:outputPanel id="painelServicos">
+
+					<h2 style="text-align: center;">
+						<p:outputLabel value="Notas emitidas de " />
+						<p:outputLabel value="#{notasEmitidasBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+						<p:outputLabel value=" até " />
+						<p:outputLabel value="#{notasEmitidasBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</h2>
+
+					<p:dataTable var="notas"
+						value="#{notasEmitidasBean.relatorio.notasEmitidas}">
+
+						<f:facet name="header">
+							<h:outputText value="Resumo das notas emitidas" />
+						</f:facet>
+
+						<p:column headerText="Data">
+							<h:outputText value="#{notas.dataEmissaoNota.time}" >
+								<f:convertDateTime pattern="dd/MM/yyyy"/>
+							</h:outputText>
+						</p:column>
+						<p:column headerText="Notas">
+							<h:outputText value="De #{notas.primeiraNota} até #{notas.ultimaNota}" />
+						</p:column>
+						<p:column headerText="Valor total do dia">
+							<h:outputText value="#{notas.valorTotalDia}">
+								<f:convertNumber currencySymbol="R$ " locale="pt-BR"
+									type="currency" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+					<h2 style="text-align:right;">
+						<p:outputLabel value="Valor total das notas emitidas: " />
+						<p:outputLabel
+							value="#{notasEmitidasBean.relatorio.valorTotalNotas}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h2>
+
+				</p:outputPanel>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					style="width:250px;height:50px;" rendered="false"
+					binding="#{notasEmitidasBean.btnImprimir}">
+					<p:printer target="painelServicos" />
+				</p:commandButton>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

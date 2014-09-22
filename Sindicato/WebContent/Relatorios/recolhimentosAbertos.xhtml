@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+
+		<h:outputStylesheet name="relatorios.css" library="css" />
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Recolhimentos em aberto" url="#" />
+		</p:breadCrumb>
+
+		<p:spacer height="10" />
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+
+			<p:fieldset legend="Filtro do relatório" toggleable="true"
+				binding="#{recolhimentosAbertoBean.fieldSetFiltro}">
+
+				<p:panelGrid styleClass="panelForm"
+					style="margin-top:20px;width:100%;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:40%;">
+							<p:outputLabel value="Recolhimentos de notas emitidas até:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR"
+								value="#{recolhimentosAbertoBean.dataAte}" styleClass="date"
+								pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data final do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align:right;">
+							<p:commandButton value="Exibir relatório" icon="ui-icon-search"
+								style="width:250px;height:50px;" update="@form"
+								action="#{recolhimentosAbertoBean.carregaRelatorio()}" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+
+
+			</p:fieldset>
+
+			<p:spacer height="15" />
+
+			<p:fieldset id="resumoRelatorio"
+				binding="#{recolhimentosAbertoBean.fieldSetResumo}" rendered="false">
+
+				<p:outputPanel id="painelServicos">
+
+					<h2 style="text-align: center;">
+						<p:outputLabel value="Recolhimentos em aberto até " />
+						<h:outputLabel value="#{recolhimentosAbertoBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputLabel>
+					</h2>
+
+					<p:dataTable var="cliente"
+						value="#{recolhimentosAbertoBean.relatorio.listaPendenciasPorCliente}">
+
+						<f:facet name="header">
+							<p:outputLabel value="Resumo geral de pendências"
+								style="font-weight: bold;" />
+						</f:facet>
+						<f:facet name="footer">
+							<p:outputLabel value="Total de pendências: "
+								style="font-weight: bold;" />
+							<h:outputText
+								value="#{recolhimentosAbertoBean.relatorio.totalPendencias}"
+								style="font-weight: bold;">
+								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+									type="currency" />
+							</h:outputText>
+						</f:facet>
+
+						<p:column headerText="Matricula" styleClass="font-menor">
+							<h:outputText value="#{cliente.matricula}" />
+						</p:column>
+						<p:column headerText="Cliente" styleClass="font-menor">
+							<a href="##{cliente.nome}"><h:outputText
+									value="#{cliente.nome}" /></a>
+						</p:column>
+						<p:column headerText="Valor pendente a recolher"
+							styleClass="font-menor">
+							<h:outputText value="#{cliente.totalPendencias}">
+								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+									type="currency" />
+							</h:outputText>
+						</p:column>
+					</p:dataTable>
+					<p:spacer height="50" />
+
+					<ui:repeat var="cliente"
+						value="#{recolhimentosAbertoBean.relatorio.listaPendenciasPorCliente}">
+
+						<div id="#{cliente.nome}">
+							<p style="margin-bottom: 0 !important;">
+								<p:outputLabel value="Matricula: "
+									style="font-size: 12px;font-weight: bold;" />
+								<p:outputLabel value="#{cliente.matricula}"
+									style="font-size: 12px;font-weight: bold;" />
+								<p:spacer width="40" height="0" />
+								<p:outputLabel value="Cliente:  "
+									style="font-size: 12px;font-weight: bold;" />
+
+								<p:outputLabel value="#{cliente.nome}"
+									style="font-size: 12px;font-weight: bold;" />
+							</p>
+						</div>
+
+						<ui:repeat var="nota" value="#{cliente.listaNotasPendentes}">
+
+							<p:panelGrid style="border-style: hidden !important;">
+								<p:row>
+									<p:column
+										style="border-style: hidden !important;font-weight: bold;">
+										<h:outputText value="Nota:  " />
+										<h:outputText value="#{nota.numeroNota}"
+											style="font-size:10px;" />
+										<p:spacer width="60" height="20" />
+										<h:outputText value="Data base:  " />
+										<h:outputText value="#{nota.dataBase.time}"
+											style="font-size:10px;">
+											<f:convertDateTime pattern="dd/MM/yyyy" />
+										</h:outputText>
+
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column style="border-style: hidden !important;">
+										<p:dataTable var="servico" value="#{nota.servicos}">
+											<p:column headerText="Código do serviço"
+												styleClass="font-menor">
+												<h:outputText value="#{servico.id}" />
+											</p:column>
+											<p:column headerText="Descrição do serviço"
+												styleClass="font-menor">
+												<h:outputText value="#{servico.descricao}" />
+											</p:column>
+											<p:column headerText="Valor a recolher"
+												styleClass="font-menor">
+												<h:outputText value="#{servico.valorARecolher}">
+													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+														type="currency" />
+												</h:outputText>
+											</p:column>
+											<p:column headerText="Valor ja recolhido"
+												styleClass="font-menor">
+												<h:outputText value="#{servico.valorJaRecolhido}">
+													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+														type="currency" />
+												</h:outputText>
+											</p:column>
+										</p:dataTable>
+									</p:column>
+								</p:row>
+								<p:row>
+									<p:column
+										style="border-style: hidden !important;font-weight: bold;text-align:right;">
+										<p:outputLabel value="Pendente de recolhimento da nota: " />
+										<p:outputLabel value="#{nota.totalPendente}"
+											style="font-size:10px;">
+											<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+												type="currency" />
+										</p:outputLabel>
+
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+							<p:spacer height="20" />
+						</ui:repeat>
+						<p:spacer height="50" />
+					</ui:repeat>
+
+					<h2>
+						<p:outputLabel value="Total de pendências: " />
+						<p:outputLabel
+							value="#{recolhimentosAbertoBean.relatorio.totalPendencias}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h2>
+
+				</p:outputPanel>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					style="width:250px;height:50px;" rendered="false"
+					binding="#{recolhimentosAbertoBean.btnImprimir}">
+					<p:printer target="painelServicos" />
+
+				</p:commandButton>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

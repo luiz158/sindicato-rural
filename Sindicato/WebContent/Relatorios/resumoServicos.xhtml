@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+	<ui:define name="conteudo">
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Resumos de serviços" url="#" />
+		</p:breadCrumb>
+
+		<p:spacer height="10" />
+
+		<h:form>
+			<p:growl id="growl" showDetail="true" life="15000" />
+
+			<p:fieldset legend="Filtro do relatório" toggleable="true"
+				binding="#{resumoServicosBean.fieldSetFiltro}">
+
+				<p:panelGrid styleClass="panelForm"
+					style="margin-top:20px;width:100%;">
+
+					<p:row>
+						<p:column styleClass="colLabel" style="width:30%;">
+							<p:outputLabel value="Data inicial:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{resumoServicosBean.dataDe}" 
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data inicial do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Data final:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:calendar locale="pt_BR" value="#{resumoServicosBean.dataAte}" 
+								styleClass="date" pattern="dd/MM/yyyy" required="true"
+								converter="CalendarConverter"
+								requiredMessage="Data final do relatório é obrigatório" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column colspan="2" style="text-align:right;">
+							<p:commandButton value="Exibir relatório" icon="ui-icon-search"
+								style="width:250px;height:50px;" update="@form"
+								action="#{resumoServicosBean.carregaRelatorio()}" />
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+
+
+			</p:fieldset>
+
+			<p:spacer height="15" />
+
+			<p:fieldset legend="Resumos de serviços" id="resumoRelatorio"
+				binding="#{resumoServicosBean.fieldSetResumo}" rendered="false">
+
+				<p:outputPanel id="painelServicos">
+
+					<h2 style="text-align: center;">
+						<p:outputLabel value="Resumo dos Serviços de " />
+						<p:outputLabel value="#{resumoServicosBean.dataDe.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+						<p:outputLabel value=" até " />
+						<p:outputLabel value="#{resumoServicosBean.dataAte.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</h2>
+
+					<h2>Retenções</h2>
+
+					<h3 style="margin-bottom: none;">Sócios</h3>
+					<p:dataTable var="item"
+						value="#{resumoServicosBean.relatorio.retencoesSocios}"
+						emptyMessage="Nenhum registro encontrado">
+
+						<p:column headerText="Descrição do serviço">
+							<p:outputLabel value="#{item.servico}" />
+						</p:column>
+						<p:column headerText="Valor">
+							<p:outputLabel value="#{item.valor}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+
+					<h3 style="text-align: right; margin-top: none;">
+						<p:outputLabel value="Total sócios: " />
+						<p:outputLabel
+							value="#{resumoServicosBean.relatorio.totalRetencoesSocios}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h3>
+
+
+					<h3 style="margin-bottom: none;">Não sócios</h3>
+					<p:dataTable var="item"
+						value="#{resumoServicosBean.relatorio.retencoesNaoSocios}"
+						emptyMessage="Nenhum registro encontrado">
+
+						<p:column headerText="Descrição do serviço">
+							<p:outputLabel value="#{item.servico}" />
+						</p:column>
+						<p:column headerText="Valor">
+							<p:outputLabel value="#{item.valor}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+
+					<h3 style="text-align: right; margin-top: none;">
+						<p:outputLabel value="Total não sócios: " />
+						<p:outputLabel
+							value="#{resumoServicosBean.relatorio.totalRetencoesNaoSocios}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h3>
+
+					<h2>
+						<p:outputLabel value="Total retenções: " />
+						<p:outputLabel
+							value="#{resumoServicosBean.relatorio.totalRetencoes}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h2>
+
+					<p:spacer height="10" />
+					<h2>Receitas</h2>
+
+					<h3 style="margin-bottom: none;">Sócios</h3>
+					<p:dataTable var="item"
+						value="#{resumoServicosBean.relatorio.receitasSocios}"
+						emptyMessage="Nenhum registro encontrado">
+
+						<p:column headerText="Descrição do serviço">
+							<p:outputLabel value="#{item.servico}" />
+						</p:column>
+						<p:column headerText="Valor">
+							<p:outputLabel value="#{item.valor}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+
+					<h3 style="text-align: right; margin-top: none;">
+						<p:outputLabel value="Total sócios: " />
+						<p:outputLabel
+							value="#{resumoServicosBean.relatorio.totalReceitasSocios}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h3>
+
+
+					<h3 style="margin-bottom: none;">Não sócios</h3>
+					<p:dataTable var="item"
+						value="#{resumoServicosBean.relatorio.receitasNaoSocios}"
+						emptyMessage="Nenhum registro encontrado">
+
+						<p:column headerText="Descrição do serviço">
+							<p:outputLabel value="#{item.servico}" />
+						</p:column>
+						<p:column headerText="Valor">
+							<p:outputLabel value="#{item.valor}">
+								<f:convertNumber locale="pt_BR" type="currency"
+									currencySymbol="R$ " />
+							</p:outputLabel>
+						</p:column>
+
+					</p:dataTable>
+
+					<h3 style="text-align: right; margin-top: none;">
+						<p:outputLabel value="Total não sócios: " />
+						<p:outputLabel
+							value="#{resumoServicosBean.relatorio.totalReceitasNaoSocios}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h3>
+
+					<h2>
+						<p:outputLabel value="Total receitas: " />
+						<p:outputLabel
+							value="#{resumoServicosBean.relatorio.totalReceitas}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h2>
+
+					<p:spacer height="15" />
+
+					<h1>
+						<p:outputLabel value="Total geral: " />
+						<p:outputLabel value="#{resumoServicosBean.relatorio.totalGeral}">
+							<f:convertNumber locale="pt_BR" type="currency"
+								currencySymbol="R$ " />
+						</p:outputLabel>
+					</h1>
+
+				</p:outputPanel>
+			</p:fieldset>
+
+			<div class="container-action">
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					style="width:250px;height:50px;" rendered="false"
+					binding="#{resumoServicosBean.btnImprimir}">
+					<p:printer target="painelServicos" />
+				</p:commandButton>
+			</div>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>
