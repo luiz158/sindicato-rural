@@ -12,6 +12,7 @@ import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.DebitoDAO;
 import com.sindicato.entity.Debito;
 import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.util.Constantes;
 
 public class LazyDebitoDataModel extends LazyDataModel<Debito> {
 
@@ -24,12 +25,12 @@ public class LazyDebitoDataModel extends LazyDataModel<Debito> {
 	
 	
     public LazyDebitoDataModel(List<StatusDebitoEnum> statusPermitidos, boolean listaRecolhimento) {
-		debitoDAO = (DebitoDAO) UtilBean.getClassLookup("ControleFinanceiro/DebitoDAOImpl");
+		debitoDAO = (DebitoDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/DebitoDAOImpl");
 		this.statusPermitidos = statusPermitidos;
 		this.listaRecolhimento = listaRecolhimento;
     }
     public LazyDebitoDataModel(List<StatusDebitoEnum> statusPermitidos) {
-		debitoDAO = (DebitoDAO) UtilBean.getClassLookup("ControleFinanceiro/DebitoDAOImpl");
+		debitoDAO = (DebitoDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/DebitoDAOImpl");
 		this.statusPermitidos = statusPermitidos;
 		this.listaRecolhimento = false;
     }

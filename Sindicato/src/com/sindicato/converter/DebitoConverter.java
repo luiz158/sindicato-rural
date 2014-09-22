@@ -8,6 +8,7 @@ import javax.faces.convert.FacesConverter;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.DebitoDAO;
 import com.sindicato.entity.Debito;
+import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "DebitoConverter")
 public class DebitoConverter implements Converter {
@@ -21,7 +22,7 @@ public class DebitoConverter implements Converter {
 			return debito;
 		}
 		try {
-			debitoDAO = (DebitoDAO) UtilBean.getClassLookup("ControleFinanceiro/DebitoDAOImpl");
+			debitoDAO = (DebitoDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/DebitoDAOImpl");
 			debito = debitoDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

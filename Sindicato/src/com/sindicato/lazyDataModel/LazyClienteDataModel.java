@@ -11,6 +11,7 @@ import org.primefaces.model.SortOrder;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.entity.Cliente;
+import com.sindicato.util.Constantes;
 
 public class LazyClienteDataModel extends LazyDataModel<Cliente> {
 
@@ -20,7 +21,7 @@ public class LazyClienteDataModel extends LazyDataModel<Cliente> {
 	private ClienteDAO clienteDAO;
 	
     public LazyClienteDataModel() {
-		clienteDAO = (ClienteDAO) UtilBean.getClassLookup("ControleFinanceiro/ClienteDAOImpl");
+		clienteDAO = (ClienteDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/ClienteDAOImpl");
     }
      
     @Override

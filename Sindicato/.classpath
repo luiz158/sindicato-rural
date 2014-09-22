@@ -9,6 +9,6 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/ControleFinanceiro"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Sindicato-ejb"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

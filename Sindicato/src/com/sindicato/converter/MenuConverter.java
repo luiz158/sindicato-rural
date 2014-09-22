@@ -8,6 +8,7 @@ import javax.faces.convert.FacesConverter;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.MenuDAO;
 import com.sindicato.entity.autenticacao.Menu;
+import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "MenuConverter")
 public class MenuConverter implements Converter {
@@ -21,7 +22,7 @@ public class MenuConverter implements Converter {
 			return menu;
 		}
 		try {
-			menuDAO = (MenuDAO) UtilBean.getClassLookup("ControleFinanceiro/MenuDAOImpl");
+			menuDAO = (MenuDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/MenuDAOImpl");
 			menu = menuDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

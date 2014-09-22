@@ -33,8 +33,9 @@
 							<p:outputLabel value="Recolhimentos de notas emitidas até:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar locale="pt_BR" value="#{recolhimentosAbertoBean.dataAte}"
-								styleClass="date" pattern="dd/MM/yyyy" required="true"
+							<p:calendar locale="pt_BR"
+								value="#{recolhimentosAbertoBean.dataAte}" styleClass="date"
+								pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data final do relatório é obrigatório" />
 						</p:column>
@@ -89,7 +90,8 @@
 							<h:outputText value="#{cliente.matricula}" />
 						</p:column>
 						<p:column headerText="Cliente" styleClass="font-menor">
-							<h:outputText value="#{cliente.nome}" />
+							<a href="##{cliente.nome}"><h:outputText
+									value="#{cliente.nome}" /></a>
 						</p:column>
 						<p:column headerText="Valor pendente a recolher"
 							styleClass="font-menor">
@@ -104,21 +106,20 @@
 					<ui:repeat var="cliente"
 						value="#{recolhimentosAbertoBean.relatorio.listaPendenciasPorCliente}">
 
-						<p style="margin-bottom: 0 !important;">
-							<p:outputLabel
-								value="Matricula: "
-								style="font-size: 12px;font-weight: bold;" />
-							<p:outputLabel
-								value="#{cliente.matricula}"
-								style="font-size: 12px;font-weight: bold;" />
+						<div id="#{cliente.nome}">
+							<p style="margin-bottom: 0 !important;">
+								<p:outputLabel value="Matricula: "
+									style="font-size: 12px;font-weight: bold;" />
+								<p:outputLabel value="#{cliente.matricula}"
+									style="font-size: 12px;font-weight: bold;" />
 								<p:spacer width="40" height="0" />
-							<p:outputLabel
-								value="Cliente:  "
-								style="font-size: 12px;font-weight: bold;" />
-							<p:outputLabel
-								value="#{cliente.nome}"
-								style="font-size: 12px;font-weight: bold;" />
-						</p>
+								<p:outputLabel value="Cliente:  "
+									style="font-size: 12px;font-weight: bold;" />
+
+								<p:outputLabel value="#{cliente.nome}"
+									style="font-size: 12px;font-weight: bold;" />
+							</p>
+						</div>
 
 						<ui:repeat var="nota" value="#{cliente.listaNotasPendentes}">
 
@@ -141,19 +142,23 @@
 								<p:row>
 									<p:column style="border-style: hidden !important;">
 										<p:dataTable var="servico" value="#{nota.servicos}">
-											<p:column headerText="Código do serviço" styleClass="font-menor">
+											<p:column headerText="Código do serviço"
+												styleClass="font-menor">
 												<h:outputText value="#{servico.id}" />
 											</p:column>
-											<p:column headerText="Descrição do serviço" styleClass="font-menor">
+											<p:column headerText="Descrição do serviço"
+												styleClass="font-menor">
 												<h:outputText value="#{servico.descricao}" />
 											</p:column>
-											<p:column headerText="Valor a recolher" styleClass="font-menor">
+											<p:column headerText="Valor a recolher"
+												styleClass="font-menor">
 												<h:outputText value="#{servico.valorARecolher}">
 													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
 														type="currency" />
 												</h:outputText>
 											</p:column>
-											<p:column headerText="Valor ja recolhido" styleClass="font-menor">
+											<p:column headerText="Valor ja recolhido"
+												styleClass="font-menor">
 												<h:outputText value="#{servico.valorJaRecolhido}">
 													<f:convertNumber currencySymbol="R$ " locale="pt_BR"
 														type="currency" />

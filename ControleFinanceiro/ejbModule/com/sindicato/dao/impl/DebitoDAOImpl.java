@@ -70,7 +70,7 @@ public class DebitoDAOImpl implements DebitoDAO {
 					boolean toLowerCase = true;
 					easyCriteria.andStringLike(toLowerCase, filter.getKey(), "%" + filter.getValue().toString() + "%");
 				} else {
-					easyCriteria.andEquals(filter.getKey(), filter.getValue());
+					easyCriteria.andEquals(filter.getKey(), filter.getValue().toString().trim());
 				}
 			}
 		}

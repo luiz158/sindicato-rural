@@ -8,9 +8,9 @@
 
 <ui:composition template="../_template.xhtml">
 	<ui:define name="conteudo">
-		
+
 		<h:outputStylesheet name="relatorios.css" library="css"></h:outputStylesheet>
-		
+
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/faces/index.xhtml" />
 			<p:menuitem value="Relatórios" url="#" />
@@ -33,8 +33,9 @@
 							<p:outputLabel value="Data inicial:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar locale="pt_BR" value="#{retencoesRecolherBean.dataDe}"
-								styleClass="date" pattern="dd/MM/yyyy" required="true"
+							<p:calendar locale="pt_BR"
+								value="#{retencoesRecolherBean.dataDe}" styleClass="date"
+								pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data inicial do relatório é obrigatório" />
 						</p:column>
@@ -44,8 +45,9 @@
 							<p:outputLabel value="Data final:" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:calendar locale="pt_BR" value="#{retencoesRecolherBean.dataAte}"
-								styleClass="date" pattern="dd/MM/yyyy" required="true"
+							<p:calendar locale="pt_BR"
+								value="#{retencoesRecolherBean.dataAte}" styleClass="date"
+								pattern="dd/MM/yyyy" required="true"
 								converter="CalendarConverter"
 								requiredMessage="Data final do relatório é obrigatório" />
 						</p:column>
@@ -99,7 +101,8 @@
 						</f:facet>
 
 						<p:column headerText="Descrição do serviço">
-							<h:outputText value="#{servico.nomeServico}" />
+							<a href="##{servico.nomeServico}"> <h:outputText
+									value="#{servico.nomeServico}" /></a>
 						</p:column>
 						<p:column headerText="Valor a recolher">
 							<h:outputText value="#{servico.totalRetencoesServico}">
@@ -113,13 +116,16 @@
 					<ui:repeat var="servico"
 						value="#{retencoesRecolherBean.relatorio.listaServicos}">
 
-						<h3 style="margin-bottom: none;">
-							<p:outputLabel value="Serviço:  " />
-							<p:outputLabel value="#{servico.nomeServico}" />
-						</h3>
+						<div id="#{servico.nomeServico}">
+							<h3 style="margin-bottom: none;">
+								<p:outputLabel value="Serviço:  " />
+								<p:outputLabel value="#{servico.nomeServico}" />
+							</h3>
+						</div>
 						<p:dataTable var="cliente" value="#{servico.listaClientes}">
 
-							<p:column headerText="Matricula" styleClass="font-menor" width="60">
+							<p:column headerText="Matricula" styleClass="font-menor"
+								width="60">
 								<h:outputText value="#{cliente.matricula}" />
 							</p:column>
 							<p:column headerText="Cliente" styleClass="font-menor">

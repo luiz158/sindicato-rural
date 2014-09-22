@@ -8,6 +8,7 @@ import javax.faces.convert.FacesConverter;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.TipoOcupacaoSoloDAO;
 import com.sindicato.entity.TipoOcupacaoSolo;
+import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "TipoOcupacaoSoloConverter")
 public class TipoOcupacaoSoloConverter implements Converter {
@@ -21,7 +22,7 @@ public class TipoOcupacaoSoloConverter implements Converter {
 			return ocupacao;
 		}
 		try {
-			tipoOcupacaoDAO = (TipoOcupacaoSoloDAO) UtilBean.getClassLookup("ControleFinanceiro/TipoOcupacaoSoloDAOImpl");
+			tipoOcupacaoDAO = (TipoOcupacaoSoloDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/TipoOcupacaoSoloDAOImpl");
 			ocupacao = tipoOcupacaoDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -8,6 +8,7 @@ import javax.faces.convert.FacesConverter;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.ClienteDAO;
 import com.sindicato.entity.Cliente;
+import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "ClienteConverter")
 public class ClienteConverter implements Converter {
@@ -21,7 +22,7 @@ public class ClienteConverter implements Converter {
 			return cliente;
 		}
 		try {
-			clienteDAO = (ClienteDAO) UtilBean.getClassLookup("ControleFinanceiro/ClienteDAOImpl");
+			clienteDAO = (ClienteDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/ClienteDAOImpl");
 			cliente = clienteDAO.searchByID(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

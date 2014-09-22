@@ -8,6 +8,7 @@ import javax.faces.convert.FacesConverter;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.dao.RecebimentoDAO;
 import com.sindicato.entity.DestinoRecebimento;
+import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "DestinoRecebimentoConverter")
 public class DestinoRecebimentoConverter implements Converter {
@@ -21,7 +22,7 @@ public class DestinoRecebimentoConverter implements Converter {
 			return recebimento;
 		}
 		try {
-			recebimentoDAO = (RecebimentoDAO) UtilBean.getClassLookup("ControleFinanceiro/RecebimentoDAOImpl");
+			recebimentoDAO = (RecebimentoDAO) UtilBean.getClassLookup(Constantes.NOME_PROJETO + "/RecebimentoDAOImpl");
 			recebimento = recebimentoDAO.getDestinoRecebimentoById(Integer.parseInt(id));
 		} catch (Exception e) {
 			e.printStackTrace();

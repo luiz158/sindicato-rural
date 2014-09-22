@@ -84,7 +84,8 @@
 						value="#{resumoRecolhimentosBean.relatorio.detalhes}">
 
 						<p:column headerText="Serviço" styleClass="font-menor">
-							<h:outputText value="#{detalhe.descricao} " />
+							<a href="##{detalhe.descricao}"><h:outputText value="#{detalhe.descricao} " /></a>
+							
 						</p:column>
 						<p:column headerText="Recolhimento (R$)" styleClass="font-menor">
 							<h:outputText value="#{detalhe.totalRecolhimentos}">
@@ -127,8 +128,8 @@
 					<ui:repeat var="relatorio"
 						value="#{resumoRecolhimentosBean.relatorio.detalhes}">
 
-						<h3>#{relatorio.descricao}</h3>
-						<p:dataTable var="detalhe" stickyHeader="true"
+						<div id="#{relatorio.descricao}"><h3>#{relatorio.descricao}</h3></div>
+						<p:dataTable var="detalhe"
 							value="#{relatorio.detalhesCliente}">
 
 							<p:column headerText="Matricula" styleClass="font-menor">
@@ -208,6 +209,7 @@
 					<p:printer target="painelServicos" />
 
 				</p:commandButton>
+								
 			</div>
 		</h:form>
 

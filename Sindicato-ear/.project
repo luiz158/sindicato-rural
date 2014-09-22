@@ -3,8 +3,8 @@
 	<name>Sindicato-ear</name>
 	<comment></comment>
 	<projects>
-		<project>ControleFinanceiro</project>
 		<project>Sindicato-web</project>
+		<project>Sindicato-ejb</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

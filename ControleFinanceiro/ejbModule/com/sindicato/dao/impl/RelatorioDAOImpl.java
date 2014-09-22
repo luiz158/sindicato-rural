@@ -188,7 +188,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 	private List<Servico> getServicosRecolhimento(Calendar dataDe,
 			Calendar dataAte) {
 		String jpql = " select DISTINCT(ds.servico) from DebitoServico ds "
-				+ " Where (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
+				+ " Where (ds.recolhimento is not null and ds.recolhimento.valor <> 0) "
 				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte "
 				+ " and ds.debito.status != :cancelado ";
 		TypedQuery<Servico> query = em.createQuery(jpql, Servico.class);
@@ -211,7 +211,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				+ " ds.debito.dataEmissaoNotaCobranca, ds.valor "
 				+ " from DebitoServico ds "
 				+ " Where ds.servico = :servico "
-				+ " and (ds.recolhimento is not null and ds.recolhimento.valor > 0) "
+				+ " and (ds.recolhimento is not null and ds.recolhimento.valor <> 0) "
 				+ "	and ds.recolhimento.data BETWEEN :dataDe and :dataAte "
 				+ " and ds.debito.status != :cancelado "
 				+ " order by ds.debito.cliente.nome ";

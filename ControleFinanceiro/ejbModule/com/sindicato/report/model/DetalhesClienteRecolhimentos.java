@@ -68,7 +68,12 @@ public class DetalhesClienteRecolhimentos implements Serializable {
 		if (valorRecolhido == null || valorRecolhido.compareTo(BigDecimal.ZERO) == 0) {
 			return variacao;
 		}
-		variacao = valorDoServico.subtract(valorRecolhido, MathContext.DECIMAL32);
+//		if(valorDoServico.compareTo(BigDecimal.ZERO) == 1){
+			variacao = valorDoServico.subtract(valorRecolhido, MathContext.DECIMAL32);	
+//		} else {
+//			variacao = valorDoServico.add(valorRecolhido, MathContext.DECIMAL32);
+//		}
+		
 		return variacao;
 	}
 	public static long getSerialversionuid() {
