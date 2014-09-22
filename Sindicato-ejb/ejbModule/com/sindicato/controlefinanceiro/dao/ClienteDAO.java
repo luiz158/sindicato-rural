@@ -7,6 +7,7 @@ import javax.ejb.Remote;
 
 import com.sindicato.controlefinanceiro.entity.Cliente;
 import com.sindicato.controlefinanceiro.entity.InformacaoSocio;
+import com.sindicato.dao.DAO;
 import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
 import com.sindicato.result.ResultOperation;

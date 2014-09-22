@@ -1,4 +1,4 @@
-package com.sindicato.controlefinanceiro.dao;
+package com.sindicato.dao;
 
 import java.util.List;
 

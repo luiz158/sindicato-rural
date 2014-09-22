@@ -7,7 +7,7 @@ import javax.ejb.Stateful;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-import com.sindicato.controlefinanceiro.dao.impl.DAOImpl;
+import com.sindicato.dao.impl.DAOImpl;
 import com.sindicato.painelcontrole.dao.UsuarioDAO;
 import com.sindicato.painelcontrole.entity.Menu;
 import com.sindicato.painelcontrole.entity.Perfil;

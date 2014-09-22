@@ -20,6 +20,7 @@ import com.sindicato.controlefinanceiro.dao.ClienteDAO;
 import com.sindicato.controlefinanceiro.entity.Cliente;
 import com.sindicato.controlefinanceiro.entity.InformacaoSocio;
 import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
+import com.sindicato.dao.impl.DAOImpl;
 import com.sindicato.result.InformacaoMensalidade;
 import com.sindicato.result.MensalidadePaga;
 import com.sindicato.result.ResultOperation;

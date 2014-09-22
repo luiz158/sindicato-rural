@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.ejb.Remote;
 
-import com.sindicato.controlefinanceiro.dao.DAO;
+import com.sindicato.dao.DAO;
 import com.sindicato.painelcontrole.entity.Menu;
 import com.sindicato.painelcontrole.entity.Perfil;
 import com.sindicato.painelcontrole.entity.Usuario;

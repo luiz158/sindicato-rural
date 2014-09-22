@@ -24,6 +24,9 @@ public class Menu implements Serializable {
 	@JoinColumn(name="menupai_id")
 	private Menu menuPai;
 	
+	@ManyToOne
+	private Modulo modulo;
+	
 	private String descricao;
 	private String url;
 

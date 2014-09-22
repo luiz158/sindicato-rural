@@ -1,4 +1,4 @@
-package com.sindicato.controlefinanceiro.dao.impl;
+package com.sindicato.dao.impl;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import com.sindicato.controlefinanceiro.dao.DAO;
+import com.sindicato.dao.DAO;
 
 public class DAOImpl<T, K> implements DAO<T, K> {
 
