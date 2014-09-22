@@ -8,7 +8,7 @@ import java.util.function.ToLongFunction;
 
 import org.primefaces.model.SortOrder;
 
-import com.sindicato.entity.Cliente;
+import com.sindicato.controlefinanceiro.entity.Cliente;
  
 public class LazyClienteSorter implements Comparator<Cliente> {
  

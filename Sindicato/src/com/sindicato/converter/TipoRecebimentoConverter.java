@@ -6,8 +6,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.RecebimentoDAO;
-import com.sindicato.entity.TipoRecebimento;
+import com.sindicato.controlefinanceiro.dao.RecebimentoDAO;
+import com.sindicato.controlefinanceiro.entity.TipoRecebimento;
 import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "TipoRecebimentoConverter")

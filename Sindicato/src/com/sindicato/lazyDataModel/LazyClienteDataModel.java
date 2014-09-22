@@ -9,8 +9,8 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.ClienteDAO;
-import com.sindicato.entity.Cliente;
+import com.sindicato.controlefinanceiro.dao.ClienteDAO;
+import com.sindicato.controlefinanceiro.entity.Cliente;
 import com.sindicato.util.Constantes;
 
 public class LazyClienteDataModel extends LazyDataModel<Cliente> {

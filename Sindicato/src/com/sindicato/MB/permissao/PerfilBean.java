@@ -11,11 +11,11 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.component.tabview.TabView;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.ListasDAO;
-import com.sindicato.dao.MenuDAO;
-import com.sindicato.dao.PerfilDAO;
-import com.sindicato.entity.autenticacao.Menu;
-import com.sindicato.entity.autenticacao.Perfil;
+import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.painelcontrole.dao.MenuDAO;
+import com.sindicato.painelcontrole.dao.PerfilDAO;
+import com.sindicato.painelcontrole.entity.Menu;
+import com.sindicato.painelcontrole.entity.Perfil;
 
 @ManagedBean
 @ViewScoped

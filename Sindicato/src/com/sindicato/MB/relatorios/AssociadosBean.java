@@ -17,8 +17,8 @@ import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.RelatorioDAO;
-import com.sindicato.report.model.RelatorioAssociados;
+import com.sindicato.controlefinanceiro.dao.RelatorioDAO;
+import com.sindicato.controlefinanceiro.report.model.RelatorioAssociados;
 import com.sindicato.reports.GeradorReports;
 
 @ManagedBean
