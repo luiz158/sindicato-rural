@@ -34,7 +34,8 @@
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{perfilBean.selecionaPerfil}" />
 
-						<p:column headerText="Código" sortBy="#{perfil.id}" filterBy="#{perfil.id}">
+						<p:column headerText="Código" sortBy="#{perfil.id}"
+							filterBy="#{perfil.id}">
 							<p:outputLabel value="#{perfil.id}" />
 						</p:column>
 						<p:column headerText="Descrição" sortBy="#{perfil.descricao}"
@@ -75,20 +76,38 @@
 									<p:outputLabel value="Menus" />
 								</p:column>
 								<p:column styleClass="colInput">
+									<p:tree value="#{perfilBean.mainMenu}" var="menu" 
+										selectionMode="checkbox"
+										selection="#{perfilBean.menusSelecionados}">
 
-									<p:selectCheckboxMenu
+										<p:treeNode icon="ui-icon-note">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+
+										<p:treeNode type="submenu" icon="ui-icon-home">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+										<p:treeNode type="itemmenu" icon="ui-icon-tag">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+									</p:tree>
+
+									<!-- <p:selectCheckboxMenu
 										value="#{perfilBean.perfilSelecionado.menus}"
 										converter="MenuConverter" label="Menus" filter="true"
-										filterText="Filter" filterMatchMode="startsWith" style="width:350px;">
+										filterText="Filter" filterMatchMode="startsWith"
+										style="width:350px;">
 
 										<f:attribute name="collectionType" value="java.util.ArrayList" />
 										<f:selectItems value="#{perfilBean.menusDisponiveis}" var="m"
 											itemValue="#{m}" itemLabel="#{m.descricao}" />
-									</p:selectCheckboxMenu>
+									</p:selectCheckboxMenu> -->
 
 								</p:column>
 							</p:row>
 						</p:panelGrid>
+
+
 					</p:fieldset>
 
 					<div class="container-action">
@@ -96,8 +115,9 @@
 							style="width:200px;height:50px;" update="@form" process="@this"
 							actionListener="#{perfilBean.reset}" />
 
-						<p:commandButton action="#{perfilBean.salvar}" update=":tabView,:growl"
-							value="Salvar alterações" style="width:200px;height:50px;" />
+						<p:commandButton action="#{perfilBean.salvar}"
+							update=":tabView,:growl" value="Salvar alterações"
+							style="width:200px;height:50px;" />
 					</div>
 				</h:form>
 			</p:tab>

@@ -64,6 +64,11 @@ public class Menu implements Serializable {
 	}
 	
 	@Override
+	public String toString(){
+		return descricao;
+	}
+	
+	@Override
 	public boolean equals(Object obj){
 		if(obj == null){
 			return false;

@@ -128,7 +128,8 @@ public class ListasDAOImpl implements ListasDAO {
 	@Override
 	public List<Menu> getTodosOsMenus() {
 		try {
-			String strQuery = " select p from Menu p ";
+			String strQuery = " select m from Menu m "
+					+ "order by m.ordem asc ";
 			TypedQuery<Menu> query = em.createQuery(strQuery, Menu.class);
 			return query.getResultList();
 		} catch (NoResultException e) {
