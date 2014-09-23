@@ -9,9 +9,9 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.DebitoDAO;
-import com.sindicato.entity.Debito;
-import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.controlefinanceiro.dao.DebitoDAO;
+import com.sindicato.controlefinanceiro.entity.Debito;
+import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
 import com.sindicato.util.Constantes;
 
 public class LazyDebitoDataModel extends LazyDataModel<Debito> {

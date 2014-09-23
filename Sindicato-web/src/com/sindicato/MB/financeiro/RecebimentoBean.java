@@ -13,13 +13,13 @@ import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.FinanceiroDAO;
-import com.sindicato.dao.ListasDAO;
-import com.sindicato.entity.Debito;
-import com.sindicato.entity.DestinoRecebimento;
-import com.sindicato.entity.Recebimento;
-import com.sindicato.entity.TipoRecebimento;
-import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.controlefinanceiro.dao.FinanceiroDAO;
+import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.controlefinanceiro.entity.Debito;
+import com.sindicato.controlefinanceiro.entity.DestinoRecebimento;
+import com.sindicato.controlefinanceiro.entity.Recebimento;
+import com.sindicato.controlefinanceiro.entity.TipoRecebimento;
+import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
 import com.sindicato.lazyDataModel.LazyDebitoDataModel;
 import com.sindicato.result.ResultOperation;
 

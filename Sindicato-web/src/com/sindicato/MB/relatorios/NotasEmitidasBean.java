@@ -9,8 +9,8 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.fieldset.Fieldset;
 
-import com.sindicato.dao.RelatorioDAO;
-import com.sindicato.report.model.RelatorioNotasEmitidas;
+import com.sindicato.controlefinanceiro.dao.RelatorioDAO;
+import com.sindicato.controlefinanceiro.report.model.RelatorioNotasEmitidas;
 
 @ManagedBean
 @ViewScoped

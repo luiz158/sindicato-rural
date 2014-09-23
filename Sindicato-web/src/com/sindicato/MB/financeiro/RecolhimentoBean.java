@@ -12,13 +12,13 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.FinanceiroDAO;
-import com.sindicato.dao.ListasDAO;
-import com.sindicato.dao.ModoPagamentoDAO;
-import com.sindicato.entity.Debito;
-import com.sindicato.entity.DebitoServico;
-import com.sindicato.entity.ModoPagamento;
-import com.sindicato.entity.Enum.StatusDebitoEnum;
+import com.sindicato.controlefinanceiro.dao.FinanceiroDAO;
+import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.controlefinanceiro.dao.ModoPagamentoDAO;
+import com.sindicato.controlefinanceiro.entity.Debito;
+import com.sindicato.controlefinanceiro.entity.DebitoServico;
+import com.sindicato.controlefinanceiro.entity.ModoPagamento;
+import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
 import com.sindicato.lazyDataModel.LazyDebitoDataModel;
 import com.sindicato.result.ResultOperation;
 

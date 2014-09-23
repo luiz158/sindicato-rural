@@ -5,8 +5,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import com.sindicato.dao.RelatorioDAO;
-import com.sindicato.report.model.RelatorioInscricaoEstadual;
+import com.sindicato.controlefinanceiro.dao.RelatorioDAO;
+import com.sindicato.controlefinanceiro.report.model.RelatorioInscricaoEstadual;
 
 @ManagedBean
 @ViewScoped

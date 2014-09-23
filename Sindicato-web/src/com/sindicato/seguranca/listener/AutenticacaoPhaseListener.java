@@ -10,9 +10,9 @@ import javax.servlet.http.HttpSession;
 
 import com.sindicato.MB.seguranca.LoginBean;
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.entity.autenticacao.Menu;
-import com.sindicato.entity.autenticacao.Perfil;
-import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.painelcontrole.entity.Menu;
+import com.sindicato.painelcontrole.entity.Perfil;
+import com.sindicato.painelcontrole.entity.Usuario;
 
 public class AutenticacaoPhaseListener implements PhaseListener {
 

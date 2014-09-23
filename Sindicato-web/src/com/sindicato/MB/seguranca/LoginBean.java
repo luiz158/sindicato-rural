@@ -22,11 +22,11 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.MenuDAO;
-import com.sindicato.dao.UsuarioDAO;
-import com.sindicato.entity.autenticacao.Menu;
-import com.sindicato.entity.autenticacao.Perfil;
-import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.painelcontrole.dao.MenuDAO;
+import com.sindicato.painelcontrole.dao.UsuarioDAO;
+import com.sindicato.painelcontrole.entity.Menu;
+import com.sindicato.painelcontrole.entity.Perfil;
+import com.sindicato.painelcontrole.entity.Usuario;
 import com.sindicato.result.ResultOperation;
 
 @ManagedBean

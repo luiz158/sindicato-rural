@@ -9,8 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.DestinoRecebimentoDAO;
-import com.sindicato.entity.DestinoRecebimento;
+import com.sindicato.controlefinanceiro.dao.DestinoRecebimentoDAO;
+import com.sindicato.controlefinanceiro.entity.DestinoRecebimento;
 
 @ManagedBean
 @ViewScoped

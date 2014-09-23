@@ -6,8 +6,8 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.dao.PerfilDAO;
-import com.sindicato.entity.autenticacao.Perfil;
+import com.sindicato.painelcontrole.dao.PerfilDAO;
+import com.sindicato.painelcontrole.entity.Perfil;
 import com.sindicato.util.Constantes;
 
 @FacesConverter(value = "PerfilConverter")
