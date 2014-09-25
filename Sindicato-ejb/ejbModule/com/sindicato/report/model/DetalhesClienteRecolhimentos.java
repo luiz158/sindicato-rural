@@ -65,14 +65,7 @@ public class DetalhesClienteRecolhimentos implements Serializable {
 		if (valorDoServico == null || valorDoServico.compareTo(BigDecimal.ZERO) == 0) {
 			return variacao;
 		}
-		if (valorRecolhido == null || valorRecolhido.compareTo(BigDecimal.ZERO) == 0) {
-			return variacao;
-		}
-//		if(valorDoServico.compareTo(BigDecimal.ZERO) == 1){
-			variacao = valorDoServico.subtract(valorRecolhido, MathContext.DECIMAL32);	
-//		} else {
-//			variacao = valorDoServico.add(valorRecolhido, MathContext.DECIMAL32);
-//		}
+		variacao = valorDoServico.subtract(valorRecolhido, MathContext.DECIMAL32);	
 		
 		return variacao;
 	}
