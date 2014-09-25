@@ -10,11 +10,9 @@ import com.sindicato.controlefinanceiro.entity.DebitoServico;
 import com.sindicato.controlefinanceiro.entity.DestinoRecebimento;
 import com.sindicato.controlefinanceiro.entity.TipoRecebimento;
 import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
-import com.sindicato.painelcontrole.entity.Menu;
-import com.sindicato.painelcontrole.entity.Perfil;
 
 @Local
-public interface ListasDAO {
+public interface ListasCFDAO {
 
 	List<Cliente> getClientesComDebitosNoStatus(StatusDebitoEnum status);
 	List<Debito> getDebitosDoClienteNoStatus(Cliente cliente, StatusDebitoEnum status);
@@ -27,7 +25,4 @@ public interface ListasDAO {
 	
 	List<DebitoServico> getTodosOsServicosComRetencaoDoDebito(Debito debito);
 
-	List<Perfil> getTodosOsPerfis();
-	List<Menu> getTodosOsMenus();
-	
 }

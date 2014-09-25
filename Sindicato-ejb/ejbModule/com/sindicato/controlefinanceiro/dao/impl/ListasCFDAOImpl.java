@@ -8,18 +8,16 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.controlefinanceiro.dao.ListasCFDAO;
 import com.sindicato.controlefinanceiro.entity.Cliente;
 import com.sindicato.controlefinanceiro.entity.Debito;
 import com.sindicato.controlefinanceiro.entity.DebitoServico;
 import com.sindicato.controlefinanceiro.entity.DestinoRecebimento;
 import com.sindicato.controlefinanceiro.entity.TipoRecebimento;
 import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
-import com.sindicato.painelcontrole.entity.Menu;
-import com.sindicato.painelcontrole.entity.Perfil;
 
 @Stateless
-public class ListasDAOImpl implements ListasDAO {
+public class ListasCFDAOImpl implements ListasCFDAO {
 
 	@PersistenceContext(name="ControleFinanceiro")
 	private EntityManager em;
@@ -114,27 +112,5 @@ public class ListasDAOImpl implements ListasDAO {
 		}
 	}
 
-	@Override
-	public List<Perfil> getTodosOsPerfis() {
-		try {
-			String strQuery = " select p from Perfil p ";
-			TypedQuery<Perfil> query = em.createQuery(strQuery, Perfil.class);
-			return query.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
-
-	@Override
-	public List<Menu> getTodosOsMenus() {
-		try {
-			String strQuery = " select m from Menu m "
-					+ "order by m.ordem asc ";
-			TypedQuery<Menu> query = em.createQuery(strQuery, Menu.class);
-			return query.getResultList();
-		} catch (NoResultException e) {
-			return null;
-		}
-	}
 
 }
