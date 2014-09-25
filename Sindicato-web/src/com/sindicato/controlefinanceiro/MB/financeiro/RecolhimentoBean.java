@@ -13,7 +13,7 @@ import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.controlefinanceiro.dao.FinanceiroDAO;
-import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.controlefinanceiro.dao.ListasCFDAO;
 import com.sindicato.controlefinanceiro.dao.ModoPagamentoDAO;
 import com.sindicato.controlefinanceiro.entity.Debito;
 import com.sindicato.controlefinanceiro.entity.DebitoServico;
@@ -29,7 +29,7 @@ public class RecolhimentoBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EJB
-	private ListasDAO listasDAO;
+	private ListasCFDAO listasDAO;
 	@EJB
 	private FinanceiroDAO financeiroDAO;
 	@EJB

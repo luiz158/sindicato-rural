@@ -14,7 +14,7 @@ import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.controlefinanceiro.dao.FinanceiroDAO;
-import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.controlefinanceiro.dao.ListasCFDAO;
 import com.sindicato.controlefinanceiro.entity.Debito;
 import com.sindicato.controlefinanceiro.entity.DestinoRecebimento;
 import com.sindicato.controlefinanceiro.entity.Recebimento;
@@ -29,7 +29,7 @@ public class RecebimentoBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@EJB private ListasDAO listasDAO;
+	@EJB private ListasCFDAO listasDAO;
 	@EJB private FinanceiroDAO financeiroDAO;
 
 	private Recebimento recebimento;

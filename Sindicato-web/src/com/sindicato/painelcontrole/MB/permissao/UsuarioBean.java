@@ -12,7 +12,7 @@ import org.primefaces.component.password.Password;
 import org.primefaces.component.tabview.TabView;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.painelcontrole.dao.ListasPCDAO;
 import com.sindicato.painelcontrole.dao.UsuarioDAO;
 import com.sindicato.painelcontrole.entity.Perfil;
 import com.sindicato.painelcontrole.entity.Usuario;
@@ -27,7 +27,7 @@ public class UsuarioBean implements Serializable {
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 
 	@EJB private UsuarioDAO usuarioDAO;
-	@EJB private ListasDAO listasDAO;
+	@EJB private ListasPCDAO listasDAO;
 
 	private Usuario usuarioSelecionado;
 	private List<Usuario> usuarios;

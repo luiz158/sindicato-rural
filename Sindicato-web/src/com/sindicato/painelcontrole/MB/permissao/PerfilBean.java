@@ -22,7 +22,7 @@ import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultSubMenu;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.painelcontrole.dao.ListasPCDAO;
 import com.sindicato.painelcontrole.dao.MenuDAO;
 import com.sindicato.painelcontrole.dao.PerfilDAO;
 import com.sindicato.painelcontrole.entity.Menu;
@@ -36,7 +36,7 @@ public class PerfilBean implements Serializable {
 
 	@EJB private PerfilDAO perfilDAO;
 	@EJB private MenuDAO menuDAO;
-	@EJB private ListasDAO listasDAO;
+	@EJB private ListasPCDAO listasDAO;
 
 	private Perfil perfilSelecionado;
 	private List<Perfil> perfis;
@@ -45,6 +45,7 @@ public class PerfilBean implements Serializable {
 
 	private TabView tabView;
 
+	//private 
 	private CheckboxTreeNode MainMenu;
 	private TreeNode[] menusSelecionados;
 

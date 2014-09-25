@@ -25,7 +25,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.controlefinanceiro.dao.DebitoDAO;
 import com.sindicato.controlefinanceiro.dao.FinanceiroDAO;
-import com.sindicato.controlefinanceiro.dao.ListasDAO;
+import com.sindicato.controlefinanceiro.dao.ListasCFDAO;
 import com.sindicato.controlefinanceiro.entity.Cliente;
 import com.sindicato.controlefinanceiro.entity.Debito;
 import com.sindicato.controlefinanceiro.entity.Enum.StatusDebitoEnum;
@@ -43,7 +43,7 @@ public class NotaCobrancaBean implements Serializable {
 	private Usuario usuarioLogado = UtilBean.getUsuarioLogado();
 	
 	@EJB private FinanceiroDAO financeiroDAO;
-	@EJB private ListasDAO listasDAO;
+	@EJB private ListasCFDAO listasDAO;
 	@EJB private DebitoDAO debitoDAO;
 
 	private List<Cliente> clientes;
