@@ -14,7 +14,7 @@
 	</navigation-rule>
 
 	<lifecycle>
-		<phase-listener>com.sindicato.seguranca.listener.AutenticacaoPhaseListener</phase-listener>
+		<phase-listener>com.sindicato.phaselistener.AutenticacaoPhaseListener</phase-listener>
 	</lifecycle>
 
 </faces-config>

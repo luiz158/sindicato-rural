@@ -62,6 +62,13 @@ public class Menu implements Serializable {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	public Modulo getModulo() {
+		return modulo;
+	}
+	public void setModulo(Modulo modulo) {
+		this.modulo = modulo;
+	}
+	
 	
 	@Override
 	public String toString(){

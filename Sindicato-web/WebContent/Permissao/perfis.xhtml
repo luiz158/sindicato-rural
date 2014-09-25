@@ -55,7 +55,7 @@
 
 							<p:row>
 								<p:column styleClass="colLabel" style="width:290px;">
-									<p:outputLabel value="Código" />
+									<p:outputLabel value="Código:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{perfilBean.perfilSelecionado.id}"
@@ -64,7 +64,7 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
-									<p:outputLabel value="Descrição" />
+									<p:outputLabel value="Descrição:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{perfilBean.perfilSelecionado.descricao}"
@@ -73,35 +73,29 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
-									<p:outputLabel value="Menus" />
+									<p:outputLabel value="Selecione os acessos:" />
 								</p:column>
 								<p:column styleClass="colInput">
-									<p:tree value="#{perfilBean.mainMenu}" var="menu" 
-										selectionMode="checkbox"
-										selection="#{perfilBean.menusSelecionados}">
+									<p:accordionPanel value="#{perfilBean.modulos}" var="modulo" activeIndex="10" >
+										<p:tab title="Modulo: #{modulo.descricao}" >
 
-										<p:treeNode icon="ui-icon-note">
-											<h:outputText value="#{menu.toString()}" />
-										</p:treeNode>
+											<p:tree value="#{perfilBean.getMenusPorModulo(modulo.id)}"
+												var="menu" selectionMode="checkbox"
+												selection="#{perfilBean.menusSelecionados}">
 
-										<p:treeNode type="submenu" icon="ui-icon-home">
-											<h:outputText value="#{menu.toString()}" />
-										</p:treeNode>
-										<p:treeNode type="itemmenu" icon="ui-icon-tag">
-											<h:outputText value="#{menu.toString()}" />
-										</p:treeNode>
-									</p:tree>
+												<p:treeNode icon="ui-icon-note">
+													<h:outputText value="#{menu.toString()}" />
+												</p:treeNode>
 
-									<!-- <p:selectCheckboxMenu
-										value="#{perfilBean.perfilSelecionado.menus}"
-										converter="MenuConverter" label="Menus" filter="true"
-										filterText="Filter" filterMatchMode="startsWith"
-										style="width:350px;">
-
-										<f:attribute name="collectionType" value="java.util.ArrayList" />
-										<f:selectItems value="#{perfilBean.menusDisponiveis}" var="m"
-											itemValue="#{m}" itemLabel="#{m.descricao}" />
-									</p:selectCheckboxMenu> -->
+												<p:treeNode type="submenu" icon="ui-icon-home">
+													<h:outputText value="#{menu.toString()}" />
+												</p:treeNode>
+												<p:treeNode type="itemmenu" icon="ui-icon-tag">
+													<h:outputText value="#{menu.toString()}" />
+												</p:treeNode>
+											</p:tree>
+										</p:tab>
+									</p:accordionPanel>
 
 								</p:column>
 							</p:row>

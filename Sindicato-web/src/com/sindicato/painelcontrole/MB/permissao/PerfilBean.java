@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.ToDoubleFunction;
 import java.util.function.ToIntFunction;
@@ -26,6 +28,7 @@ import com.sindicato.painelcontrole.dao.ListasPCDAO;
 import com.sindicato.painelcontrole.dao.MenuDAO;
 import com.sindicato.painelcontrole.dao.PerfilDAO;
 import com.sindicato.painelcontrole.entity.Menu;
+import com.sindicato.painelcontrole.entity.Modulo;
 import com.sindicato.painelcontrole.entity.Perfil;
 
 @ManagedBean
@@ -45,8 +48,8 @@ public class PerfilBean implements Serializable {
 
 	private TabView tabView;
 
-	//private 
-	private CheckboxTreeNode MainMenu;
+	private List<Modulo> modulos;
+	private Map<Integer, CheckboxTreeNode> menusDisponiveisPorModulo;
 	private TreeNode[] menusSelecionados;
 
 	public void novo() {
@@ -106,7 +109,13 @@ public class PerfilBean implements Serializable {
 		return submenu;
 	}
 
-	
+	public CheckboxTreeNode getMenusPorModulo(int idModulo){
+		if(menusDisponiveisPorModulo == null){
+			carregaMenu();
+		}
+		
+		return menusDisponiveisPorModulo.get(idModulo);
+	}
 	private List<Menu> carregaMenusPermitidos() {
 		List<Menu> menusPermitidos = new ArrayList<Menu>();
 		for (Menu menu : perfilSelecionado.getMenus()) {
@@ -185,40 +194,50 @@ public class PerfilBean implements Serializable {
 	@SuppressWarnings("unused")
 	private void carregaMenu() {
 
-		MainMenu = new CheckboxTreeNode();
-
+		menusDisponiveisPorModulo = new HashMap<Integer, CheckboxTreeNode>();
 		List<Menu> menusDisponiveis = getMenusDisponiveis();
 		List<Menu> menusPermitidos = carregaMenusPermitidos();
 		
-		for (Menu menu : menusDisponiveis) {
+		for (Modulo modulo : getModulos()) {
+			
+			CheckboxTreeNode MainMenu = new CheckboxTreeNode();
 
-			if (menu.getMenuPai() == null || menu.getMenuPai().getId() == 0) {
-				TreeNode submenu = new CheckboxTreeNode("submenu", menu, MainMenu);
-				submenu.setExpanded(true);
-				
-				if(menusPermitidos.contains(menu)){
-					submenu.setSelected(true);
+			for (Menu menu : menusDisponiveis) {
+
+				if(menu.getModulo().getId() != modulo.getId()){
+					continue;
 				}
+				
+				if (menu.getMenuPai() == null || menu.getMenuPai().getId() == 0) {
+					TreeNode submenu = new CheckboxTreeNode("submenu", menu, MainMenu);
+					submenu.setExpanded(true);
+					
+					if(menusPermitidos.contains(menu)){
+						submenu.setSelected(true);
+					}
 
-				if (getMenusFilho(menu.getId()) != null) {
-					for (Menu menu01 : getMenusFilho(menu.getId())) {
-						
-						if (getMenusFilho(menu01.getId()) == null) {
-							TreeNode item = new CheckboxTreeNode("itemmenu", menu01, submenu);
+					if (getMenusFilho(menu.getId()) != null) {
+						for (Menu menu01 : getMenusFilho(menu.getId())) {
 							
-							if(menusPermitidos.contains(menu01)){
-								submenu.setSelected(true);
-							}
-						} else {
-							TreeNode item = new CheckboxTreeNode("submenu", menu01, submenu);
-							item.setExpanded(true);
-							if(menusPermitidos.contains(menu01)){
-								submenu.setSelected(true);
+							if (getMenusFilho(menu01.getId()) == null) {
+								TreeNode item = new CheckboxTreeNode("itemmenu", menu01, submenu);
+								
+								if(menusPermitidos.contains(menu01)){
+									submenu.setSelected(true);
+								}
+							} else {
+								TreeNode item = new CheckboxTreeNode("submenu", menu01, submenu);
+								item.setExpanded(true);
+								if(menusPermitidos.contains(menu01)){
+									submenu.setSelected(true);
+								}
 							}
 						}
 					}
 				}
 			}
+			
+			menusDisponiveisPorModulo.put(modulo.getId(), MainMenu);
 		}
 	}
 
@@ -255,21 +274,26 @@ public class PerfilBean implements Serializable {
 		return tabView;
 	}
 
-	public CheckboxTreeNode getMainMenu() {
-		return MainMenu;
-	}
 	public TreeNode[] getMenusSelecionados() {
 		return menusSelecionados;
 	}
+	public List<Modulo> getModulos() {
+		if(modulos == null){
+			modulos = listasDAO.getTodosModulos();
+		}
+		return modulos;
+	}
 
+	public Map<Integer, CheckboxTreeNode> getMenusDisponiveisPorModulo() {
+		return menusDisponiveisPorModulo;
+	}
+	public void setMenusDisponiveisPorModulo(
+			Map<Integer, CheckboxTreeNode> menusDisponiveisPorModulo) {
+		this.menusDisponiveisPorModulo = menusDisponiveisPorModulo;
+	}
 	public void setMenusSelecionados(TreeNode[] menusSelecionados) {
 		this.menusSelecionados = menusSelecionados;
 	}
-
-	public void setMainMenu(CheckboxTreeNode mainMenu) {
-		MainMenu = mainMenu;
-	}
-
 	public void setTabView(TabView tabView) {
 		this.tabView = tabView;
 	}
