@@ -10,7 +10,8 @@
 	<h:head>
 		<title>Sindicato Rural de Cotia - Controle Financeiro</title>
 		<h:outputStylesheet name="login.css" library="css"></h:outputStylesheet>
-		<link rel="shortcut icon" type="image/x-icon" href="#{resource['imagens/favicon.ico']}"/>
+		<link rel="shortcut icon" type="image/x-icon"
+			href="#{resource['imagens/favicon.ico']}" />
 	</h:head>
 	<h:body>
 		<div id="main-wrapper"
@@ -52,8 +53,13 @@
 						<p:commandButton value="Entrar" styleClass="panel_button_center"
 							action="#{loginBean.autenticar}" update="@form" />
 
+						<ui:include src="/dialog_modulos.xhtml"></ui:include>
+
+
 					</h:form>
 				</div>
+
+
 			</center>
 		</div>
 	</h:body>

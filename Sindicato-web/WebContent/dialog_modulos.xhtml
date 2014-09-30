@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<p:dialog appendTo="@form" closable="false" closeOnEscape="false" maximizable="false"
+		resizable="false" header="Selecione o modulo que deseja trabalhar"
+		binding="#{loginBean.dialogModulos}" modal="true" showEffect="fade"
+		visible="false" widgetVar="modalDialog" rendered="#{loginBean.qtdModulos > 0}">
+
+<!-- 		<h1>${loginBean.qtdModulos}</h1> -->
+
+		<ui:repeat var="modulo" value="#{loginBean.modulosPermitidos}" >
+			<div style="margin: 20px; width: 90%;">
+				<p:commandButton action="#{loginBean.selecionarModulo(modulo)}"
+					icon="#{modulo.icone}" value="#{modulo.descricao}"
+					style="width:250px;height:80px;"  />
+			</div>
+		</ui:repeat>
+
+	</p:dialog>
+</f:view>
+</html>

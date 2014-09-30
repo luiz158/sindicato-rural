@@ -16,6 +16,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
+import org.primefaces.component.dialog.Dialog;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -25,6 +26,7 @@ import com.sindicato.MB.util.UtilBean;
 import com.sindicato.painelcontrole.dao.MenuDAO;
 import com.sindicato.painelcontrole.dao.UsuarioDAO;
 import com.sindicato.painelcontrole.entity.Menu;
+import com.sindicato.painelcontrole.entity.Modulo;
 import com.sindicato.painelcontrole.entity.Perfil;
 import com.sindicato.painelcontrole.entity.Usuario;
 import com.sindicato.result.ResultOperation;
@@ -41,7 +43,11 @@ public class LoginBean implements Serializable {
 	private String usuario;
 	private String senha;
 	private MenuModel model;
-
+	private List<Modulo> modulosPermitidos;
+	private Modulo moduloSelecionado;
+	private Dialog dialogModulos;
+	private int qtdModulos;
+	
 	public String autenticar() {
 
 		usuarioLogado = null;
@@ -53,9 +59,24 @@ public class LoginBean implements Serializable {
 
 			if (result.isSuccess()) {
 				usuarioLogado = usuarioDAO.getUsuarioAutenticado();
-				carregaMenu();
+				//carregaMenu();
 
-				retorno = "/faces/index?faces-redirect=true";
+				if(usuarioLogado.getPerfis().size() == 0){
+					UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_FATAL,
+							"Oops", "Usuário não possui nenhum perfil de acesso");
+					return null;
+				}
+				
+				modulosPermitidos = usuarioDAO.extraiModulosPermitidos(usuarioLogado.getPerfis());
+				if(modulosPermitidos.size() == 1){
+					moduloSelecionado = modulosPermitidos.get(0);
+					carregaMenu();
+					retorno = "/faces/index?faces-redirect=true";
+				} else {
+					dialogModulos.setVisible(true);
+					return null;
+				}
+				
 			} else {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Atenção", result.getMessage());
@@ -77,14 +98,49 @@ public class LoginBean implements Serializable {
 		return "/faces/login?faces-redirect=true";
 	}
 
+	public String selecionarModulo(Modulo modulo){
+		this.moduloSelecionado = modulo;
+		carregaMenu();
+		dialogModulos = null;
+		return "/faces/index?faces-redirect=true";
+	}
+//	public String selecionarModulo(ActionEvent event) {
+//	    MenuItem menuItem = ((MenuActionEvent) event).getMenuItem();
+//	    int idModulo = Integer.parseInt(menuItem.getParams().get("idModulo").get(0));
+//		
+//	    for (Modulo modulo : modulosPermitidos) {
+//			if(modulo.getId() == idModulo){
+//				moduloSelecionado = modulo;
+//			}
+//		}
+//	    
+//		carregaMenu();
+//		return "/faces/index?faces-redirect=true";
+//	}
+//	
 	private void carregaMenu() {
 
+		if(modulosPermitidos == null || modulosPermitidos.size() == 0){
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+					"Erro",
+					"Nenhum módulo foi selecionado");
+			return;
+		}
+		
+		if(moduloSelecionado == null){
+			moduloSelecionado = modulosPermitidos.get(0);
+		}
+		
 		model = new DefaultMenuModel();
-
 		List<Menu> menusPermitidos = carregaMenusPermitidos();
 
 		for (Menu menu : menusPermitidos) {
 
+			// exibe apenas menus do módulo selecionado
+			if(moduloSelecionado.equals(menu.getModulo()) == false){
+				continue;
+			}
+			
 			if (menu.getMenuPai() == null || menu.getMenuPai().getId() == 0) {
 				DefaultSubMenu submenu = new DefaultSubMenu();
 				submenu.setLabel(menu.getDescricao());
@@ -242,4 +298,34 @@ public class LoginBean implements Serializable {
 		return usuarioLogado;
 	}
 
+	public List<Modulo> getModulosPermitidos() {
+		if(modulosPermitidos == null){
+			modulosPermitidos = new ArrayList<Modulo>();
+		}
+		return modulosPermitidos;
+	}
+
+	public void setModulosPermitidos(List<Modulo> modulosPermitidos) {
+		this.modulosPermitidos = modulosPermitidos;
+	}
+
+	public Dialog getDialogModulos() {
+		return dialogModulos;
+	}
+
+	public void setDialogModulos(Dialog dialogModulos) {
+		this.dialogModulos = dialogModulos;
+	}
+	public int getQtdModulos() {
+		if(modulosPermitidos == null){
+			return 0;
+		}
+		qtdModulos = modulosPermitidos.size();
+		return qtdModulos;
+	}
+
+
+
+
+	
 }

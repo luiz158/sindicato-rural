@@ -76,32 +76,31 @@
 									<p:outputLabel value="Selecione os acessos:" />
 								</p:column>
 								<p:column styleClass="colInput">
-									<p:accordionPanel value="#{perfilBean.modulos}" var="modulo" activeIndex="10" >
-										<p:tab title="Modulo: #{modulo.descricao}" >
 
-											<p:tree value="#{perfilBean.getMenusPorModulo(modulo.id)}"
-												var="menu" selectionMode="checkbox"
-												selection="#{perfilBean.menusSelecionados}">
+									<p:tree value="#{perfilBean.menuCompleto}" var="menu"
+										selectionMode="checkbox"
+										selection="#{perfilBean.menusSelecionados}">
 
-												<p:treeNode icon="ui-icon-note">
-													<h:outputText value="#{menu.toString()}" />
-												</p:treeNode>
+										<p:treeNode icon="ui-icon-note"
+											collapsedIcon="ui-icon-plusthick"
+											expandedIcon="ui-icon-minusthick">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
 
-												<p:treeNode type="submenu" icon="ui-icon-home">
-													<h:outputText value="#{menu.toString()}" />
-												</p:treeNode>
-												<p:treeNode type="itemmenu" icon="ui-icon-tag">
-													<h:outputText value="#{menu.toString()}" />
-												</p:treeNode>
-											</p:tree>
-										</p:tab>
-									</p:accordionPanel>
+										<p:treeNode type="modulo" icon="ui-icon-contact">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+										<p:treeNode type="submenu" icon="ui-icon-home">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+										<p:treeNode type="itemmenu" icon="ui-icon-tag">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+									</p:tree>
 
 								</p:column>
 							</p:row>
 						</p:panelGrid>
-
-
 					</p:fieldset>
 
 					<div class="container-action">
@@ -109,7 +108,7 @@
 							style="width:200px;height:50px;" update="@form" process="@this"
 							actionListener="#{perfilBean.reset}" />
 
-						<p:commandButton action="#{perfilBean.salvar}"
+						<p:commandButton actionListener="#{perfilBean.salvar()}"
 							update=":tabView,:growl" value="Salvar alterações"
 							style="width:200px;height:50px;" />
 					</div>
