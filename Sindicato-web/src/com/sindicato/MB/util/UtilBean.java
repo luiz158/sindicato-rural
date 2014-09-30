@@ -10,10 +10,10 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSession;
 
-import com.sindicato.MB.seguranca.LoginBean;
-import com.sindicato.entity.Debito;
-import com.sindicato.entity.Recebimento;
-import com.sindicato.entity.autenticacao.Usuario;
+import com.sindicato.controlefinanceiro.entity.Debito;
+import com.sindicato.controlefinanceiro.entity.Recebimento;
+import com.sindicato.painelcontrole.MB.seguranca.LoginBean;
+import com.sindicato.painelcontrole.entity.Usuario;
 
 public class UtilBean {
 

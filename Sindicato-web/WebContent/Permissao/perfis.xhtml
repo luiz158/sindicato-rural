@@ -34,7 +34,8 @@
 						<p:ajax event="rowSelect" update=":tabView"
 							listener="#{perfilBean.selecionaPerfil}" />
 
-						<p:column headerText="Código" sortBy="#{perfil.id}" filterBy="#{perfil.id}">
+						<p:column headerText="Código" sortBy="#{perfil.id}"
+							filterBy="#{perfil.id}">
 							<p:outputLabel value="#{perfil.id}" />
 						</p:column>
 						<p:column headerText="Descrição" sortBy="#{perfil.descricao}"
@@ -54,7 +55,7 @@
 
 							<p:row>
 								<p:column styleClass="colLabel" style="width:290px;">
-									<p:outputLabel value="Código" />
+									<p:outputLabel value="Código:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{perfilBean.perfilSelecionado.id}"
@@ -63,7 +64,7 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
-									<p:outputLabel value="Descrição" />
+									<p:outputLabel value="Descrição:" />
 								</p:column>
 								<p:column styleClass="colInput">
 									<p:inputText value="#{perfilBean.perfilSelecionado.descricao}"
@@ -72,19 +73,30 @@
 							</p:row>
 							<p:row>
 								<p:column styleClass="colLabel">
-									<p:outputLabel value="Menus" />
+									<p:outputLabel value="Selecione os acessos:" />
 								</p:column>
 								<p:column styleClass="colInput">
 
-									<p:selectCheckboxMenu
-										value="#{perfilBean.perfilSelecionado.menus}"
-										converter="MenuConverter" label="Menus" filter="true"
-										filterText="Filter" filterMatchMode="startsWith" style="width:350px;">
+									<p:tree value="#{perfilBean.menuCompleto}" var="menu"
+										selectionMode="checkbox"
+										selection="#{perfilBean.menusSelecionados}">
 
-										<f:attribute name="collectionType" value="java.util.ArrayList" />
-										<f:selectItems value="#{perfilBean.menusDisponiveis}" var="m"
-											itemValue="#{m}" itemLabel="#{m.descricao}" />
-									</p:selectCheckboxMenu>
+										<p:treeNode icon="ui-icon-note"
+											collapsedIcon="ui-icon-plusthick"
+											expandedIcon="ui-icon-minusthick">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+
+										<p:treeNode type="modulo" icon="ui-icon-contact">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+										<p:treeNode type="submenu" icon="ui-icon-home">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+										<p:treeNode type="itemmenu" icon="ui-icon-tag">
+											<h:outputText value="#{menu.toString()}" />
+										</p:treeNode>
+									</p:tree>
 
 								</p:column>
 							</p:row>
@@ -96,8 +108,9 @@
 							style="width:200px;height:50px;" update="@form" process="@this"
 							actionListener="#{perfilBean.reset}" />
 
-						<p:commandButton action="#{perfilBean.salvar}" update=":tabView,:growl"
-							value="Salvar alterações" style="width:200px;height:50px;" />
+						<p:commandButton actionListener="#{perfilBean.salvar()}"
+							update=":tabView,:growl" value="Salvar alterações"
+							style="width:200px;height:50px;" />
 					</div>
 				</h:form>
 			</p:tab>
