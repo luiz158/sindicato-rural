@@ -19,7 +19,8 @@ public class Modulo implements Serializable {
 	private int id;
 	
 	private String descricao;
-
+	private String icone;
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -30,6 +31,14 @@ public class Modulo implements Serializable {
 
 	public String getDescricao() {
 		return descricao;
+	}
+
+	public String getIcone() {
+		return icone;
+	}
+
+	public void setIcone(String icone) {
+		this.icone = icone;
 	}
 
 	public void setId(int id) {
@@ -46,6 +55,7 @@ public class Modulo implements Serializable {
 		int result = 1;
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + ((icone == null) ? 0 : icone.hashCode());
 		result = prime * result + id;
 		return result;
 	}
@@ -63,6 +73,11 @@ public class Modulo implements Serializable {
 			if (other.descricao != null)
 				return false;
 		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (icone == null) {
+			if (other.icone != null)
+				return false;
+		} else if (!icone.equals(other.icone))
 			return false;
 		if (id != other.id)
 			return false;

@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import com.sindicato.dao.impl.DAOImpl;
 import com.sindicato.painelcontrole.dao.UsuarioDAO;
 import com.sindicato.painelcontrole.entity.Menu;
+import com.sindicato.painelcontrole.entity.Modulo;
 import com.sindicato.painelcontrole.entity.Perfil;
 import com.sindicato.painelcontrole.entity.Usuario;
 import com.sindicato.result.ResultOperation;
@@ -101,4 +102,22 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 			return null;
 		}
 	}
+
+	@Override
+	public List<Modulo> extraiModulosPermitidos(List<Perfil> perfis){
+		
+		List<Modulo> modulos = new ArrayList<Modulo>();
+		
+		for (Perfil perfil : perfis) {
+			for (Menu menu : perfil.getMenus()) {
+				if(modulos.contains(menu.getModulo()) == false){
+					modulos.add(menu.getModulo());
+				}
+			}
+		}
+		
+		return modulos;
+	}
+	
+	
 }
