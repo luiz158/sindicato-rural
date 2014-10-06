@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="notaCobranca" pageWidth="802" pageHeight="555" orientation="Landscape" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e7d2794a-ceb9-40ab-b279-3b778f5f42b5">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="159"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="cartaSindical" class="java.lang.String"/>
 	<parameter name="cnpj" class="java.lang.String"/>
@@ -214,7 +214,7 @@
 		</band>
 	</title>
 	<pageHeader>
-		<band height="30" splitType="Stretch">
+		<band height="51" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="10" width="50" height="20" uuid="d6b3f2d1-74a7-4e08-a8b1-99f610154f21"/>
 				<textElement>
@@ -226,21 +226,21 @@
 				<reportElement x="0" y="6" width="395" height="1" uuid="1f82581f-460f-4d0c-a622-e252c30d733a"/>
 			</line>
 			<textField>
-				<reportElement x="50" y="10" width="216" height="20" uuid="511da290-d983-4656-895a-02e37450c48a"/>
+				<reportElement x="50" y="10" width="345" height="20" uuid="511da290-d983-4656-895a-02e37450c48a"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{clienteNome}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="308" y="10" width="78" height="20" uuid="34bca4c2-dea3-4ed0-af67-861d24e82815"/>
+				<reportElement x="50" y="30" width="125" height="20" uuid="34bca4c2-dea3-4ed0-af67-861d24e82815"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{socio}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="266" y="10" width="42" height="20" uuid="8e51dd2c-ba1b-4c1e-8261-5145636d1225"/>
+				<reportElement x="0" y="30" width="50" height="20" uuid="8e51dd2c-ba1b-4c1e-8261-5145636d1225"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -254,21 +254,21 @@
 				<textFieldExpression><![CDATA[$P{clienteId}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="666" y="10" width="42" height="20" uuid="89f4750f-7c14-41ac-aa4b-1bd52c971209"/>
+				<reportElement x="403" y="30" width="49" height="20" uuid="89f4750f-7c14-41ac-aa4b-1bd52c971209"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Sócio:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="708" y="10" width="78" height="20" uuid="edf3ca60-e653-49f9-bfe1-9cce0a0ecb2a"/>
+				<reportElement x="452" y="30" width="126" height="20" uuid="edf3ca60-e653-49f9-bfe1-9cce0a0ecb2a"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{socio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="452" y="10" width="214" height="20" uuid="aff24ebc-7313-4763-a5b9-e5efcfe56388"/>
+				<reportElement x="452" y="10" width="346" height="20" uuid="aff24ebc-7313-4763-a5b9-e5efcfe56388"/>
 				<textElement>
 					<font size="10" isBold="true"/>
 				</textElement>
@@ -306,21 +306,21 @@
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="730" y="4" width="72" height="20" uuid="883028fc-fe8c-4f9b-92c2-4bb1fd5df4ef"/>
+				<reportElement x="732" y="4" width="70" height="20" uuid="883028fc-fe8c-4f9b-92c2-4bb1fd5df4ef"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="4" width="111" height="20" uuid="e03cfcd5-90c7-478a-8166-0b0eeee9565a"/>
+				<reportElement x="403" y="4" width="108" height="20" uuid="e03cfcd5-90c7-478a-8166-0b0eeee9565a"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="511" y="4" width="219" height="20" uuid="c5adefec-16f8-42dd-98a9-4b43f18d1535"/>
+				<reportElement x="513" y="4" width="217" height="20" uuid="c5adefec-16f8-42dd-98a9-4b43f18d1535"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -350,7 +350,7 @@
 				<textFieldExpression><![CDATA[""+$F{servico.descricao}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="402" y="1" width="111" height="18" uuid="6527d183-6f77-431e-96c1-6b51ecda2cd6"/>
+				<reportElement x="403" y="1" width="110" height="18" uuid="6527d183-6f77-431e-96c1-6b51ecda2cd6"/>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>

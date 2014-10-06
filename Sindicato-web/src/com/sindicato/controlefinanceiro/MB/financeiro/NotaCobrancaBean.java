@@ -2,6 +2,7 @@ package com.sindicato.controlefinanceiro.MB.financeiro;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -116,8 +117,16 @@ public class NotaCobrancaBean implements Serializable {
 		telefones.append(" / ");
 		telefones.append(usuarioLogado.getEmpresa().getTelefone2());
 		
+		BigDecimal valorNota = debitoSelecionado.getTotalDebitos();
+		String valorNotaExtenso;
 		Extenso extenso = new Extenso();
-		extenso.setNumber(debitoSelecionado.getTotalDebitos());
+		if(valorNota.compareTo(BigDecimal.ZERO) < 0){
+			extenso.setNumber(debitoSelecionado.getTotalDebitos().multiply(BigDecimal.valueOf(-1)));
+			valorNotaExtenso = extenso.toString() + " negativo";
+		}else{
+			extenso.setNumber(debitoSelecionado.getTotalDebitos());
+			valorNotaExtenso = extenso.toString();
+		}
 		
 		SimpleDateFormat format = new SimpleDateFormat("MMMMM/yyyy");
 		SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
@@ -133,7 +142,7 @@ public class NotaCobrancaBean implements Serializable {
 		parameters.put("clienteId", clienteSelecionado.getId());
 		parameters.put("clienteNome", clienteSelecionado.getNome());
 		parameters.put("socio", (clienteSelecionado.isSocio()) ? "Sim" : "Não");
-		parameters.put("valorPorExtenso", extenso.toString());
+		parameters.put("valorPorExtenso", valorNotaExtenso);
 
 		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 		String valorNotaFormatada = numberFormat.format(debitoSelecionado.getTotalDebitos());
