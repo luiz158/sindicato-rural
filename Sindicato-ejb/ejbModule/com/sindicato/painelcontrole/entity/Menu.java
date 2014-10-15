@@ -76,25 +76,52 @@ public class Menu implements Serializable {
 	}
 	
 	@Override
-	public boolean equals(Object obj){
-		if(obj == null){
-			return false;
-		}
-		if(!(obj instanceof Menu)){
-			return false;
-		}
-		
-		Menu o = (Menu) obj;
-		if(o.hashCode() == this.hashCode()
-				&& o.descricao.equals(descricao)
-				&& o.url.equals(url)){
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		return false;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Menu other = (Menu) obj;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (id != other.id)
+			return false;
+		if (menuPai == null) {
+			if (other.menuPai != null)
+				return false;
+		} else if (!menuPai.equals(other.menuPai))
+			return false;
+		if (modulo == null) {
+			if (other.modulo != null)
+				return false;
+		} else if (!modulo.equals(other.modulo))
+			return false;
+		if (ordem != other.ordem)
+			return false;
+		if (url == null) {
+			if (other.url != null)
+				return false;
+		} else if (!url.equals(other.url))
+			return false;
+		return true;
 	}
 	@Override
-	public int hashCode(){
-		return id;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((menuPai == null) ? 0 : menuPai.hashCode());
+		result = prime * result + ((modulo == null) ? 0 : modulo.hashCode());
+		result = prime * result + ordem;
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		return result;
 	}
 	
 }

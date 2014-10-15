@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Bancos a pagar" url="#" />
+			<p:menuitem value="Bancos" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+		<h:form>
+		
+			<p:growl id="growl" showDetail="true" life="15000" />
+			<p:tabView binding="#{bancosBean.tabView}">
+				<p:tab title="Lista de Bancos">
+
+					<div class="bancoiner-action-novo">
+						<p:commandButton value="Novo banco" update="@form" process="@this"
+							actionListener="#{bancosBean.novo}" />
+					</div>
+
+					<p:dataTable var="banco" value="#{bancosBean.bancos}"
+						rowKey="#{banco.id}" paginator="true" rows="10"
+						paginatorPosition="bottom"
+						selection="#{bancosBean.bancoSelecionada}" selectionMode="single"
+						id="bancos" emptyMessage="Nenhuma banco encontrada">
+
+						<p:ajax event="rowSelect" update="@(form)"
+							listener="#{bancosBean.alterTab(1)}" />
+
+						<p:column headerText="Código" filterBy="#{banco.id}">
+							<p:outputLabel value="#{banco.id}" />
+						</p:column>
+						<p:column headerText="Favorecido" filterBy="#{banco.favorecido}">
+							<p:outputLabel value="#{banco.favorecido}" />
+						</p:column>
+						<p:column headerText="Vencimento" filterBy="#{banco.vencimento}">
+							<p:outputLabel value="#{banco.vencimento.time}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</p:outputLabel>
+						</p:column>
+						<p:column headerText="Valor" filterBy="#{banco.valor}">
+							<p:outputLabel value="#{banco.valor}">
+								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+									type="currency" />
+							</p:outputLabel>
+						</p:column>
+						<p:column headerText="Débito em banco">
+							<p:outputLabel value="Sim" rendered="#{banco.debitoConta}" />
+							<p:outputLabel value="Não" rendered="#{!banco.debitoConta}" />
+						</p:column>
+
+						<p:column style="width:10%; text-align:center;"
+							headerText="Excluir">
+							<p:commandButton icon="ui-icon-trash" update="@form"
+								immediate="true" action="#{bancosBean.excluir(banco)}">
+								<p:confirm header="Excluir banco"
+									message="Tem certeza que deseja excluir a banco selecionada selecionada ?"
+									icon="ui-icon-trash" />
+							</p:commandButton>
+						</p:column>
+
+					</p:dataTable>
+				</p:tab>
+				<p:tab title="Informações de bancos">
+
+					<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Código:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{bancosBean.bancoSelecionada.id}"
+									readonly="true" size="5" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Vencimento:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:calendar locale="pt_BR" styleClass="date"
+									value="#{bancosBean.bancoSelecionada.vencimento}"
+									pattern="dd/MM/yyyy" converter="CalendarConverter" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Débito em banco?" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:selectBooleanButton onLabel="Sim" offLabel="Não"
+									value="#{bancosBean.bancoSelecionada.debitoConta}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Favorecido:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{bancosBean.bancoSelecionada.favorecido}" size="40" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Valor:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText styleClass="moeda"
+									value="#{bancosBean.bancoSelecionada.valor}">
+									<f:convertNumber pattern="#,##0.00" type="currency"
+										locale="pt_BR" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Histórico:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputTextarea value="#{bancosBean.bancoSelecionada.historico}" cols="30" rows="5"/>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Classificação contábil:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{bancosBean.bancoSelecionada.classificacaoContabil}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+					<div class="bancoiner-action">
+						<p:commandButton icon="ui-icon-trash" update="@form"
+							value="Excluir"
+							action="#{bancosBean.excluir(bancosBean.bancoSelecionada)}">
+							<p:confirm header="Excluir banco"
+								message="Tem certeza que deseja excluir a banco selecionada ?"
+								icon="ui-icon-trash" />
+						</p:commandButton>
+
+						<p:commandButton value="Limpar Formulário" update="@form"
+							process="@this" actionListener="#{bancosBean.reset()}" />
+
+						<p:commandButton action="#{bancosBean.salvar()}" update="@form"
+							value="Salvar alterações" />
+					</div>
+
+				</p:tab>
+			</p:tabView>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
-//@Entity
+@Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, sequenceName="SEQ_BANCO", name="seqBanco")
 public class Banco {
 
@@ -14,6 +14,7 @@ public class Banco {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqBanco")
 	private int id;
 	
+	private int codigo;
 	private String descricao;
 	private String identificacao;
 	
@@ -27,6 +28,12 @@ public class Banco {
 	public String getIdentificacao() {
 		return identificacao;
 	}
+	public int getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -36,6 +43,7 @@ public class Banco {
 	public void setIdentificacao(String identificacao) {
 		this.identificacao = identificacao;
 	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

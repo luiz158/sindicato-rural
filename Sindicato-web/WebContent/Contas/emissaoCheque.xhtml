@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="../_template.xhtml">
+
+	<ui:define name="conteudo">
+
+		<p:breadCrumb>
+			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Contas" url="#" />
+			<p:menuitem value="Emissão de cheques" url="#" />
+		</p:breadCrumb>
+		<p:spacer height="15" />
+		<h:form>
+		
+			<p:growl id="growl" showDetail="true" life="15000" />
+			<p:tabView>
+				
+				<p:tab title="Emissão de cheques">
+
+					<p:panelGrid styleClass="panelForm" style="width:100%;">
+
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Código:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{contasBean.contaSelecionada.id}"
+									readonly="true" size="5" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Vencimento:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:calendar locale="pt_BR" styleClass="date"
+									value="#{contasBean.contaSelecionada.vencimento}"
+									pattern="dd/MM/yyyy" converter="CalendarConverter" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Débito em conta?" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:selectBooleanButton onLabel="Sim" offLabel="Não"
+									value="#{contasBean.contaSelecionada.debitoConta}" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Favorecido:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{contasBean.contaSelecionada.favorecido}" size="40" />
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Valor:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText styleClass="moeda"
+									value="#{contasBean.contaSelecionada.valor}">
+									<f:convertNumber pattern="#,##0.00" type="currency"
+										locale="pt_BR" />
+								</p:inputText>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Histórico:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputTextarea value="#{contasBean.contaSelecionada.historico}" cols="30" rows="5"/>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Classificação contábil:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:inputText value="#{contasBean.contaSelecionada.classificacaoContabil}" />
+							</p:column>
+						</p:row>
+					</p:panelGrid>
+
+					<div class="container-action">
+						<p:commandButton icon="ui-icon-print" update="@form"
+							value="Emitir cheque"
+							action="#{contasBean.excluir(contasBean.contaSelecionada)}">
+							<p:confirm header="Emitir Cheque"
+								message="Tem certeza que deseja emitir o cheque ?"
+								icon="ui-icon-alert" />
+						</p:commandButton>
+						
+					</div>
+
+				</p:tab>
+			</p:tabView>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+
+</html>

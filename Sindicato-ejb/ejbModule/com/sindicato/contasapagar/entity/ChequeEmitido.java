@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 
 import com.sindicato.contasapagar.entity.Enum.StatusCheque;
 
-//@Entity
+@Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, name="seqChequeEmitido", sequenceName="SEQ_CHEQUEEMITIDO")
 public class ChequeEmitido implements Serializable {
 

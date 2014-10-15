@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 
 import com.sindicato.contasapagar.entity.Enum.StatusConta;
 
-//@Entity
+@Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, sequenceName = "SEQ_CONTA", name = "seqConta")
 public class Conta implements Serializable {
 
