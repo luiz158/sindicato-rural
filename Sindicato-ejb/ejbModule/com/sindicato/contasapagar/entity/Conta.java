@@ -2,6 +2,7 @@ package com.sindicato.contasapagar.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.persistence.Column;
@@ -13,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.sindicato.contasapagar.entity.Enum.StatusConta;
 
 @Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, sequenceName = "SEQ_CONTA", name = "seqConta")
@@ -39,11 +38,41 @@ public class Conta implements Serializable {
 	@ManyToOne(optional=true)
 	private Banco debitoBanco;
 	
-	private StatusConta status;
+	@ManyToOne(optional=true)
+	private ChequeEmitido chequePagamento;
+	
 	private String historico;
 	private String classificacaoContabil;
 	
-	
+	public boolean jaEstaPaga(){
+		/*
+		 * NÃO ESTA PAGA AINDA
+		 * - debito automatico e antes vencimento
+		 * - não debito automatico e chequePagamento == null
+		 * 
+		 * JA ESTA PAGA
+		 * - debito automatico e após o vencimento
+		 * - não debito automatico e chequePagamento != null
+		 * */
+		
+		if(this.isDebitoConta()){
+			boolean passouVencimento = (Calendar.getInstance().after(this.vencimento));
+			if(passouVencimento){
+				return true; 
+			} else {
+				return false;
+			}
+			
+		} else {
+			
+			if(this.getChequePagamento() == null){
+				return false;
+			} else {
+				return true;
+			}
+		}
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -59,14 +88,23 @@ public class Conta implements Serializable {
 	public boolean isDebitoConta() {
 		return debitoConta;
 	}
-	public StatusConta getStatus() {
-		return status;
-	}
 	public String getHistorico() {
 		return historico;
 	}
 	public String getClassificacaoContabil() {
 		return classificacaoContabil;
+	}
+	public Banco getDebitoBanco() {
+		return debitoBanco;
+	}
+	public ChequeEmitido getChequePagamento() {
+		return chequePagamento;
+	}
+	public void setDebitoBanco(Banco debitoBanco) {
+		this.debitoBanco = debitoBanco;
+	}
+	public void setChequePagamento(ChequeEmitido chequePagamento) {
+		this.chequePagamento = chequePagamento;
 	}
 	public void setId(int id) {
 		this.id = id;
@@ -83,9 +121,6 @@ public class Conta implements Serializable {
 	public void setDebitoConta(boolean debitoConta) {
 		this.debitoConta = debitoConta;
 	}
-	public void setStatus(StatusConta status) {
-		this.status = status;
-	}
 	public void setHistorico(String historico) {
 		this.historico = historico;
 	}
@@ -93,6 +128,18 @@ public class Conta implements Serializable {
 		this.classificacaoContabil = classificacaoContabil;
 	}
 	
+	
+	
+	@Override
+	public String toString() {
+		StringBuilder conta = new StringBuilder();
+		conta.append(new SimpleDateFormat("dd/MM/yyyy").format(vencimento.getTime()));
+		conta.append(" - ");
+		conta.append(valor);
+		conta.append(" - ");
+		conta.append(favorecido);
+		return conta.toString();
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -101,13 +148,14 @@ public class Conta implements Serializable {
 				* result
 				+ ((classificacaoContabil == null) ? 0 : classificacaoContabil
 						.hashCode());
+		result = prime * result
+				+ ((debitoBanco == null) ? 0 : debitoBanco.hashCode());
 		result = prime * result + (debitoConta ? 1231 : 1237);
 		result = prime * result
 				+ ((favorecido == null) ? 0 : favorecido.hashCode());
 		result = prime * result
 				+ ((historico == null) ? 0 : historico.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
 		result = prime * result
 				+ ((vencimento == null) ? 0 : vencimento.hashCode());
@@ -127,6 +175,11 @@ public class Conta implements Serializable {
 				return false;
 		} else if (!classificacaoContabil.equals(other.classificacaoContabil))
 			return false;
+		if (debitoBanco == null) {
+			if (other.debitoBanco != null)
+				return false;
+		} else if (!debitoBanco.equals(other.debitoBanco))
+			return false;
 		if (debitoConta != other.debitoConta)
 			return false;
 		if (favorecido == null) {
@@ -140,8 +193,6 @@ public class Conta implements Serializable {
 		} else if (!historico.equals(other.historico))
 			return false;
 		if (id != other.id)
-			return false;
-		if (status != other.status)
 			return false;
 		if (valor == null) {
 			if (other.valor != null)

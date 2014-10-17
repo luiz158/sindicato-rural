@@ -68,6 +68,7 @@ public class ContasBean implements Serializable {
 			}
 			//this.reset();
 			//alterTab(0);
+			contas = contaDAO.getAll();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 					"Sucesso", "Conta salva com sucesso");
 		} catch (Exception e) {
@@ -89,9 +90,9 @@ public class ContasBean implements Serializable {
 	}
 
 	public List<Conta> getContas() {
-		//if(contas == null){
+		if(contas == null){
 			contas = contaDAO.getAll();
-		//}
+		}
 		return contas;
 	}
 

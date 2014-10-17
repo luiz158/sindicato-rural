@@ -17,21 +17,74 @@
 		</p:breadCrumb>
 		<p:spacer height="15" />
 		<h:form>
-		
+
 			<p:growl id="growl" showDetail="true" life="15000" />
 			<p:tabView>
-				
+
 				<p:tab title="Emissão de cheques">
 
 					<p:panelGrid styleClass="panelForm" style="width:100%;">
 
 						<p:row>
 							<p:column styleClass="colLabel">
-								<p:outputLabel value="Código:" />
+								<p:outputLabel value="Selecione as contas que deseja pagar:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText value="#{contasBean.contaSelecionada.id}"
-									readonly="true" size="5" />
+								<p:selectCheckboxMenu
+									value="#{emissaoChequeBean.cheque.contasPagas}"
+									label="Contas pendentes" filter="true"
+									filterMatchMode="contains">
+									
+									<p:ajax event="change" update="contas" />
+									<f:selectItems value="#{emissaoChequeBean.contasPendentes}"
+										var="conta" itemLabel="#{conta}" itemValue="#{conta}" />
+								</p:selectCheckboxMenu>
+							</p:column>
+						</p:row>
+						<p:row>
+							<p:column styleClass="colLabel" colspan="2">
+								<p:dataTable var="conta" value="#{emissaoChequeBean.cheque.contasPagas}"
+									id="contas" emptyMessage="Nenhuma conta selecionada">
+
+									<p:column headerText="Código">
+										<p:outputLabel value="#{conta.id}" />
+									</p:column>
+									<p:column headerText="Favorecido">
+										<p:outputLabel value="#{conta.favorecido}" />
+									</p:column>
+									<p:column headerText="Data vencimento">
+										<p:outputLabel value="#{conta.vencimento}" >
+											<f:convertDateTime pattern="dd/MM/yyyy"/>
+										</p:outputLabel>
+									</p:column>
+									<p:column headerText="Valor">
+										<p:outputLabel value="#{conta.valor}" >
+											<f:convertNumber currencySymbol="R$ " type="currency" locale="pt_BR" />
+										</p:outputLabel>
+									</p:column>
+								</p:dataTable>
+							</p:column>
+						</p:row>
+
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Banco:" />
+							</p:column>
+							<p:column styleClass="colInput">
+								<p:selectOneMenu value="#{gravarDebitoBean.debito.cliente}"
+									converter="ClienteConverter" effect="fade" filter="true"
+									id="clientes" required="true" style="min-width:200px;"
+									requiredMessage="Selecione o cliente">
+
+									<f:selectItem itemValue="" itemLabel="Selecione o cliente..." />
+
+									<f:selectItems value="#{gravarDebitoBean.clientes}" var="cli"
+										itemValue="#{cli}" itemLabel="#{cli.nome}" />
+
+									<p:ajax update="@form"
+										listener="#{gravarDebitoBean.selecionaCliente}" />
+
+								</p:selectOneMenu>
 							</p:column>
 						</p:row>
 						<p:row>
@@ -58,7 +111,8 @@
 								<p:outputLabel value="Favorecido:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText value="#{contasBean.contaSelecionada.favorecido}" size="40" />
+								<p:inputText value="#{contasBean.contaSelecionada.favorecido}"
+									size="40" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -78,7 +132,9 @@
 								<p:outputLabel value="Histórico:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputTextarea value="#{contasBean.contaSelecionada.historico}" cols="30" rows="5"/>
+								<p:inputTextarea
+									value="#{contasBean.contaSelecionada.historico}" cols="30"
+									rows="5" />
 							</p:column>
 						</p:row>
 						<p:row>
@@ -86,7 +142,8 @@
 								<p:outputLabel value="Classificação contábil:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText value="#{contasBean.contaSelecionada.classificacaoContabil}" />
+								<p:inputText
+									value="#{contasBean.contaSelecionada.classificacaoContabil}" />
 							</p:column>
 						</p:row>
 					</p:panelGrid>
@@ -99,7 +156,7 @@
 								message="Tem certeza que deseja emitir o cheque ?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
-						
+
 					</div>
 
 				</p:tab>

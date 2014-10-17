@@ -22,7 +22,7 @@
 			<p:tabView binding="#{bancosBean.tabView}">
 				<p:tab title="Lista de Bancos">
 
-					<div class="bancoiner-action-novo">
+					<div class="container-action-novo">
 						<p:commandButton value="Novo banco" update="@form" process="@this"
 							actionListener="#{bancosBean.novo}" />
 					</div>
@@ -36,41 +36,16 @@
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{bancosBean.alterTab(1)}" />
 
-						<p:column headerText="Código" filterBy="#{banco.id}">
-							<p:outputLabel value="#{banco.id}" />
+						<p:column headerText="Código" filterBy="#{banco.codigo}">
+							<p:outputLabel value="#{banco.codigo}" />
 						</p:column>
-						<p:column headerText="Favorecido" filterBy="#{banco.favorecido}">
-							<p:outputLabel value="#{banco.favorecido}" />
-						</p:column>
-						<p:column headerText="Vencimento" filterBy="#{banco.vencimento}">
-							<p:outputLabel value="#{banco.vencimento.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</p:outputLabel>
-						</p:column>
-						<p:column headerText="Valor" filterBy="#{banco.valor}">
-							<p:outputLabel value="#{banco.valor}">
-								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
-									type="currency" />
-							</p:outputLabel>
-						</p:column>
-						<p:column headerText="Débito em banco">
-							<p:outputLabel value="Sim" rendered="#{banco.debitoConta}" />
-							<p:outputLabel value="Não" rendered="#{!banco.debitoConta}" />
-						</p:column>
-
-						<p:column style="width:10%; text-align:center;"
-							headerText="Excluir">
-							<p:commandButton icon="ui-icon-trash" update="@form"
-								immediate="true" action="#{bancosBean.excluir(banco)}">
-								<p:confirm header="Excluir banco"
-									message="Tem certeza que deseja excluir a banco selecionada selecionada ?"
-									icon="ui-icon-trash" />
-							</p:commandButton>
+						<p:column headerText="Descrição" filterBy="#{banco.descricao}">
+							<p:outputLabel value="#{banco.descricao}" />
 						</p:column>
 
 					</p:dataTable>
 				</p:tab>
-				<p:tab title="Informações de bancos">
+				<p:tab title="Informações de banco">
 
 					<p:panelGrid styleClass="panelForm" style="width:100%;">
 
@@ -79,76 +54,25 @@
 								<p:outputLabel value="Código:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:inputText value="#{bancosBean.bancoSelecionada.id}"
-									readonly="true" size="5" />
+								<p:inputText value="#{bancosBean.bancoSelecionada.codigo}" size="15" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column styleClass="colLabel">
-								<p:outputLabel value="Vencimento:" />
+								<p:outputLabel value="Descrição:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:calendar locale="pt_BR" styleClass="date"
-									value="#{bancosBean.bancoSelecionada.vencimento}"
-									pattern="dd/MM/yyyy" converter="CalendarConverter" />
+								<p:inputText value="#{bancosBean.bancoSelecionada.descricao}" size="40" />
 							</p:column>
 						</p:row>
 						<p:row>
 							<p:column styleClass="colLabel">
-								<p:outputLabel value="Débito em banco?" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:selectBooleanButton onLabel="Sim" offLabel="Não"
-									value="#{bancosBean.bancoSelecionada.debitoConta}" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Favorecido:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{bancosBean.bancoSelecionada.favorecido}" size="40" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Valor:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText styleClass="moeda"
-									value="#{bancosBean.bancoSelecionada.valor}">
-									<f:convertNumber pattern="#,##0.00" type="currency"
-										locale="pt_BR" />
-								</p:inputText>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Histórico:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputTextarea value="#{bancosBean.bancoSelecionada.historico}" cols="30" rows="5"/>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Classificação contábil:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{bancosBean.bancoSelecionada.classificacaoContabil}" />
+								<p:outputLabel value="Último cheque emitido:" />
 							</p:column>
 						</p:row>
 					</p:panelGrid>
 
-					<div class="bancoiner-action">
-						<p:commandButton icon="ui-icon-trash" update="@form"
-							value="Excluir"
-							action="#{bancosBean.excluir(bancosBean.bancoSelecionada)}">
-							<p:confirm header="Excluir banco"
-								message="Tem certeza que deseja excluir a banco selecionada ?"
-								icon="ui-icon-trash" />
-						</p:commandButton>
-
+					<div class="container-action">
 						<p:commandButton value="Limpar Formulário" update="@form"
 							process="@this" actionListener="#{bancosBean.reset()}" />
 

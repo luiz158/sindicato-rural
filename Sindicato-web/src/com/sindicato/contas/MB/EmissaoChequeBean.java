@@ -8,50 +8,35 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import org.primefaces.component.tabview.TabView;
-
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.contasapagar.dao.BancoDAO;
+import com.sindicato.contasapagar.dao.ChequeEmitidoDAO;
 import com.sindicato.contasapagar.entity.Banco;
+import com.sindicato.contasapagar.entity.ChequeEmitido;
+import com.sindicato.contasapagar.entity.Conta;
 
 @ManagedBean
 @ViewScoped
-public class BancosBean implements Serializable {
+public class EmissaoChequeBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@EJB private BancoDAO bancoDAO;
+	@EJB private ChequeEmitidoDAO chequeDAO;
 
-	private Banco bancoSelecionado;
+	private ChequeEmitido cheque;
 	private List<Banco> bancos;
-
-	private TabView tabView;
-
-	public void alterTab(int newTab) {
-		tabView.setActiveIndex(newTab);
-	}
+	private List<Conta> contasPendentes;
 
 	public void reset() {
-		bancoSelecionado = new Banco();
+		cheque = new ChequeEmitido();
 	}
 
-	public void novo() {
-		this.reset();
-		alterTab(1);
-	}
-
-	public void salvar() {
+	public void emitirCheque() {
 		try {
-			if (bancoSelecionado.getId() == 0) {
-				bancoDAO.insert(bancoSelecionado);
-			} else {
-				bancoDAO.update(bancoSelecionado);
-			}
-			//this.reset();
-			//alterTab(0);
-			bancos = bancoDAO.getAll();
+			
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Banco salvo com sucesso");
+					"Sucesso", "Cheque emitido com sucesso");
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
@@ -63,34 +48,28 @@ public class BancosBean implements Serializable {
 		return serialVersionUID;
 	}
 
-	public Banco getBancoSelecionada() {
-		if(bancoSelecionado == null){
-			bancoSelecionado = new Banco();
-		}
-		return bancoSelecionado;
+	public ChequeEmitido getCheque() {
+		return cheque;
 	}
 
 	public List<Banco> getBancos() {
-		if(bancos == null){
-			bancos = bancoDAO.getAll();
-		}
 		return bancos;
 	}
 
-	public TabView getTabView() {
-		return tabView;
+	public List<Conta> getContasPendentes() {
+		return contasPendentes;
 	}
- 
-	public void setBancoSelecionada(Banco bancoSelecionado) {
-		this.bancoSelecionado = bancoSelecionado;
+
+	public void setCheque(ChequeEmitido cheque) {
+		this.cheque = cheque;
 	}
 
 	public void setBancos(List<Banco> bancos) {
 		this.bancos = bancos;
 	}
 
-	public void setTabView(TabView tabView) {
-		this.tabView = tabView;
+	public void setContasPendentes(List<Conta> contasPendentes) {
+		this.contasPendentes = contasPendentes;
 	}
 
 

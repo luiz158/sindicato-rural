@@ -1,9 +1,9 @@
 package com.sindicato.contasapagar.dao;
 
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
 import com.sindicato.contasapagar.entity.Conta;
 import com.sindicato.dao.DAO;
 
-@Local
+@Remote
 public interface ContaDAO extends DAO<Conta, Integer> { }

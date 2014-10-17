@@ -2,14 +2,18 @@ package com.sindicato.contasapagar.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -20,6 +24,10 @@ import com.sindicato.contasapagar.entity.Enum.StatusCheque;
 @SequenceGenerator(allocationSize=1, initialValue=1, name="seqChequeEmitido", sequenceName="SEQ_CHEQUEEMITIDO")
 public class ChequeEmitido implements Serializable {
 
+	public ChequeEmitido(){
+		contasPagas = new ArrayList<Conta>();
+	}
+	
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -44,6 +52,9 @@ public class ChequeEmitido implements Serializable {
 	
 	private StatusCheque status;
 
+	@OneToMany(mappedBy = "chequePagamento", targetEntity = Conta.class, cascade = { CascadeType.MERGE })
+	private List<Conta> contasPagas;
+	
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -71,6 +82,12 @@ public class ChequeEmitido implements Serializable {
 	}
 	public StatusCheque getStatus() {
 		return status;
+	}
+	public List<Conta> getContasPagas() {
+		return contasPagas;
+	}
+	public void setContasPagas(List<Conta> contasPagas) {
+		this.contasPagas = contasPagas;
 	}
 	public void setId(int id) {
 		this.id = id;
