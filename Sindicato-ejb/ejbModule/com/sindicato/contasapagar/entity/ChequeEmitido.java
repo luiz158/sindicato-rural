@@ -12,13 +12,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import com.sindicato.contasapagar.entity.Enum.StatusCheque;
 
 @Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, name="seqChequeEmitido", sequenceName="SEQ_CHEQUEEMITIDO")
@@ -50,9 +48,9 @@ public class ChequeEmitido implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar emissao;
 	
-	private StatusCheque status;
+	private boolean cancelado;
 
-	@OneToMany(mappedBy = "chequePagamento", targetEntity = Conta.class, cascade = { CascadeType.MERGE })
+	@ManyToMany(cascade = { CascadeType.ALL })
 	private List<Conta> contasPagas;
 	
 	
@@ -80,11 +78,14 @@ public class ChequeEmitido implements Serializable {
 	public Calendar getEmissao() {
 		return emissao;
 	}
-	public StatusCheque getStatus() {
-		return status;
-	}
 	public List<Conta> getContasPagas() {
 		return contasPagas;
+	}
+	public boolean isCancelado() {
+		return cancelado;
+	}
+	public void setCancelado(boolean cancelado) {
+		this.cancelado = cancelado;
 	}
 	public void setContasPagas(List<Conta> contasPagas) {
 		this.contasPagas = contasPagas;
@@ -110,21 +111,20 @@ public class ChequeEmitido implements Serializable {
 	public void setEmissao(Calendar emissao) {
 		this.emissao = emissao;
 	}
-	public void setStatus(StatusCheque status) {
-		this.status = status;
-	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((banco == null) ? 0 : banco.hashCode());
+		result = prime * result + (cancelado ? 1231 : 1237);
+		result = prime * result
+				+ ((contasPagas == null) ? 0 : contasPagas.hashCode());
 		result = prime * result + ((emissao == null) ? 0 : emissao.hashCode());
 		result = prime * result
 				+ ((favorecido == null) ? 0 : favorecido.hashCode());
 		result = prime * result + id;
 		result = prime * result
 				+ ((identificacao == null) ? 0 : identificacao.hashCode());
-		result = prime * result + ((status == null) ? 0 : status.hashCode());
 		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
 		result = prime * result
 				+ ((versoCheque == null) ? 0 : versoCheque.hashCode());
@@ -144,6 +144,13 @@ public class ChequeEmitido implements Serializable {
 				return false;
 		} else if (!banco.equals(other.banco))
 			return false;
+		if (cancelado != other.cancelado)
+			return false;
+		if (contasPagas == null) {
+			if (other.contasPagas != null)
+				return false;
+		} else if (!contasPagas.equals(other.contasPagas))
+			return false;
 		if (emissao == null) {
 			if (other.emissao != null)
 				return false;
@@ -160,8 +167,6 @@ public class ChequeEmitido implements Serializable {
 			if (other.identificacao != null)
 				return false;
 		} else if (!identificacao.equals(other.identificacao))
-			return false;
-		if (status != other.status)
 			return false;
 		if (valor == null) {
 			if (other.valor != null)

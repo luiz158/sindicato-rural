@@ -4,12 +4,15 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -38,8 +41,8 @@ public class Conta implements Serializable {
 	@ManyToOne(optional=true)
 	private Banco debitoBanco;
 	
-	@ManyToOne(optional=true)
-	private ChequeEmitido chequePagamento;
+	@ManyToMany(mappedBy = "contasPagas", targetEntity = ChequeEmitido.class, fetch = FetchType.EAGER)
+	private List<ChequeEmitido> chequesPagamento;
 	
 	private String historico;
 	private String classificacaoContabil;
@@ -54,24 +57,22 @@ public class Conta implements Serializable {
 		 * - debito automatico e após o vencimento
 		 * - não debito automatico e chequePagamento != null
 		 * */
-		
+		boolean paga = false;
 		if(this.isDebitoConta()){
 			boolean passouVencimento = (Calendar.getInstance().after(this.vencimento));
 			if(passouVencimento){
-				return true; 
-			} else {
-				return false;
-			}
-			
+				paga = true; 
+			} 
 		} else {
-			
-			if(this.getChequePagamento() == null){
-				return false;
-			} else {
-				return true;
+			if(chequesPagamento != null && chequesPagamento.size() > 0){
+				for (ChequeEmitido cheque : chequesPagamento) {
+					if(cheque.isCancelado() == false){
+						paga = true;
+					}
+				}
 			}
 		}
-		
+		return paga;
 	}
 	public int getId() {
 		return id;
@@ -97,14 +98,17 @@ public class Conta implements Serializable {
 	public Banco getDebitoBanco() {
 		return debitoBanco;
 	}
-	public ChequeEmitido getChequePagamento() {
-		return chequePagamento;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public List<ChequeEmitido> getChequesPagamento() {
+		return chequesPagamento;
+	}
+	public void setChequesPagamento(List<ChequeEmitido> chequesPagamento) {
+		this.chequesPagamento = chequesPagamento;
 	}
 	public void setDebitoBanco(Banco debitoBanco) {
 		this.debitoBanco = debitoBanco;
-	}
-	public void setChequePagamento(ChequeEmitido chequePagamento) {
-		this.chequePagamento = chequePagamento;
 	}
 	public void setId(int id) {
 		this.id = id;
