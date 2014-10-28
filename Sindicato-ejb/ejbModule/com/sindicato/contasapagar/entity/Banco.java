@@ -20,7 +20,7 @@ public class Banco implements Serializable {
 	
 	private int codigo;
 	private String descricao;
-	
+	private boolean excluido;
 	
 	public int getId() {
 		return id;
@@ -30,6 +30,15 @@ public class Banco implements Serializable {
 	}
 	public int getCodigo() {
 		return codigo;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public boolean isExcluido() {
+		return excluido;
+	}
+	public void setExcluido(boolean excluido) {
+		this.excluido = excluido;
 	}
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
@@ -48,6 +57,7 @@ public class Banco implements Serializable {
 		result = prime * result + codigo;
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + (excluido ? 1231 : 1237);
 		result = prime * result + id;
 		return result;
 	}
@@ -66,6 +76,8 @@ public class Banco implements Serializable {
 			if (other.descricao != null)
 				return false;
 		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (excluido != other.excluido)
 			return false;
 		if (id != other.id)
 			return false;

@@ -9,6 +9,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class ChequeEmitido implements Serializable {
 	private Banco banco;
 	
 	@Column(nullable=false)
-	private String identificacao;
+	private Long identificacao;
 	
 	@Column(nullable=false)
 	private BigDecimal valor;
@@ -50,10 +51,12 @@ public class ChequeEmitido implements Serializable {
 	
 	private boolean cancelado;
 
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.LAZY)
 	private List<Conta> contasPagas;
 	
-	
+	public void addConta(Conta conta){
+		contasPagas.add(conta);
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -62,9 +65,6 @@ public class ChequeEmitido implements Serializable {
 	}
 	public Banco getBanco() {
 		return banco;
-	}
-	public String getIdentificacao() {
-		return identificacao;
 	}
 	public BigDecimal getValor() {
 		return valor;
@@ -84,6 +84,12 @@ public class ChequeEmitido implements Serializable {
 	public boolean isCancelado() {
 		return cancelado;
 	}
+	public Long getIdentificacao() {
+		return identificacao;
+	}
+	public void setIdentificacao(Long identificacao) {
+		this.identificacao = identificacao;
+	}
 	public void setCancelado(boolean cancelado) {
 		this.cancelado = cancelado;
 	}
@@ -95,9 +101,6 @@ public class ChequeEmitido implements Serializable {
 	}
 	public void setBanco(Banco banco) {
 		this.banco = banco;
-	}
-	public void setIdentificacao(String identificacao) {
-		this.identificacao = identificacao;
 	}
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;

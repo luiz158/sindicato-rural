@@ -43,9 +43,9 @@ public class BancosBean implements Serializable {
 	public void salvar() {
 		try {
 			if (bancoSelecionado.getId() == 0) {
-				bancoDAO.insert(bancoSelecionado);
+				bancoDAO.cadastrar(bancoSelecionado);
 			} else {
-				bancoDAO.update(bancoSelecionado);
+				bancoDAO.alterar(bancoSelecionado);
 			}
 			//this.reset();
 			//alterTab(0);

@@ -1,10 +1,14 @@
 package com.sindicato.contasapagar.entity;
 
+import java.awt.font.NumericShaper;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,10 +22,17 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 @Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, sequenceName = "SEQ_CONTA", name = "seqConta")
 public class Conta implements Serializable {
 
+	public Conta(){
+		chequesPagamento = new ArrayList<ChequeEmitido>();
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -41,12 +52,40 @@ public class Conta implements Serializable {
 	@ManyToOne(optional=true)
 	private Banco debitoBanco;
 	
-	@ManyToMany(mappedBy = "contasPagas", targetEntity = ChequeEmitido.class, fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	@ManyToMany(mappedBy = "contasPagas", targetEntity = ChequeEmitido.class, fetch=FetchType.EAGER)
 	private List<ChequeEmitido> chequesPagamento;
 	
 	private String historico;
 	private String classificacaoContabil;
 	
+	private boolean excluida;
+	
+	public String getDescricao(){
+		StringBuilder descricao = new StringBuilder();
+		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		
+		descricao.append("Vencimento: ");
+		descricao.append(new SimpleDateFormat("dd/MM/yyyy").format(this.getVencimento().getTime()));
+		descricao.append(" Valor: R$ ");
+		descricao.append(numberFormat.format(this.getValor()));
+		
+		descricao.append(" Favorecido: ");
+		descricao.append(favorecido);
+		
+		return descricao.toString();
+	}
+	
+	public void addChequePagamento(ChequeEmitido cheque){
+		chequesPagamento.add(cheque);
+	}
+	public boolean estaVencida(){
+		if(vencimento == null){
+			return false;
+		}
+		boolean passouVencimento = (Calendar.getInstance().after(this.vencimento));
+		return passouVencimento;
+	}
 	public boolean jaEstaPaga(){
 		/*
 		 * NÃO ESTA PAGA AINDA
@@ -59,8 +98,7 @@ public class Conta implements Serializable {
 		 * */
 		boolean paga = false;
 		if(this.isDebitoConta()){
-			boolean passouVencimento = (Calendar.getInstance().after(this.vencimento));
-			if(passouVencimento){
+			if(this.estaVencida()){
 				paga = true; 
 			} 
 		} else {
@@ -103,6 +141,12 @@ public class Conta implements Serializable {
 	}
 	public List<ChequeEmitido> getChequesPagamento() {
 		return chequesPagamento;
+	}
+	public boolean isExcluida() {
+		return excluida;
+	}
+	public void setExcluida(boolean excluida) {
+		this.excluida = excluida;
 	}
 	public void setChequesPagamento(List<ChequeEmitido> chequesPagamento) {
 		this.chequesPagamento = chequesPagamento;

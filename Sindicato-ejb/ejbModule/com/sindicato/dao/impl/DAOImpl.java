@@ -52,7 +52,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 
 	@Override
 	public List<T> getAll() {
-		String strQuery = "Select u from " + entityClass.getName() + " u ";
+		String strQuery = "Select u from " + entityClass.getSimpleName() + " u ";
 		TypedQuery<T> query = null;
 		query = em.createQuery(strQuery, entityClass);
 		return query.getResultList();

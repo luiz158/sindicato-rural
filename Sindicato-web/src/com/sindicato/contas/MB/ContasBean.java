@@ -47,7 +47,7 @@ public class ContasBean implements Serializable {
 				return;
 			}
 
-			contaDAO.removeById(conta.getId());
+			contaDAO.remover(conta);
 			this.reset();
 			alterTab(0);
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
@@ -62,13 +62,13 @@ public class ContasBean implements Serializable {
 	public void salvar() {
 		try {
 			if (contaSelecionada.getId() == 0) {
-				contaDAO.insert(contaSelecionada);
+				contaDAO.cadastrar(contaSelecionada);
 			} else {
-				contaDAO.update(contaSelecionada);
+				contaDAO.alterar(contaSelecionada);
 			}
 			//this.reset();
 			//alterTab(0);
-			contas = contaDAO.getAll();
+			contas = contaDAO.listarContas();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 					"Sucesso", "Conta salva com sucesso");
 		} catch (Exception e) {
@@ -91,7 +91,7 @@ public class ContasBean implements Serializable {
 
 	public List<Conta> getContas() {
 		if(contas == null){
-			contas = contaDAO.getAll();
+			contas = contaDAO.listarContas();
 		}
 		return contas;
 	}

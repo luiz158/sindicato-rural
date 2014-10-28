@@ -1,9 +1,18 @@
 package com.sindicato.contasapagar.dao;
 
-import javax.ejb.Remote;
+import java.util.List;
+
+import javax.ejb.Local;
 
 import com.sindicato.contasapagar.entity.Banco;
-import com.sindicato.dao.DAO;
+import com.sindicato.result.ResultOperation;
 
-@Remote
-public interface BancoDAO extends DAO<Banco, Integer> { }
+@Local
+public interface BancoDAO {
+	
+	ResultOperation cadastrar(Banco banco);
+	ResultOperation alterar(Banco banco);
+	ResultOperation excluir(Banco banco);
+	List<Banco> getAll();
+	Banco searchByID(Integer id);
+}

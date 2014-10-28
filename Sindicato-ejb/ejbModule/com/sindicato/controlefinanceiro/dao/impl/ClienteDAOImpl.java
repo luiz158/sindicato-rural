@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -29,6 +30,11 @@ import com.sindicato.result.ResultOperation;
 public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		ClienteDAO {
 
+	public ClienteDAOImpl(){ }
+	public ClienteDAOImpl(EntityManager em){ 
+		super.em = em;
+	}
+	
 	@Override
 	public List<Cliente> getAll(){
 		String strQuery = "Select c from Cliente c "
