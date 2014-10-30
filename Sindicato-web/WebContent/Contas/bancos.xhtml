@@ -12,7 +12,7 @@
 
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/faces/index.xhtml" />
-			<p:menuitem value="Bancos a pagar" url="#" />
+			<p:menuitem value="Contas a pagar" url="#" />
 			<p:menuitem value="Bancos" url="#" />
 		</p:breadCrumb>
 		<p:spacer height="15" />
@@ -36,7 +36,7 @@
 						<p:ajax event="rowSelect" update="@(form)"
 							listener="#{bancosBean.alterTab(1)}" />
 
-						<p:column headerText="Código" filterBy="#{banco.codigo}">
+						<p:column headerText="Número de identificação" filterBy="#{banco.codigo}">
 							<p:outputLabel value="#{banco.codigo}" />
 						</p:column>
 						<p:column headerText="Descrição" filterBy="#{banco.descricao}">
@@ -51,7 +51,7 @@
 
 						<p:row>
 							<p:column styleClass="colLabel">
-								<p:outputLabel value="Código:" />
+								<p:outputLabel value="Número de identificação:" />
 							</p:column>
 							<p:column styleClass="colInput">
 								<p:inputText value="#{bancosBean.bancoSelecionada.codigo}" size="15" />
@@ -63,11 +63,6 @@
 							</p:column>
 							<p:column styleClass="colInput">
 								<p:inputText value="#{bancosBean.bancoSelecionada.descricao}" size="40" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Último cheque emitido:" />
 							</p:column>
 						</p:row>
 					</p:panelGrid>

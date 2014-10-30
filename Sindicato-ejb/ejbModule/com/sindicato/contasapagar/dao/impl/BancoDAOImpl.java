@@ -85,6 +85,4 @@ public class BancoDAOImpl implements BancoDAO {
 		return query.getSingleResult();
 	}
 	
-
-	
 }

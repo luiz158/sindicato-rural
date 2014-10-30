@@ -99,7 +99,7 @@ public class ContaDAOImpl implements ContaDAO {
 	@Override
 	public List<Conta> listarContas(){
 		String jpql = "select c from Conta c "
-				+ " join fetch c.chequesPagamento "
+				+ " left join fetch c.chequesPagamento "
 				+ " where c.excluida = :excluida ";
 		
 		TypedQuery<Conta> query = em.createQuery(jpql, Conta.class);
