@@ -10,10 +10,13 @@ import com.sindicato.result.ResultOperation;
 @Remote
 public interface ContaDAO { 
 	
+	Conta searchByID(int id);
 	ResultOperation cadastrar(Conta conta);
 	ResultOperation alterar(Conta conta);
 	ResultOperation remover(Conta conta);
 	
 	List<Conta> listarContas();
+	
+	List<Conta> getContasPendentes();
 	
 }

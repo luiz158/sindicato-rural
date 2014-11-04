@@ -106,5 +106,25 @@ public class ContaDAOImpl implements ContaDAO {
 		query.setParameter("excluida", false);
 		return query.getResultList();
 	}
+	
+	@Override
+	public List<Conta> getContasPendentes() {
+		String jpql = "select c from Conta c "
+				+ " left join c.chequesPagamento cp "
+				+ " where c.excluida = :excluida "
+				+ " and (cp is null OR cp.cancelado = :cancelado) "
+				+ " order by c.vencimento desc";
+		
+		TypedQuery<Conta> query = em.createQuery(jpql, Conta.class);
+		query.setParameter("excluida", false);
+		query.setParameter("cancelado", false);
+		return query.getResultList();
+	}
+	
+	@Override
+	public Conta searchByID(int id) {
+		Conta conta = em.find(Conta.class, id);
+		return conta;
+	}
 
 }
