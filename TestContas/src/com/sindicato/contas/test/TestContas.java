@@ -260,4 +260,17 @@ public class TestContas {
 		
 	}
 	
+	@Test
+	public void testListaContasPendentes(){
+		
+		// remove todas as contas ja criadas em outros testes
+		List<Conta> contas = contaDAO.listarContas();
+		for (Conta conta : contas) {
+			contaDAO.remover(conta);
+		}
+		
+		List<Conta> contasPendentes = contaDAO.getContasPendentes();
+		Assert.assertEquals(contasPendentes.size(), 6);
+	}
+	
 }
