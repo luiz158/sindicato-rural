@@ -1,6 +1,5 @@
 package com.sindicato.contasapagar.entity;
 
-import java.awt.font.NumericShaper;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
@@ -60,7 +59,7 @@ public class Conta implements Serializable {
 	private String classificacaoContabil;
 	
 	private boolean excluida;
-	
+
 	public String getDescricao(){
 		StringBuilder descricao = new StringBuilder();
 		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -177,7 +176,7 @@ public class Conta implements Serializable {
 	}
 	
 	
-	
+/*	
 	@Override
 	public String toString() {
 		StringBuilder conta = new StringBuilder();
@@ -187,7 +186,7 @@ public class Conta implements Serializable {
 		conta.append(" - ");
 		conta.append(favorecido);
 		return conta.toString();
-	}
+	}*/
 	@Override
 	public int hashCode() {
 		final int prime = 31;

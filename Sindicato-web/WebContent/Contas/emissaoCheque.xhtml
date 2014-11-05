@@ -28,27 +28,26 @@
 					<p:separator />
 					<p:panelGrid styleClass="panelForm">
 						<p:row>
-							<p:column styleClass="colLabel" style="width:40%">
-								<p:outputLabel value="Selecione as contas que deseja pagar:" />
-							</p:column>
 							<p:column styleClass="colInput">
 								<p:selectCheckboxMenu converter="ContaConverter"
 									value="#{emissaoChequeBean.contasSelecionadas}"
-									label="Contas pendentes" filter="true"
+									label="Selecione as contas que deseja pagar" filter="true"
 									filterMatchMode="contains">
 
+									<f:attribute name="collectionType" value="java.util.ArrayList" />
 									<f:selectItems value="#{emissaoChequeBean.contasPendentes}"
-										var="conta" itemLabel="#{conta}" itemValue="#{conta}" />
+										var="conta" itemLabel="#{conta.descricao}"
+										itemValue="#{conta}" />
 								</p:selectCheckboxMenu>
 
 								<p:spacer width="10" />
 								<p:commandButton value="Incluir Contas" icon="ui-icon-plus"
-									action="#{emissaoChequeBean.incluirContas()}" update="@form" />
+									action="#{emissaoChequeBean.incluirContas()}"
+									update="@form" />
 							</p:column>
 						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel" colspan="2">
-								<p:spacer height="20" />
+					</p:panelGrid>
+					<p:spacer height="20" />
 								<p:dataTable var="conta"
 									value="#{emissaoChequeBean.cheque.contasPagas}" id="contas"
 									emptyMessage="Nenhuma conta selecionada">
@@ -60,7 +59,7 @@
 										<p:outputLabel value="#{conta.favorecido}" />
 									</p:column>
 									<p:column headerText="Data vencimento">
-										<p:outputLabel value="#{conta.vencimento}">
+										<p:outputLabel value="#{conta.vencimento.time}">
 											<f:convertDateTime pattern="dd/MM/yyyy" />
 										</p:outputLabel>
 									</p:column>
@@ -71,12 +70,9 @@
 										</p:outputLabel>
 									</p:column>
 									<p:column headerText="Remover">
-										<p:button icon="ui-icon-trash"></p:button>
+										<p:commandButton  action="#{emissaoChequeBean.removerConta(conta)}" icon="ui-icon-trash" update="@form" />
 									</p:column>
 								</p:dataTable>
-							</p:column>
-						</p:row>
-					</p:panelGrid>
 					<p:spacer height="30" />
 
 					<h2>Informações do cheque</h2>
@@ -87,16 +83,13 @@
 								<p:outputLabel value="Banco:" />
 							</p:column>
 							<p:column styleClass="colInput">
-								<p:selectOneMenu value="#{gravarDebitoBean.debito.cliente}"
-									converter="ClienteConverter" effect="fade" filter="true"
-									id="clientes" required="true" style="min-width:200px;"
-									requiredMessage="Selecione o cliente">
+								<p:selectOneMenu value="#{emissaoChequeBean.cheque.banco}"
+									converter="BancoConverter" effect="fade" filter="true"
+									id="clientes" style="min-width:200px;"
+									requiredMessage="Selecione o banco">
 									<f:selectItem itemValue="" itemLabel="Selecione o banco..." />
-									<f:selectItems value="#{gravarDebitoBean.clientes}" var="cli"
-										itemValue="#{cli}" itemLabel="#{cli.nome}" />
-
-									<p:ajax update="@form"
-										listener="#{gravarDebitoBean.selecionaCliente}" />
+									<f:selectItems value="#{emissaoChequeBean.bancos}" var="banco"
+										itemValue="#{banco.id}" itemLabel="#{banco}" />
 								</p:selectOneMenu>
 							</p:column>
 						</p:row>

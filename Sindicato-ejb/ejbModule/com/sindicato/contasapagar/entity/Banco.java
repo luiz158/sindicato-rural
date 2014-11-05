@@ -84,6 +84,11 @@ public class Banco implements Serializable {
 		return true;
 	}
 	
+	@Override
+	public String toString() {
+		return codigo + " - " + descricao;
+	}
+	
 	
 	
 	

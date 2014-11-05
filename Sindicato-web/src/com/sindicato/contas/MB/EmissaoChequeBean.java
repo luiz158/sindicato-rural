@@ -39,10 +39,15 @@ public class EmissaoChequeBean implements Serializable {
 	}
 
 	public void incluirContas(){
-		cheque.setContasPagas(contasSelecionadas);
-		contasSelecionadas.forEach((cs) -> { contasPendentes.remove(cs); });
+		for (Conta contaSelecionada : contasSelecionadas) {
+			cheque.getContasPagas().add(contaSelecionada);
+			contasPendentes.remove(contaSelecionada);
+		}
 	}
-	
+	public void removerConta(Conta conta){
+		cheque.getContasPagas().remove(conta);
+		contasPendentes.add(conta);
+	}
 	
 	public void emitirCheque() {
 		try {
@@ -68,6 +73,9 @@ public class EmissaoChequeBean implements Serializable {
 	}
 
 	public List<Banco> getBancos() {
+		if(bancos == null){
+			bancos = bancoDAO.getAll();
+		}
 		return bancos;
 	}
 
