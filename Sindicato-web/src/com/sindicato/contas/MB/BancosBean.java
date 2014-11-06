@@ -8,11 +8,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import org.primefaces.component.tabview.TabView;
-
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.contasapagar.dao.BancoDAO;
 import com.sindicato.contasapagar.entity.Banco;
+import com.sindicato.result.ResultOperation;
 
 @ManagedBean
 @ViewScoped
@@ -25,14 +24,15 @@ public class BancosBean implements Serializable {
 	private Banco bancoSelecionado;
 	private List<Banco> bancos;
 
-	private TabView tabView;
+	private int tabIndex;
 
 	public void alterTab(int newTab) {
-		tabView.setActiveIndex(newTab);
+		tabIndex = newTab;
 	}
 
 	public void reset() {
 		bancoSelecionado = new Banco();
+		bancos = null;
 	}
 
 	public void novo() {
@@ -42,16 +42,21 @@ public class BancosBean implements Serializable {
 
 	public void salvar() {
 		try {
+			ResultOperation result;
 			if (bancoSelecionado.getId() == 0) {
-				bancoDAO.cadastrar(bancoSelecionado);
+				result = bancoDAO.cadastrar(bancoSelecionado);
 			} else {
-				bancoDAO.alterar(bancoSelecionado);
+				result = bancoDAO.alterar(bancoSelecionado);
 			}
-			//this.reset();
-			//alterTab(0);
-			bancos = bancoDAO.getAll();
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Banco salvo com sucesso");
+			if(result.isSuccess()){
+				this.reset();
+				alterTab(0);
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", result.getMessage());
+			} else {
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+						"Atenção", result.getMessage());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
@@ -77,20 +82,28 @@ public class BancosBean implements Serializable {
 		return bancos;
 	}
 
-	public TabView getTabView() {
-		return tabView;
+	public Banco getBancoSelecionado() {
+		return bancoSelecionado;
 	}
- 
+
+	public int getTabIndex() {
+		return tabIndex;
+	}
+
+	public void setBancoSelecionado(Banco bancoSelecionado) {
+		this.bancoSelecionado = bancoSelecionado;
+	}
+
+	public void setTabIndex(int tabIndex) {
+		this.tabIndex = tabIndex;
+	}
+
 	public void setBancoSelecionada(Banco bancoSelecionado) {
 		this.bancoSelecionado = bancoSelecionado;
 	}
 
 	public void setBancos(List<Banco> bancos) {
 		this.bancos = bancos;
-	}
-
-	public void setTabView(TabView tabView) {
-		this.tabView = tabView;
 	}
 
 

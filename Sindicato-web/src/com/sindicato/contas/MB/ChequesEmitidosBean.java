@@ -20,7 +20,7 @@ import com.sindicato.result.ResultOperation;
 
 @ManagedBean
 @ViewScoped
-public class EmissaoChequeBean implements Serializable {
+public class ChequesEmitidosBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -13,6 +13,7 @@ import com.sindicato.contasapagar.dao.BancoDAO;
 import com.sindicato.contasapagar.dao.ContaDAO;
 import com.sindicato.contasapagar.entity.Banco;
 import com.sindicato.contasapagar.entity.Conta;
+import com.sindicato.result.ResultOperation;
 
 @ManagedBean
 @ViewScoped
@@ -65,16 +66,23 @@ public class ContasBean implements Serializable {
 
 	public void salvar() {
 		try {
+			ResultOperation result;
 			if (contaSelecionada.getId() == 0) {
-				contaDAO.cadastrar(contaSelecionada);
+				result = contaDAO.cadastrar(contaSelecionada);
 			} else {
-				contaDAO.alterar(contaSelecionada);
+				result = contaDAO.alterar(contaSelecionada);
 			}
-			this.reset();
-			alterTab(0);
-			contas = contaDAO.listarContas();
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Conta salva com sucesso");
+			if(result.isSuccess()){
+				this.reset();
+				alterTab(0);
+				contas = contaDAO.listarContas();
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", result.getMessage());				
+			} else {
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+						"Atenção", result.getMessage());				
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,

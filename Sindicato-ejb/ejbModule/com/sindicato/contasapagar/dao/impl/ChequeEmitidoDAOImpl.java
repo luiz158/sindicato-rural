@@ -62,10 +62,15 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 	@Override
 	public Long getNumeroUltimoChequeEmitido(Banco banco) {
 		String jpql = "select MAX(ce.identificacao) from ChequeEmitido ce "
-				+ " where ce.cancelado = :cancelado and ce.banco = :banco ";
+				+ " where ce.banco = :banco ";
 		TypedQuery<Long> query = em.createQuery(jpql, Long.class);
-		query.setParameter("cancelado", false);
 		query.setParameter("banco", banco);
-		return query.getSingleResult();
+		
+		Long numeroUltimoChequeEmitido = query.getSingleResult();
+		if(numeroUltimoChequeEmitido == null){
+			numeroUltimoChequeEmitido = 0L;
+		}
+		
+		return numeroUltimoChequeEmitido;
 	} 
 }

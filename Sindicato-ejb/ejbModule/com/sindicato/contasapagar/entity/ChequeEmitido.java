@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -47,11 +46,11 @@ public class ChequeEmitido implements Serializable {
 	private String versoCheque;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	private Calendar emissao;
+	private Calendar emissao = Calendar.getInstance();
 	
 	private boolean cancelado;
 
-	@ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Conta> contasPagas;
 	
 	public void addConta(Conta conta){
@@ -67,6 +66,13 @@ public class ChequeEmitido implements Serializable {
 		return banco;
 	}
 	public BigDecimal getValor() {
+		if(contasPagas == null || contasPagas.size() == 0){
+			return BigDecimal.ZERO;
+		}
+		valor = BigDecimal.ZERO;
+		for (Conta conta : contasPagas) {
+			valor = valor.add(conta.getValor());
+		}
 		return valor;
 	}
 	public String getFavorecido() {
