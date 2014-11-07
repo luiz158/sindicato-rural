@@ -317,7 +317,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 					+ " from DebitoServico ds "
 					+ " left join ds.recolhimento r "
 					+ " Where ds.servico.retencao = :retencao "
-					+ " and ds.debito.status = :status "
+					+ " and ds.debito.status in (:status) "
 					+ " and ds.debito.dataEmissaoNotaCobranca between :dataDe and :dataAte "
 					
 					+ " group by "
@@ -335,7 +335,14 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
 		query.setParameter("dataDe", dataDe);
 		query.setParameter("dataAte", dataAte);
-		query.setParameter("status", StatusDebitoEnum.RECEBIDO);
+		
+		List<StatusDebitoEnum> statusPermitido = new ArrayList<StatusDebitoEnum>();
+		statusPermitido.add(StatusDebitoEnum.NOTACOBRANCAGERADA);
+		statusPermitido.add(StatusDebitoEnum.DEBITOCRIADO);
+		statusPermitido.add(StatusDebitoEnum.RECEBIDO);
+
+		query.setParameter("status", statusPermitido);
+		
 		query.setParameter("retencao", true);
 		List<Object[]> debitoServicos = query.getResultList();
 
