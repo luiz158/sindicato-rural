@@ -1,5 +1,7 @@
 package com.sindicato.contasapagar.dao.impl;
 
+import java.util.List;
+
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -72,5 +74,12 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 		}
 		
 		return numeroUltimoChequeEmitido;
+	}
+	@Override
+	public List<ChequeEmitido> listarCheques() {
+		String jpql = "select distinct c from ChequeEmitido c "
+				+ " join fetch c.contasPagas ";
+		TypedQuery<ChequeEmitido> query = em.createQuery(jpql, ChequeEmitido.class);
+		return query.getResultList();
 	} 
 }

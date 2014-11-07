@@ -1,7 +1,6 @@
 package com.sindicato.contas.MB;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -10,12 +9,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.contasapagar.dao.BancoDAO;
 import com.sindicato.contasapagar.dao.ChequeEmitidoDAO;
-import com.sindicato.contasapagar.dao.ContaDAO;
-import com.sindicato.contasapagar.entity.Banco;
 import com.sindicato.contasapagar.entity.ChequeEmitido;
-import com.sindicato.contasapagar.entity.Conta;
 import com.sindicato.result.ResultOperation;
 
 @ManagedBean
@@ -23,49 +18,32 @@ import com.sindicato.result.ResultOperation;
 public class ChequesEmitidosBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	@EJB private BancoDAO bancoDAO;
 	@EJB private ChequeEmitidoDAO chequeDAO;
-	@EJB private ContaDAO contaDAO;
 	
-	private ChequeEmitido cheque;
-	private List<Banco> bancos;
-	private List<Conta> contasPendentes;
-
-	private List<Conta> contasSelecionadas;
+	private ChequeEmitido chequeSelecionado;
+	private List<ChequeEmitido> cheques;
+	private int indexTab;
 	
 	public void reset() {
-		cheque = new ChequeEmitido();
-		contasPendentes = null;
-		contasSelecionadas = null;
-	}
-
-	public void carregaProximoNumeroCheque(){
-		Long numeroUltimoChequeEmitido = chequeDAO.getNumeroUltimoChequeEmitido(cheque.getBanco());
-		cheque.setIdentificacao(numeroUltimoChequeEmitido + 1);
+		chequeSelecionado = new ChequeEmitido();
+		cheques = null;
 	}
 	
-	public void incluirContas(){
-		for (Conta contaSelecionada : contasSelecionadas) {
-			cheque.getContasPagas().add(contaSelecionada);
-			contasPendentes.remove(contaSelecionada);
-		}
-	}
-	public void removerConta(Conta conta){
-		cheque.getContasPagas().remove(conta);
-		contasPendentes.add(conta);
+	public void alterarAba(int newTab){
+		this.indexTab = newTab;
 	}
 	
-	public void emitirCheque() {
+	public void cancelarCheque() {
 		try {
-			ResultOperation result = chequeDAO.emitirCheque(cheque);
+			ResultOperation result = chequeDAO.cancelarCheque(chequeSelecionado);
 			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", result.getMessage());
 				this.reset();
+				this.alterarAba(0);
 			} else {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
-						"Atenção", result.getMessage());
+					"Atenção", result.getMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,49 +56,36 @@ public class ChequesEmitidosBean implements Serializable {
 		return serialVersionUID;
 	}
 
-	public ChequeEmitido getCheque() {
-		if(cheque == null){
-			cheque = new ChequeEmitido();
+	public ChequeEmitido getChequeSelecionado() {
+		if(chequeSelecionado == null){
+			chequeSelecionado = new ChequeEmitido();
 		}
-		return cheque;
+		return chequeSelecionado;
 	}
 
-	public List<Banco> getBancos() {
-		if(bancos == null){
-			bancos = bancoDAO.getAll();
+	public List<ChequeEmitido> getCheques() {
+		if(cheques == null){
+			cheques = chequeDAO.listarCheques();
 		}
-		return bancos;
+		return cheques;
 	}
 
-	public List<Conta> getContasPendentes() {
-		if(contasPendentes == null){
-			contasPendentes = contaDAO.getContasPendentes();
-		}
-		return contasPendentes;
+	public int getIndexTab() {
+		return indexTab;
 	}
 
-	public List<Conta> getContasSelecionadas() {
-		if(contasSelecionadas == null){
-			contasSelecionadas = new ArrayList<Conta>();
-		}
-		return contasSelecionadas;
+	public void setChequeSelecionado(ChequeEmitido chequeSelecionado) {
+		this.chequeSelecionado = chequeSelecionado;
 	}
 
-	public void setContasSelecionadas(List<Conta> contasSelecionadas) {
-		this.contasSelecionadas = contasSelecionadas;
+	public void setCheques(List<ChequeEmitido> cheques) {
+		this.cheques = cheques;
 	}
 
-	public void setCheque(ChequeEmitido cheque) {
-		this.cheque = cheque;
+	public void setIndexTab(int indexTab) {
+		this.indexTab = indexTab;
 	}
 
-	public void setBancos(List<Banco> bancos) {
-		this.bancos = bancos;
-	}
-
-	public void setContasPendentes(List<Conta> contasPendentes) {
-		this.contasPendentes = contasPendentes;
-	}
 
 
 }
