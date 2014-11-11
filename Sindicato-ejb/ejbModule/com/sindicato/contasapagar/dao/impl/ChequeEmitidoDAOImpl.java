@@ -78,7 +78,8 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 	@Override
 	public List<ChequeEmitido> listarCheques() {
 		String jpql = "select distinct c from ChequeEmitido c "
-				+ " join fetch c.contasPagas ";
+				+ " join fetch c.contasPagas "
+				+ " order by c.id desc";
 		TypedQuery<ChequeEmitido> query = em.createQuery(jpql, ChequeEmitido.class);
 		return query.getResultList();
 	} 

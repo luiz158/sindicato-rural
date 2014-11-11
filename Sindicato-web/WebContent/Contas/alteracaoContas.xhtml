@@ -67,8 +67,24 @@
 				</p:tab>
 				<p:tab title="Informações de contas">
 
-										<p:panelGrid styleClass="panelForm" style="width:100%;">
-
+					<p:panelGrid styleClass="panelForm" style="width:100%;">
+						<p:row>
+							<p:column styleClass="colLabel">
+								<p:outputLabel value="Situação: " />
+							</p:column>
+							<p:column styleClass="colInput">
+								<h3 style="font-style: italic;">
+									<p:outputLabel value="Conta ja foi paga" style="color:blue;" 
+										rendered="#{contasBean.contaSelecionada.jaEstaPaga()}" />
+									
+									<p:outputLabel value="Conta vencida e pendente!" style="color:red;" 
+										rendered="#{contasBean.contaSelecionada.jaEstaPaga() == false and contasBean.contaSelecionada.estaVencida()}" />
+										
+									<p:outputLabel value="Conta pendente" style="color:green;" 
+										rendered="#{contasBean.contaSelecionada.jaEstaPaga() == false and contasBean.contaSelecionada.estaVencida() == false}" />
+								</h3>
+							</p:column>
+						</p:row>
 						<p:row>
 							<p:column styleClass="colLabel">
 								<p:outputLabel value="Código:" />
