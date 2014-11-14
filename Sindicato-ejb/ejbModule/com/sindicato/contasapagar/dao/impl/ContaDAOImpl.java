@@ -9,7 +9,12 @@ import javax.persistence.TypedQuery;
 
 import com.sindicato.contasapagar.dao.ContaDAO;
 import com.sindicato.contasapagar.entity.Conta;
+import com.sindicato.contasapagar.report.model.FiltroBooleanEnum;
+import com.sindicato.contasapagar.report.model.FiltroRelatorioContas;
+import com.sindicato.contasapagar.report.model.RelatorioContas;
 import com.sindicato.result.ResultOperation;
+import com.uaihebert.factory.EasyCriteriaFactory;
+import com.uaihebert.model.EasyCriteria;
 
 @Stateless
 public class ContaDAOImpl implements ContaDAO {
@@ -130,5 +135,24 @@ public class ContaDAOImpl implements ContaDAO {
 		Conta conta = em.find(Conta.class, id);
 		return conta;
 	}
+	
+	@Override
+	public RelatorioContas getRelatorioContas(FiltroRelatorioContas filtro) {
+		RelatorioContas relatorio = new RelatorioContas();
+		relatorio.setFiltro(filtro);
+		
+		EasyCriteria<Conta> criteria = EasyCriteriaFactory.createQueryCriteria(em, Conta.class);
+		this.preencheFiltrosRelatorio(criteria, filtro);
+		
+		relatorio.setResultado(criteria.getResultList());
+		return relatorio;
+	}
 
+	private void preencheFiltrosRelatorio(EasyCriteria<Conta> criteria, FiltroRelatorioContas filtro){
+				
+		if(filtro.getDebitoConta().equals(FiltroBooleanEnum.TODOS) == false){
+		//	criteria.andEquals("", arg1)
+		}
+	}
+	
 }
