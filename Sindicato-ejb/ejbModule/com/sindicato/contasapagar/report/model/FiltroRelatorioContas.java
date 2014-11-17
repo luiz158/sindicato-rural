@@ -9,6 +9,11 @@ import com.sindicato.contasapagar.entity.Banco;
 
 public class FiltroRelatorioContas implements Serializable {
 
+	public FiltroRelatorioContas() {
+		debitoConta = FiltroBooleanEnum.TODOS;
+		excluida = FiltroBooleanEnum.TODOS;
+	}
+	
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private Calendar vencimentoDe;
@@ -16,11 +21,12 @@ public class FiltroRelatorioContas implements Serializable {
 	private String favorecido;
 	private BigDecimal valorDe;
 	private BigDecimal valorAte;
-	private FiltroBooleanEnum debitoConta;
 	private List<Banco> bancosDebito;
 	private String historico;
 	private String classificacaoContabil;
 	private FiltroBooleanEnum excluida;
+
+	private FiltroBooleanEnum debitoConta;
 	
 	public int getId() {
 		return id;

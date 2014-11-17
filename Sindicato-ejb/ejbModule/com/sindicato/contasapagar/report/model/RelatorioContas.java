@@ -2,12 +2,18 @@ package com.sindicato.contasapagar.report.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sindicato.contasapagar.entity.Conta;
 
 public class RelatorioContas implements Serializable {
 
+	public RelatorioContas(){
+		filtro = new FiltroRelatorioContas();
+		resultado = new ArrayList<Conta>();
+	}
+	
 	private static final long serialVersionUID = 1L;
 	public FiltroRelatorioContas filtro;
 	public String titulo;

@@ -149,10 +149,21 @@ public class ContaDAOImpl implements ContaDAO {
 	}
 
 	private void preencheFiltrosRelatorio(EasyCriteria<Conta> criteria, FiltroRelatorioContas filtro){
-				
-		if(filtro.getDebitoConta().equals(FiltroBooleanEnum.TODOS) == false){
-		//	criteria.andEquals("", arg1)
+		
+		// debito em conta
+		if(!filtro.getDebitoConta().equals(FiltroBooleanEnum.TODOS)){
+			criteria.andEquals("debitoConta", (filtro.getDebitoConta().equals(FiltroBooleanEnum.SIM)));
 		}
+		
+		// vencimentoDe
+		if(filtro.getVencimentoDe() != null){
+			criteria.andGreaterOrEqualTo("vencimento", filtro.getVencimentoDe());
+		}
+		// vencimentoAte
+		if(filtro.getVencimentoAte() != null){
+			criteria.andLessOrEqualTo("vencimento", filtro.getVencimentoAte());
+		}
+		
 	}
 	
 }

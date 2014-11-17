@@ -11,185 +11,92 @@
 	<ui:define name="conteudo">
 
 		<p:breadCrumb>
-			<p:menuitem value="Home" url="/faces/index.xhtml" />
-			<p:menuitem value="Contas" url="#" />
-			<p:menuitem value="Contas a pagar" url="#" />
+			<p:menuitem value="Contas a pagar" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Relatório de contas" url="#" />
 		</p:breadCrumb>
 		<p:spacer height="15" />
 		<h:form>
-		
+
 			<p:growl id="growl" showDetail="true" life="15000" />
-			<p:tabView activeIndex="#{contasBean.indexTab}">
-				<p:tab title="Lista de Contas">
 
-					<p:dataTable var="conta" value="#{contasBean.contas}"
-						rowKey="#{conta.id}" paginator="true" rows="10"
-						paginatorPosition="bottom"
-						selection="#{contasBean.contaSelecionada}" selectionMode="single"
-						id="contas" emptyMessage="Nenhuma conta encontrada">
 
-						<p:ajax event="rowSelect" update="@(form)"
-							listener="#{contasBean.alterTab(1)}" />
-
-						<p:column headerText="Código" filterBy="#{conta.id}">
-							<p:outputLabel value="#{conta.id}" />
+			<p:fieldset legend="Filtros" toggleable="true">
+				<p:panelGrid styleClass="panelForm" style="width:100%;">
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Vencimento a partir de:" />
 						</p:column>
-						<p:column headerText="Favorecido" filterBy="#{conta.favorecido}">
-							<p:outputLabel value="#{conta.favorecido}" />
+						<p:column styleClass="colInput">
+							<p:calendar
+								value="#{relatorioContasBean.relatorio.filtro.vencimentoDe}"
+								converter="CalendarConverter" styleClass="data" size="10" pattern="dd/MM/yyyy" />
 						</p:column>
-						<p:column headerText="Vencimento" filterBy="#{conta.vencimento}">
-							<p:outputLabel value="#{conta.vencimento.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</p:outputLabel>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Vencimento até:" />
 						</p:column>
-						<p:column headerText="Valor" filterBy="#{conta.valor}">
-							<p:outputLabel value="#{conta.valor}">
-								<f:convertNumber currencySymbol="R$ " locale="pt_BR"
-									type="currency" />
-							</p:outputLabel>
+						<p:column styleClass="colInput">
+							<p:calendar
+								value="#{relatorioContasBean.relatorio.filtro.vencimentoAte}"
+								converter="CalendarConverter" styleClass="data" size="10" pattern="dd/MM/yyyy" />
 						</p:column>
-						<p:column headerText="Débito em conta">
-							<p:outputLabel value="Sim" rendered="#{conta.debitoConta}" />
-							<p:outputLabel value="Não" rendered="#{!conta.debitoConta}" />
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Débito em conta?" />
 						</p:column>
-
-						<p:column style="width:10%; text-align:center;"
-							headerText="Excluir">
-							<p:commandButton icon="ui-icon-trash" update="@form"
-								immediate="true" action="#{contasBean.excluir(conta)}">
-								<p:confirm header="Excluir conta"
-									message="Tem certeza que deseja excluir a conta selecionada selecionada ?"
-									icon="ui-icon-trash" />
-							</p:commandButton>
+						<p:column styleClass="colInput">
+							<p:selectOneButton value="#{relatorioContasBean.relatorio.filtro.debitoConta}">
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Sim" itemValue="SIM" />
+								<f:selectItem itemLabel="Não" itemValue="NAO" />
+							</p:selectOneButton>
 						</p:column>
-
-					</p:dataTable>
-				</p:tab>
-				<p:tab title="Informações de contas">
-
-					<p:panelGrid styleClass="panelForm" style="width:100%;">
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Situação: " />
-							</p:column>
-							<p:column styleClass="colInput">
-								<h3 style="font-style: italic;">
-									<p:outputLabel value="Conta ja foi paga" style="color:blue;" 
-										rendered="#{contasBean.contaSelecionada.jaEstaPaga()}" />
-									
-									<p:outputLabel value="Conta vencida e pendente!" style="color:red;" 
-										rendered="#{contasBean.contaSelecionada.jaEstaPaga() == false and contasBean.contaSelecionada.estaVencida()}" />
-										
-									<p:outputLabel value="Conta pendente" style="color:green;" 
-										rendered="#{contasBean.contaSelecionada.jaEstaPaga() == false and contasBean.contaSelecionada.estaVencida() == false}" />
-								</h3>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Código:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{contasBean.contaSelecionada.id}"
-									readonly="true" size="5" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Vencimento:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:calendar locale="pt_BR" styleClass="date" required="true"
-									requiredMessage="Vencimento é obrigatório"
-									value="#{contasBean.contaSelecionada.vencimento}"
-									pattern="dd/MM/yyyy" converter="CalendarConverter" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Débito em conta?" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:selectBooleanButton onLabel="Sim" offLabel="Não" 
-									value="#{contasBean.contaSelecionada.debitoConta}" >
-									<p:ajax event="change" update="bancoDebito" />
-								</p:selectBooleanButton>
-							</p:column>
-						</p:row>
-						<p:row >
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Banco do débito:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:selectOneMenu required="true" requiredMessage="Banco do débito é obrigatório" id="bancoDebito" converter="BancoConverter" disabled="#{contasBean.contaSelecionada.debitoConta == false}"
-									value="#{contasBean.contaSelecionada.debitoBanco}">
-									<f:selectItem itemLabel="Selecione o banco..."/>
-									<f:selectItems value="#{contasBean.bancos}" var="b"
-										itemLabel="#{b.descricao}" itemValue="#{b}" />
-								</p:selectOneMenu>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Favorecido:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText value="#{contasBean.contaSelecionada.favorecido}"
-									required="true" requiredMessage="Favorecido é obrigatório" size="40" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Valor:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText styleClass="moeda" required="true" requiredMessage="Valor é obrigatório"
-									value="#{contasBean.contaSelecionada.valor}">
-									<f:convertNumber pattern="#,##0.00" type="currency"
-										locale="pt_BR" />
-								</p:inputText>
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Histórico:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputTextarea
-									value="#{contasBean.contaSelecionada.historico}" cols="30"
-									rows="5" />
-							</p:column>
-						</p:row>
-						<p:row>
-							<p:column styleClass="colLabel">
-								<p:outputLabel value="Classificação contábil:" />
-							</p:column>
-							<p:column styleClass="colInput">
-								<p:inputText
-									value="#{contasBean.contaSelecionada.classificacaoContabil}" />
-							</p:column>
-						</p:row>
-					</p:panelGrid>
-
-
-					<div class="container-action">
-						<p:commandButton icon="ui-icon-trash" update="@form"
-							value="Excluir"
-							action="#{contasBean.excluir(contasBean.contaSelecionada)}">
-							<p:confirm header="Excluir conta"
-								message="Tem certeza que deseja excluir a conta selecionada ?"
-								icon="ui-icon-trash" />
-						</p:commandButton>
-
-						<p:commandButton value="Limpar Formulário" update="@form"
-							process="@this" actionListener="#{contasBean.reset()}" />
-
-						<p:commandButton action="#{contasBean.salvar()}" update="@form"
-							value="Salvar alterações" />
+					</p:row>
+				</p:panelGrid>
+				
+				<div class="container-action">
+						<p:commandButton value="Buscar" icon="ui-icon-search" update="@form"
+							action="#{relatorioContasBean.buscar()}" />
 					</div>
+			</p:fieldset>
+			<p:spacer height="15" />
+			<p:fieldset legend="Lista de contas">
 
-				</p:tab>
-			</p:tabView>
+				<p:dataTable var="conta"
+					value="#{relatorioContasBean.relatorio.resultado}" paginator="true"
+					rows="15" paginatorPosition="bottom" id="contas"
+					emptyMessage="Nenhuma conta encontrada">
+
+					<p:column headerText="Código">
+						<p:outputLabel value="#{conta.id}" />
+					</p:column>
+					<p:column headerText="Favorecido">
+						<p:outputLabel value="#{conta.favorecido}" />
+					</p:column>
+					<p:column headerText="Vencimento">
+						<p:outputLabel value="#{conta.vencimento.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="Valor">
+						<p:outputLabel value="#{conta.valor}">
+							<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+								type="currency" />
+						</p:outputLabel>
+					</p:column>
+					<p:column headerText="Débito em conta">
+						<p:outputLabel value="Sim" rendered="#{conta.debitoConta}" />
+						<p:outputLabel value="Não" rendered="#{!conta.debitoConta}" />
+					</p:column>
+
+					<p:column headerText="Detalhes">
+						<p:commandButton icon="ui-icon-search" />
+					</p:column>
+				</p:dataTable>
+			</p:fieldset>
 		</h:form>
 
 	</ui:define>
