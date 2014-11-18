@@ -25,12 +25,22 @@
 				<p:panelGrid styleClass="panelForm" style="width:100%;">
 					<p:row>
 						<p:column styleClass="colLabel">
+							<p:outputLabel value="Código da conta:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText value="#{relatorioContasBean.relatorio.filtro.id}"
+								styleClass="soNumero" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
 							<p:outputLabel value="Vencimento a partir de:" />
 						</p:column>
 						<p:column styleClass="colInput">
 							<p:calendar
 								value="#{relatorioContasBean.relatorio.filtro.vencimentoDe}"
-								converter="CalendarConverter" styleClass="data" size="10" pattern="dd/MM/yyyy" />
+								converter="CalendarConverter" styleClass="data" size="10"
+								pattern="dd/MM/yyyy" />
 						</p:column>
 					</p:row>
 					<p:row>
@@ -40,7 +50,8 @@
 						<p:column styleClass="colInput">
 							<p:calendar
 								value="#{relatorioContasBean.relatorio.filtro.vencimentoAte}"
-								converter="CalendarConverter" styleClass="data" size="10" pattern="dd/MM/yyyy" />
+								converter="CalendarConverter" styleClass="data" size="10"
+								pattern="dd/MM/yyyy" />
 						</p:column>
 					</p:row>
 					<p:row>
@@ -48,7 +59,93 @@
 							<p:outputLabel value="Débito em conta?" />
 						</p:column>
 						<p:column styleClass="colInput">
-							<p:selectOneButton value="#{relatorioContasBean.relatorio.filtro.debitoConta}">
+							<p:selectOneButton
+								value="#{relatorioContasBean.relatorio.filtro.debitoConta}">
+								
+								<p:ajax event="change" update="bancos" />
+								
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Sim" itemValue="SIM" />
+								<f:selectItem itemLabel="Não" itemValue="NAO" />
+							</p:selectOneButton>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Banco do débito:" />
+						</p:column>
+						<p:column styleClass="colInput">
+
+							<p:selectCheckboxMenu converter="BancoConverter" id="bancos" disabled="#{relatorioContasBean.relatorio.filtro.debitoConta != 'SIM'}"
+								value="#{relatorioContasBean.relatorio.filtro.bancosDebito}"
+								label="Bancos" filter="true" filterMatchMode="contains">
+
+								<f:attribute name="collectionType" value="java.util.ArrayList" />
+								<f:selectItems value="#{relatorioContasBean.bancos}" var="b"
+									itemLabel="#{b.descricao}" itemValue="#{b}" />
+							</p:selectCheckboxMenu>
+
+						</p:column>
+					</p:row>
+
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Favorecido:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText
+								value="#{relatorioContasBean.relatorio.filtro.favorecido}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Histórico:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText
+								value="#{relatorioContasBean.relatorio.filtro.historico}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Classificação contábil:" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText
+								value="#{relatorioContasBean.relatorio.filtro.classificacaoContabil}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Valor a partir de (R$):" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText styleClass="moeda"
+								value="#{relatorioContasBean.relatorio.filtro.valorDe}">
+								<f:convertNumber pattern="#,##0.00" type="currency"
+									locale="pt_BR" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Valor até (R$):" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:inputText styleClass="moeda"
+								value="#{relatorioContasBean.relatorio.filtro.valorAte}">
+								<f:convertNumber pattern="#,##0.00" type="currency"
+									locale="pt_BR" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Excluída?" />
+						</p:column>
+						<p:column styleClass="colInput">
+							<p:selectOneButton
+								value="#{relatorioContasBean.relatorio.filtro.excluida}">
 								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
 								<f:selectItem itemLabel="Sim" itemValue="SIM" />
 								<f:selectItem itemLabel="Não" itemValue="NAO" />
@@ -56,11 +153,11 @@
 						</p:column>
 					</p:row>
 				</p:panelGrid>
-				
+
 				<div class="container-action">
-						<p:commandButton value="Buscar" icon="ui-icon-search" update="@form"
-							action="#{relatorioContasBean.buscar()}" />
-					</div>
+					<p:commandButton value="Buscar" icon="ui-icon-search"
+						update="@form" action="#{relatorioContasBean.buscar()}" />
+				</div>
 			</p:fieldset>
 			<p:spacer height="15" />
 			<p:fieldset legend="Lista de contas">

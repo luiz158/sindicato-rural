@@ -11,22 +11,22 @@ public class FiltroRelatorioContas implements Serializable {
 
 	public FiltroRelatorioContas() {
 		debitoConta = FiltroBooleanEnum.TODOS;
-		excluida = FiltroBooleanEnum.TODOS;
+		excluida = FiltroBooleanEnum.NAO;
 	}
 	
 	private static final long serialVersionUID = 1L;
+	private List<Banco> bancosDebito;
+
 	private int id;
+	private FiltroBooleanEnum debitoConta;
 	private Calendar vencimentoDe;
 	private Calendar vencimentoAte;
 	private String favorecido;
+	private String historico;
 	private BigDecimal valorDe;
 	private BigDecimal valorAte;
-	private List<Banco> bancosDebito;
-	private String historico;
 	private String classificacaoContabil;
 	private FiltroBooleanEnum excluida;
-
-	private FiltroBooleanEnum debitoConta;
 	
 	public int getId() {
 		return id;

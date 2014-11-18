@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import com.sindicato.contasapagar.dao.ContaDAO;
+import com.sindicato.contasapagar.entity.Banco;
 import com.sindicato.contasapagar.entity.Conta;
 import com.sindicato.contasapagar.report.model.FiltroBooleanEnum;
 import com.sindicato.contasapagar.report.model.FiltroRelatorioContas;
@@ -150,9 +151,24 @@ public class ContaDAOImpl implements ContaDAO {
 
 	private void preencheFiltrosRelatorio(EasyCriteria<Conta> criteria, FiltroRelatorioContas filtro){
 		
+		// código da conta
+		if(filtro.getId() != 0){
+			criteria.andEquals("id", filtro.getId());
+		}
+
 		// debito em conta
 		if(!filtro.getDebitoConta().equals(FiltroBooleanEnum.TODOS)){
 			criteria.andEquals("debitoConta", (filtro.getDebitoConta().equals(FiltroBooleanEnum.SIM)));
+		}
+		// banco do debito
+		if(filtro.getBancosDebito() != null && filtro.getBancosDebito().size() > 0){
+			for (Banco banco : filtro.getBancosDebito()) {
+				criteria.orEquals(1, "debitoBanco", banco);
+			}
+		}
+		// excluída
+		if(!filtro.getExcluida().equals(FiltroBooleanEnum.TODOS)){
+			criteria.andEquals("excluida", (filtro.getExcluida().equals(FiltroBooleanEnum.SIM)));
 		}
 		
 		// vencimentoDe
@@ -162,6 +178,18 @@ public class ContaDAOImpl implements ContaDAO {
 		// vencimentoAte
 		if(filtro.getVencimentoAte() != null){
 			criteria.andLessOrEqualTo("vencimento", filtro.getVencimentoAte());
+		}
+		// favorecido
+		if(filtro.getFavorecido() != null && filtro.getFavorecido() != ""){
+			criteria.andStringLike("favorecido", "%" + filtro.getFavorecido() + "%");
+		}
+		// histórico
+		if(filtro.getHistorico() != null && filtro.getHistorico() != ""){
+			criteria.andStringLike("historico", "%" + filtro.getHistorico() + "%");
+		}
+		// classificacao contabil
+		if(filtro.getClassificacaoContabil() != null && filtro.getClassificacaoContabil() != ""){
+			criteria.andEquals("classificacaoContabil", filtro.getClassificacaoContabil());
 		}
 		
 	}
