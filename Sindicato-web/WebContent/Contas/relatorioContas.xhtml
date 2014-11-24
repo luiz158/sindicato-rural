@@ -20,8 +20,8 @@
 
 			<p:growl id="growl" showDetail="true" life="15000" />
 
-
-			<p:fieldset legend="Filtros" toggleable="true">
+			<p:fieldset legend="Filtros" toggleable="true" toggleSpeed="1000"
+				widgetVar="filtro">
 				<p:panelGrid styleClass="panelForm" style="width:100%;">
 					<p:row>
 						<p:column styleClass="colLabel">
@@ -61,9 +61,9 @@
 						<p:column styleClass="colInput">
 							<p:selectOneButton
 								value="#{relatorioContasBean.relatorio.filtro.debitoConta}">
-								
+
 								<p:ajax event="change" update="bancos" />
-								
+
 								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
 								<f:selectItem itemLabel="Sim" itemValue="SIM" />
 								<f:selectItem itemLabel="Não" itemValue="NAO" />
@@ -76,7 +76,8 @@
 						</p:column>
 						<p:column styleClass="colInput">
 
-							<p:selectCheckboxMenu converter="BancoConverter" id="bancos" disabled="#{relatorioContasBean.relatorio.filtro.debitoConta != 'SIM'}"
+							<p:selectCheckboxMenu converter="BancoConverter" id="bancos"
+								disabled="#{relatorioContasBean.relatorio.filtro.debitoConta != 'SIM'}"
 								value="#{relatorioContasBean.relatorio.filtro.bancosDebito}"
 								label="Bancos" filter="true" filterMatchMode="contains">
 
@@ -156,44 +157,69 @@
 
 				<div class="container-action">
 					<p:commandButton value="Buscar" icon="ui-icon-search"
-						update="@form" action="#{relatorioContasBean.buscar()}" />
+						update="@form" action="#{relatorioContasBean.buscar()}">
+					</p:commandButton>
 				</div>
 			</p:fieldset>
 			<p:spacer height="15" />
-			<p:fieldset legend="Lista de contas">
 
-				<p:dataTable var="conta"
-					value="#{relatorioContasBean.relatorio.resultado}" paginator="true"
-					rows="15" paginatorPosition="bottom" id="contas"
-					emptyMessage="Nenhuma conta encontrada">
+			<p:dataTable var="conta" style="font-size:11px;"
+				value="#{relatorioContasBean.relatorio.resultado}" paginator="true"
+				rows="15" paginatorPosition="bottom" id="contas"
+				emptyMessage="Nenhuma conta encontrada">
 
-					<p:column headerText="Código">
-						<p:outputLabel value="#{conta.id}" />
-					</p:column>
-					<p:column headerText="Favorecido">
-						<p:outputLabel value="#{conta.favorecido}" />
-					</p:column>
-					<p:column headerText="Vencimento">
-						<p:outputLabel value="#{conta.vencimento.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
-						</p:outputLabel>
-					</p:column>
-					<p:column headerText="Valor">
-						<p:outputLabel value="#{conta.valor}">
-							<f:convertNumber currencySymbol="R$ " locale="pt_BR"
-								type="currency" />
-						</p:outputLabel>
-					</p:column>
-					<p:column headerText="Débito em conta">
-						<p:outputLabel value="Sim" rendered="#{conta.debitoConta}" />
-						<p:outputLabel value="Não" rendered="#{!conta.debitoConta}" />
-					</p:column>
+				<f:facet name="header">
+					<p:outputLabel value="Lista de contas" style="font-size:15px;" />
+				</f:facet>
+				<f:facet name="footer">Valor total de contas: 
+						<p:outputLabel value="#{relatorioContasBean.relatorio.valorTotal}"
+						style="font-size:15px;">
+						<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+							type="currency" />
+					</p:outputLabel>
+				</f:facet>
 
-					<p:column headerText="Detalhes">
-						<p:commandButton icon="ui-icon-search" />
-					</p:column>
-				</p:dataTable>
-			</p:fieldset>
+				<p:column headerText="Código" width="60">
+					<p:outputLabel value="#{conta.id}" />
+				</p:column>
+				<p:column headerText="Favorecido">
+					<p:outputLabel value="#{conta.favorecido}" />
+				</p:column>
+				<p:column headerText="Histórico">
+					<p:outputLabel value="#{conta.historico}" />
+				</p:column>
+				<p:column headerText="Vencimento" width="70">
+					<p:outputLabel value="#{conta.vencimento.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Valor" width="100">
+					<p:outputLabel value="#{conta.valor}">
+						<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+							type="currency" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Débito em conta" width="120">
+					<p:outputLabel value="Sim - #{conta.debitoBanco.descricao}"
+						rendered="#{conta.debitoConta}" />
+					<p:outputLabel value="Não" rendered="#{!conta.debitoConta}" />
+				</p:column>
+				<p:column headerText="Class. contábil" width="120">
+					<p:outputLabel value="#{conta.classificacaoContabil}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<div class="container-action">
+				<h:commandButton value="Exportar planilha" onclick="this.form.target='_self'"
+					styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+					<p:dataExporter type="xls" target="contas" fileName="contas"  />
+				</h:commandButton>
+
+				<p:commandButton action="#{relatorioContasBean.imprimirRelatorio()}" ajax="false"
+					target="_blank" value="Imprimir relatório"  onclick="this.form.target='_blank'"/>
+
+			</div>
 		</h:form>
 
 	</ui:define>

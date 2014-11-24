@@ -34,6 +34,15 @@ public class RelatorioContas implements Serializable {
 		return resultado;
 	}
 	public BigDecimal getValorTotal() {
+		valorTotal = BigDecimal.ZERO;
+		if(resultado == null || resultado.size() == 0){
+			return valorTotal;
+		}
+		
+		for (Conta conta : resultado) {
+			valorTotal = valorTotal.add(conta.getValor());
+		}
+		
 		return valorTotal;
 	}
 	public void setFiltro(FiltroRelatorioContas filtro) {
