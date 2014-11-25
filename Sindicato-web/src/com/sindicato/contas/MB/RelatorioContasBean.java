@@ -2,8 +2,10 @@ package com.sindicato.contas.MB;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -43,8 +45,8 @@ public class RelatorioContasBean implements Serializable {
 	}
 	public void imprimirRelatorio(){
 		Map<String, Object> parameters = new HashMap<String, Object>();
-		parameters.put("valorTotal", relatorio.getValorTotal());
-		parameters.put("titulo", "titulo");
+		parameters.put("valorTotal", "R$ " + NumberFormat.getInstance(new Locale("pt", "BR")).format(relatorio.getValorTotal()));
+		parameters.put("titulo", relatorio.getTitulo());
 		
 		GeradorReports gerador;
 		ServletOutputStream servletOutputStream = null;

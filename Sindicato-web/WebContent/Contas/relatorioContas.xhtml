@@ -153,6 +153,27 @@
 							</p:selectOneButton>
 						</p:column>
 					</p:row>
+
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Situação da conta:" />
+						</p:column>
+						<p:column styleClass="colInput">
+
+							<p:selectCheckboxMenu 
+								value="#{relatorioContasBean.relatorio.filtro.status}"
+								label="Situação da conta" filter="true" filterMatchMode="contains">
+
+								<f:selectItem itemLabel="Já está Paga" itemValue="PAGA" />
+								<f:selectItem itemLabel="Pendente" itemValue="PENDENTE" />
+								<f:selectItem itemLabel="Atrasada" itemValue="ATRASADA" />
+							</p:selectCheckboxMenu>
+
+						</p:column>
+					</p:row>
+
+
+
 				</p:panelGrid>
 
 				<div class="container-action">
@@ -207,19 +228,45 @@
 				<p:column headerText="Class. contábil" width="120">
 					<p:outputLabel value="#{conta.classificacaoContabil}" />
 				</p:column>
+				<p:column headerText="Situação" >
+					<p:outputLabel value="Pendente" rendered="#{!conta.estaVencida() and !conta.jaEstaPaga()}" />
+					<p:outputLabel value="Atrasada" style="color:red;" rendered="#{conta.estaVencida() and !conta.jaEstaPaga()}" />
+					<p:outputLabel value="Ja está paga" style="color:blue;" rendered="#{conta.jaEstaPaga()}" />
+				</p:column>
 
 			</p:dataTable>
 
 			<div class="container-action">
-				<h:commandButton value="Exportar planilha" onclick="this.form.target='_self'"
+				<h:commandButton value="Exportar planilha"
+					onclick="this.form.target='_self'"
 					styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
-					<p:dataExporter type="xls" target="contas" fileName="contas"  />
+					<p:dataExporter type="xls" target="contas" fileName="contas" />
 				</h:commandButton>
 
-				<p:commandButton action="#{relatorioContasBean.imprimirRelatorio()}" ajax="false"
-					target="_blank" value="Imprimir relatório"  onclick="this.form.target='_blank'"/>
-
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					onclick="PF('painelTitulo').show();" />
 			</div>
+
+			<p:dialog header="Emitir nota de cobrança" width="500"
+				widgetVar="painelTitulo" modal="true" height="170">
+
+				<p:panelGrid columns="1" style="width:100%;text-align:center;"
+					styleClass="panelForm">
+
+					<p:outputLabel value="Título do relatório:" />
+					<p:inputText value="#{relatorioContasBean.relatorio.titulo}"
+						size="60" />
+
+					<p:commandButton
+						action="#{relatorioContasBean.imprimirRelatorio()}" ajax="false"
+						target="_blank" value="Imprimir"
+						onclick="this.form.target='_blank'" icon="ui-icon-print"
+						style="width:300px;height:60px;margin-top:30px;" />
+
+				</p:panelGrid>
+
+			</p:dialog>
+
 		</h:form>
 
 	</ui:define>

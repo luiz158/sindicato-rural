@@ -9,8 +9,8 @@
 	<field name="id" class="java.lang.Integer"/>
 	<field name="favorecido" class="java.lang.String"/>
 	<field name="historico" class="java.lang.String"/>
-	<field name="vencimento" class="java.lang.String"/>
-	<field name="valor" class="java.lang.String"/>
+	<field name="vencimentoFormatado" class="java.lang.String"/>
+	<field name="valorFormatado" class="java.lang.String"/>
 	<field name="debitoConta" class="java.lang.String"/>
 	<field name="classificacaoContabil" class="java.lang.String"/>
 	<background>
@@ -19,64 +19,57 @@
 	<title>
 		<band height="125" splitType="Stretch">
 			<staticText>
-				<reportElement x="158" y="0" width="366" height="34" uuid="f06a3662-bb1f-4ade-9a33-e208de4b4cce"/>
+				<reportElement x="160" y="0" width="278" height="34" uuid="f06a3662-bb1f-4ade-9a33-e208de4b4cce"/>
 				<textElement textAlignment="Center">
 					<font fontName="Serif" size="26"/>
 				</textElement>
 				<text><![CDATA[Sindicato Rural de Cotia]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="212" y="44" width="219" height="26" uuid="6193c4fb-6fb2-4a60-872c-77d0ab6f2ea0"/>
-				<textElement textAlignment="Justified">
-					<font fontName="Serif" size="20"/>
-				</textElement>
-				<text><![CDATA[Relatório de contas]]></text>
-			</staticText>
 			<image>
 				<reportElement x="0" y="0" width="157" height="79" uuid="53c93cd3-1cc3-403f-81bc-a619c0b15981"/>
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement x="69" y="79" width="362" height="20" uuid="6a8ae0b8-e9b4-4df0-a04c-9cdfed0d4b11"/>
-				<textElement textAlignment="Justified">
-					<font pdfEncoding="Cp1252" isPdfEmbedded="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
-			</textField>
 			<textField pattern="EEEEE, dd &apos;de&apos; MMMMM &apos;de&apos; yyyy">
-				<reportElement x="431" y="79" width="150" height="20" uuid="43c43130-1a2e-4379-9799-8e919c3b6daa"/>
+				<reportElement x="421" y="112" width="160" height="13" uuid="43c43130-1a2e-4379-9799-8e919c3b6daa"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="431" y="99" width="93" height="20" uuid="a03f592b-4a70-4cfb-b522-e78b42eb62c9"/>
+				<reportElement x="0" y="99" width="103" height="14" uuid="a03f592b-4a70-4cfb-b522-e78b42eb62c9"/>
 				<textElement>
-					<font fontName="Serif" size="8" isBold="true" isItalic="true" isUnderline="false"/>
+					<font fontName="Serif" size="10" isBold="true" isItalic="true" isUnderline="false"/>
 				</textElement>
-				<text><![CDATA[Valor total de contas (R$): ]]></text>
+				<text><![CDATA[Valor total de contas: ]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="524" y="99" width="57" height="20" uuid="965e0bad-a1f4-4dc4-8e95-306d742cd4e9"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="103" y="99" width="57" height="14" uuid="965e0bad-a1f4-4dc4-8e95-306d742cd4e9"/>
 				<textElement>
 					<font fontName="Serif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{valorTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="171" y="44" width="347" height="24" uuid="174b61e5-411d-4657-806a-8a673532144d"/>
+				<textElement>
+					<font fontName="Serif" size="18" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
 	<detail>
 		<band height="59" splitType="Stretch">
 			<textField>
-				<reportElement x="82" y="2" width="55" height="12" uuid="6c6f94ee-6f33-4e0b-a6df-84736a0946bc"/>
+				<reportElement x="88" y="2" width="55" height="12" uuid="6c6f94ee-6f33-4e0b-a6df-84736a0946bc"/>
 				<textElement>
-					<font fontName="Times New Roman" size="8"/>
+					<font fontName="Times New Roman" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="69" y="26" width="179" height="12" uuid="1108a59f-bcba-4dd7-aa23-1c2a12185540"/>
+				<reportElement x="88" y="26" width="160" height="12" uuid="1108a59f-bcba-4dd7-aa23-1c2a12185540"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
@@ -89,43 +82,36 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{historico}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="56" y="14" width="81" height="12" uuid="8f4a816b-911c-4288-8180-546673a82b57"/>
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="317" y="2" width="81" height="12" uuid="8f4a816b-911c-4288-8180-546673a82b57"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{valor}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valorFormatado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="225" y="2" width="127" height="12" uuid="f72a374f-2d30-4935-819a-e7c0d6db6424"/>
-				<textElement>
-					<font fontName="Times New Roman" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{debitoConta}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="74" y="38" width="125" height="12" uuid="e4321512-4085-486f-94ec-9022865e4f69"/>
+				<reportElement x="88" y="38" width="160" height="12" uuid="e4321512-4085-486f-94ec-9022865e4f69"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{classificacaoContabil}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="2" width="82" height="12" uuid="e427f552-96c9-4225-9a01-760b041f50f3"/>
+				<reportElement x="0" y="2" width="88" height="12" uuid="e427f552-96c9-4225-9a01-760b041f50f3"/>
 				<textElement>
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código da conta:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="14" width="56" height="12" uuid="12271cb6-4c2c-4542-b3b0-e24cd056e7ce"/>
+				<reportElement x="248" y="2" width="69" height="12" uuid="12271cb6-4c2c-4542-b3b0-e24cd056e7ce"/>
 				<textElement>
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Valor (R$):]]></text>
+				<text><![CDATA[Valor:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="26" width="69" height="12" uuid="90b86b88-84a0-4601-8372-87e04f1a1ff5"/>
+				<reportElement x="0" y="26" width="88" height="12" uuid="90b86b88-84a0-4601-8372-87e04f1a1ff5"/>
 				<textElement>
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
@@ -139,14 +125,7 @@
 				<text><![CDATA[Histórico:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="137" y="2" width="88" height="12" uuid="b743b1b8-0c14-49a5-99bb-c33d39202a7f"/>
-				<textElement>
-					<font fontName="Times New Roman" size="10" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Débito em conta?]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="0" y="38" width="74" height="12" uuid="0348777b-4067-4895-84ac-a5fe56726fe8"/>
+				<reportElement x="0" y="38" width="88" height="12" uuid="0348777b-4067-4895-84ac-a5fe56726fe8"/>
 				<textElement>
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
@@ -156,36 +135,50 @@
 				<reportElement x="0" y="1" width="581" height="1" uuid="d4c388b7-226a-40d6-98de-0a1f1abb1373"/>
 			</line>
 			<staticText>
-				<reportElement x="137" y="14" width="69" height="12" uuid="71f94b59-0827-4436-a2d2-184fd45f0006"/>
+				<reportElement x="248" y="14" width="69" height="12" uuid="71f94b59-0827-4436-a2d2-184fd45f0006"/>
 				<textElement>
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Vencimento:]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="206" y="14" width="93" height="12" uuid="fe6c94f4-4352-4928-afac-1a397d4776ab"/>
+			<textField pattern="">
+				<reportElement x="317" y="14" width="104" height="12" uuid="fe6c94f4-4352-4928-afac-1a397d4776ab"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{vencimento}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{vencimentoFormatado}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="88" y="14" width="160" height="12" uuid="f72a374f-2d30-4935-819a-e7c0d6db6424"/>
+				<textElement>
+					<font fontName="Times New Roman" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{debitoConta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="14" width="88" height="12" uuid="b743b1b8-0c14-49a5-99bb-c33d39202a7f"/>
+				<textElement>
+					<font fontName="Times New Roman" size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Débito em conta?]]></text>
+			</staticText>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="21">
-			<textField>
-				<reportElement x="524" y="1" width="57" height="20" uuid="bf7f83f2-64ee-4f25-a82c-ad5b8f718532"/>
+		<band height="22">
+			<textField pattern="¤ #,##0.00">
+				<reportElement x="103" y="7" width="57" height="14" uuid="bf7f83f2-64ee-4f25-a82c-ad5b8f718532"/>
 				<textElement>
 					<font fontName="Serif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{valorTotal}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="431" y="1" width="93" height="20" uuid="c4c7dbf0-aaf0-4a6c-88d8-738775db17c7"/>
+				<reportElement x="0" y="7" width="103" height="14" uuid="c4c7dbf0-aaf0-4a6c-88d8-738775db17c7"/>
 				<textElement>
-					<font fontName="Serif" size="8" isBold="true" isItalic="true" isUnderline="false"/>
+					<font fontName="Serif" size="10" isBold="true" isItalic="true" isUnderline="false"/>
 				</textElement>
-				<text><![CDATA[Valor total de contas (R$): ]]></text>
+				<text><![CDATA[Valor total de contas: ]]></text>
 			</staticText>
 		</band>
 	</columnFooter>

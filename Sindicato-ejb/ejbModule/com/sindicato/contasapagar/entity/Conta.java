@@ -20,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -41,11 +42,16 @@ public class Conta implements Serializable {
 	@Temporal(TemporalType.DATE)
 	@Column(nullable=false)
 	private Calendar vencimento;
+	@Transient
+	private String vencimentoFormatado;
 	
 	private String favorecido;
 	
 	@Column(nullable=false)
 	private BigDecimal valor;
+	@Transient
+	private String valorFormatado;
+	
 	private boolean debitoConta;
 	
 	@ManyToOne(optional=true)
@@ -60,6 +66,21 @@ public class Conta implements Serializable {
 	
 	private boolean excluida;
 
+	
+	public String getVencimentoFormatado() {
+		if(vencimento == null){
+			return "";
+		}
+		vencimentoFormatado = new SimpleDateFormat("dd/MM/yyyy").format(vencimento.getTime());
+		return vencimentoFormatado;
+	}
+	public String getValorFormatado() {
+		if(valor == null){
+			return "";
+		}
+		valorFormatado = "R$ " + NumberFormat.getInstance(new Locale("pt", "BR")).format(valor);
+		return valorFormatado;
+	}
 	public String getDescricao(){
 		StringBuilder descricao = new StringBuilder();
 		NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));

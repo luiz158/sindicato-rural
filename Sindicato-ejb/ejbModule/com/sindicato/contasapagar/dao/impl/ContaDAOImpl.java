@@ -1,5 +1,6 @@
 package com.sindicato.contasapagar.dao.impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -143,6 +144,7 @@ public class ContaDAOImpl implements ContaDAO {
 		relatorio.setFiltro(filtro);
 		
 		EasyCriteria<Conta> criteria = EasyCriteriaFactory.createQueryCriteria(em, Conta.class);
+		criteria.leftJoinFetch("chequesPagamento");
 		this.preencheFiltrosRelatorio(criteria, filtro);
 		
 		relatorio.setResultado(criteria.getResultList());
@@ -192,6 +194,17 @@ public class ContaDAOImpl implements ContaDAO {
 			criteria.andEquals("classificacaoContabil", filtro.getClassificacaoContabil());
 		}
 		
+		// Situacao da conta
+		if(filtro.getStatus() != null && filtro.getStatus().size() > 0){
+			for (String status : filtro.getStatus()) {
+				if(status.equals("ATRASADA")){
+					criteria.andEquals("debitoConta", false);
+					criteria.andLessThan("vencimento", Calendar.getInstance());
+					criteria.andIsNull("chequesPagamento.valor");
+				}
+			}
+			
+		}
 	}
 	
 }

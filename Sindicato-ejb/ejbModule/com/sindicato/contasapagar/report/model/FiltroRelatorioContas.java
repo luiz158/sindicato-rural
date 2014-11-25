@@ -27,6 +27,7 @@ public class FiltroRelatorioContas implements Serializable {
 	private BigDecimal valorAte;
 	private String classificacaoContabil;
 	private FiltroBooleanEnum excluida;
+	private List<String> status;
 	
 	public int getId() {
 		return id;
@@ -54,6 +55,12 @@ public class FiltroRelatorioContas implements Serializable {
 	}
 	public String getClassificacaoContabil() {
 		return classificacaoContabil;
+	}
+	public List<String> getStatus() {
+		return status;
+	}
+	public void setStatus(List<String> status) {
+		this.status = status;
 	}
 	public void setId(int id) {
 		this.id = id;
