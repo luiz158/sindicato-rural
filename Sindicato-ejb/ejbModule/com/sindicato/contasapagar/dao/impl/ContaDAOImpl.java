@@ -1,6 +1,7 @@
 package com.sindicato.contasapagar.dao.impl;
 
-import java.util.Calendar;
+import java.math.BigDecimal;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -144,13 +145,48 @@ public class ContaDAOImpl implements ContaDAO {
 		relatorio.setFiltro(filtro);
 		
 		EasyCriteria<Conta> criteria = EasyCriteriaFactory.createQueryCriteria(em, Conta.class);
+		criteria.setDistinctTrue();
 		criteria.leftJoinFetch("chequesPagamento");
 		this.preencheFiltrosRelatorio(criteria, filtro);
 		
 		relatorio.setResultado(criteria.getResultList());
+		
+		// Situacao da conta
+		if(filtro.getStatus() != null && filtro.getStatus().size() > 0){
+			Iterator<Conta> iterator = relatorio.getResultado().iterator();
+			// filtra os valores retornados
+			while(iterator.hasNext()){
+				Conta conta = iterator.next();
+				String situacao = this.getSituacao(conta);
+				if(!filtro.getStatus().contains(situacao)){
+					iterator.remove();
+				}
+			}
+		}
 		return relatorio;
 	}
 
+	private String getSituacao(Conta conta){
+		String situacao = "";
+
+		// PENDENTE
+		if(!conta.estaVencida() && !conta.jaEstaPaga()){
+			situacao = "PENDENTE";
+		}
+		
+		// ATRASADA
+		if(conta.estaVencida() && !conta.jaEstaPaga()){
+			situacao = "ATRASADA";
+		}
+		
+		// JA ESTA PAGA
+		if(conta.jaEstaPaga()){
+			situacao = "PAGA";
+		}
+		
+		return situacao;
+	}
+	
 	private void preencheFiltrosRelatorio(EasyCriteria<Conta> criteria, FiltroRelatorioContas filtro){
 		
 		// código da conta
@@ -180,6 +216,15 @@ public class ContaDAOImpl implements ContaDAO {
 		// vencimentoAte
 		if(filtro.getVencimentoAte() != null){
 			criteria.andLessOrEqualTo("vencimento", filtro.getVencimentoAte());
+		}		
+		
+		// valorDe
+		if(filtro.getValorDe() != null && filtro.getValorDe().compareTo(BigDecimal.ZERO) != 0){
+			criteria.andGreaterOrEqualTo("valor", filtro.getValorDe());
+		}
+		// valorAte
+		if(filtro.getValorAte() != null && filtro.getValorAte().compareTo(BigDecimal.ZERO) != 0){
+			criteria.andLessOrEqualTo("valor", filtro.getValorAte());
 		}
 		// favorecido
 		if(filtro.getFavorecido() != null && filtro.getFavorecido() != ""){
@@ -194,17 +239,6 @@ public class ContaDAOImpl implements ContaDAO {
 			criteria.andEquals("classificacaoContabil", filtro.getClassificacaoContabil());
 		}
 		
-		// Situacao da conta
-		if(filtro.getStatus() != null && filtro.getStatus().size() > 0){
-			for (String status : filtro.getStatus()) {
-				if(status.equals("ATRASADA")){
-					criteria.andEquals("debitoConta", false);
-					criteria.andLessThan("vencimento", Calendar.getInstance());
-					criteria.andIsNull("chequesPagamento.valor");
-				}
-			}
-			
-		}
 	}
 	
 }

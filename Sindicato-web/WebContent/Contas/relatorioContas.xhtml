@@ -24,30 +24,27 @@
 				widgetVar="filtro">
 				<p:panelGrid styleClass="panelForm" style="width:100%;">
 					<p:row>
-						<p:column styleClass="colLabel">
+						<p:column styleClass="colLabel" style="width:200px;">
 							<p:outputLabel value="Código da conta:" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput" colspan="3">
 							<p:inputText value="#{relatorioContasBean.relatorio.filtro.id}"
 								styleClass="soNumero" />
 						</p:column>
 					</p:row>
 					<p:row>
 						<p:column styleClass="colLabel">
-							<p:outputLabel value="Vencimento a partir de:" />
+							<p:outputLabel value="Vencimento:" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput"  colspan="3">
+							<p:outputLabel value="a partir de " />
 							<p:calendar
 								value="#{relatorioContasBean.relatorio.filtro.vencimentoDe}"
 								converter="CalendarConverter" styleClass="data" size="10"
 								pattern="dd/MM/yyyy" />
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column styleClass="colLabel">
-							<p:outputLabel value="Vencimento até:" />
-						</p:column>
-						<p:column styleClass="colInput">
+							
+							<p:spacer width="15" />
+							<p:outputLabel value="até " />
 							<p:calendar
 								value="#{relatorioContasBean.relatorio.filtro.vencimentoAte}"
 								converter="CalendarConverter" styleClass="data" size="10"
@@ -56,9 +53,30 @@
 					</p:row>
 					<p:row>
 						<p:column styleClass="colLabel">
+							<p:outputLabel value="Valor(R$):" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:outputLabel value="a partir de " />
+							<p:inputText styleClass="moeda"
+								value="#{relatorioContasBean.relatorio.filtro.valorDe}">
+								<f:convertNumber pattern="#,##0.00" type="currency"
+									locale="pt_BR" />
+							</p:inputText>
+							
+							<p:spacer width="15" />
+							<p:outputLabel value="até " />
+							<p:inputText styleClass="moeda"
+								value="#{relatorioContasBean.relatorio.filtro.valorAte}">
+								<f:convertNumber pattern="#,##0.00" type="currency"
+									locale="pt_BR" />
+							</p:inputText>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
 							<p:outputLabel value="Débito em conta?" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput" style="width:190px;">
 							<p:selectOneButton
 								value="#{relatorioContasBean.relatorio.filtro.debitoConta}">
 
@@ -69,9 +87,7 @@
 								<f:selectItem itemLabel="Não" itemValue="NAO" />
 							</p:selectOneButton>
 						</p:column>
-					</p:row>
-					<p:row>
-						<p:column styleClass="colLabel">
+						<p:column styleClass="colLabel" style="width:120px;">
 							<p:outputLabel value="Banco do débito:" />
 						</p:column>
 						<p:column styleClass="colInput">
@@ -93,7 +109,7 @@
 						<p:column styleClass="colLabel">
 							<p:outputLabel value="Favorecido:" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput" colspan="3">
 							<p:inputText
 								value="#{relatorioContasBean.relatorio.filtro.favorecido}" />
 						</p:column>
@@ -102,7 +118,7 @@
 						<p:column styleClass="colLabel">
 							<p:outputLabel value="Histórico:" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput" colspan="3">
 							<p:inputText
 								value="#{relatorioContasBean.relatorio.filtro.historico}" />
 						</p:column>
@@ -111,54 +127,16 @@
 						<p:column styleClass="colLabel">
 							<p:outputLabel value="Classificação contábil:" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput" colspan="3">
 							<p:inputText
 								value="#{relatorioContasBean.relatorio.filtro.classificacaoContabil}" />
 						</p:column>
 					</p:row>
 					<p:row>
 						<p:column styleClass="colLabel">
-							<p:outputLabel value="Valor a partir de (R$):" />
-						</p:column>
-						<p:column styleClass="colInput">
-							<p:inputText styleClass="moeda"
-								value="#{relatorioContasBean.relatorio.filtro.valorDe}">
-								<f:convertNumber pattern="#,##0.00" type="currency"
-									locale="pt_BR" />
-							</p:inputText>
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column styleClass="colLabel">
-							<p:outputLabel value="Valor até (R$):" />
-						</p:column>
-						<p:column styleClass="colInput">
-							<p:inputText styleClass="moeda"
-								value="#{relatorioContasBean.relatorio.filtro.valorAte}">
-								<f:convertNumber pattern="#,##0.00" type="currency"
-									locale="pt_BR" />
-							</p:inputText>
-						</p:column>
-					</p:row>
-					<p:row>
-						<p:column styleClass="colLabel">
-							<p:outputLabel value="Excluída?" />
-						</p:column>
-						<p:column styleClass="colInput">
-							<p:selectOneButton
-								value="#{relatorioContasBean.relatorio.filtro.excluida}">
-								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
-								<f:selectItem itemLabel="Sim" itemValue="SIM" />
-								<f:selectItem itemLabel="Não" itemValue="NAO" />
-							</p:selectOneButton>
-						</p:column>
-					</p:row>
-
-					<p:row>
-						<p:column styleClass="colLabel">
 							<p:outputLabel value="Situação da conta:" />
 						</p:column>
-						<p:column styleClass="colInput">
+						<p:column styleClass="colInput" colspan="3">
 
 							<p:selectCheckboxMenu 
 								value="#{relatorioContasBean.relatorio.filtro.status}"
@@ -171,9 +149,19 @@
 
 						</p:column>
 					</p:row>
-
-
-
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Excluída?" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:selectOneButton
+								value="#{relatorioContasBean.relatorio.filtro.excluida}">
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Sim" itemValue="SIM" />
+								<f:selectItem itemLabel="Não" itemValue="NAO" />
+							</p:selectOneButton>
+						</p:column>
+					</p:row>
 				</p:panelGrid>
 
 				<div class="container-action">
@@ -232,6 +220,10 @@
 					<p:outputLabel value="Pendente" rendered="#{!conta.estaVencida() and !conta.jaEstaPaga()}" />
 					<p:outputLabel value="Atrasada" style="color:red;" rendered="#{conta.estaVencida() and !conta.jaEstaPaga()}" />
 					<p:outputLabel value="Ja está paga" style="color:blue;" rendered="#{conta.jaEstaPaga()}" />
+				</p:column>
+				<p:column headerText="Excluída?" >
+					<p:outputLabel value="Sim" style="color:red;" rendered="#{conta.excluida}" />
+					<p:outputLabel value="Não" rendered="#{!conta.excluida}" />
 				</p:column>
 
 			</p:dataTable>
