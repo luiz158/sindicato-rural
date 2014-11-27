@@ -216,12 +216,12 @@
 				<p:column headerText="Class. contábil" width="120">
 					<p:outputLabel value="#{conta.classificacaoContabil}" />
 				</p:column>
-				<p:column headerText="Situação" >
+				<p:column headerText="Situação" width="80">
 					<p:outputLabel value="Pendente" rendered="#{!conta.estaVencida() and !conta.jaEstaPaga()}" />
 					<p:outputLabel value="Atrasada" style="color:red;" rendered="#{conta.estaVencida() and !conta.jaEstaPaga()}" />
 					<p:outputLabel value="Ja está paga" style="color:blue;" rendered="#{conta.jaEstaPaga()}" />
 				</p:column>
-				<p:column headerText="Excluída?" >
+				<p:column headerText="Excluída?" width="50">
 					<p:outputLabel value="Sim" style="color:red;" rendered="#{conta.excluida}" />
 					<p:outputLabel value="Não" rendered="#{!conta.excluida}" />
 				</p:column>

@@ -50,13 +50,17 @@ public class ContasBean implements Serializable {
 				reset();
 				return;
 			}
-
-			contaDAO.remover(conta);
-			this.reset();
-			alterTab(0);
-			contas = contaDAO.listarContas();
-			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-					"Sucesso", "Conta excluída com sucesso");
+			ResultOperation result = contaDAO.remover(conta);
+			if(result.isSuccess()){
+				this.reset();
+				alterTab(0);
+				contas = contaDAO.listarContas();
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
+						"Sucesso", "Conta excluída com sucesso");
+			} else{
+				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,
+						"Atenção", result.getMessage());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,

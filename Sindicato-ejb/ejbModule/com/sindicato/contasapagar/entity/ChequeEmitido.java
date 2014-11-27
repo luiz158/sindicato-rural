@@ -41,8 +41,10 @@ public class ChequeEmitido implements Serializable {
 	@Column(nullable=false)
 	private BigDecimal valor;
 	
-	@Column(nullable=false)
+	@Column(nullable=false, length=500)
 	private String favorecido;
+	
+	@Column(length=500)
 	private String versoCheque;
 	
 	@Temporal(TemporalType.TIMESTAMP)
