@@ -6,6 +6,8 @@ import javax.ejb.Local;
 
 import com.sindicato.contasapagar.entity.Banco;
 import com.sindicato.contasapagar.entity.ChequeEmitido;
+import com.sindicato.contasapagar.report.model.FiltroRelatorioCheques;
+import com.sindicato.contasapagar.report.model.RelatorioCheques;
 import com.sindicato.result.ResultOperation;
 
 @Local
@@ -15,6 +17,7 @@ public interface ChequeEmitidoDAO {
 	ResultOperation cancelarCheque(ChequeEmitido cheque);
 	
 	Long getNumeroUltimoChequeEmitido(Banco banco);
-	
 	List<ChequeEmitido> listarCheques();
+	
+	RelatorioCheques getRelatorioCheques(FiltroRelatorioCheques filtro);
 }

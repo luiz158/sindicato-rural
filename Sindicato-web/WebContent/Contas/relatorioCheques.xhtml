@@ -11,191 +11,254 @@
 	<ui:define name="conteudo">
 
 		<p:breadCrumb>
-			<p:menuitem value="Home" url="/faces/index.xhtml" />
-			<p:menuitem value="Contas" url="#" />
-			<p:menuitem value="Cheques emitidos" url="#" />
+			<p:menuitem value="Contas a pagar" url="/faces/index.xhtml" />
+			<p:menuitem value="Relatórios" url="#" />
+			<p:menuitem value="Relatório de contas" url="#" />
 		</p:breadCrumb>
 		<p:spacer height="15" />
 		<h:form>
 
 			<p:growl id="growl" showDetail="true" life="15000" />
-			<p:tabView activeIndex="#{chequesEmitidosBean.indexTab}">
 
-				<p:tab title="Cheques emitidos">
-					<p:dataTable var="cheque" value="#{chequesEmitidosBean.cheques}"
-						rowKey="#{cheque.id}" paginator="true" rows="10"
-						paginatorPosition="bottom"
-						selection="#{chequesEmitidosBean.chequeSelecionado}"
-						selectionMode="single" id="cheques"
-						emptyMessage="Nenhuma cheque encontrada">
-
-						<p:ajax event="rowSelect" update="@(form)"
-							listener="#{chequesEmitidosBean.alterarAba(1)}" />
-
-						<p:column headerText="Identificação"
-							filterBy="#{cheque.identificacao}">
-							<p:outputLabel value="#{cheque.identificacao}" />
+			<p:fieldset legend="Filtros" toggleable="true" toggleSpeed="1000"
+				widgetVar="filtro">
+				<p:panelGrid styleClass="panelForm" style="width:100%;">
+					<p:row>
+						<p:column styleClass="colLabel" style="width:200px;">
+							<p:outputLabel value="Código da conta:" />
 						</p:column>
-						<p:column headerText="Banco" filterBy="#{cheque.banco.descricao}">
-							<p:outputLabel value="#{cheque.banco.descricao}" />
+						<p:column styleClass="colInput" colspan="3">
+							<p:inputText value="#{relatorioContasBean.relatorio.filtro.id}"
+								styleClass="soNumero" />
 						</p:column>
-						<p:column headerText="Favorecido" filterBy="#{cheque.favorecido}">
-							<p:outputLabel value="#{cheque.favorecido}" />
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Vencimento:" />
 						</p:column>
-						<p:column headerText="Valor" filterBy="#{cheque.valor}">
-							<p:outputLabel value="#{cheque.valor}">
-								<f:convertNumber currencySymbol="R$" locale="pt_BR"
-									type="currency" />
-							</p:outputLabel>
+						<p:column styleClass="colInput"  colspan="3">
+							<p:outputLabel value="a partir de " />
+							<p:calendar
+								value="#{relatorioContasBean.relatorio.filtro.vencimentoDe}"
+								converter="CalendarConverter" styleClass="data" size="10"
+								pattern="dd/MM/yyyy" />
+							
+							<p:spacer width="15" />
+							<p:outputLabel value="até " />
+							<p:calendar
+								value="#{relatorioContasBean.relatorio.filtro.vencimentoAte}"
+								converter="CalendarConverter" styleClass="data" size="10"
+								pattern="dd/MM/yyyy" />
 						</p:column>
-						<p:column headerText="Data da emissão">
-							<p:outputLabel value="#{cheque.emissao.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</p:outputLabel>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Valor(R$):" />
 						</p:column>
-						<p:column headerText="Cancelado?">
-							<p:outputLabel style="color:red;" value="Sim" rendered="#{cheque.cancelado}" />
-							<p:outputLabel style="color:blue;" value="Não" rendered="#{!cheque.cancelado}" />
+						<p:column styleClass="colInput" colspan="3">
+							<p:outputLabel value="a partir de " />
+							<p:inputText styleClass="moeda"
+								value="#{relatorioContasBean.relatorio.filtro.valorDe}">
+								<f:convertNumber pattern="#,##0.00" type="currency"
+									locale="pt_BR" />
+							</p:inputText>
+							
+							<p:spacer width="15" />
+							<p:outputLabel value="até " />
+							<p:inputText styleClass="moeda"
+								value="#{relatorioContasBean.relatorio.filtro.valorAte}">
+								<f:convertNumber pattern="#,##0.00" type="currency"
+									locale="pt_BR" />
+							</p:inputText>
 						</p:column>
-					</p:dataTable>
-				</p:tab>
-				<p:tab title="Emissão de cheques">
-					<p:spacer height="20" />
-					<p:fieldset legend="Informações do cheque">
-						<p:panelGrid styleClass="panelForm">
-							<p:row>
-								<p:column styleClass="colLabel">
-								</p:column>
-								<p:column styleClass="colInput">
-									<h3 style="color:red;">
-										<p:outputLabel value="Cheque cancelado!" rendered="#{chequesEmitidosBean.chequeSelecionado.cancelado}" />
-									</h3>
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Banco:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText
-										value="#{chequesEmitidosBean.chequeSelecionado.banco.descricao}"
-										readonly="true" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Número do cheque:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText
-										value="#{chequesEmitidosBean.chequeSelecionado.identificacao}"
-										readonly="true" />
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Valor (R$):" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText styleClass="moeda" readonly="true"
-										value="#{chequesEmitidosBean.chequeSelecionado.valor}">
-										<f:convertNumber pattern="#,##0.00" type="currency"
-											locale="pt_BR" />
-									</p:inputText>
-								</p:column>
-							</p:row>
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Emissão:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:calendar
-										value="#{chequesEmitidosBean.chequeSelecionado.emissao}"
-										pattern="dd/MM/yyyy" styleClass="date" readonly="true"
-										converter="CalendarConverter" />
-								</p:column>
-							</p:row>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Débito em conta?" />
+						</p:column>
+						<p:column styleClass="colInput" style="width:190px;">
+							<p:selectOneButton
+								value="#{relatorioContasBean.relatorio.filtro.debitoConta}">
 
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Favorecido:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputText
-										value="#{chequesEmitidosBean.chequeSelecionado.favorecido}"
-										readonly="true" size="60" />
-								</p:column>
-							</p:row>
+								<p:ajax event="change" update="bancos" />
 
-							<p:row>
-								<p:column styleClass="colLabel">
-									<p:outputLabel value="Verso do cheque:" />
-								</p:column>
-								<p:column styleClass="colInput">
-									<p:inputTextarea
-										value="#{chequesEmitidosBean.chequeSelecionado.versoCheque}"
-										cols="45">
-									</p:inputTextarea>
-								</p:column>
-							</p:row>
-						</p:panelGrid>
-					</p:fieldset>
-					<p:spacer height="20" />
-					<p:fieldset legend="Contas">
-						<p:dataTable var="conta"
-							value="#{chequesEmitidosBean.chequeSelecionado.contasPagas}"
-							id="contas" emptyMessage="Nenhuma conta selecionada">
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Sim" itemValue="SIM" />
+								<f:selectItem itemLabel="Não" itemValue="NAO" />
+							</p:selectOneButton>
+						</p:column>
+						<p:column styleClass="colLabel" style="width:120px;">
+							<p:outputLabel value="Banco do débito:" />
+						</p:column>
+						<p:column styleClass="colInput">
 
-							<f:facet name="footer">
-							Valor do cheque: 
-							<p:outputLabel
-									value="#{chequesEmitidosBean.chequeSelecionado.valor}">
-									<f:convertNumber currencySymbol="R$ " type="currency"
-										locale="pt_BR" />
-								</p:outputLabel>
-							</f:facet>
+							<p:selectCheckboxMenu converter="BancoConverter" id="bancos"
+								disabled="#{relatorioContasBean.relatorio.filtro.debitoConta != 'SIM'}"
+								value="#{relatorioContasBean.relatorio.filtro.bancosDebito}"
+								label="Bancos" filter="true" filterMatchMode="contains">
 
-							<p:column headerText="Código">
-								<p:outputLabel value="#{conta.id}" />
-							</p:column>
-							<p:column headerText="Favorecido">
-								<p:outputLabel value="#{conta.favorecido}" />
-							</p:column>
-							<p:column headerText="Data vencimento">
-								<p:outputLabel value="#{conta.vencimento.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
-								</p:outputLabel>
-							</p:column>
-							<p:column headerText="Valor">
-								<p:outputLabel value="#{conta.valor}">
-									<f:convertNumber currencySymbol="R$ " type="currency"
-										locale="pt_BR" />
-								</p:outputLabel>
-							</p:column>
-						</p:dataTable>
-					</p:fieldset>
-					<p:spacer height="30" />
-					<div class="container-action">
-						<p:commandButton icon="ui-icon-closethick" update="@form"
-							value="Cancelar cheque" disabled="#{chequesEmitidosBean.chequeSelecionado.cancelado}"
-							action="#{chequesEmitidosBean.cancelarCheque()}">
-							<p:confirm header="Cancelar cheque"
-								message="Tem certeza que deseja cancelar o cheque ?"
-								icon="ui-icon-alert" />
-						</p:commandButton>
+								<f:attribute name="collectionType" value="java.util.ArrayList" />
+								<f:selectItems value="#{relatorioContasBean.bancos}" var="b"
+									itemLabel="#{b.descricao}" itemValue="#{b}" />
+							</p:selectCheckboxMenu>
 
-						<p:commandButton icon="ui-icon-print" update="@form"
-							value="Reimprimir cheque" disabled="#{chequesEmitidosBean.chequeSelecionado.cancelado}"
-							action="#{chequesEmitidosBean.cancelarCheque()}">
-							<p:confirm header="Reimprimir cheque"
-								message="Tem certeza que deseja imprimir o cheque ?"
-								icon="ui-icon-alert" />
-						</p:commandButton>
+						</p:column>
+					</p:row>
 
-					</div>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Favorecido:" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:inputText
+								value="#{relatorioContasBean.relatorio.filtro.favorecido}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Histórico:" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:inputText
+								value="#{relatorioContasBean.relatorio.filtro.historico}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Classificação contábil:" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:inputText
+								value="#{relatorioContasBean.relatorio.filtro.classificacaoContabil}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Situação da conta:" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
 
-				</p:tab>
-			</p:tabView>
+							<p:selectCheckboxMenu 
+								value="#{relatorioContasBean.relatorio.filtro.status}"
+								label="Situação da conta" filter="true" filterMatchMode="contains">
+
+								<f:selectItem itemLabel="Já está Paga" itemValue="PAGA" />
+								<f:selectItem itemLabel="Pendente" itemValue="PENDENTE" />
+								<f:selectItem itemLabel="Atrasada" itemValue="ATRASADA" />
+							</p:selectCheckboxMenu>
+
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Excluída?" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:selectOneButton
+								value="#{relatorioContasBean.relatorio.filtro.excluida}">
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Sim" itemValue="SIM" />
+								<f:selectItem itemLabel="Não" itemValue="NAO" />
+							</p:selectOneButton>
+						</p:column>
+					</p:row>
+				</p:panelGrid>
+
+				<div class="container-action">
+					<p:commandButton value="Buscar" icon="ui-icon-search"
+						update="@form" action="#{relatorioContasBean.buscar()}">
+					</p:commandButton>
+				</div>
+			</p:fieldset>
+			<p:spacer height="15" />
+
+			<p:dataTable var="conta" style="font-size:11px;"
+				value="#{relatorioContasBean.relatorio.resultado}" paginator="true"
+				rows="15" paginatorPosition="bottom" id="contas"
+				emptyMessage="Nenhuma conta encontrada">
+
+				<f:facet name="header">
+					<p:outputLabel value="Lista de contas" style="font-size:15px;" />
+				</f:facet>
+				<f:facet name="footer">Valor total de contas: 
+						<p:outputLabel value="#{relatorioContasBean.relatorio.valorTotal}"
+						style="font-size:15px;">
+						<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+							type="currency" />
+					</p:outputLabel>
+				</f:facet>
+
+				<p:column headerText="Código" width="60">
+					<p:outputLabel value="#{conta.id}" />
+				</p:column>
+				<p:column headerText="Favorecido">
+					<p:outputLabel value="#{conta.favorecido}" />
+				</p:column>
+				<p:column headerText="Histórico">
+					<p:outputLabel value="#{conta.historico}" />
+				</p:column>
+				<p:column headerText="Vencimento" width="70">
+					<p:outputLabel value="#{conta.vencimento.time}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Valor" width="100">
+					<p:outputLabel value="#{conta.valor}">
+						<f:convertNumber currencySymbol="R$ " locale="pt_BR"
+							type="currency" />
+					</p:outputLabel>
+				</p:column>
+				<p:column headerText="Débito em conta" width="120">
+					<p:outputLabel value="Sim - #{conta.debitoBanco.descricao}"
+						rendered="#{conta.debitoConta}" />
+					<p:outputLabel value="Não" rendered="#{!conta.debitoConta}" />
+				</p:column>
+				<p:column headerText="Class. contábil" width="120">
+					<p:outputLabel value="#{conta.classificacaoContabil}" />
+				</p:column>
+				<p:column headerText="Situação" width="80">
+					<p:outputLabel value="Pendente" rendered="#{!conta.estaVencida() and !conta.jaEstaPaga()}" />
+					<p:outputLabel value="Atrasada" style="color:red;" rendered="#{conta.estaVencida() and !conta.jaEstaPaga()}" />
+					<p:outputLabel value="Ja está paga" style="color:blue;" rendered="#{conta.jaEstaPaga()}" />
+				</p:column>
+				<p:column headerText="Excluída?" width="50">
+					<p:outputLabel value="Sim" style="color:red;" rendered="#{conta.excluida}" />
+					<p:outputLabel value="Não" rendered="#{!conta.excluida}" />
+				</p:column>
+
+			</p:dataTable>
+
+			<div class="container-action">
+				<h:commandButton value="Exportar planilha"
+					onclick="this.form.target='_self'"
+					styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left">
+					<p:dataExporter type="xls" target="contas" fileName="contas" />
+				</h:commandButton>
+
+				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+					onclick="PF('painelTitulo').show();" />
+			</div>
+
+			<p:dialog header="Emitir nota de cobrança" width="500"
+				widgetVar="painelTitulo" modal="true" height="170">
+
+				<p:panelGrid columns="1" style="width:100%;text-align:center;"
+					styleClass="panelForm">
+
+					<p:outputLabel value="Título do relatório:" />
+					<p:inputText value="#{relatorioContasBean.relatorio.titulo}"
+						size="60" />
+
+					<p:commandButton
+						action="#{relatorioContasBean.imprimirRelatorio()}" ajax="false"
+						target="_blank" value="Imprimir"
+						onclick="this.form.target='_blank'" icon="ui-icon-print"
+						style="width:300px;height:60px;margin-top:30px;" />
+
+				</p:panelGrid>
+
+			</p:dialog>
+
 		</h:form>
 
 	</ui:define>

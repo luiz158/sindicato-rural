@@ -28,7 +28,7 @@ import com.sindicato.controlefinanceiro.reports.GeradorReports;
 
 @ManagedBean
 @ViewScoped
-public class RelatorioContasBean implements Serializable {
+public class RelatorioChequesBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,9 +36,9 @@ public class RelatorioContasBean implements Serializable {
 	@EJB private BancoDAO bancoDAO;
 	private RelatorioContas relatorio;
 	private boolean ocultarFiltro;
-
+	
 	private List<Banco> bancos;
-
+	
 	public void buscar(){
 		relatorio = contaDAO.getRelatorioContas(relatorio.getFiltro());
 		ocultarFiltro = true;

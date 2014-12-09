@@ -1,5 +1,6 @@
 package com.sindicato.contasapagar.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -10,7 +11,12 @@ import javax.persistence.TypedQuery;
 import com.sindicato.contasapagar.dao.ChequeEmitidoDAO;
 import com.sindicato.contasapagar.entity.Banco;
 import com.sindicato.contasapagar.entity.ChequeEmitido;
+import com.sindicato.contasapagar.report.model.FiltroBooleanEnum;
+import com.sindicato.contasapagar.report.model.FiltroRelatorioCheques;
+import com.sindicato.contasapagar.report.model.RelatorioCheques;
 import com.sindicato.result.ResultOperation;
+import com.uaihebert.factory.EasyCriteriaFactory;
+import com.uaihebert.model.EasyCriteria;
 
 @Stateless
 public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
@@ -82,5 +88,63 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 				+ " order by c.id desc";
 		TypedQuery<ChequeEmitido> query = em.createQuery(jpql, ChequeEmitido.class);
 		return query.getResultList();
-	} 
+	}
+	
+	@Override
+	public RelatorioCheques getRelatorioCheques(FiltroRelatorioCheques filtro) {
+		RelatorioCheques relatorio = new RelatorioCheques();
+		relatorio.setFiltro(filtro);
+		
+		EasyCriteria<ChequeEmitido> criteria = EasyCriteriaFactory.createQueryCriteria(em, ChequeEmitido.class);
+		criteria.setDistinctTrue();
+		this.preencheFiltrosRelatorio(criteria, filtro);
+		relatorio.setResultado(criteria.getResultList());
+		return relatorio;
+	}
+	
+	private void preencheFiltrosRelatorio(EasyCriteria<ChequeEmitido> criteria, FiltroRelatorioCheques filtro){
+		
+		// código da conta
+		if(filtro.getId() != 0){
+			criteria.andEquals("id", filtro.getId());
+		}
+		// banco 
+		if(filtro.getBancos() != null && filtro.getBancos().size() > 0){
+			for (Banco banco : filtro.getBancos()) {
+				criteria.orEquals(1, "banco", banco);
+			}
+		}
+		// cancelado
+		if(!filtro.getCancelado().equals(FiltroBooleanEnum.TODOS)){
+			criteria.andEquals("cancelado", (filtro.getCancelado().equals(FiltroBooleanEnum.SIM)));
+		}
+		// emissaoDe
+		if(filtro.getEmissaoDe() != null){
+			criteria.andGreaterOrEqualTo("emissao", filtro.getEmissaoDe());
+		}
+		// emissaoAte
+		if(filtro.getEmissaoAte() != null){
+			criteria.andLessOrEqualTo("emissao", filtro.getEmissaoAte());
+		}		
+		// valorDe
+		if(filtro.getValorDe() != null && filtro.getValorDe().compareTo(BigDecimal.ZERO) != 0){
+			criteria.andGreaterOrEqualTo("valor", filtro.getValorDe());
+		}
+		// valorAte
+		if(filtro.getValorAte() != null && filtro.getValorAte().compareTo(BigDecimal.ZERO) != 0){
+			criteria.andLessOrEqualTo("valor", filtro.getValorAte());
+		}
+		// favorecido
+		if(filtro.getFavorecido() != null && filtro.getFavorecido() != ""){
+			criteria.andStringLike("favorecido", "%" + filtro.getFavorecido() + "%");
+		}
+		// versoCheque
+		if(filtro.getVersoCheque() != null && filtro.getVersoCheque() != ""){
+			criteria.andStringLike("versoCheque", "%" + filtro.getVersoCheque() + "%");
+		}
+		// versoCheque
+		if(filtro.getVersoCheque() != null && filtro.getVersoCheque() != ""){
+			criteria.andEquals("identificacao", filtro.getIdentificacao());
+		}
+	}
 }
