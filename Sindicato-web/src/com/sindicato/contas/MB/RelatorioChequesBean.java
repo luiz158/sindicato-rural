@@ -21,9 +21,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.contasapagar.dao.BancoDAO;
-import com.sindicato.contasapagar.dao.ContaDAO;
+import com.sindicato.contasapagar.dao.ChequeEmitidoDAO;
 import com.sindicato.contasapagar.entity.Banco;
-import com.sindicato.contasapagar.report.model.RelatorioContas;
+import com.sindicato.contasapagar.report.model.RelatorioCheques;
 import com.sindicato.controlefinanceiro.reports.GeradorReports;
 
 @ManagedBean
@@ -32,27 +32,26 @@ public class RelatorioChequesBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@EJB private ContaDAO contaDAO;
+	@EJB private ChequeEmitidoDAO chequeDAO;
 	@EJB private BancoDAO bancoDAO;
-	private RelatorioContas relatorio;
-	private boolean ocultarFiltro;
+	private RelatorioCheques relatorio;
 	
 	private List<Banco> bancos;
 	
 	public void buscar(){
-		relatorio = contaDAO.getRelatorioContas(relatorio.getFiltro());
-		ocultarFiltro = true;
+		relatorio = chequeDAO.getRelatorioCheques(relatorio.getFiltro());
 	}
 	public void imprimirRelatorio(){
 		Map<String, Object> parameters = new HashMap<String, Object>();
 		parameters.put("valorTotal", "R$ " + NumberFormat.getInstance(new Locale("pt", "BR")).format(relatorio.getValorTotal()));
 		parameters.put("titulo", relatorio.getTitulo());
+		parameters.put("totalCheques", relatorio.getResultado().size());
 		
 		GeradorReports gerador;
 		ServletOutputStream servletOutputStream = null;
 		FacesContext context = null;
 		try {
-			gerador = new GeradorReports("relatorioContas.jasper", parameters, new JRBeanCollectionDataSource(
+			gerador = new GeradorReports("relatorioCheques.jasper", parameters, new JRBeanCollectionDataSource(
 					relatorio.getResultado()));
 		
 			context = UtilBean.getFacesContext();
@@ -81,29 +80,24 @@ public class RelatorioChequesBean implements Serializable {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	public RelatorioContas getRelatorio() {
-		if(relatorio == null){
-			relatorio = new RelatorioContas();
-		}
-		return relatorio;
-	}
-	public void setRelatorio(RelatorioContas relatorio) {
-		this.relatorio = relatorio;
-	}
 	public List<Banco> getBancos() {
 		if(bancos == null){
 			bancos = bancoDAO.getAll();
 		}
 		return bancos;
 	}
+	public RelatorioCheques getRelatorio() {
+		if(relatorio == null){
+			relatorio = new RelatorioCheques();
+		}
+		return relatorio;
+	}
+	public void setRelatorio(RelatorioCheques relatorio) {
+		this.relatorio = relatorio;
+	}
 	public void setBancos(List<Banco> bancos) {
 		this.bancos = bancos;
 	}
-	public boolean isOcultarFiltro() {
-		return ocultarFiltro;
-	}
-	public void setOcultarFiltro(boolean ocultarFiltro) {
-		this.ocultarFiltro = ocultarFiltro;
-	}
+
 
 }

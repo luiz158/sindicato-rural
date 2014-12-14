@@ -2,9 +2,12 @@ package com.sindicato.contasapagar.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +20,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 @Entity
 @SequenceGenerator(allocationSize=1, initialValue=1, name="seqChequeEmitido", sequenceName="SEQ_CHEQUEEMITIDO")
@@ -55,6 +59,27 @@ public class ChequeEmitido implements Serializable {
 	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Conta> contasPagas;
 	
+	@Transient
+	private String emissaoFormatado;
+	@Transient
+	private String valorFormatado;
+	
+	public String getValorFormatado(){
+		if(valor == null){
+			valorFormatado = "";
+		} else {
+			valorFormatado = NumberFormat.getInstance(new Locale("pt", "BR")).format(valor);
+		}
+		return valorFormatado;
+	}
+	public String getEmissaoFormatado(){
+		if(emissao == null){
+			emissaoFormatado = "";
+		} else {
+			emissaoFormatado = new SimpleDateFormat("dd/MM/yyyy").format(emissao.getTime());
+		}
+		return emissaoFormatado;
+	}
 	public void addConta(Conta conta){
 		contasPagas.add(conta);
 	}

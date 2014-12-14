@@ -17,7 +17,7 @@ public class FiltroRelatorioCheques {
 	private String versoCheque;
 	private Calendar emissaoDe;
 	private Calendar emissaoAte;
-	private FiltroBooleanEnum cancelado;
+	private FiltroBooleanEnum cancelado = FiltroBooleanEnum.TODOS;
 	public int getId() {
 		return id;
 	}

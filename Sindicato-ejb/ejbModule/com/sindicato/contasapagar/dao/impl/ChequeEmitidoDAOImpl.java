@@ -96,6 +96,7 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 		relatorio.setFiltro(filtro);
 		
 		EasyCriteria<ChequeEmitido> criteria = EasyCriteriaFactory.createQueryCriteria(em, ChequeEmitido.class);
+		criteria.leftJoinFetch("contasPagas");
 		criteria.setDistinctTrue();
 		this.preencheFiltrosRelatorio(criteria, filtro);
 		relatorio.setResultado(criteria.getResultList());
@@ -104,10 +105,6 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 	
 	private void preencheFiltrosRelatorio(EasyCriteria<ChequeEmitido> criteria, FiltroRelatorioCheques filtro){
 		
-		// código da conta
-		if(filtro.getId() != 0){
-			criteria.andEquals("id", filtro.getId());
-		}
 		// banco 
 		if(filtro.getBancos() != null && filtro.getBancos().size() > 0){
 			for (Banco banco : filtro.getBancos()) {
@@ -142,8 +139,8 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 		if(filtro.getVersoCheque() != null && filtro.getVersoCheque() != ""){
 			criteria.andStringLike("versoCheque", "%" + filtro.getVersoCheque() + "%");
 		}
-		// versoCheque
-		if(filtro.getVersoCheque() != null && filtro.getVersoCheque() != ""){
+		// identificacao
+		if(filtro.getIdentificacao() != null && filtro.getIdentificacao() > 0){
 			criteria.andEquals("identificacao", filtro.getIdentificacao());
 		}
 	}
