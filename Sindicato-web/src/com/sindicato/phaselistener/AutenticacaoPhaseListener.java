@@ -60,7 +60,7 @@ public class AutenticacaoPhaseListener implements PhaseListener {
 
 	private boolean paginaIgnorada(String pagina) {
 		boolean retorno = false;
-		if (pagina.equals("/login.xhtml") || pagina.equals("/selecionaModulos.xhtml"))
+		if (pagina.equals("/login.xhtml") || pagina.equals("/selecionaModulos.xhtml") || pagina.equals("/Contas/cheque.xhtml"))
 			retorno = true;
 
 		return retorno;

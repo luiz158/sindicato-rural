@@ -144,4 +144,14 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 			criteria.andEquals("identificacao", filtro.getIdentificacao());
 		}
 	}
+
+	@Override
+	public ChequeEmitido getChequePorId(int id) {
+		String jpql = "select distinct c from ChequeEmitido c "
+				+ " join fetch c.contasPagas "
+				+ " where c.id = :id";
+		TypedQuery<ChequeEmitido> query = em.createQuery(jpql, ChequeEmitido.class);
+		query.setParameter("id", id);
+		return query.getSingleResult();
+	}
 }

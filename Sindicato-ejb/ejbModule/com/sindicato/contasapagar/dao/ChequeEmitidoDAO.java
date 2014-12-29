@@ -20,4 +20,6 @@ public interface ChequeEmitidoDAO {
 	List<ChequeEmitido> listarCheques();
 	
 	RelatorioCheques getRelatorioCheques(FiltroRelatorioCheques filtro);
+	
+	ChequeEmitido getChequePorId(int id);
 }

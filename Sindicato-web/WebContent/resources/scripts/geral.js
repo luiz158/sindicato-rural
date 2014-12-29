@@ -11,8 +11,9 @@ function mascaras(){
 	$('.cpf').mask('999.999.999-99', { reverse : true });
 	$('.cnpj').mask('99.999.999/9999-99', { reverse : true});
 	$('.rg').mask('99.999.999-*', { reverse : true });
+	$('.classcontabil').mask('999.999-9', { reverse : true });
 	
-	// mascara da campos monetários
+	// mascara da campos monetï¿½rios
 	$(".moeda").maskMoney({symbol:'R$ ', showSymbol:true, thousands:'.', decimal:',', symbolStay: true, allowNegative: true});
 
 }

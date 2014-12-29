@@ -6,8 +6,13 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+import org.primefaces.context.RequestContext;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.contasapagar.dao.BancoDAO;
@@ -56,12 +61,27 @@ public class EmissaoChequeBean implements Serializable {
 		contasPendentes.add(conta);
 	}
 	
+	public void imprimirCheque(int idCheque) {
+	    final String pagina = "/Contas/cheque.xhtml"; 
+	    FacesContext facesContext = FacesContext.getCurrentInstance();
+
+	    ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
+	    String actionUrl = viewHandler.getActionURL(facesContext, pagina);
+	    
+	    String javaScriptText = "window.open('"+actionUrl+"?id="+idCheque+"');";
+	    RequestContext.getCurrentInstance().execute(javaScriptText);         
+	}
+	
 	public void emitirCheque() {
 		try {
-			ResultOperation result = chequeDAO.emitirCheque(cheque);
-			if(result.isSuccess()){
+			ResultOperation result = new ResultOperation();
+			//	ResultOperation result = chequeDAO.emitirCheque(cheque);
+		//	if(result.isSuccess()){
+			if(true){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", result.getMessage());
+				
+				this.imprimirCheque(cheque.getId());
 				this.reset();
 			} else {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_WARN,

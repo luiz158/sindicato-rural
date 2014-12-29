@@ -68,28 +68,28 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="88" y="26" width="160" height="12" uuid="1108a59f-bcba-4dd7-aa23-1c2a12185540"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{favorecido}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="317" y="26" width="264" height="12" uuid="4a0cddec-67e6-445c-bdb8-1a788e0e5b7c"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{historico}]]></textFieldExpression>
 			</textField>
-			<textField pattern="¤ #,##0.00">
+			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement x="317" y="2" width="81" height="12" uuid="8f4a816b-911c-4288-8180-546673a82b57"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valorFormatado}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="88" y="38" width="160" height="12" uuid="e4321512-4085-486f-94ec-9022865e4f69"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
@@ -141,14 +141,14 @@
 				</textElement>
 				<text><![CDATA[Vencimento:]]></text>
 			</staticText>
-			<textField pattern="">
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="317" y="14" width="104" height="12" uuid="fe6c94f4-4352-4928-afac-1a397d4776ab"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vencimentoFormatado}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="88" y="14" width="160" height="12" uuid="f72a374f-2d30-4935-819a-e7c0d6db6424"/>
 				<textElement>
 					<font fontName="Times New Roman" size="8"/>

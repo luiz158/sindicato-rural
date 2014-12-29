@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view>
+	<h:head>
+		<f:metadata>
+			<f:viewParam name="id" value="#{impressaoChequeBean.idCheque}" />
+		</f:metadata>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Impressão de cheque</title>
+	</h:head>
+	<h:body>
+		<h:form>
+			<div
+				style="position: relative; border: 0px solid black; height: 7cm; width: 100%;">
+				<div
+					style="border: 0px solid black; height: 0.7cm; width: 3.5cm; position: absolute; top: 0.7cm; right: 1.5cm;">
+					#{impressaoChequeBean.impressaoCheque.valorFormatado}
+				</div>
+
+				<div style="border: 0px solid black; height: 0.5cm; width: 12.8cm; position: absolute; top: 1.6cm; right: 1.7cm;">
+					#{impressaoChequeBean.impressaoCheque.valorPorExtenso}
+				</div>
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 12.1cm; position: absolute; top: 2.3cm; right: 4.7cm;">
+					</div>
+
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 12.1cm; position: absolute; top: 3.0cm; right: 4.7cm;">
+					#{impressaoChequeBean.impressaoCheque.favorecido}</div>
+
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 3.5cm; position: absolute; top: 3.8cm; right: 6.6cm;">
+					Cotia, 30</div>
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 2.5cm; position: absolute; top: 3.8cm; right: 3.4cm;">
+					Janeiro</div>
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 1cm; position: absolute; top: 3.8cm; right: 1.9cm;">
+					2014</div>
+			</div>
+
+			<script type="text/javascript">
+// 			window.print();
+		</script>
+		</h:form>
+	</h:body>
+</f:view>
+</html>
