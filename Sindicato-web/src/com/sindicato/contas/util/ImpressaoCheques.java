@@ -1,7 +1,10 @@
 package com.sindicato.contas.util;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 import com.sindicato.util.Extenso;
@@ -19,7 +22,17 @@ public class ImpressaoCheques {
 	private BigDecimal valor;
 	private String favorecido;
 	private String verso;
-
+ 
+	public String getMes(){
+		DateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
+		return simpleDateFormat.format(Calendar.getInstance().getTime());
+	}
+	public int getAno(){
+		return Calendar.getInstance().get(Calendar.YEAR);
+	}
+	public int getDia(){
+		return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+	}
 	public String getValorFormatado(){
 		return NumberFormat.getInstance(new Locale("pt", "BR")).format(this.getValor()); 
 	}

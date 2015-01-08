@@ -187,7 +187,7 @@
 
 						<p:commandButton icon="ui-icon-print" update="@form"
 							value="Reimprimir cheque" disabled="#{chequesEmitidosBean.chequeSelecionado.cancelado}"
-							action="#{chequesEmitidosBean.cancelarCheque()}">
+							action="#{chequesEmitidosBean.imprimirCheque()}">
 							<p:confirm header="Reimprimir cheque"
 								message="Tem certeza que deseja imprimir o cheque ?"
 								icon="ui-icon-alert" />

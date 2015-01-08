@@ -5,8 +5,12 @@ import java.util.List;
 
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+
+import org.primefaces.context.RequestContext;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.contasapagar.dao.ChequeEmitidoDAO;
@@ -52,6 +56,22 @@ public class ChequesEmitidosBean implements Serializable {
 		}
 	}
 
+	public void imprimirCheque() {
+		if(chequeSelecionado.getId() == 0){
+			return;
+		}
+		
+	    final String pagina = "/Contas/cheque.xhtml"; 
+	    FacesContext facesContext = FacesContext.getCurrentInstance();
+
+	    ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
+	    String actionUrl = viewHandler.getActionURL(facesContext, pagina);
+	    
+	    String javaScriptText = "window.open('"+actionUrl+"?id="+chequeSelecionado.getId()+"');";
+	    RequestContext.getCurrentInstance().execute(javaScriptText);         
+	}
+
+	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

@@ -10,7 +10,6 @@ import javax.faces.application.ViewHandler;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 
 import org.primefaces.context.RequestContext;
 
@@ -74,10 +73,8 @@ public class EmissaoChequeBean implements Serializable {
 	
 	public void emitirCheque() {
 		try {
-			ResultOperation result = new ResultOperation();
-			//	ResultOperation result = chequeDAO.emitirCheque(cheque);
-		//	if(result.isSuccess()){
-			if(true){
+			ResultOperation result = chequeDAO.emitirCheque(cheque);
+			if(result.isSuccess()){
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
 						"Sucesso", result.getMessage());
 				
