@@ -22,16 +22,26 @@ public class ImpressaoCheques {
 	private BigDecimal valor;
 	private String favorecido;
 	private String verso;
- 
+	private Calendar emissao;
+	
 	public String getMes(){
+		if(emissao == null){
+			return null;
+		}
 		DateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
-		return simpleDateFormat.format(Calendar.getInstance().getTime());
+		return simpleDateFormat.format(emissao.getTime());
 	}
 	public int getAno(){
-		return Calendar.getInstance().get(Calendar.YEAR);
+		if(emissao == null){
+			return 0;
+		}
+		return emissao.get(Calendar.YEAR);
 	}
 	public int getDia(){
-		return Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		if(emissao == null){
+			return 0;
+		}
+		return emissao.get(Calendar.DAY_OF_MONTH);
 	}
 	public String getValorFormatado(){
 		return NumberFormat.getInstance(new Locale("pt", "BR")).format(this.getValor()); 
@@ -50,6 +60,12 @@ public class ImpressaoCheques {
 	}
 	public String getVerso() {
 		return verso;
+	}
+	public Calendar getEmissao() {
+		return emissao;
+	}
+	public void setEmissao(Calendar emissao) {
+		this.emissao = emissao;
 	}
 	public void setValor(BigDecimal valor) {
 		this.valor = valor;

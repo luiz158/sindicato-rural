@@ -154,4 +154,18 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 		query.setParameter("id", id);
 		return query.getSingleResult();
 	}
+	@Override
+	public ResultOperation salvarCheque(ChequeEmitido cheque) {
+		ResultOperation result = new ResultOperation();
+		try {
+			em.merge(cheque);
+			result.setMessage("Cheque salvo com sucesso.");
+			result.setSuccess(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setMessage("Erro ao salvar o cheque, por favor contate o administrador.");
+			result.setSuccess(false);
+		}
+		return result;
+	}
 }

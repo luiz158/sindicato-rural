@@ -61,16 +61,21 @@ public class ChequesEmitidosBean implements Serializable {
 			return;
 		}
 		
-	    final String pagina = "/Contas/cheque.xhtml"; 
-	    FacesContext facesContext = FacesContext.getCurrentInstance();
+		ResultOperation result = chequeDAO.salvarCheque(chequeSelecionado);
+		if(result.isSuccess()){
+		    final String pagina = "/Contas/cheque.xhtml"; 
+		    FacesContext facesContext = FacesContext.getCurrentInstance();
 
-	    ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
-	    String actionUrl = viewHandler.getActionURL(facesContext, pagina);
-	    
-	    String javaScriptText = "window.open('"+actionUrl+"?id="+chequeSelecionado.getId()+"');";
-	    RequestContext.getCurrentInstance().execute(javaScriptText);         
+		    ViewHandler viewHandler = facesContext.getApplication().getViewHandler();
+		    String actionUrl = viewHandler.getActionURL(facesContext, pagina);
+		    
+		    String javaScriptText = "window.open('"+actionUrl+"?id="+chequeSelecionado.getId()+"');";
+		    RequestContext.getCurrentInstance().execute(javaScriptText);         
+		} else {
+			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
+					"Erro", result.getMessage());
+		}
 	}
-
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;

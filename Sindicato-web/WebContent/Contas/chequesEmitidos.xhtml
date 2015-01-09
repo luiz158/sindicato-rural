@@ -110,7 +110,7 @@
 									<p:outputLabel value="Emissão:" />
 								</p:column>
 								<p:column styleClass="colInput">
-									<p:calendar
+									<p:calendar beforeShowDay="true" 
 										value="#{chequesEmitidosBean.chequeSelecionado.emissao}"
 										pattern="dd/MM/yyyy" styleClass="date" readonly="true"
 										converter="CalendarConverter" />
@@ -124,7 +124,7 @@
 								<p:column styleClass="colInput">
 									<p:inputText
 										value="#{chequesEmitidosBean.chequeSelecionado.favorecido}"
-										readonly="true" size="60" />
+										size="60" />
 								</p:column>
 							</p:row>
 
@@ -189,7 +189,7 @@
 							value="Reimprimir cheque" disabled="#{chequesEmitidosBean.chequeSelecionado.cancelado}"
 							action="#{chequesEmitidosBean.imprimirCheque()}">
 							<p:confirm header="Reimprimir cheque"
-								message="Tem certeza que deseja imprimir o cheque ?"
+								message="Tem certeza que deseja salvar as alterações e imprimir o cheque ?"
 								icon="ui-icon-alert" />
 						</p:commandButton>
 

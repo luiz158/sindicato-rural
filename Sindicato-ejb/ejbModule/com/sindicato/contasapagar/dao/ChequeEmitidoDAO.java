@@ -15,6 +15,7 @@ public interface ChequeEmitidoDAO {
 	
 	ResultOperation emitirCheque(ChequeEmitido cheque);
 	ResultOperation cancelarCheque(ChequeEmitido cheque);
+	ResultOperation salvarCheque(ChequeEmitido cheque);
 	
 	Long getNumeroUltimoChequeEmitido(Banco banco);
 	List<ChequeEmitido> listarCheques();
