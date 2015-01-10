@@ -63,70 +63,70 @@
 		<band height="59" splitType="Stretch">
 			<textField>
 				<reportElement x="88" y="2" width="55" height="12" uuid="6c6f94ee-6f33-4e0b-a6df-84736a0946bc"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="88" y="26" width="160" height="12" uuid="1108a59f-bcba-4dd7-aa23-1c2a12185540"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{favorecido}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="317" y="26" width="264" height="12" uuid="4a0cddec-67e6-445c-bdb8-1a788e0e5b7c"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{historico}]]></textFieldExpression>
 			</textField>
 			<textField pattern="¤ #,##0.00" isBlankWhenNull="true">
 				<reportElement x="317" y="2" width="81" height="12" uuid="8f4a816b-911c-4288-8180-546673a82b57"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valorFormatado}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="88" y="38" width="160" height="12" uuid="e4321512-4085-486f-94ec-9022865e4f69"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{classificacaoContabil}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="2" width="88" height="12" uuid="e427f552-96c9-4225-9a01-760b041f50f3"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código da conta:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="248" y="2" width="69" height="12" uuid="12271cb6-4c2c-4542-b3b0-e24cd056e7ce"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Valor:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="26" width="88" height="12" uuid="90b86b88-84a0-4601-8372-87e04f1a1ff5"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Favorecido:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="248" y="26" width="69" height="12" uuid="2b73a4da-9e7a-4570-9d34-59468154c0a5"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Histórico:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="38" width="88" height="12" uuid="0348777b-4067-4895-84ac-a5fe56726fe8"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Classif. Contábil:]]></text>
@@ -136,28 +136,28 @@
 			</line>
 			<staticText>
 				<reportElement x="248" y="14" width="69" height="12" uuid="71f94b59-0827-4436-a2d2-184fd45f0006"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Vencimento:]]></text>
 			</staticText>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="317" y="14" width="104" height="12" uuid="fe6c94f4-4352-4928-afac-1a397d4776ab"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{vencimentoFormatado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
 				<reportElement x="88" y="14" width="160" height="12" uuid="f72a374f-2d30-4935-819a-e7c0d6db6424"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{debitoConta}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[($F{debitoConta} ? "Sim" : "Não")]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="14" width="88" height="12" uuid="b743b1b8-0c14-49a5-99bb-c33d39202a7f"/>
-				<textElement>
+				<textElement verticalAlignment="Bottom">
 					<font fontName="Times New Roman" size="10" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Débito em conta?]]></text>

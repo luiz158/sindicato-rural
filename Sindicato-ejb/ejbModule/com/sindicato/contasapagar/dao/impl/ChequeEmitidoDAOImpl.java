@@ -98,11 +98,12 @@ public class ChequeEmitidoDAOImpl implements ChequeEmitidoDAO {
 		EasyCriteria<ChequeEmitido> criteria = EasyCriteriaFactory.createQueryCriteria(em, ChequeEmitido.class);
 		criteria.leftJoinFetch("contasPagas");
 		criteria.setDistinctTrue();
+		criteria.orderByDesc("emissao");
+		
 		this.preencheFiltrosRelatorio(criteria, filtro);
 		relatorio.setResultado(criteria.getResultList());
 		return relatorio;
 	}
-	
 	private void preencheFiltrosRelatorio(EasyCriteria<ChequeEmitido> criteria, FiltroRelatorioCheques filtro){
 		
 		// banco 

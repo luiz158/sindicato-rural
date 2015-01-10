@@ -138,15 +138,14 @@
 							<p:outputLabel value="Situação da conta:" />
 						</p:column>
 						<p:column styleClass="colInput" colspan="3">
-
-							<p:selectCheckboxMenu 
+							<p:selectManyCheckbox layout="grid" columns="1"
 								value="#{relatorioContasBean.relatorio.filtro.status}"
 								label="Situação da conta" filter="true" filterMatchMode="contains">
 
 								<f:selectItem itemLabel="Já está Paga" itemValue="PAGA" />
 								<f:selectItem itemLabel="Pendente" itemValue="PENDENTE" />
 								<f:selectItem itemLabel="Atrasada" itemValue="ATRASADA" />
-							</p:selectCheckboxMenu>
+							</p:selectManyCheckbox>
 
 						</p:column>
 					</p:row>

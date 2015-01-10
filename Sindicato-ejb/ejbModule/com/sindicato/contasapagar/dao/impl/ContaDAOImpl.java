@@ -147,6 +147,7 @@ public class ContaDAOImpl implements ContaDAO {
 		EasyCriteria<Conta> criteria = EasyCriteriaFactory.createQueryCriteria(em, Conta.class);
 		criteria.setDistinctTrue();
 		criteria.leftJoinFetch("chequesPagamento");
+		criteria.orderByDesc("vencimento");
 		this.preencheFiltrosRelatorio(criteria, filtro);
 		
 		relatorio.setResultado(criteria.getResultList());
@@ -165,7 +166,6 @@ public class ContaDAOImpl implements ContaDAO {
 		}
 		return relatorio;
 	}
-
 	private String getSituacao(Conta conta){
 		String situacao = "";
 
@@ -186,7 +186,6 @@ public class ContaDAOImpl implements ContaDAO {
 		
 		return situacao;
 	}
-	
 	private void preencheFiltrosRelatorio(EasyCriteria<Conta> criteria, FiltroRelatorioContas filtro){
 		
 		// código da conta
