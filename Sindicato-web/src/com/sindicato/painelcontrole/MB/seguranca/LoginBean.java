@@ -48,7 +48,9 @@ public class LoginBean implements Serializable {
 	private List<Modulo> modulosPermitidos;
 	private Modulo moduloSelecionado;
 	private int qtdModulos;
-
+	private boolean manterUsuarioLogado;
+	
+	
 	public String autenticar() {
 
 		usuarioLogado = null;
@@ -303,5 +305,14 @@ public class LoginBean implements Serializable {
 		}
 		qtdModulos = modulosPermitidos.size();
 		return qtdModulos;
+	}
+
+
+	public boolean isManterUsuarioLogado() {
+		return manterUsuarioLogado;
+	}
+
+	public void setManterUsuarioLogado(boolean manterUsuarioLogado) {
+		this.manterUsuarioLogado = manterUsuarioLogado;
 	}
 }

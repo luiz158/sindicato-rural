@@ -14,14 +14,24 @@
 			href="#{resource['imagens/favicon.ico']}" />
 	</h:head>
 	<h:body>
-		<div id="main-wrapper"
-			style="width: 600px; height: 450px; position: relative;">
-			<div id="logo" style="position: absolute; left: 130px;">
-				<h:graphicImage name="LogoSindRCotia.jpg" library="imagens"></h:graphicImage>
+
+		<div id="content"
+			style="margin: 50px auto; width: 900px; clear: both; border: 0px solid black;">
+
+			<div style="float: left; width: 400px;">
+				<h:graphicImage name="LogoSindRCotia.jpg" library="imagens"
+					style="margin-top:160px;margin-right:50px;" />
 			</div>
-			<center>
-				<div id="content"
-					style="position: absolute; top: 220px; left: 180px;">
+
+			<div style="float: left; width: 100px;">
+				<h:graphicImage name="separador_login.png" library="imagens"
+					style="float: left;" />
+			</div>
+
+			<div style="float: left; width: 400px;">
+				<div id="main-wrapper"
+					style="width: 300px; height: 250px; margin-top: 140px; float: left;">
+
 					<h:form>
 						<p:growl showDetail="true" life="15000" />
 						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
@@ -35,20 +45,17 @@
 								<h:outputText value="" />
 							</f:facet>
 						</p:ajaxStatus>
-						<p:panelGrid width="300" columns="2">
-							<f:facet name="header">
-								<p:row>
-									<p:column colspan="2">Login</p:column>
-								</p:row>
-							</f:facet>
-							<h:outputText value="E-mail:"></h:outputText>
+						
+						<div>
+							<h:outputText value="E-mail:" /> 
 							<p:inputText required="true"
 								requiredMessage="Nome de usuário é um campo obrigatório"
-								size="20" value="#{loginBean.usuario}"></p:inputText>
-							<h:outputText value="Senha:"></h:outputText>
+								size="20" value="#{loginBean.usuario}" />
+							
+							<br />	
+							<h:outputText value="Senha:" />
 							<p:password id="senha" value="#{loginBean.senha}" />
-						</p:panelGrid>
-						<br />
+						</div>
 
 						<p:commandButton value="Entrar" styleClass="panel_button_center"
 							action="#{loginBean.autenticar}" update="@form" />
@@ -58,9 +65,7 @@
 
 					</h:form>
 				</div>
-
-
-			</center>
+			</div>
 		</div>
 	</h:body>
 </f:view>

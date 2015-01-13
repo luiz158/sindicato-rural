@@ -84,7 +84,8 @@
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECOLHIDO'}" />
 
 							<p:outputLabel value="Data base:" />
-							<p:calendar locale="pt_BR" required="true" requiredMessage="Data base não pode ficar vazio"
+							<p:calendar locale="pt_BR" required="true"
+								requiredMessage="Data base não pode ficar vazio"
 								value="#{manutencaoNotaBean.debitoSelecionado.dataBase}"
 								pattern="dd/MM/yyyy" styleClass="date"
 								converter="CalendarConverter" />
@@ -107,16 +108,18 @@
 						</p:panelGrid>
 					</p:fieldset>
 					<p:spacer height="20" />
-					<p:fieldset legend="Serviços da nota de cobrança">
+					<p:fieldset legend="Serviços da nota de cobrança" >
 						<p:commandButton value="Adicionar serviço"
 							onclick="PF('dlg_servicos').show();" type="button"
 							icon="ui-icon-plus" style="margin-bottom:15px;"
 							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}" />
 
 
-						<p:dataTable var="debito" id="servicos"
-							emptyMessage="Nenhum serviço cadastrado"
+						<p:dataTable var="debito" id="servicos" editable="true"
+							editMode="cell" emptyMessage="Nenhum serviço cadastrado"
 							value="#{manutencaoNotaBean.debitoSelecionado.debitoServicos}">
+
+							<p:ajax event="cellEdit" update="@this" />
 
 							<f:facet name="header">
 								<p:outputLabel value="Serviços" />
@@ -131,7 +134,18 @@
 							</f:facet>
 
 							<p:column headerText="Serviço">
-								<p:outputLabel value="#{debito.servico.descricao}" />
+								<p:cellEditor>
+									<f:facet name="output">
+										<h:outputText value="#{debito.servico.descricao}" />
+									</f:facet>
+									<f:facet name="input">
+										<p:selectOneMenu value="#{debito.servico}" 
+										converter="ServicoConverter" filter="true">
+											<f:selectItems value="#{manutencaoNotaBean.servicos}"
+												var="ser" itemValue="#{ser}" itemLabel="#{ser.descricao}" />
+									</p:selectOneMenu>
+									</f:facet>
+								</p:cellEditor>
 							</p:column>
 							<p:column headerText="Valor">
 								<p:outputLabel value="#{debito.valor}">

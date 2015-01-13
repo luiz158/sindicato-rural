@@ -176,14 +176,16 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 			// primeiro registro sempre sera socio = true, segundo sempre quando deixa de ser sócio
 			if(i % 2 > 0){
 				dataVirouSocio = LocalDate.of(
-						informacaoSocio.getDataEvento().get(Calendar.YEAR), 
-						informacaoSocio.getDataEvento().get(Calendar.MONTH) + 1, 
-						informacaoSocio.getDataEvento().get(Calendar.DAY_OF_MONTH));
+					informacaoSocio.getDataEvento().get(Calendar.YEAR), 
+					informacaoSocio.getDataEvento().get(Calendar.MONTH) + 1, 
+					1);
+					//informacaoSocio.getDataEvento().get(Calendar.DAY_OF_MONTH));
 			}else{
 				dataDeixouDeSerSocio = LocalDate.of(
-						informacaoSocio.getDataEvento().get(Calendar.YEAR), 
-						informacaoSocio.getDataEvento().get(Calendar.MONTH) + 1, 
-						informacaoSocio.getDataEvento().get(Calendar.DAY_OF_MONTH)); 
+					informacaoSocio.getDataEvento().get(Calendar.YEAR), 
+					informacaoSocio.getDataEvento().get(Calendar.MONTH) + 1, 
+					1);
+					//informacaoSocio.getDataEvento().get(Calendar.DAY_OF_MONTH)); 
 				calcula = true;
 			}
 			

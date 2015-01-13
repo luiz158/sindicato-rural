@@ -27,6 +27,7 @@ import org.primefaces.component.commandbutton.CommandButton;
 import org.primefaces.component.dialog.Dialog;
 import org.primefaces.component.fieldset.Fieldset;
 import org.primefaces.component.tabview.TabView;
+import org.primefaces.event.CellEditEvent;
 import org.primefaces.model.LazyDataModel;
 
 import com.sindicato.MB.util.UtilBean;
@@ -82,6 +83,18 @@ public class ManutencaoNotaBean implements Serializable {
 	private Fieldset fieldSetRecebimentos;
 	private Fieldset fieldSetRecolhimentos;
 
+	
+	public void onCellEdit(CellEditEvent event) {
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+         
+        if(newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+	
+	
 	public void selecionaDebito() {
 		tabView.setActiveIndex(1);
 		if (debitoSelecionado.getStatus().equals(StatusDebitoEnum.RECOLHIDO)) {
