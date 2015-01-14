@@ -30,9 +30,10 @@
 
 			<div style="float: left; width: 400px;">
 				<div id="main-wrapper"
-					style="width: 300px; height: 250px; margin-top: 140px; float: left;">
+					style="width: 300px; height: 220px; margin-top: 150px; float: left; position: relative;">
 
 					<h:form>
+
 						<p:growl showDetail="true" life="15000" />
 						<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
 							<f:facet name="start">
@@ -45,21 +46,34 @@
 								<h:outputText value="" />
 							</f:facet>
 						</p:ajaxStatus>
-						
-						<div>
-							<h:outputText value="E-mail:" /> 
-							<p:inputText required="true"
-								requiredMessage="Nome de usuário é um campo obrigatório"
-								size="20" value="#{loginBean.usuario}" />
-							
-							<br />	
-							<h:outputText value="Senha:" />
-							<p:password id="senha" value="#{loginBean.senha}" />
+
+						<div style="position: absolute; top: 30px; left: 30px;">
+							<div style="width: 100%; margin-bottom: 10px;">
+								<h:outputText value="Usuário:" />
+								&nbsp;
+								<p:inputText placeholder="usuário" required="true"
+									requiredMessage="Nome de usuário é um campo obrigatório"
+									size="20" value="#{loginBean.usuario}" />
+							</div>
+							<div style="width: 100%; margin-bottom: 10px;">
+								<h:outputText value="Senha:" />
+								&nbsp;&nbsp;&nbsp;
+								<p:password id="senha" placeholder="senha"
+									value="#{loginBean.senha}" />
+							</div>
+							<div style="width: 100%; text-align: right;">
+								<h:outputLabel value="Permanecer logado:" />
+								&nbsp;&nbsp;
+								<p:selectBooleanCheckbox id="manterlogado"
+									value="#{loginBean.manterUsuarioLogado}" />
+							</div>
 						</div>
 
-						<p:commandButton value="Entrar" styleClass="panel_button_center"
-							action="#{loginBean.autenticar}" update="@form" />
-
+						<div style="position: absolute; top: 150px; left: 105px;">
+							<p:commandButton value="Entrar" styleClass="panel_button_center"
+								action="#{loginBean.autenticar}" update="@form"
+								style="width: 150px;height:40px;" />
+						</div>
 						<ui:include src="/dialog_modulos.xhtml"></ui:include>
 
 

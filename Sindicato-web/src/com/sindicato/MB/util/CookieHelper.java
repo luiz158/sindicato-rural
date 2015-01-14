@@ -1,18 +1,13 @@
 package com.sindicato.MB.util;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class CookieHelper {
 
-	public void setCookie(String name, String value, int expiry) {
+	public void setCookie(HttpServletRequest request, HttpServletResponse response, String name, String value, int expiry) {
 
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-
-		HttpServletRequest request = (HttpServletRequest) facesContext
-				.getExternalContext().getRequest();
 		Cookie cookie = null;
 
 		Cookie[] userCookies = request.getCookies();
@@ -33,18 +28,10 @@ public class CookieHelper {
 		}
 
 		cookie.setMaxAge(expiry);
-
-		HttpServletResponse response = (HttpServletResponse) facesContext
-				.getExternalContext().getResponse();
 		response.addCookie(cookie);
 	}
 
-	public Cookie getCookie(String name) {
-
-		FacesContext facesContext = FacesContext.getCurrentInstance();
-
-		HttpServletRequest request = (HttpServletRequest) facesContext
-				.getExternalContext().getRequest();
+	public Cookie getCookie(HttpServletRequest request, String name) {
 		Cookie cookie = null;
 
 		Cookie[] userCookies = request.getCookies();
@@ -57,5 +44,17 @@ public class CookieHelper {
 			}
 		}
 		return null;
+	}
+	
+	public void cleanCookies(HttpServletRequest request, HttpServletResponse response){
+		Cookie[] userCookies = request.getCookies();
+		if (userCookies != null && userCookies.length > 0) {
+			for (int i = 0; i < userCookies.length; i++) {
+				userCookies[i].setValue("");
+				userCookies[i].setPath("/");
+	            userCookies[i].setMaxAge(0);
+				response.addCookie(userCookies[i]);
+			}
+		}
 	}
 }

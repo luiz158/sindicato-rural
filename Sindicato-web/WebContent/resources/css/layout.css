@@ -1,5 +1,6 @@
 @CHARSET "ISO-8859-1";
 
+
 /*
 	MENU
 */
@@ -22,7 +23,13 @@
 body {
 	margin: 0;
 	font-size: 12px;
-	background-color: #F1F3FF;
+	/* background-color: #F1F3FF; */
+
+  background: url("#{resource['imagens/bg_login.jpg']}") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
 	
 }
 
