@@ -13,9 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import com.sindicato.controlefinanceiro.entity.Empresa;
 
 @Entity
@@ -28,8 +25,7 @@ public class Usuario implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqUsuario")
 	private int id;
 	
-	@Fetch(FetchMode.SELECT)
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Perfil> perfis;
 	
 	@ManyToOne

@@ -23,8 +23,8 @@ import org.primefaces.model.menu.DefaultSubMenu;
 import org.primefaces.model.menu.MenuModel;
 
 import com.sindicato.MB.util.UtilBean;
-import com.sindicato.painelcontrole.dao.MenuDAO;
 import com.sindicato.painelcontrole.dao.UsuarioDAO;
+import com.sindicato.painelcontrole.entity.Acao;
 import com.sindicato.painelcontrole.entity.Menu;
 import com.sindicato.painelcontrole.entity.Modulo;
 import com.sindicato.painelcontrole.entity.Perfil;
@@ -39,8 +39,6 @@ public class LoginBean implements Serializable {
 
 	@EJB
 	UsuarioDAO usuarioDAO;
-	@EJB
-	MenuDAO menuDAO;
 	private Usuario usuarioLogado;
 	private String usuario;
 	private String senha;
@@ -50,26 +48,20 @@ public class LoginBean implements Serializable {
 	private int qtdModulos;
 	private boolean manterUsuarioLogado;
 	
-	
 	public String autenticar() {
-
 		usuarioLogado = null;
 		String retorno = null;
 		ResultOperation result = new ResultOperation();
-
 		try {
 			result = usuarioDAO.autenticar(usuario, senha);
-
 			if (result.isSuccess()) {
 				usuarioLogado = usuarioDAO.getUsuarioAutenticado();
-
 				if (usuarioLogado.getPerfis().size() == 0) {
 					UtilBean.addMessageAndRemoveOthers(
 							FacesMessage.SEVERITY_FATAL, "Oops",
 							"Usuário não possui nenhum perfil de acesso");
 					return null;
 				}
-
 				modulosPermitidos = usuarioDAO
 						.extraiModulosPermitidos(usuarioLogado.getPerfis());
 				if (modulosPermitidos.size() == 1) {
@@ -81,22 +73,32 @@ public class LoginBean implements Serializable {
 							"PF('modalDialog').show();");
 					return null;
 				}
-
 			} else {
 				UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_INFO,
-						"Atenção", result.getMessage());
+					"Atenção", result.getMessage());
 				retorno = "";
 			}
 		} catch (Exception e) {
 			UtilBean.addMessageAndRemoveOthers(FacesMessage.SEVERITY_ERROR,
-					"Erro",
-					"Falha na autenticação do usuário. Contate o administrador do sistema");
+				"Erro",
+				"Falha na autenticação do usuário. Contate o administrador do sistema");
 			e.printStackTrace();
 		}
 
 		return retorno;
 	}
 
+	public boolean temPermissaoParaAcao(String identAcao){
+		for (Perfil perfil : usuarioLogado.getPerfis()) {
+			for (Acao acao : perfil.getAcoes()) {
+				if(acao.getIdentificacao().equals(identAcao)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public String logout() {
 		FacesContext.getCurrentInstance().getExternalContext().getSessionMap()
 				.put("loginBean", null);
@@ -180,8 +182,7 @@ public class LoginBean implements Serializable {
 	private List<Menu> carregaMenusPermitidos() {
 		List<Menu> menusPermitidos = new ArrayList<Menu>();
 		for (Perfil perfil : usuarioLogado.getPerfis()) {
-			List<Menu> menus = menuDAO.getMenusPorPerfil(perfil);
-			for (Menu menu : menus) {
+			for (Menu menu : perfil.getMenus()) {
 				if (!menusPermitidos.contains(menu))
 					menusPermitidos.add(menu);
 			}

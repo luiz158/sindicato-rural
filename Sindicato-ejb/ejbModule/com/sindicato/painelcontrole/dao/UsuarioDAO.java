@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Remote;
 
 import com.sindicato.dao.DAO;
+import com.sindicato.painelcontrole.entity.Acao;
 import com.sindicato.painelcontrole.entity.Menu;
 import com.sindicato.painelcontrole.entity.Modulo;
 import com.sindicato.painelcontrole.entity.Perfil;
@@ -18,8 +19,8 @@ public interface UsuarioDAO extends DAO<Usuario, Integer> {
 
 	Usuario getUsuarioAutenticado();
 	
+	List<Acao> getAcoesPermitidas();
 	List<Menu> getMenusPermitidos();
-	List<Perfil> getPerfisDoUsuario(Usuario usuario);
 
 	List<Modulo> extraiModulosPermitidos(List<Perfil> perfis);
 

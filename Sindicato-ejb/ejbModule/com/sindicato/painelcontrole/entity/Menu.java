@@ -1,12 +1,15 @@
 package com.sindicato.painelcontrole.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
@@ -19,19 +22,31 @@ public class Menu implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqMenu")
 	private int id;
-	
+
 	@ManyToOne
 	@JoinColumn(name="menupai_id")
 	private Menu menuPai;
 	
-	@ManyToOne
-	private Modulo modulo;
+	@ManyToMany(mappedBy="menus", targetEntity=Perfil.class, fetch=FetchType.LAZY)
+	private List<Perfil> perfil;
 	
+	@ManyToOne
+	private Modulo modulo = new Modulo();
+
 	private String descricao;
 	private String url;
-
 	private int ordem;
 	
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public List<Perfil> getPerfil() {
+		return perfil;
+	}
+	public void setPerfil(List<Perfil> perfil) {
+		this.perfil = perfil;
+	}
 	public int getId() {
 		return id;
 	}

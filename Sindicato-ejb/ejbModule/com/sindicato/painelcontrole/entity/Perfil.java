@@ -12,9 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 @Entity
 @SequenceGenerator(allocationSize=1, name="seqPerfil", sequenceName="SEQ_PERFIL")
 public class Perfil implements Serializable {
@@ -25,13 +22,33 @@ public class Perfil implements Serializable {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seqPerfil")
 	private int id;
 	
-	@Fetch(FetchMode.SELECT)
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(mappedBy="perfis", targetEntity=Usuario.class, fetch=FetchType.LAZY)
+	private List<Usuario> usuario;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
 	private List<Menu> menus;
+	
+	@ManyToMany(fetch=FetchType.LAZY)
+	private List<Acao> acoes;
 	
 	private String descricao;
 
 
+	public List<Usuario> getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(List<Usuario> usuario) {
+		this.usuario = usuario;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public List<Acao> getAcoes() {
+		return acoes;
+	}
+	public void setAcoes(List<Acao> acoes) {
+		this.acoes = acoes;
+	}
 	public int getId() {
 		return id;
 	}
@@ -54,27 +71,44 @@ public class Perfil implements Serializable {
 		this.descricao = descricao;
 	}
 	
-	
 	@Override
-	public boolean equals(Object obj){
-		if(obj == null){
-			return false;
-		}
-		if(!(obj instanceof Perfil)){
-			return false;
-		}
-		
-		Perfil o = (Perfil) obj;
-		if(o.hashCode() == this.hashCode()
-				&& o.descricao.equals(descricao)
-				&& o.getMenus().size() == menus.size()){
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-		return false;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Perfil other = (Perfil) obj;
+		if (acoes == null) {
+			if (other.acoes != null)
+				return false;
+		} else if (!acoes.equals(other.acoes))
+			return false;
+		if (descricao == null) {
+			if (other.descricao != null)
+				return false;
+		} else if (!descricao.equals(other.descricao))
+			return false;
+		if (id != other.id)
+			return false;
+		if (menus == null) {
+			if (other.menus != null)
+				return false;
+		} else if (!menus.equals(other.menus))
+			return false;
+		return true;
 	}
 	@Override
-	public int hashCode(){
-		return id;
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((acoes == null) ? 0 : acoes.hashCode());
+		result = prime * result
+				+ ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((menus == null) ? 0 : menus.hashCode());
+		return result;
 	}
 	
 }
