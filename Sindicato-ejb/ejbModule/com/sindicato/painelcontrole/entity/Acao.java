@@ -109,4 +109,9 @@ public class Acao implements Serializable {
 		return true;
 	}
 	
+	@Override
+	public String toString(){
+		return "Ação: " + this.descricao;
+	}
+	
 }

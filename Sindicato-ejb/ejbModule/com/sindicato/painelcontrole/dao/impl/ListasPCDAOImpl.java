@@ -33,7 +33,8 @@ public class ListasPCDAOImpl implements ListasPCDAO {
 	@Override
 	public List<Menu> getTodosOsMenus() {
 		try {
-			String strQuery = " select m from Menu m "
+			String strQuery = " select distinct m from Menu m "
+					+ " left join fetch m.acoes "
 					+ "order by m.ordem asc ";
 			TypedQuery<Menu> query = em.createQuery(strQuery, Menu.class);
 			return query.getResultList();

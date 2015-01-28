@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 @Entity
@@ -30,6 +31,9 @@ public class Menu implements Serializable {
 	@ManyToMany(mappedBy="menus", targetEntity=Perfil.class, fetch=FetchType.LAZY)
 	private List<Perfil> perfil;
 	
+	@OneToMany(mappedBy="menu", targetEntity=Acao.class, fetch=FetchType.LAZY)
+	private List<Acao> acoes;
+	
 	@ManyToOne
 	private Modulo modulo = new Modulo();
 
@@ -38,6 +42,12 @@ public class Menu implements Serializable {
 	private int ordem;
 	
 	
+	public List<Acao> getAcoes() {
+		return acoes;
+	}
+	public void setAcoes(List<Acao> acoes) {
+		this.acoes = acoes;
+	}
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
