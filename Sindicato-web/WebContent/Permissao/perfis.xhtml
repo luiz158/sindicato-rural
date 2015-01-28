@@ -77,8 +77,8 @@
 								</p:column>
 								<p:column styleClass="colInput">
 
-									<p:tree value="#{perfilBean.menuCompleto}" var="menu"
-										selectionMode="checkbox"
+									<p:tree value="#{perfilBean.menuCompleto}" var="menu" style="width:100%;"
+										selectionMode="checkbox" propagateSelectionDown="false" propagateSelectionUp="false"
 										selection="#{perfilBean.menusSelecionados}">
 
 										<p:treeNode icon="ui-icon-note"
@@ -93,9 +93,13 @@
 										<p:treeNode type="submenu" icon="ui-icon-home">
 											<h:outputText value="#{menu.toString()}" />
 										</p:treeNode>
-										<p:treeNode type="itemmenu" icon="ui-icon-tag">
+										<p:treeNode type="itemmenu" icon="ui-icon-copy">
 											<h:outputText value="#{menu.toString()}" />
 										</p:treeNode>
+										<p:treeNode type="acao" icon="ui-icon-clipboard" >
+											<h:outputText value="#{menu.toString()}"  />
+										</p:treeNode>
+										
 									</p:tree>
 
 								</p:column>

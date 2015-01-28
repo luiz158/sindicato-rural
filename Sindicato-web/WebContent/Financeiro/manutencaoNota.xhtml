@@ -421,6 +421,7 @@
 						</p:commandButton>
 
 						<p:commandButton value="Imprimir"
+							disabled="#{!loginBean.temPermissaoParaAcao('manutencao_nota_imprimir_nota')}"
 							binding="#{manutencaoNotaBean.botaoImprimir}"
 							icon="ui-icon-print" onclick="PF('dlg2').show();" />
 

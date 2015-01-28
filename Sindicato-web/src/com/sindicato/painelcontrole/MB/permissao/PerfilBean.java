@@ -18,13 +18,12 @@ import javax.faces.bean.ViewScoped;
 import org.primefaces.component.tabview.TabView;
 import org.primefaces.model.CheckboxTreeNode;
 import org.primefaces.model.TreeNode;
-import org.primefaces.model.menu.DefaultMenuItem;
-import org.primefaces.model.menu.DefaultSubMenu;
 
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.painelcontrole.dao.ListasPCDAO;
 import com.sindicato.painelcontrole.dao.MenuDAO;
 import com.sindicato.painelcontrole.dao.PerfilDAO;
+import com.sindicato.painelcontrole.entity.Acao;
 import com.sindicato.painelcontrole.entity.Menu;
 import com.sindicato.painelcontrole.entity.Modulo;
 import com.sindicato.painelcontrole.entity.Perfil;
@@ -57,26 +56,35 @@ public class PerfilBean implements Serializable {
 
 	public void selecionaPerfil() {
 		tabView.setActiveIndex(1);
-		perfilSelecionado.setMenus(menuDAO.getMenusPorPerfil(perfilSelecionado));
+		perfilSelecionado.setMenus(perfilDAO.getMenus(perfilSelecionado));
+		perfilSelecionado.setAcoes(perfilDAO.getAcoes(perfilSelecionado));
 		carregaMenu();
 	}
 
 	public void reset() {
 		perfilSelecionado = new Perfil();
+		perfis = null;
 	}
 
 	public void salvar() {
 		try {
 			List<Menu> menus = new ArrayList<Menu>();
+			List<Acao> acoes = new ArrayList<Acao>();
 			for (int i = 0; i < menusSelecionados.length; i++) {
 				if(menusSelecionados[i].getType().equals("modulo"))
 					continue;
 				
-				Menu menu = (Menu) menusSelecionados[i].getData();
-				menus.add(menu);
+				if(menusSelecionados[i].getType().equals("itemmenu") || menusSelecionados[i].getType().equals("submenu")){
+					menus.add((Menu) menusSelecionados[i].getData());
+				}
+				
+				if(menusSelecionados[i].getType().equals("acao")){
+					acoes.add((Acao) menusSelecionados[i].getData());
+				}
 			}
 			
 			perfilSelecionado.setMenus(menus);
+			perfilSelecionado.setAcoes(acoes);
 			
 			if (perfilSelecionado.getId() == 0) {
 				perfilDAO.insert(perfilSelecionado);
@@ -90,25 +98,6 @@ public class PerfilBean implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public DefaultSubMenu geraSubmenu(Menu menu) {
-		DefaultSubMenu submenu = new DefaultSubMenu();
-		submenu.setLabel(menu.getDescricao());
-		submenu.setStyleClass("submenu");
-		for (Menu m : getMenusFilho(menu.getId())) {
-			if (getMenusFilho(m.getId()) == null) {
-				DefaultMenuItem mi = new DefaultMenuItem();
-				mi.setValue(m.getDescricao());
-				mi.setUrl(m.getUrl());
-				mi.setStyleClass("itemmenu");
-
-				submenu.addElement(mi);
-			} else {
-				submenu.addElement(geraSubmenu(m));
-			}
-		}
-		return submenu;
 	}
 
 	private List<Menu> carregaMenusPermitidos() {
@@ -171,6 +160,7 @@ public class PerfilBean implements Serializable {
 
 		return menusPermitidos;
 	}
+
 	private List<Menu> getMenusFilho(int idMenu) {
 
 		List<Menu> menusPermitidos = getMenusDisponiveis();
@@ -188,40 +178,35 @@ public class PerfilBean implements Serializable {
 	}
 
 	private void carregaMenu() {
-
 		List<Menu> menusDisponiveis = getMenusDisponiveis();
 		List<Menu> menusPermitidos = carregaMenusPermitidos();
-
 		menuCompleto = new CheckboxTreeNode();
-		
 		for (Modulo modulo : getModulos()) {
-			
 			CheckboxTreeNode menuModulo = new CheckboxTreeNode("modulo", modulo.getDescricao(), menuCompleto);
 			//menuModulo.setSelectable(false);
-			
-			
 			for (Menu menu : menusDisponiveis) {
 
-				if(menu.getModulo().getId() != modulo.getId()){
-					continue;
-				}
+				if(menu.getModulo().getId() != modulo.getId()) 
+					continue; 
 				
 				if (menu.getMenuPai() == null || menu.getMenuPai().getId() == 0) {
 					TreeNode submenu = new CheckboxTreeNode("submenu", menu, menuModulo);
 					submenu.setExpanded(true);
+					submenu.setSelected(menusPermitidos.contains(menu));
 					
-					if(menusPermitidos.contains(menu)){
-						submenu.setSelected(true);
-					}
-
-					if (getMenusFilho(menu.getId()) != null) {
-						for (Menu menu01 : getMenusFilho(menu.getId())) {
+					List<Menu> menusFilho = getMenusFilho(menu.getId());
+					if (menusFilho != null) {
+						for (Menu menu01 : menusFilho) {
 							
 							if (getMenusFilho(menu01.getId()) == null) {
-								new CheckboxTreeNode("itemmenu", menu01, submenu);
+								CheckboxTreeNode item = new CheckboxTreeNode("itemmenu", menu01, submenu);
+								item.setSelected(menusPermitidos.contains(menu01));
 								
-								if(menusPermitidos.contains(menu01)){
-									submenu.setSelected(true);
+								if(menu01.getAcoes().size() > 0){
+									for (Acao acao : menu01.getAcoes()) {
+										CheckboxTreeNode selectAcao = new CheckboxTreeNode("acao", acao, item);
+										selectAcao.setSelected(perfilSelecionado.getAcoes().contains(acao));
+									}
 								}
 							} else {
 								TreeNode item = new CheckboxTreeNode("submenu", menu01, submenu);
