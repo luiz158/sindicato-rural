@@ -131,10 +131,10 @@
 								<p:column styleClass="colInput">
 
 									<p:selectCheckboxMenu required="true" requiredMessage="Selecione pelo menos um perfil para o usuário"
-										value="#{usuarioBean.usuarioSelecionado.perfis}" style="width:250px;"
+										value="#{usuarioBean.usuarioSelecionado.perfis}" style="width:350px;"
 										converter="PerfilConverter" label="Perfis" filter="true"
 										filterText="Filter" filterMatchMode="startsWith"
-										panelStyle="width:220px">
+										panelStyle="width:350px;">
 
 										<f:attribute name="collectionType" value="java.util.ArrayList" />
 										<f:selectItems value="#{usuarioBean.perfisDisponiveis}"

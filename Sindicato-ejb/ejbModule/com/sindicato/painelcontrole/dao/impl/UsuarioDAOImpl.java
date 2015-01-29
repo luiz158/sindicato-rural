@@ -83,7 +83,6 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 		usuarioAutenticado.setPerfis(perfis);
 	}
 
-	
 	@Override
 	public Usuario getUsuarioAutenticado() {
 		return usuarioAutenticado;
@@ -125,13 +124,15 @@ public class UsuarioDAOImpl extends DAOImpl<Usuario, Integer> implements Usuario
 	}
 
 	@Override
-	public List<Acao> getAcoesPermitidas() {
-		
-		
-		
-		return null;
+	public List<Usuario> getAll(){
+		try {
+			String strQuery = " select distinct u from Usuario u "
+					+ " left join fetch u.perfis ";
+			TypedQuery<Usuario> query = em.createQuery(strQuery, Usuario.class);
+			return query.getResultList();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
-	
-	
 }

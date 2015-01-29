@@ -22,7 +22,8 @@ public class ListasPCDAOImpl implements ListasPCDAO {
 	@Override
 	public List<Perfil> getTodosOsPerfis() {
 		try {
-			String strQuery = " select p from Perfil p ";
+			String strQuery = " select p from Perfil p "
+					+ " order by p.descricao asc ";
 			TypedQuery<Perfil> query = em.createQuery(strQuery, Perfil.class);
 			return query.getResultList();
 		} catch (NoResultException e) {
@@ -46,7 +47,8 @@ public class ListasPCDAOImpl implements ListasPCDAO {
 	@Override
 	public List<Modulo> getTodosModulos() {
 		try {
-			String strQuery = " select m from Modulo m ";
+			String strQuery = " select m from Modulo m "
+					+ "	order by m.descricao asc ";
 			TypedQuery<Modulo> query = em.createQuery(strQuery, Modulo.class);
 			return query.getResultList();
 		} catch (NoResultException e) {

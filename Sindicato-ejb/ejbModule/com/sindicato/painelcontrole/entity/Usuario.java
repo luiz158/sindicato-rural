@@ -26,7 +26,7 @@ public class Usuario implements Serializable {
 	private int id;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
-	private List<Perfil> perfis;
+	private List<Perfil> perfis = new ArrayList<Perfil>();
 	
 	@ManyToOne
 	private Empresa empresa;
@@ -96,7 +96,6 @@ public class Usuario implements Serializable {
 		result = prime * result + ((empresa == null) ? 0 : empresa.hashCode());
 		result = prime * result + id;
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((perfis == null) ? 0 : perfis.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		return result;
 	}
@@ -127,11 +126,6 @@ public class Usuario implements Serializable {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
-			return false;
-		if (perfis == null) {
-			if (other.perfis != null)
-				return false;
-		} else if (!perfis.equals(other.perfis))
 			return false;
 		if (senha == null) {
 			if (other.senha != null)

@@ -80,11 +80,6 @@ public class Perfil implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Perfil other = (Perfil) obj;
-		if (acoes == null) {
-			if (other.acoes != null)
-				return false;
-		} else if (!acoes.equals(other.acoes))
-			return false;
 		if (descricao == null) {
 			if (other.descricao != null)
 				return false;
@@ -92,22 +87,15 @@ public class Perfil implements Serializable {
 			return false;
 		if (id != other.id)
 			return false;
-		if (menus == null) {
-			if (other.menus != null)
-				return false;
-		} else if (!menus.equals(other.menus))
-			return false;
 		return true;
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((acoes == null) ? 0 : acoes.hashCode());
 		result = prime * result
 				+ ((descricao == null) ? 0 : descricao.hashCode());
 		result = prime * result + id;
-		result = prime * result + ((menus == null) ? 0 : menus.hashCode());
 		return result;
 	}
 	
