@@ -10,7 +10,8 @@ public class RecebimentoDia implements Serializable {
 
 	private Calendar dataRecebimento;
 	private BigDecimal valorRecebido;
-	
+	private boolean chequePre;
+	private Calendar dataLiquidacao;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -27,4 +28,17 @@ public class RecebimentoDia implements Serializable {
 	public void setValorRecebido(BigDecimal valorRecebido) {
 		this.valorRecebido = valorRecebido;
 	}
+	public boolean isChequePre() {
+		return chequePre;
+	}
+	public Calendar getDataLiquidacao() {
+		return dataLiquidacao;
+	}
+	public void setChequePre(boolean chequePre) {
+		this.chequePre = chequePre;
+	}
+	public void setDataLiquidacao(Calendar dataLiquidacao) {
+		this.dataLiquidacao = dataLiquidacao;
+	}
+	
 }

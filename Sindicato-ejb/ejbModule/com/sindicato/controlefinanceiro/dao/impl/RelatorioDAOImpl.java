@@ -153,12 +153,12 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			Calendar dataAte) {
 		List<DestinoRecebimento> destinos = destinoDAO.getAll();
 		RelatorioResumoRecebimentos relatorio = new RelatorioResumoRecebimentos();
-		String jpql = " select r.dataRecebimento, SUM(r.valor) "
+		String jpql = " select r.dataRecebimento, SUM(r.valor), chequePre, dataLiquidacao "
 				+ " from Recebimento r "
 				+ " where r.debito.dataEmissaoNotaCobranca between :dataDe and :dataAte "
 				+ "	and r.destino.id = :destino and r.debito.status != :status"
-				+ " group by r.dataRecebimento "
-				+ " order by r.dataRecebimento ";
+				+ " group by r.dataRecebimento, chequePre, dataLiquidacao "
+				+ " order by r.dataRecebimento, chequePre, dataLiquidacao ";
 		for (DestinoRecebimento destino : destinos) {
 			TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
 			query.setParameter("dataDe", dataDe);
@@ -175,9 +175,13 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			for (Object[] row : result) {
 				Calendar data = (Calendar) row[0];
 				BigDecimal valor = (BigDecimal) row[1];
+				boolean chequePre = (boolean) row[2];
+				Calendar dataLiquidacao = (Calendar) row[3];
 				RecebimentoDia recebimentoDia = new RecebimentoDia();
 				recebimentoDia.setDataRecebimento(data);
 				recebimentoDia.setValorRecebido(valor);
+				recebimentoDia.setChequePre(chequePre);
+				recebimentoDia.setDataLiquidacao(dataLiquidacao);
 				detalhe.getRecebimentosDestino().add(recebimentoDia);
 			}
 			relatorio.getDetalhesDestino().add(detalhe);
