@@ -109,10 +109,10 @@
 					</p:fieldset>
 					<p:spacer height="20" />
 					<p:fieldset legend="Serviços da nota de cobrança" >
-						<p:commandButton value="Adicionar serviço"
+						<p:commandButton value="Adicionar serviço" 
 							onclick="PF('dlg_servicos').show();" type="button"
 							icon="ui-icon-plus" style="margin-bottom:15px;"
-							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}" />
+							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA' and !loginBean.temPermissaoParaAcao('manutencao_nota_adicionar_servico')}" />
 
 
 						<p:dataTable var="debito" id="servicos" editable="true"
@@ -155,7 +155,7 @@
 							</p:column>
 							<p:column headerText="" width="70">
 								<p:commandButton value="Excluir"
-									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA'}"
+									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA' and !loginBean.temPermissaoParaAcao('manutencao_nota_excluir_servico')}"
 									action="#{manutencaoNotaBean.removerServico(debito)}"
 									update="@(form)">
 									<p:confirm header="Excluir serviço"
@@ -169,7 +169,7 @@
 
 					<p:fieldset legend="Registrar recebimentos"
 						binding="#{manutencaoNotaBean.fieldSetRecebimentos}">
-						<p:commandButton value="Adicionar recebimento"
+						<p:commandButton value="Adicionar recebimento" disabled="#{!loginBean.temPermissaoParaAcao('manutencao_nota_adicionar_recebimento')}"
 							action="#{manutencaoNotaBean.adicionarRecebimento()}"
 							update="@form" icon="ui-icon-plus" style="margin-bottom:15px;" />
 
@@ -346,7 +346,7 @@
 							</p:column>
 							<p:column headerText="Editar" width="115"
 								style="text-align:center;">
-								<p:commandButton icon="ui-icon-wrench"
+								<p:commandButton icon="ui-icon-wrench" disabled="#{!loginBean.temPermissaoParaAcao('manutencao_nota_editar_recebimento')}"
 									action="#{manutencaoNotaBean.editarRecebimento(rec)}"
 									update="@form" />
 							</p:column>
@@ -358,7 +358,7 @@
 							</p:column>
 							<p:column headerText="Excluir" width="70"
 								style="text-align:center;">
-								<p:commandButton icon="ui-icon-trash"
+								<p:commandButton icon="ui-icon-trash" disabled="#{!loginBean.temPermissaoParaAcao('manutencao_nota_excluir_recebimento')}"
 									action="#{manutencaoNotaBean.removerRecebimento(rec)}"
 									update="@(form)">
 									<p:confirm header="Excluir recebimento"
@@ -413,7 +413,7 @@
 					</p:fieldset>
 
 					<div class="container-action">
-						<p:commandButton icon="ui-icon-trash" update=":growl,:tabView"
+						<p:commandButton icon="ui-icon-trash" update=":growl,:tabView" disabled="#{!loginBean.temPermissaoParaAcao('manutencao_nota_cancelar_nota')}"
 							value="Cancelar nota" action="#{manutencaoNotaBean.cancelar}">
 							<p:confirm header="Cancelar nota de cobrança"
 								message="Tem certeza que deseja cancelar a nota de cobrança selecionada ?"
@@ -425,7 +425,7 @@
 							binding="#{manutencaoNotaBean.botaoImprimir}"
 							icon="ui-icon-print" onclick="PF('dlg2').show();" />
 
-						<p:commandButton action="#{manutencaoNotaBean.salvar}"
+						<p:commandButton action="#{manutencaoNotaBean.salvar}" disabled="#{!loginBean.temPermissaoParaAcao('manutencao_nota_salvar_alteracoes')}"
 							icon="ui-icon-disk" update=":growl,:tabView" process="@(form)"
 							value="Salvar alterações" />
 					</div>

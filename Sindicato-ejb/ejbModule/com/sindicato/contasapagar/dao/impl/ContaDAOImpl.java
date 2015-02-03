@@ -108,7 +108,8 @@ public class ContaDAOImpl implements ContaDAO {
 	public List<Conta> listarContas(){
 		String jpql = "select distinct c from Conta c "
 				+ " left join fetch c.chequesPagamento "
-				+ " where c.excluida = :excluida ";
+				+ " where c.excluida = :excluida "
+				+ " order by c.id desc ";
 		
 		TypedQuery<Conta> query = em.createQuery(jpql, Conta.class);
 		query.setParameter("excluida", false);
