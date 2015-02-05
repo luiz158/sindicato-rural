@@ -190,7 +190,12 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 			}
 			
 			if(calcula){
-				qtdMesComoSocio += ChronoUnit.MONTHS.between(dataVirouSocio, dataDeixouDeSerSocio); 
+				qtdMesComoSocio += ChronoUnit.MONTHS.between(dataVirouSocio, dataDeixouDeSerSocio);
+				
+				if(dataVirouSocio.getDayOfMonth() < dataDeixouDeSerSocio.getDayOfMonth()){
+					qtdMesComoSocio++;
+				}
+				
 				dataVirouSocio = null;
 				dataDeixouDeSerSocio = null;
 				calcula = false;
@@ -201,7 +206,12 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		
 		// se existir apenas registro de sócio = true, calcula com data atual
 		if((i % 2 == 0) && dataDeixouDeSerSocio == null){
-			qtdMesComoSocio += ChronoUnit.MONTHS.between(dataVirouSocio, LocalDate.now());
+			dataDeixouDeSerSocio = LocalDate.now();
+			qtdMesComoSocio += ChronoUnit.MONTHS.between(dataVirouSocio, dataDeixouDeSerSocio);
+			
+			if(dataVirouSocio.getDayOfMonth() < dataDeixouDeSerSocio.getDayOfMonth()){
+				qtdMesComoSocio++;
+			}
 		}
 		return qtdMesComoSocio;
 	}

@@ -112,7 +112,7 @@
 						<p:commandButton value="Adicionar serviço" 
 							onclick="PF('dlg_servicos').show();" type="button"
 							icon="ui-icon-plus" style="margin-bottom:15px;"
-							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA' and !loginBean.temPermissaoParaAcao('manutencao_nota_adicionar_servico')}" />
+							disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA' or !loginBean.temPermissaoParaAcao('manutencao_nota_adicionar_servico')}" />
 
 
 						<p:dataTable var="debito" id="servicos" editable="true"
@@ -134,7 +134,7 @@
 							</f:facet>
 
 							<p:column headerText="Serviço">
-								<p:cellEditor>
+								<p:cellEditor rendered="#{loginBean.temPermissaoParaAcao('manutencao_nota_alterar_servico')}">
 									<f:facet name="output">
 										<h:outputText value="#{debito.servico.descricao}" />
 									</f:facet>
@@ -146,6 +146,7 @@
 									</p:selectOneMenu>
 									</f:facet>
 								</p:cellEditor>
+								<h:outputText value="#{debito.servico.descricao}" rendered="#{!loginBean.temPermissaoParaAcao('manutencao_nota_alterar_servico')}" />
 							</p:column>
 							<p:column headerText="Valor">
 								<p:outputLabel value="#{debito.valor}">
@@ -155,7 +156,7 @@
 							</p:column>
 							<p:column headerText="" width="70">
 								<p:commandButton value="Excluir"
-									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA' and !loginBean.temPermissaoParaAcao('manutencao_nota_excluir_servico')}"
+									disabled="#{manutencaoNotaBean.debitoSelecionado.status != 'NOTACOBRANCAGERADA' or !loginBean.temPermissaoParaAcao('manutencao_nota_excluir_servico')}"
 									action="#{manutencaoNotaBean.removerServico(debito)}"
 									update="@(form)">
 									<p:confirm header="Excluir serviço"
