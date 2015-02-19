@@ -38,6 +38,7 @@ public class ImpressaoChequeBean implements Serializable {
 		impressaoCheque.setValor(chequeEmitido.getValor());
 		impressaoCheque.setVerso(chequeEmitido.getVersoCheque());
 		impressaoCheque.setEmissao(chequeEmitido.getEmissao());
+		impressaoCheque.setNumeroCheque(chequeEmitido.getIdentificacao());
 	}
 	public void setImpressaoCheque(ImpressaoCheques impressaoCheque) {
 		this.impressaoCheque = impressaoCheque;

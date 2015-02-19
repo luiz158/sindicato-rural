@@ -17,8 +17,9 @@
 		
 		<link rel="shortcut icon" type="image/x-icon"
 			href="#{resource['imagens/favicon.ico']}" />
+			
 	</h:head>
-	<h:body>
+	<h:body style="font-family: monospace;font-size:large;" >
 		<h:form>
 			<div
 				style="position: relative; border: 0px solid black; height: 7cm; width: 100%;">
@@ -32,6 +33,7 @@
 				</div>
 				<div
 					style="border: 0px solid black; height: 0.5cm; width: 12.1cm; position: absolute; top: 2.3cm; right: 4.7cm;">
+					#{impressaoChequeBean.impressaoCheque.valorPorExtensoContinuacao}
 					</div>
 
 				<div
@@ -39,13 +41,54 @@
 					#{impressaoChequeBean.impressaoCheque.favorecido}</div>
 
 				<div
-					style="border: 0px solid black; height: 0.5cm; width: 3.5cm; position: absolute; top: 3.8cm; right: 6.6cm;">
-					Cotia, #{impressaoChequeBean.impressaoCheque.dia}</div>
+					style="border: 0px solid black; height: 0.5cm; width: 3.5cm; position: absolute; top: 3.8cm; right: 5.7cm;">
+					COTIA, #{impressaoChequeBean.impressaoCheque.dia}</div>
 				<div
 					style="border: 0px solid black; height: 0.5cm; width: 2.5cm; position: absolute; top: 3.8cm; right: 3.4cm;">
 					#{impressaoChequeBean.impressaoCheque.mes}</div>
 				<div
-					style="border: 0px solid black; height: 0.5cm; width: 1cm; position: absolute; top: 3.8cm; right: 1.9cm;">
+					style="border: 0px solid black; height: 0.5cm; width: 1cm; position: absolute; top: 3.8cm; right: 1.6cm;">
+					#{impressaoChequeBean.impressaoCheque.ano}</div>
+			</div>
+			<div
+				style="position: relative; border: 0px solid black; height: 7cm; width: 100%;">
+				<div
+					style="border: 0px solid black; width: 15cm; position: absolute; top: 1cm; right: 1.5cm;">
+					#{impressaoChequeBean.impressaoCheque.verso}
+				</div>
+			</div>
+
+			<div
+				style="position: relative; border: 0px solid black; height: 7cm; width: 100%;">
+				<div
+					style="border: 0px solid black; height: 0.7cm; width: 3.5cm; position: absolute; top: 0.7cm; right: 5.5cm;">
+					#{impressaoChequeBean.impressaoCheque.numeroCheque}
+				</div>
+				<div
+					style="border: 0px solid black; height: 0.7cm; width: 3.5cm; position: absolute; top: 0.7cm; right: 1.5cm;">
+					#{impressaoChequeBean.impressaoCheque.valorFormatado}
+				</div>
+
+				<div style="border: 0px solid black; height: 0.5cm; width: 12.8cm; position: absolute; top: 1.6cm; right: 1.7cm;">
+					#{impressaoChequeBean.impressaoCheque.valorPorExtenso}
+				</div>
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 12.1cm; position: absolute; top: 2.3cm; right: 4.7cm;">
+					#{impressaoChequeBean.impressaoCheque.valorPorExtensoContinuacao}
+					</div>
+
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 12.1cm; position: absolute; top: 3.0cm; right: 4.7cm;">
+					#{impressaoChequeBean.impressaoCheque.favorecido}</div>
+
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 3.5cm; position: absolute; top: 3.8cm; right: 5.1cm;">
+					COTIA, #{impressaoChequeBean.impressaoCheque.dia}</div>
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 2.5cm; position: absolute; top: 3.8cm; right: 3.4cm;">
+					#{impressaoChequeBean.impressaoCheque.mes}</div>
+				<div
+					style="border: 0px solid black; height: 0.5cm; width: 1cm; position: absolute; top: 3.8cm; right: 1.6cm;">
 					#{impressaoChequeBean.impressaoCheque.ano}</div>
 			</div>
 			<div

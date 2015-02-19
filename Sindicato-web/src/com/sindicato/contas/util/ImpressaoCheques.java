@@ -5,7 +5,6 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import com.sindicato.util.Extenso;
 
@@ -23,13 +22,25 @@ public class ImpressaoCheques {
 	private String favorecido;
 	private String verso;
 	private Calendar emissao;
+	private Long numeroCheque;
+	private final int quebraLinha = 50;
+	
+	private String pad(String str, int size, String padChar)
+	{
+	  StringBuffer padded = new StringBuffer(str);
+	  while (padded.length() < size)
+	  {
+	    padded.append(padChar);
+	  }
+	  return padded.toString();
+	}
 	
 	public String getMes(){
 		if(emissao == null){
 			return null;
 		}
 		DateFormat simpleDateFormat = new SimpleDateFormat("MMMM");
-		return simpleDateFormat.format(emissao.getTime());
+		return simpleDateFormat.format(emissao.getTime()).toUpperCase();
 	}
 	public int getAno(){
 		if(emissao == null){
@@ -44,25 +55,74 @@ public class ImpressaoCheques {
 		return emissao.get(Calendar.DAY_OF_MONTH);
 	}
 	public String getValorFormatado(){
-		return NumberFormat.getInstance(new Locale("pt", "BR")).format(this.getValor()); 
+		return "( " + NumberFormat.getCurrencyInstance().format(this.getValor()).replace("R$ ", "") + " )"; 
 	}
 	public String getValorPorExtenso(){
 		Extenso extenso = new Extenso();
 		extenso.setNumber(getValor());
-		return extenso.toString();
+		String valor = "( " + extenso.toString().toUpperCase() + " )";
+		
+		StringBuilder valorRetorno = new StringBuilder();
+		String[] palavras = valor.split(" ");
+		int qtdLetras = 0;
+		boolean continua = false;
+		for (String palavra : palavras) {
+			qtdLetras += palavra.length() + 1;
+			
+			if(qtdLetras <= quebraLinha){
+				valorRetorno.append(palavra);
+				valorRetorno.append(" ");
+			} else {
+				continua = true;
+				break;
+			}
+		}
+		
+		if(valorRetorno.toString().length() < quebraLinha && !continua){
+			return this.pad(valorRetorno.toString(), quebraLinha, "X");
+		} else {
+			return valorRetorno.toString();
+		}
+		
+	}
+	public String getValorPorExtensoContinuacao(){
+		Extenso extenso = new Extenso();
+		extenso.setNumber(getValor());
+		String valor = "( " + extenso.toString().toUpperCase() + " )";
+		
+		StringBuilder valorRetorno = new StringBuilder();
+		String[] palavras = valor.split(" ");
+		int qtdLetras = 0;
+		for (String palavra : palavras) {
+			qtdLetras += palavra.length() + 1;
+			if(qtdLetras <= quebraLinha){
+				continue;
+			} else {
+				valorRetorno.append(palavra);
+				valorRetorno.append(" ");
+			}
+		}
+
+		return this.pad(valorRetorno.toString(), quebraLinha, "X");
 	}
 	
 	public BigDecimal getValor() {
 		return valor;
 	}
 	public String getFavorecido() {
-		return favorecido;
+		return favorecido.toUpperCase();
 	}
 	public String getVerso() {
 		return verso;
 	}
 	public Calendar getEmissao() {
 		return emissao;
+	}
+	public Long getNumeroCheque() {
+		return numeroCheque;
+	}
+	public void setNumeroCheque(Long numeroCheque) {
+		this.numeroCheque = numeroCheque;
 	}
 	public void setEmissao(Calendar emissao) {
 		this.emissao = emissao;
