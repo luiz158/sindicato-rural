@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="associados" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="6c65fb03-fd10-4cea-a495-c3dbb85efccf">
 	<property name="ireport.zoom" value="2.1961500000000007"/>
-	<property name="ireport.x" value="4"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="121"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
@@ -31,7 +31,7 @@
 				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
 			</image>
 			<textField pattern="EEEEE, dd &apos;de&apos; MMMMM &apos;de&apos; yyyy">
-				<reportElement x="421" y="112" width="160" height="13" uuid="43c43130-1a2e-4379-9799-8e919c3b6daa"/>
+				<reportElement x="421" y="112" width="118" height="13" uuid="43c43130-1a2e-4379-9799-8e919c3b6daa"/>
 				<textElement>
 					<font size="8" isBold="true" isItalic="true"/>
 				</textElement>
@@ -147,7 +147,7 @@
 				<text><![CDATA[Verso do cheque:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="1" width="581" height="1" uuid="d4c388b7-226a-40d6-98de-0a1f1abb1373"/>
+				<reportElement x="-28" y="1" width="595" height="1" uuid="d4c388b7-226a-40d6-98de-0a1f1abb1373"/>
 			</line>
 			<staticText>
 				<reportElement x="327" y="14" width="69" height="12" uuid="71f94b59-0827-4436-a2d2-184fd45f0006"/>

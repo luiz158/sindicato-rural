@@ -78,7 +78,7 @@ public class Conta implements Serializable {
 		if(valor == null){
 			return "";
 		}
-		valorFormatado = "R$ " + NumberFormat.getInstance(new Locale("pt", "BR")).format(valor);
+		valorFormatado = NumberFormat.getCurrencyInstance().format(valor);
 		return valorFormatado;
 	}
 	public String getDescricao(){

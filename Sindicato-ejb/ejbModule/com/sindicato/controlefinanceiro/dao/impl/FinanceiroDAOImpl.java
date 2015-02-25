@@ -73,6 +73,16 @@ public class FinanceiroDAOImpl implements FinanceiroDAO {
 					result.setMessage("Nota não foi salva com sucesso, pois possui dois serviços repetidos.");
 					return result;
 				}
+				
+				if(debitoServico.getValor() == null || 
+						debitoServico.getValor().equals(BigDecimal.ZERO) ||
+						debitoServico.getValor().toString().equals("0.00")
+				){
+					result.setSuccess(false);
+					result.setMessage("Nota não foi salva com sucesso. Possui algum serviço com valor zerado");
+					return result;
+				}
+				
 			}
 		}
 		

@@ -137,7 +137,6 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		query.setParameter("ativo", true);
 		
 		Long singleResult = query.getSingleResult();
-		
 		if(singleResult > 0){
 			result.setSuccess(false);
 			result.setMessage("Já existe cliente com este CPF cadastrado.");
@@ -191,11 +190,6 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 			
 			if(calcula){
 				qtdMesComoSocio += ChronoUnit.MONTHS.between(dataVirouSocio, dataDeixouDeSerSocio);
-				
-				if(dataVirouSocio.getDayOfMonth() < dataDeixouDeSerSocio.getDayOfMonth()){
-					qtdMesComoSocio++;
-				}
-				
 				dataVirouSocio = null;
 				dataDeixouDeSerSocio = null;
 				calcula = false;
@@ -208,10 +202,6 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 		if((i % 2 == 0) && dataDeixouDeSerSocio == null){
 			dataDeixouDeSerSocio = LocalDate.now();
 			qtdMesComoSocio += ChronoUnit.MONTHS.between(dataVirouSocio, dataDeixouDeSerSocio);
-			
-			if(dataVirouSocio.getDayOfMonth() < dataDeixouDeSerSocio.getDayOfMonth()){
-				qtdMesComoSocio++;
-			}
 		}
 		return qtdMesComoSocio;
 	}

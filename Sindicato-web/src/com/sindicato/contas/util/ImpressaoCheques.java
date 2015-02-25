@@ -83,7 +83,6 @@ public class ImpressaoCheques {
 		} else {
 			return valorRetorno.toString();
 		}
-		
 	}
 	public String getValorPorExtensoContinuacao(){
 		Extenso extenso = new Extenso();
