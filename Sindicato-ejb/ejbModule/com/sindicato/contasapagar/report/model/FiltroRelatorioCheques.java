@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import com.sindicato.contasapagar.entity.Banco;
+import com.sindicato.report.util.FiltroBooleanEnum;
 
 public class FiltroRelatorioCheques {
 	

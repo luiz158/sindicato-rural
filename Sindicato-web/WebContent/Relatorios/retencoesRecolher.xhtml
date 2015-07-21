@@ -76,11 +76,11 @@
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Retenções a recolher de " />
 						<p:outputLabel value="#{retencoesRecolherBean.dataDe.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</p:outputLabel>
 						<p:outputLabel value=" até " />
 						<p:outputLabel value="#{retencoesRecolherBean.dataAte.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</p:outputLabel>
 					</h2>
 
@@ -139,7 +139,7 @@
 							</p:column>
 							<p:column headerText="Data base" styleClass="font-menor">
 								<h:outputText value="#{cliente.dataBase.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
 							</p:column>
 							<p:column headerText="Número da nota" styleClass="font-menor">
@@ -147,7 +147,7 @@
 							</p:column>
 							<p:column headerText="Emissão da nota" styleClass="font-menor">
 								<h:outputText value="#{cliente.dataEmissaoNota.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
+									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 								</h:outputText>
 							</p:column>
 						</p:dataTable>

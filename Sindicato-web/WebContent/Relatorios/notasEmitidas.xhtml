@@ -74,11 +74,11 @@
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Notas emitidas de " />
 						<p:outputLabel value="#{notasEmitidasBean.dataDe.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</p:outputLabel>
 						<p:outputLabel value=" até " />
 						<p:outputLabel value="#{notasEmitidasBean.dataAte.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</p:outputLabel>
 					</h2>
 
@@ -91,7 +91,7 @@
 
 						<p:column headerText="Data">
 							<h:outputText value="#{notas.dataEmissaoNota.time}" >
-								<f:convertDateTime pattern="dd/MM/yyyy"/>
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</h:outputText>
 						</p:column>
 						<p:column headerText="Notas">

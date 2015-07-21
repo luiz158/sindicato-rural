@@ -21,6 +21,8 @@ public interface ClienteDAO extends DAO<Cliente, Integer> {
 	
 	InformacaoMensalidade estaEmDiaComAsMensalidades(Cliente cliente);
 
+	List<Cliente> getClientesComHistoricoDeSocio();
+
 	List<InformacaoSocio> getInformacoesSocio(Cliente cliente);
 	
 	List<MensalidadePaga> getInformacoesMensalidade(Cliente cliente);

@@ -27,9 +27,9 @@ public class ResumoRecolhimentosBean {
 	private CommandButton btnImprimir;
 
 	public void carregaRelatorio() {
-		dataAte.add(Calendar.HOUR_OF_DAY, 23);
-		dataAte.add(Calendar.MINUTE, 59);
-		dataAte.add(Calendar.SECOND, 59);
+		dataAte.set(Calendar.HOUR_OF_DAY, 23);
+		dataAte.set(Calendar.MINUTE, 59);
+		dataAte.set(Calendar.SECOND, 59);
 
 		relatorio = relatorioDAO.getResumoRecolhimentos(dataDe, dataAte);
 		btnImprimir.setRendered(true);

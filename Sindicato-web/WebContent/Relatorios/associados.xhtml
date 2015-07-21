@@ -11,41 +11,119 @@
 
 		<p:breadCrumb>
 			<p:menuitem value="Home" url="/faces/index.xhtml" />
+			<p:menuitem value="Controle Financeiro" url="#" />
 			<p:menuitem value="Relatórios" url="#" />
 			<p:menuitem value="Associados" url="#" />
 		</p:breadCrumb>
 
 		<p:spacer height="15"/>
-		<h:form target="_blank">
+<!-- 		<h:form target="_blank"> -->
+		<h:form>
 
-			<p:fieldset legend="Informações de associados">
+			<p:fieldset legend="Filtros" toggleable="true" toggleSpeed="1000"
+				widgetVar="filtro" collapsed="true">
+				<p:panelGrid styleClass="panelForm" style="width:100%;">
+					<p:row>
+						<p:column styleClass="colLabel" style="width:40%;">
+							<p:outputLabel value="Matricula:" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:inputText value="#{associadosBean.relatorio.filtro.matricula}"
+								styleClass="soNumero" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Nome associado:" />
+						</p:column>
+						<p:column styleClass="colInput" colspan="3">
+							<p:inputText
+								value="#{associadosBean.relatorio.filtro.nome}" />
+						</p:column>
+					</p:row>
+<!-- 					<p:row> -->
+<!-- 						<p:column styleClass="colLabel"> -->
+<!-- 							<p:outputLabel value="Data que virou sócio:" /> -->
+<!-- 						</p:column> -->
+<!-- 						<p:column styleClass="colInput"  colspan="3"> -->
+<!-- 							<p:calendar -->
+<!-- 								value="#{associadosBean.relatorio.filtro.socioDe}" -->
+<!-- 								converter="CalendarConverter" styleClass="data" size="10" -->
+<!-- 								pattern="dd/MM/yyyy" /> -->
+							
+<!-- 							<p:spacer width="15" /> -->
+<!-- 							<p:outputLabel value="até " /> -->
+<!-- 							<p:calendar -->
+<!-- 								value="#{associadosBean.relatorio.filtro.socioAte}" -->
+<!-- 								converter="CalendarConverter" styleClass="data" size="10" -->
+<!-- 								pattern="dd/MM/yyyy" /> -->
+<!-- 						</p:column> -->
+<!-- 					</p:row> -->
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Status do cliente:" />
+						</p:column>
+						<p:column styleClass="colInput" style="width:190px;">
+							<p:selectOneButton
+								value="#{associadosBean.relatorio.filtro.clientesAtivos}">
 
-				<p:panelGrid styleClass="panelForm" columns="2"
-					columnClasses="colLabel,colInput"
-					style="margin-top:20px;width:50%;">
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Ativos" itemValue="SIM" />
+								<f:selectItem itemLabel="Desativados" itemValue="NAO" />
+							</p:selectOneButton>
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column styleClass="colLabel">
+							<p:outputLabel value="Situação dos Clientes:" />
+						</p:column>
+						<p:column styleClass="colInput" style="width:190px;">
+							<p:selectOneButton
+								value="#{associadosBean.relatorio.filtro.pendentes}">
 
-					<p:outputLabel value="Total de associados:" />
-					<p:outputLabel value="#{associadosBean.relatorio.totalAssociados}" />
-
-					<p:outputLabel value="Total de associados em atraso:" />
-					<p:outputLabel style="color:red;"
-						value="#{associadosBean.relatorio.totalAssociadosEmAtraso}" />
-
-					<p:outputLabel value="Total de associados em dia:" />
-					<p:outputLabel style="color:blue;"
-						value="#{associadosBean.relatorio.totalAssociadosEmDia}" />
+								<f:selectItem itemLabel="Todos" itemValue="TODOS" />
+								<f:selectItem itemLabel="Com pendência" itemValue="SIM" />
+								<f:selectItem itemLabel="Sem pendência" itemValue="NAO" />
+							</p:selectOneButton>
+						</p:column>
+					</p:row>
 
 				</p:panelGrid>
 
 				<div class="container-action">
-					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
-						ajax="false" style="width:250px;height:50px;" update="@form"
-						process="@this"
-						actionListener="#{associadosBean.imprimirRelatorio()}" />
+					<p:commandButton value="Buscar" icon="ui-icon-search"
+						update="@form" action="#{associadosBean.buscar()}">
+					</p:commandButton>
 				</div>
 			</p:fieldset>
+			<p:spacer height="15" />
+
+			<p:fieldset legend="Informações quantitativas">
+
+				<p:panelGrid styleClass="panelForm" columns="2"
+					columnClasses="colLabel,colInput"
+					style="margin-top:20px;width:45%;">
+
+					<p:outputLabel value="Total de associados ativos:" />
+					<p:outputLabel style="font-size:18px;" 
+						value="#{associadosBean.relatorio.totalAssociados}" />
+
+					<p:outputLabel value="Total de clientes desativados e em atraso:" />
+					<p:outputLabel style="color:red;font-size:18px;"
+						value="#{associadosBean.relatorio.totalClientesDesativadosComDebito}" />
+
+					<p:outputLabel value="Total de associados em atraso:" />
+					<p:outputLabel style="color:red;font-size:18px;"
+						value="#{associadosBean.relatorio.totalAssociadosEmAtraso}" />
+
+					<p:outputLabel value="Total de associados em dia:" />
+					<p:outputLabel style="color:blue;font-size:18px;"
+						value="#{associadosBean.relatorio.totalAssociadosEmDia}" />
+
+				</p:panelGrid>
+			</p:fieldset>
 			<p:spacer height="30" />
-			<p:fieldset legend="Lista de associados">
+			<p:fieldset legend="Detalhes dos associados">
 				<p:dataTable var="cli" id="associados"
 					value="#{associadosBean.relatorio.detalhesAssociado}"
 					rowKey="#{cli.matricula}" paginator="true" rows="15"
@@ -53,19 +131,17 @@
 					emptyMessage="Nenhum cliente encontrado">
 
 
-					<f:facet name="footer">
-						<h:commandLink>
-							<p:graphicImage name="/imagens/excel.png" />
-							<p:dataExporter type="xls" target="associados" fileName="associados"  />
-						</h:commandLink>
-					</f:facet>
+<!-- 					<f:facet name="footer"> -->
+<!-- 						<h:commandLink> -->
+<!-- 							<p:graphicImage name="/imagens/excel.png" /> -->
+<!-- 							<p:dataExporter type="xls" target="associados" fileName="associados"  /> -->
+<!-- 						</h:commandLink> -->
+<!-- 					</f:facet> -->
 
-					<p:column headerText="Matrícula" sortBy="#{cli.matricula}"
-						filterBy="#{cli.matricula}">
+					<p:column headerText="Matrícula" sortBy="#{cli.matricula}" >
 						<p:outputLabel value="#{cli.matricula}" />
 					</p:column>
-					<p:column headerText="Nome" sortBy="#{cli.nome}"
-						filterBy="#{cli.nome}">
+					<p:column headerText="Nome" sortBy="#{cli.nome}" >
 						<p:outputLabel value="#{cli.nome}" />
 					</p:column>
 
@@ -73,13 +149,11 @@
 						<p:outputLabel value="#{cli.telefone}" />
 					</p:column>
 
-					<p:column headerText="Status" sortBy="#{cli.statusAssociado}"
-						filterBy="#{cli.statusAssociado}">
+					<p:column headerText="Situação" sortBy="#{cli.statusAssociado}" >
 						<p:outputLabel value="#{cli.statusAssociado}" />
 					</p:column>
 
-					<p:column headerText="Situação" sortBy="#{cli.situacao}"
-						filterBy="#{cli.situacao}">
+					<p:column headerText="Detalhes" sortBy="#{cli.situacao}" >
 						<p:outputLabel value="#{cli.situacao}" />
 					</p:column>
 					<p:column headerText="Sócio desde" width="80">
@@ -90,6 +164,18 @@
 					</p:column>
 
 				</p:dataTable>
+
+				<div class="container-action">
+					<p:commandButton value="Exportar planilha" icon="ui-icon-calculator"
+						style="width:250px;height:50px;" update="@form" ajax="false">
+						<p:dataExporter type="xls" target="associados" fileName="associados"  />
+					</p:commandButton>
+
+					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+						ajax="false" style="width:250px;height:50px;" update="@form"
+						process="@this"
+						actionListener="#{associadosBean.imprimirRelatorio()}" />
+				</div>
 
 			</p:fieldset>
 		</h:form>

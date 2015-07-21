@@ -64,7 +64,7 @@
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Recolhimentos em aberto até " />
 						<h:outputLabel value="#{recolhimentosAbertoBean.dataAte.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</h:outputLabel>
 					</h2>
 
@@ -134,7 +134,7 @@
 										<h:outputText value="Data base:  " />
 										<h:outputText value="#{nota.dataBase.time}"
 											style="font-size:10px;">
-											<f:convertDateTime pattern="dd/MM/yyyy" />
+											<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 										</h:outputText>
 
 									</p:column>

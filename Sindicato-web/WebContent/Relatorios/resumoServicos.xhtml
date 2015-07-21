@@ -71,11 +71,11 @@
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Resumo dos Serviços de " />
 						<p:outputLabel value="#{resumoServicosBean.dataDe.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</p:outputLabel>
 						<p:outputLabel value=" até " />
 						<p:outputLabel value="#{resumoServicosBean.dataAte.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" />
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 						</p:outputLabel>
 					</h2>
 

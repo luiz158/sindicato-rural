@@ -12,14 +12,14 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 import com.sindicato.MB.util.UtilBean;
 import com.sindicato.controlefinanceiro.dao.RelatorioDAO;
 import com.sindicato.controlefinanceiro.report.model.RelatorioAssociados;
 import com.sindicato.controlefinanceiro.reports.GeradorReports;
+
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @ManagedBean
 @ViewScoped
@@ -31,7 +31,11 @@ public class AssociadosBean {
 	
 	@PostConstruct
 	public void init(){
-		relatorio = relatorioDAO.getAssociados();
+		relatorio = relatorioDAO.getAssociados(this.getRelatorio().getFiltro());
+	}
+	 
+	public void buscar(){
+		relatorio = relatorioDAO.getAssociados(relatorio.getFiltro());
 	}
 	
 	public void imprimirRelatorio() throws JRException, IOException{
@@ -65,6 +69,9 @@ public class AssociadosBean {
 
 	
 	public RelatorioAssociados getRelatorio() {
+		if(relatorio == null){
+			relatorio = new RelatorioAssociados();
+		}
 		return relatorio;
 	}
 

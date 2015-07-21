@@ -17,6 +17,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import com.sindicato.result.InformacaoMensalidade;
 
 @Entity
 @SequenceGenerator(allocationSize = 1, name = "seqCliente", sequenceName = "SEQ_CLIENTE")
@@ -45,9 +48,15 @@ public class Cliente implements Serializable {
 	@OneToMany(targetEntity = Debito.class, mappedBy = "cliente")
 	private List<Debito> debitos;
 
+	@OneToMany(targetEntity = InformacaoSocio.class, mappedBy = "cliente")
+	private List<InformacaoSocio> informacoesSocio;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	private Calendar dataCadastro = Calendar.getInstance();
 
+	@Transient
+	private InformacaoMensalidade informacaoMensalidade;
+	
 	//@Past
 	//@NotNull
 	@Temporal(TemporalType.DATE)
@@ -286,6 +295,21 @@ public class Cliente implements Serializable {
 
 	public void setUfExp(String ufExp) {
 		this.ufExp = ufExp;
+	}
+
+	public List<InformacaoSocio> getInformacoesSocio() {
+		return informacoesSocio;
+	}
+
+	public void setInformacoesSocio(List<InformacaoSocio> informacoesSocio) {
+		this.informacoesSocio = informacoesSocio;
+	}
+	public InformacaoMensalidade getInformacaoMensalidade() {
+		return informacaoMensalidade;
+	}
+
+	public void setInformacaoMensalidade(InformacaoMensalidade informacaoMensalidade) {
+		this.informacaoMensalidade = informacaoMensalidade;
 	}
 
 	@Override

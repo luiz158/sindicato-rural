@@ -361,5 +361,13 @@ public class ClienteDAOImpl extends DAOImpl<Cliente, Integer> implements
 				.setMaxResults(pageSize).getResultList();
 		return clientes;
 	}
+	
+	@Override
+	public List<Cliente> getClientesComHistoricoDeSocio() {
+		String strQuery = "Select distinct i.cliente from InformacaoSocio i ";
+		TypedQuery<Cliente> query = null;
+		query = em.createQuery(strQuery, Cliente.class);
+		return query.getResultList();
+	}
 
 }

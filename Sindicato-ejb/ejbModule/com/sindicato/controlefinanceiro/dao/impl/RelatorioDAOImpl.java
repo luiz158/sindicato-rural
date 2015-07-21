@@ -30,6 +30,7 @@ import com.sindicato.controlefinanceiro.report.model.DetalhesDestinoRecebimento;
 import com.sindicato.controlefinanceiro.report.model.DetalhesNotaRecolhimentosAberto;
 import com.sindicato.controlefinanceiro.report.model.DetalhesServico;
 import com.sindicato.controlefinanceiro.report.model.DetalhesServicosRecolhimentos;
+import com.sindicato.controlefinanceiro.report.model.FiltroAssociados;
 import com.sindicato.controlefinanceiro.report.model.RecebimentoDia;
 import com.sindicato.controlefinanceiro.report.model.RelatorioAssociados;
 import com.sindicato.controlefinanceiro.report.model.RelatorioFolhaVotacao;
@@ -42,7 +43,10 @@ import com.sindicato.controlefinanceiro.report.model.RelatorioResumoServico;
 import com.sindicato.controlefinanceiro.report.model.RelatorioRetencoesRecolher;
 import com.sindicato.controlefinanceiro.report.model.ServicoRecolhimentosAberto;
 import com.sindicato.controlefinanceiro.report.model.ServicoRetencoesRecolher;
+import com.sindicato.report.util.FiltroBooleanEnum;
 import com.sindicato.result.InformacaoMensalidade;
+import com.uaihebert.factory.EasyCriteriaFactory;
+import com.uaihebert.model.EasyCriteria;
 
 @Stateful
 public class RelatorioDAOImpl implements RelatorioDAO {
@@ -55,29 +59,68 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 	SimpleDateFormat formatData = new SimpleDateFormat("dd/MM/yyyy");
 
 	@Override
-	public RelatorioAssociados getAssociados() {
+	public RelatorioAssociados getAssociados(FiltroAssociados filtro) {
 		RelatorioAssociados relatorio = new RelatorioAssociados();
-		int associadosEmDia = 0;
-		int associadosEmAtraso = 0;
-		int totalAssociados = 0;
-		List<Cliente> clientes = clienteDAO.getAll();
-		for (Cliente cliente : clientes) {
-			if (!cliente.isSocio()) {
-				continue;
+		relatorio.setFiltro(filtro);
+		
+		EasyCriteria<Cliente> criteria = EasyCriteriaFactory.createQueryCriteria(em, Cliente.class);
+		criteria.innerJoin("informacoesSocio");
+		criteria.setDistinctTrue();
+		
+		if(filtro.getNome() != null && filtro.getNome() != ""){
+			criteria.andStringLike("nome", "%" + filtro.getNome() + "%");
+		}
+		
+		if(filtro.getMatricula() != 0){
+			criteria.andEquals("id", filtro.getMatricula());
+		}
+
+		if(filtro.getClientesAtivos().equals(FiltroBooleanEnum.NAO)){
+			criteria.andEquals("ativo", false);
+		}
+		if(filtro.getClientesAtivos().equals(FiltroBooleanEnum.SIM)){
+			criteria.andEquals("ativo", true);
+		}
+		
+		List<Cliente> todosClientes = criteria.getResultList();
+		List<Cliente> clientesFiltrados = new ArrayList<Cliente>();
+		
+		// carrega informações de mensalidades
+		for (Cliente cliente : todosClientes) {
+			cliente.setInformacaoMensalidade(clienteDAO.estaEmDiaComAsMensalidades(cliente));
+			
+			if(filtro.getPendentes().equals(FiltroBooleanEnum.TODOS)){
+				clientesFiltrados.add(cliente);
+			} else if(cliente.getInformacaoMensalidade().isAtrasado() && filtro.getPendentes().equals(FiltroBooleanEnum.SIM)){
+				clientesFiltrados.add(cliente);
+			} else if(!cliente.getInformacaoMensalidade().isAtrasado() && filtro.getPendentes().equals(FiltroBooleanEnum.NAO)){
+				clientesFiltrados.add(cliente);
 			}
-			totalAssociados++;
+		}
+		
+		for (Cliente cliente : clientesFiltrados) {
+			if(cliente.isSocio() && cliente.isAtivo()){
+				relatorio.addTotalAssociados();
+			}
+			
 			Calendar dataSocio = cliente.getDataCadastro();
-			InformacaoMensalidade infMensalid = clienteDAO
-					.estaEmDiaComAsMensalidades(cliente);
+			
 			DetalhesAssociado detalhes = new DetalhesAssociado();
-			if (infMensalid.isAtrasado()) {
-				detalhes.setStatusAssociado("Em atraso");
-				associadosEmAtraso++;
+			if (cliente.getInformacaoMensalidade().isAtrasado()) {
+				detalhes.setStatusAssociado("Com pendência");
+				relatorio.addTotalAssociadosEmAtraso();
+				
+				if(cliente.isAtivo() == false){
+					relatorio.addTotalClientesDesativadosComDebito();
+				}
 			} else {
-				detalhes.setStatusAssociado("Em dia");
-				associadosEmDia++;
+				detalhes.setStatusAssociado("Sem pendência");
+				
+				if(cliente.isAtivo()){
+					relatorio.addTotalAssociadosEmDia();
+				}
 			}
-			detalhes.setSituacao(infMensalid.getMensagem());
+			detalhes.setSituacao(cliente.getInformacaoMensalidade().getMensagem());
 			detalhes.setMatricula(cliente.getId());
 			detalhes.setNome(cliente.getNome());
 			detalhes.setObservacao(cliente.getObservacao());
@@ -89,9 +132,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 				detalhes.setSocioDesde(formatData.format(dataSocio.getTime()));
 			relatorio.getDetalhesAssociado().add(detalhes);
 		}
-		relatorio.setTotalAssociados(totalAssociados);
-		relatorio.setTotalAssociadosEmAtraso(associadosEmAtraso);
-		relatorio.setTotalAssociadosEmDia(associadosEmDia);
+		
 		return relatorio;
 	}
 

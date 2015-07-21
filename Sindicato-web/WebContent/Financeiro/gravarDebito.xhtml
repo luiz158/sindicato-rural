@@ -45,7 +45,7 @@
 						</p:column>
 						<p:column headerText="Data base" sortBy="#{debito.dataBase}">
 							<p:outputLabel value="#{debito.dataBase.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
+								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 							</p:outputLabel>
 						</p:column>
 						<p:column headerText="Valor">

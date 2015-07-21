@@ -199,7 +199,7 @@
 				</p:column>
 				<p:column headerText="Vencimento" width="70">
 					<p:outputLabel value="#{conta.vencimento.time}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
 					</p:outputLabel>
 				</p:column>
 				<p:column headerText="Valor" width="100">

@@ -23,10 +23,9 @@
 				<h:form>
 					<p:dataTable var="debito" value="#{manutencaoNotaBean.debitos}"
 						rowKey="#{debito.id}" paginator="true" rows="10"
-						paginatorPosition="bottom" widgetVar="debitos"
+						paginatorPosition="bottom" 
 						selection="#{manutencaoNotaBean.debitoSelecionado}"
 						selectionMode="single" id="debitos" lazy="true"
-						draggableColumns="true"
 						emptyMessage="Nenhuma nota de cobrança encontrada"
 						resizableColumns="true" sortBy="#{debito.numeroNota}"
 						sortOrder="DESCENDING">

@@ -51,7 +51,7 @@
 				<textFieldExpression><![CDATA[$P{valorTotal}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="171" y="44" width="347" height="24" uuid="174b61e5-411d-4657-806a-8a673532144d"/>
+				<reportElement x="160" y="44" width="377" height="24" uuid="174b61e5-411d-4657-806a-8a673532144d"/>
 				<textElement>
 					<font fontName="Serif" size="18" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
