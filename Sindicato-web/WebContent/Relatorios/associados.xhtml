@@ -99,7 +99,6 @@
 			<p:spacer height="15" />
 
 			<p:fieldset legend="Informações quantitativas">
-
 				<p:panelGrid styleClass="panelForm" columns="2"
 					columnClasses="colLabel,colInput"
 					style="margin-top:20px;width:45%;">
@@ -107,10 +106,6 @@
 					<p:outputLabel value="Total de associados ativos:" />
 					<p:outputLabel style="font-size:18px;" 
 						value="#{associadosBean.relatorio.totalAssociados}" />
-
-					<p:outputLabel value="Total de clientes desativados e em atraso:" />
-					<p:outputLabel style="color:red;font-size:18px;"
-						value="#{associadosBean.relatorio.totalClientesDesativadosComDebito}" />
 
 					<p:outputLabel value="Total de associados em atraso:" />
 					<p:outputLabel style="color:red;font-size:18px;"
@@ -120,6 +115,15 @@
 					<p:outputLabel style="color:blue;font-size:18px;"
 						value="#{associadosBean.relatorio.totalAssociadosEmDia}" />
 
+				</p:panelGrid>
+				<hr align="center" width="90%" />
+				<p:panelGrid styleClass="panelForm" columns="2"
+					columnClasses="colLabel,colInput"
+					style="margin-top:20px;width:41%;">
+
+					<p:outputLabel value="Total de clientes desativados e em atraso:" />
+					<p:outputLabel style="color:red;font-size:18px;"
+						value="#{associadosBean.relatorio.totalClientesDesativadosComDebito}" />
 				</p:panelGrid>
 			</p:fieldset>
 			<p:spacer height="30" />
