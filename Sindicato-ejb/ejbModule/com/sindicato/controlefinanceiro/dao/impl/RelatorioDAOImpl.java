@@ -68,7 +68,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		criteria.setDistinctTrue();
 		
 		if(filtro.getNome() != null && filtro.getNome() != ""){
-			criteria.andStringLike("nome", "%" + filtro.getNome() + "%");
+			criteria.andStringLike(true, "nome", "%" + filtro.getNome() + "%");
 		}
 		
 		if(filtro.getMatricula() != 0){
