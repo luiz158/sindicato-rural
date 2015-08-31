@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="associados" language="groovy" pageWidth="595" pageHeight="842" columnWidth="539" leftMargin="28" rightMargin="28" topMargin="28" bottomMargin="28" uuid="6c65fb03-fd10-4cea-a495-c3dbb85efccf">
-	<property name="ireport.zoom" value="2.1961500000000007"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="121"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="216"/>
+	<property name="ireport.y" value="123"/>
 	<parameter name="logo" class="java.lang.String"/>
 	<parameter name="titulo" class="java.lang.String"/>
 	<parameter name="valorTotal" class="java.lang.String"/>
 	<parameter name="totalCheques" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\alyss\\Desenvolvimento\\repositorios\\sindicato-rural\\Sindicato-web\\WebContent\\reports\\"]]></defaultValueExpression>
+	</parameter>
 	<field name="identificacao" class="java.lang.Integer"/>
 	<field name="favorecido" class="java.lang.String"/>
 	<field name="cancelado" class="java.lang.Boolean"/>
@@ -14,6 +17,7 @@
 	<field name="valorFormatado" class="java.lang.String"/>
 	<field name="banco.descricao" class="java.lang.String"/>
 	<field name="versoCheque" class="java.lang.String"/>
+	<field name="contasPagas" class="java.util.Collection"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -75,7 +79,7 @@
 		</band>
 	</title>
 	<detail>
-		<band height="59" splitType="Stretch">
+		<band height="83" splitType="Stretch">
 			<textField>
 				<reportElement x="88" y="2" width="139" height="12" uuid="6c6f94ee-6f33-4e0b-a6df-84736a0946bc"/>
 				<textElement verticalAlignment="Bottom">
@@ -177,6 +181,39 @@
 				</textElement>
 				<text><![CDATA[Banco:]]></text>
 			</staticText>
+			<subreport>
+				<reportElement x="1" y="67" width="538" height="16" uuid="fd5bb639-4b64-4870-8e82-d63c824a6d1b"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{contasPagas})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subRelatorioCheques.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="1" y="55" width="59" height="12" uuid="b929a8fb-a950-421f-a6f4-9759fbab6dd3"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Conta]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="55" width="86" height="12" uuid="2bde9fc7-b24e-471c-898e-943c0e52387b"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Valor (R$)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="55" width="314" height="12" uuid="b2bf71d2-1b2c-491c-a327-4cd51c320db0"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Favorecido]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="460" y="55" width="79" height="12" uuid="2ff6cd80-a9ab-496e-964e-ce4aba7b600e"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[Vencimento]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
