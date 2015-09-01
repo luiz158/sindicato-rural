@@ -76,7 +76,7 @@ public class Conta implements Serializable {
 	}
 	public String getValorFormatado() {
 		if(valor == null){
-			return "";
+			return "R$ 0,00";
 		}
 		valorFormatado = NumberFormat.getCurrencyInstance().format(valor);
 		return valorFormatado;

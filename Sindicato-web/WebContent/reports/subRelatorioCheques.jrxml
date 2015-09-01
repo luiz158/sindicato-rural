@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subRelatorioCheques" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="180f61f3-2b84-4ce5-903f-c2c6ac19cd1f">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subRelatorioCheques" language="groovy" pageWidth="595" pageHeight="842" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="180f61f3-2b84-4ce5-903f-c2c6ac19cd1f">
+	<property name="ireport.zoom" value="2.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<field name="vencimentoFormatado" class="java.lang.String"/>
@@ -8,23 +8,41 @@
 	<field name="valorFormatado" class="java.lang.String"/>
 	<field name="id" class="java.lang.String"/>
 	<detail>
-		<band height="21" splitType="Stretch">
+		<band height="11" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="50" height="20" uuid="35922504-2c85-4b5f-9cc0-36749f9aa701"/>
+				<reportElement x="0" y="0" width="70" height="10" uuid="35922504-2c85-4b5f-9cc0-36749f9aa701"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="50" y="0" width="100" height="20" uuid="dea255d5-3d3b-4cae-a3f1-d0b318e30070"/>
+				<reportElement x="70" y="0" width="100" height="10" uuid="dea255d5-3d3b-4cae-a3f1-d0b318e30070"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{valorFormatado}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="150" y="0" width="305" height="20" uuid="88caf891-9528-4dc2-a383-ae1e62511bc0"/>
+				<reportElement x="170" y="0" width="311" height="10" uuid="88caf891-9528-4dc2-a383-ae1e62511bc0"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{favorecido}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="455" y="0" width="100" height="20" uuid="9b793ae3-932e-490e-b2d5-e236e18128d6"/>
+				<reportElement x="495" y="1" width="100" height="9" uuid="9b793ae3-932e-490e-b2d5-e236e18128d6"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{vencimentoFormatado}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement mode="Opaque" x="0" y="10" width="541" height="1" isRemoveLineWhenBlank="true" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="1bb98abe-6b85-45eb-b9bb-76b379cd4e21"/>
+				<graphicElement>
+					<pen lineStyle="Dotted"/>
+				</graphicElement>
+			</line>
 		</band>
 	</detail>
 </jasperReport>

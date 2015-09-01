@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -66,9 +65,9 @@ public class ChequeEmitido implements Serializable {
 	
 	public String getValorFormatado(){
 		if(valor == null){
-			valorFormatado = "";
+			valorFormatado = "R$ 0,00";
 		} else {
-			valorFormatado = NumberFormat.getInstance(new Locale("pt", "BR")).format(valor);
+			valorFormatado = NumberFormat.getCurrencyInstance().format(valor);
 		}
 		return valorFormatado;
 	}

@@ -68,13 +68,13 @@ public class RelatorioChequesBean implements Serializable {
 			servletOutputStream.flush();
 			servletOutputStream.close();
 
+			context.responseComplete();
 		} catch (JRException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		context.responseComplete();
 	}
 	
 	
