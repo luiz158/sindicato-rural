@@ -42,7 +42,7 @@
 							filterBy="descricao">
 							<p:outputLabel value="#{servico.descricao}" />
 						</p:column>
-						<p:column headerText="Retenção" sortBy="retencao"
+						<p:column headerText="Tem retenção?" sortBy="retencao" 
 							filterBy="retencao">
 							<p:outputLabel value="Sim" rendered="#{servico.retencao}" />
 							<p:outputLabel value="Não" rendered="#{!servico.retencao}" />

@@ -54,7 +54,7 @@
 						<p:column headerText="Status">
 							<p:outputLabel value="Aguardando recebimento"
 								rendered="#{debito.status == 'NOTACOBRANCAGERADA'}" />
-							<p:outputLabel value="Aguardando recolhimento"
+							<p:outputLabel value="Nota recebida"
 								rendered="#{debito.status == 'RECEBIDO'}" />
 							<p:outputLabel value="Nota recolhida"
 								rendered="#{debito.status == 'RECOLHIDO'}" />
@@ -77,7 +77,7 @@
 							<p:outputLabel value="Status da nota:" />
 							<p:outputLabel value="Aguardando recebimento"
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'NOTACOBRANCAGERADA'}" />
-							<p:outputLabel value="Aguardando recolhimento"
+							<p:outputLabel value="Nota recebida"
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECEBIDO'}" />
 							<p:outputLabel value="Nota recolhida"
 								rendered="#{manutencaoNotaBean.debitoSelecionado.status == 'RECOLHIDO'}" />
@@ -152,6 +152,10 @@
 									<f:convertNumber locale="pt_BR" type="currency"
 										currencySymbol="R$ " />
 								</p:outputLabel>
+							</p:column>
+							<p:column headerText="Tem retenção?">
+								<p:outputLabel value="Sim" rendered="#{debito.servico.retencao}" />
+								<p:outputLabel value="Não" rendered="#{!debito.servico.retencao}" />
 							</p:column>
 							<p:column headerText="" width="70">
 								<p:commandButton value="Excluir"
