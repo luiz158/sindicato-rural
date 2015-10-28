@@ -42,7 +42,7 @@
 						</p:column>
 						<p:column headerText="Data base" sortBy="#{debito.dataBase}">
 							<p:outputLabel value="#{debito.dataBase.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
 						<p:column headerText="Valor total da nota">
@@ -76,7 +76,7 @@
 							<p:outputLabel value="Data base:" />
 							<p:outputLabel
 								value="#{recolhimentoBean.debitoSelecionado.dataBase.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 
 							<p:outputLabel value="Valor da nota:" />

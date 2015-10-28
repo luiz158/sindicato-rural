@@ -51,7 +51,7 @@
 						</p:column>
 						<p:column headerText="Data da emissão">
 							<p:outputLabel value="#{cheque.emissao.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
 						<p:column headerText="Cancelado?">
@@ -164,7 +164,7 @@
 							</p:column>
 							<p:column headerText="Data vencimento">
 								<p:outputLabel value="#{conta.vencimento.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</p:outputLabel>
 							</p:column>
 							<p:column headerText="Valor">

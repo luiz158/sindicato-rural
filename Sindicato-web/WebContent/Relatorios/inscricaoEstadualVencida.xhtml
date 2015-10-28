@@ -68,11 +68,11 @@
 						<p:column headerText="Data de vencimento">
 							<p:outputLabel value="#{detalhe.vencimentoInscricao.time}"
 								style="color:red;" rendered="#{detalhe.inscricaoVencida}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 							<p:outputLabel value="#{detalhe.vencimentoInscricao.time}"
 								style="color:blue;" rendered="#{!detalhe.inscricaoVencida}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
 

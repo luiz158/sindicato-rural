@@ -40,7 +40,7 @@
 						</p:column>
 						<p:column headerText="Vencimento" filterBy="#{conta.vencimento}">
 							<p:outputLabel value="#{conta.vencimento.time}">
-								<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</p:outputLabel>
 						</p:column>
 						<p:column headerText="Valor" filterBy="#{conta.valor}">

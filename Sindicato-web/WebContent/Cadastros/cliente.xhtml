@@ -636,7 +636,7 @@
 								value="#{clienteBean.informacoesSocio}">
 								<p:column headerText="Data de evento">
 									<h:outputText value="#{inf.dataEvento.time}">
-										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+										<f:convertDateTime pattern="dd/MM/yyyy" />
 									</h:outputText>
 								</p:column>
 
@@ -656,7 +656,7 @@
 
 								<p:column headerText="Data do pagamento">
 									<h:outputText value="#{inf.dataPagamento.time}">
-										<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+										<f:convertDateTime pattern="dd/MM/yyyy" />
 									</h:outputText>
 								</p:column>
 

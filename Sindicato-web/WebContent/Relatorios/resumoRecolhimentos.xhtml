@@ -72,7 +72,7 @@
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Resumo dos recolhimentos de " />
 						<p:outputLabel value="#{resumoRecolhimentosBean.dataDe.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</p:outputLabel>
 						<p:outputLabel value=" até " />
 						<p:outputLabel value="#{resumoRecolhimentosBean.dataAte.time}">
@@ -147,12 +147,12 @@
 							</p:column>
 							<p:column headerText="Data Recolh." styleClass="font-menor">
 								<h:outputText value="#{detalhe.dataRecolhimento.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</h:outputText>
 							</p:column>
 							<p:column headerText="Data Base" styleClass="font-menor">
 								<h:outputText value="#{detalhe.dataBase.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</h:outputText>
 							</p:column>
 							<p:column headerText="Nota" styleClass="font-menor">
@@ -160,7 +160,7 @@
 							</p:column>
 							<p:column headerText="Data Emissão" styleClass="font-menor">
 								<h:outputText value="#{detalhe.dataEmissaoNota.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</h:outputText>
 							</p:column>
 							<p:column headerText="Variação (R$)" styleClass="font-menor">

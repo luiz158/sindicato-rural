@@ -71,7 +71,7 @@
 					<h2 style="text-align: center;">
 						<p:outputLabel value="Resumo dos recebimentos de " />
 						<p:outputLabel value="#{resumoRecebimentosBean.dataDe.time}">
-							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</p:outputLabel>
 						<p:outputLabel value=" até " />
 						<p:outputLabel value="#{resumoRecebimentosBean.dataAte.time}">
@@ -88,11 +88,11 @@
 
 							<p:column headerText="Data do recebimento">
 								<h:outputText value="#{detalhe.dataRecebimento.time}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</h:outputText>
 								<h:outputText value=" - cheque pré datado para: " style="font-weight: bold;" rendered="#{detalhe.chequePre}" />
 								<h:outputText value="#{detalhe.dataLiquidacao.time}" style="font-weight: bold;" rendered="#{detalhe.chequePre}">
-									<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+									<f:convertDateTime pattern="dd/MM/yyyy" />
 								</h:outputText>
 							</p:column>
 							<p:column headerText="Valor recebido (R$)">
