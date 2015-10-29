@@ -152,8 +152,6 @@ public class ManutencaoNotaBean implements Serializable {
 			for (DebitoServico debitoSelecionado : debitoSelecionado.getDebitoServicos()) {
 				if (debitoSelecionado.equals(debito)) {
 					debitoSelecionado.setRecolhimento(debito.getRecolhimento());
-				} else {
-					debitoSelecionado.setRecolhimento(null);
 				}
 			}
 		}
