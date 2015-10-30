@@ -1,5 +1,6 @@
 package com.sindicato.controlefinanceiro.reports;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
@@ -19,6 +20,7 @@ import com.sindicato.MB.util.UtilBean;
 public class GeradorReports {
 
 	private final String CAMINHO_REPORTS = "/reports/";
+	private final String CAMINHO_SUBREPORTS = UtilBean.getFacesContext().getExternalContext().getRealPath("reports");
 	private final String CAMINHO_IMAGENS = UtilBean.getFacesContext().getExternalContext().getRealPath("/reports/imagens/");
 	
 	private JasperPrint jasperPrint;
@@ -30,6 +32,7 @@ public class GeradorReports {
 	public GeradorReports(String report, Map<String, Object> parameters, JRBeanCollectionDataSource beanCollectionDataSource) throws JRException{
 		this.parameters = parameters;
 		this.parameters.put("logo", CAMINHO_IMAGENS + "/Logo_nota.jpg");
+		this.parameters.put("SUBREPORT_DIR", CAMINHO_SUBREPORTS + File.separatorChar);
 		
 		this.beanCollectionDataSource = beanCollectionDataSource;
 		this.report = CAMINHO_REPORTS + report;
