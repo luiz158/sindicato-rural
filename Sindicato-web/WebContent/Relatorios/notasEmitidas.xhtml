@@ -82,14 +82,14 @@
 						</p:outputLabel>
 					</h2>
 
-					<p:dataTable var="notas"
+					<p:dataTable var="notas" id="notas"
 						value="#{notasEmitidasBean.relatorio.notasEmitidas}">
 
 						<f:facet name="header">
 							<h:outputText value="Resumo das notas emitidas" />
 						</f:facet>
 
-						<p:column headerText="Data">
+						<p:column headerText="Data emissão">
 							<h:outputText value="#{notas.dataEmissaoNota.time}" >
 								<f:convertDateTime pattern="dd/MM/yyyy" />
 							</h:outputText>
@@ -97,10 +97,12 @@
 						<p:column headerText="Notas">
 							<h:outputText value="De #{notas.primeiraNota} até #{notas.ultimaNota}" />
 						</p:column>
-						<p:column headerText="Valor total do dia">
+						<p:column headerText="Serviço">
+							<h:outputText value="#{notas.servico}" />
+						</p:column>
+						<p:column headerText="Valor total do serviço no dia">
 							<h:outputText value="#{notas.valorTotalDia}">
-								<f:convertNumber currencySymbol="R$ " locale="pt-BR"
-									type="currency" />
+								<f:convertNumber currencySymbol="R$ " locale="pt-BR" type="currency" />
 							</h:outputText>
 						</p:column>
 					</p:dataTable>
@@ -114,15 +116,22 @@
 					</h2>
 
 				</p:outputPanel>
+
+				<div class="container-action">
+					<p:commandButton value="Exportar planilha" icon="ui-icon-calculator"
+						style="width:250px;height:50px;" update="@form" ajax="false">
+						<p:dataExporter type="xls" target="notas" fileName="notas-emitidas"  />
+					</p:commandButton>
+				
+					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
+						style="width:250px;height:50px;" rendered="false"
+						binding="#{notasEmitidasBean.btnImprimir}">
+						<p:printer target="painelServicos" />
+					</p:commandButton>
+				</div>
+
 			</p:fieldset>
 
-			<div class="container-action">
-				<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
-					style="width:250px;height:50px;" rendered="false"
-					binding="#{notasEmitidasBean.btnImprimir}">
-					<p:printer target="painelServicos" />
-				</p:commandButton>
-			</div>
 		</h:form>
 
 	</ui:define>

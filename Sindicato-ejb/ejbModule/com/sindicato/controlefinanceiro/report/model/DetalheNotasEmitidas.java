@@ -11,6 +11,7 @@ public class DetalheNotasEmitidas implements Serializable {
 	private int primeiraNota;
 	private int ultimaNota;
 	private BigDecimal valorTotalDia;
+	private String servico;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -38,6 +39,12 @@ public class DetalheNotasEmitidas implements Serializable {
 	}
 	public void setValorTotalDia(BigDecimal valorTotalDia) {
 		this.valorTotalDia = valorTotalDia;
+	}
+	public String getServico() {
+		return servico;
+	}
+	public void setServico(String servico) {
+		this.servico = servico;
 	}
 
 }

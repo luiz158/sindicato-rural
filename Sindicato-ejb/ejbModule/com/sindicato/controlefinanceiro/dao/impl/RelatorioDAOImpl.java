@@ -5,12 +5,14 @@ import java.math.MathContext;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.sindicato.controlefinanceiro.dao.ClienteDAO;
@@ -431,39 +433,67 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 	public RelatorioNotasEmitidas getRelatorioNotasEmitidas(Calendar dataDe, Calendar dataAte){
 		RelatorioNotasEmitidas relatorio = new RelatorioNotasEmitidas();
 		
-		String jpql = " select  "
-				+ " d.dataEmissaoNotaCobranca, "
-				+ " SUM(ds.valor), "
-				+ " MIN(d.numeroNota), "
-				+ " MAX(d.numeroNota) "
-				+ " from Debito d "
-				+ " left join d.debitoServicos ds "
-				+ " Where d.status not in (:status) "
-				+ " and d.dataEmissaoNotaCobranca between :dataDe and :dataAte "
-				+ " group by d.dataEmissaoNotaCobranca "
-				+ " order by d.dataEmissaoNotaCobranca ";
+		StringBuilder jpql = new StringBuilder();
+
+		jpql.append(" select    \n");
+		jpql.append(" 	d.dataEmissaoNotaCobranca,   \n");
+		jpql.append(" 	s.descricao, \n");
+		jpql.append(" 	SUM(ds.valor),   \n");
+		jpql.append(" 	numeronotas.menor,   \n");
+		jpql.append(" 	numeronotas.maior \n");
+		jpql.append(" from debito d   \n");
+		jpql.append(" join ( \n");
+		jpql.append(" 	select dataEmissaoNotaCobranca, min(numeronota) menor, max(numeronota) maior \n");
+		jpql.append(" 	from debito \n");
+		jpql.append(" 	group by dataEmissaoNotaCobranca \n");
+		jpql.append(" ) numeronotas on numeronotas.dataEmissaoNotaCobranca = d.dataEmissaoNotaCobranca \n");
+		jpql.append(" left join debitoservico ds on d.id = ds.debito_id \n");
+		jpql.append(" left join servico s on s.id = ds.servico_id \n");
+		jpql.append(" Where 1 = 1 \n");
+		jpql.append(" 	and d.dataEmissaoNotaCobranca between ? and ?   \n");
+		jpql.append(" 	and to_char(d.status, '999') not in (?)   \n");
+		jpql.append(" group by d.dataEmissaoNotaCobranca, s.descricao,numeronotas.menor,numeronotas.maior \n");
+		jpql.append(" order by d.dataEmissaoNotaCobranca, s.descricao \n");
 
 		List<StatusDebitoEnum> statusNaoPermitidos = new ArrayList<StatusDebitoEnum>();	
 		statusNaoPermitidos.add(StatusDebitoEnum.DEBITOCRIADO);
 		statusNaoPermitidos.add(StatusDebitoEnum.CANCELADO);
-			
-		TypedQuery<Object[]> query = em.createQuery(jpql, Object[].class);
-		query.setParameter("dataDe", dataDe);
-		query.setParameter("dataAte", dataAte);
-		query.setParameter("status", statusNaoPermitidos);
+		
+		Query query = em.createNativeQuery(jpql.toString());
+		query.setParameter(1, dataDe);
+		query.setParameter(2, dataAte);
+		query.setParameter(3, this.getStatusDebitoToString(statusNaoPermitidos));
+		
+		@SuppressWarnings("unchecked")
 		List<Object[]> rs = query.getResultList();
 
 		for (Object[] notas : rs) {
 			DetalheNotasEmitidas detalhe = new DetalheNotasEmitidas();
-			detalhe.setDataEmissaoNota((Calendar) notas[0]);
-			detalhe.setValorTotalDia((BigDecimal) notas[1]);
-			detalhe.setPrimeiraNota((int) notas[2]);
-			detalhe.setUltimaNota((int) notas[3]);
+			
+			Calendar dataEmissaoNota = Calendar.getInstance();
+			dataEmissaoNota.setTime((Date) notas[0]);
+			
+			detalhe.setDataEmissaoNota(dataEmissaoNota);
+			detalhe.setServico((String) notas[1]);
+			detalhe.setValorTotalDia((BigDecimal) notas[2]);
+			detalhe.setPrimeiraNota((int) notas[3]);
+			detalhe.setUltimaNota((int) notas[4]);
 			
 			relatorio.getNotasEmitidas().add(detalhe);
 		}
 		
 		return relatorio;
+	}
+	
+	private String getStatusDebitoToString(List<StatusDebitoEnum> status){
+		StringBuilder statusStr = new StringBuilder();
+		for (StatusDebitoEnum statusDebitoEnum : status) {
+			if(statusStr.length() > 0){
+				statusStr.append(",");
+			}
+			statusStr.append(statusDebitoEnum.ordinal());
+		}
+		return statusStr.toString();
 	}
 	
 	@Override
