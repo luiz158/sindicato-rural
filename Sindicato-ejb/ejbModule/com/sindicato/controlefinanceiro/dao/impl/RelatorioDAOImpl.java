@@ -445,6 +445,8 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		jpql.append(" join ( \n");
 		jpql.append(" 	select dataEmissaoNotaCobranca, min(numeronota) menor, max(numeronota) maior \n");
 		jpql.append(" 	from debito \n");
+		jpql.append(" 	where debito.dataEmissaoNotaCobranca between ? and ?   \n");
+		jpql.append(" 	and to_char(debito.status, '999') not in (?)   \n");
 		jpql.append(" 	group by dataEmissaoNotaCobranca \n");
 		jpql.append(" ) numeronotas on numeronotas.dataEmissaoNotaCobranca = d.dataEmissaoNotaCobranca \n");
 		jpql.append(" left join debitoservico ds on d.id = ds.debito_id \n");
@@ -463,6 +465,9 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		query.setParameter(1, dataDe);
 		query.setParameter(2, dataAte);
 		query.setParameter(3, this.getStatusDebitoToString(statusNaoPermitidos));
+		query.setParameter(4, dataDe);
+		query.setParameter(5, dataAte);
+		query.setParameter(6, this.getStatusDebitoToString(statusNaoPermitidos));
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rs = query.getResultList();
