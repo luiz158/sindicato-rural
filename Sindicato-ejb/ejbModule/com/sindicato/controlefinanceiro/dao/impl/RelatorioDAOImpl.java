@@ -440,7 +440,8 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		jpql.append(" 	s.descricao, \n");
 		jpql.append(" 	SUM(ds.valor),   \n");
 		jpql.append(" 	numeronotas.menor,   \n");
-		jpql.append(" 	numeronotas.maior \n");
+		jpql.append(" 	numeronotas.maior, \n");
+		jpql.append(" 	totaldia.valor   \n");
 		jpql.append(" from debito d   \n");
 		jpql.append(" join ( \n");
 		jpql.append(" 	select dataEmissaoNotaCobranca, min(numeronota) menor, max(numeronota) maior \n");
@@ -449,12 +450,23 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		jpql.append(" 	and to_char(debito.status, '999') not in (?)   \n");
 		jpql.append(" 	group by dataEmissaoNotaCobranca \n");
 		jpql.append(" ) numeronotas on numeronotas.dataEmissaoNotaCobranca = d.dataEmissaoNotaCobranca \n");
+		
+		jpql.append(" join ( \n");
+		jpql.append(" 	select dataEmissaoNotaCobranca, SUM(ds.valor) valor \n");
+		jpql.append(" 	from debito d \n");
+		jpql.append(" 	left join debitoservico ds on d.id = ds.debito_id \n");
+		jpql.append(" 	where d.dataEmissaoNotaCobranca between ? and ?   \n");
+		jpql.append(" 	and to_char(d.status, '999') not in (?)   \n");
+		jpql.append(" 	group by dataEmissaoNotaCobranca \n");
+		jpql.append(" ) totaldia on totaldia.dataEmissaoNotaCobranca = d.dataEmissaoNotaCobranca \n");
+		
+		
 		jpql.append(" left join debitoservico ds on d.id = ds.debito_id \n");
 		jpql.append(" left join servico s on s.id = ds.servico_id \n");
 		jpql.append(" Where 1 = 1 \n");
 		jpql.append(" 	and d.dataEmissaoNotaCobranca between ? and ?   \n");
 		jpql.append(" 	and to_char(d.status, '999') not in (?)   \n");
-		jpql.append(" group by d.dataEmissaoNotaCobranca, s.descricao,numeronotas.menor,numeronotas.maior \n");
+		jpql.append(" group by d.dataEmissaoNotaCobranca, totaldia.valor, s.descricao,numeronotas.menor,numeronotas.maior \n");
 		jpql.append(" order by d.dataEmissaoNotaCobranca, s.descricao \n");
 
 		List<StatusDebitoEnum> statusNaoPermitidos = new ArrayList<StatusDebitoEnum>();	
@@ -468,6 +480,9 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		query.setParameter(4, dataDe);
 		query.setParameter(5, dataAte);
 		query.setParameter(6, this.getStatusDebitoToString(statusNaoPermitidos));
+		query.setParameter(7, dataDe);
+		query.setParameter(8, dataAte);
+		query.setParameter(9, this.getStatusDebitoToString(statusNaoPermitidos));
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rs = query.getResultList();
@@ -483,6 +498,7 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 			detalhe.setValorTotalDia((BigDecimal) notas[2]);
 			detalhe.setPrimeiraNota((int) notas[3]);
 			detalhe.setUltimaNota((int) notas[4]);
+			detalhe.setValorTotalNota((BigDecimal) notas[5]);
 			
 			relatorio.getNotasEmitidas().add(detalhe);
 		}

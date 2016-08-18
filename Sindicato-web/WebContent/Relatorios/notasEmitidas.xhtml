@@ -100,9 +100,14 @@
 						<p:column headerText="Serviço">
 							<h:outputText value="#{notas.servico}" />
 						</p:column>
+						<p:column headerText="Valor total de notas no dia">
+							<h:outputText value="#{notas.valorTotalNota}">
+								<f:convertNumber locale="pt_BR" type="currency" />
+							</h:outputText>
+						</p:column>
 						<p:column headerText="Valor total do serviço no dia">
 							<h:outputText value="#{notas.valorTotalDia}">
-								<f:convertNumber currencySymbol="R$ " locale="pt-BR" type="currency" />
+								<f:convertNumber locale="pt_BR" type="currency" />
 							</h:outputText>
 						</p:column>
 					</p:dataTable>
