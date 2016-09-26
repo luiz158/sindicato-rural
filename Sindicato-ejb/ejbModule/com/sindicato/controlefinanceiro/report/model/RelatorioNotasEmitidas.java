@@ -8,38 +8,39 @@ import java.util.List;
 public class RelatorioNotasEmitidas implements Serializable {
 
 	public RelatorioNotasEmitidas(){
-		notasEmitidas = new ArrayList<DetalheNotasEmitidas>();
+		notasEmitidasDia = new ArrayList<NotasEmitidasDia>();
 	}
 	
 	private static final long serialVersionUID = 1L;
-	private List<DetalheNotasEmitidas> notasEmitidas;
+	private List<NotasEmitidasDia> notasEmitidasDia;
 	private BigDecimal valorTotalNotas;
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	public List<DetalheNotasEmitidas> getNotasEmitidas() {
-		return notasEmitidas;
-	}
 	public BigDecimal getValorTotalNotas() {
 		valorTotalNotas = BigDecimal.ZERO;
-		if(notasEmitidas == null || notasEmitidas.size() == 0){
+		if(notasEmitidasDia == null || notasEmitidasDia.size() == 0){
 			return valorTotalNotas;
 		}
 		
-		for (DetalheNotasEmitidas detalhe : notasEmitidas) {
+		for (NotasEmitidasDia detalhe : notasEmitidasDia) {
+			if(detalhe.getValorTotalDia() == null){
+				continue;
+			}
 			valorTotalNotas = valorTotalNotas.add(detalhe.getValorTotalDia());
 		}
 		
 		return valorTotalNotas;
 	}
-	public void setNotasEmitidas(List<DetalheNotasEmitidas> notasEmitidas) {
-		this.notasEmitidas = notasEmitidas;
-	}
 	public void setValorTotalNotas(BigDecimal valorTotalNotas) {
 		this.valorTotalNotas = valorTotalNotas;
 	}
-	
-	
+	public List<NotasEmitidasDia> getNotasEmitidasDia() {
+		return notasEmitidasDia;
+	}
+	public void setNotasEmitidasDia(List<NotasEmitidasDia> notasEmitidasDia) {
+		this.notasEmitidasDia = notasEmitidasDia;
+	}
 	
 }

@@ -82,35 +82,41 @@
 						</p:outputLabel>
 					</h2>
 
-					<p:dataTable var="notas" id="notas"
-						value="#{notasEmitidasBean.relatorio.notasEmitidas}">
+					<ui:repeat var="notasDia"
+						value="#{notasEmitidasBean.relatorio.notasEmitidasDia}">
 
-						<f:facet name="header">
-							<h:outputText value="Resumo das notas emitidas" />
-						</f:facet>
+						<p:dataTable var="notas"
+							value="#{notasDia.notas}">
+	
+							<f:facet name="header">
+								<p:outputLabel value="Notas emitidas no dia: " />
+								<h:outputText value="#{notasDia.dataEmissaoNota.time}" >
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</f:facet>
+	
+							<f:facet name="footer">
+								<p:outputLabel value="Total do dia: " />
+								<h:outputText value="#{notasDia.valorTotalDia}">
+									<f:convertNumber locale="pt_BR" type="currency" />
+								</h:outputText>
+							</f:facet>
+	
+							<p:column headerText="Notas">
+								<h:outputText value="De #{notas.primeiraNota} até #{notas.ultimaNota}" />
+							</p:column>
+							<p:column headerText="Serviço">
+								<h:outputText value="#{notas.servico}" />
+							</p:column>
+							<p:column headerText="Valor total do serviço no dia">
+								<h:outputText value="#{notas.valorTotalNota}">
+									<f:convertNumber locale="pt_BR" type="currency" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+						<p:spacer height="25" />
+					</ui:repeat>
 
-						<p:column headerText="Data emissão">
-							<h:outputText value="#{notas.dataEmissaoNota.time}" >
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-						</p:column>
-						<p:column headerText="Notas">
-							<h:outputText value="De #{notas.primeiraNota} até #{notas.ultimaNota}" />
-						</p:column>
-						<p:column headerText="Serviço">
-							<h:outputText value="#{notas.servico}" />
-						</p:column>
-						<p:column headerText="Valor total de notas no dia">
-							<h:outputText value="#{notas.valorTotalNota}">
-								<f:convertNumber locale="pt_BR" type="currency" />
-							</h:outputText>
-						</p:column>
-						<p:column headerText="Valor total do serviço no dia">
-							<h:outputText value="#{notas.valorTotalDia}">
-								<f:convertNumber locale="pt_BR" type="currency" />
-							</h:outputText>
-						</p:column>
-					</p:dataTable>
 					<h2 style="text-align:right;">
 						<p:outputLabel value="Valor total das notas emitidas: " />
 						<p:outputLabel
@@ -119,26 +125,19 @@
 								currencySymbol="R$ " />
 						</p:outputLabel>
 					</h2>
-
 				</p:outputPanel>
-
 				<div class="container-action">
-					<p:commandButton value="Exportar planilha" icon="ui-icon-calculator"
+					<p:commandButton value="Exportar planilha" icon="ui-icon-calculator" actionListener="#{notasEmitidasBean.exportXLS}"
 						style="width:250px;height:50px;" update="@form" ajax="false">
-						<p:dataExporter type="xls" target="notas" fileName="notas-emitidas"  />
 					</p:commandButton>
-				
 					<p:commandButton value="Imprimir relatório" icon="ui-icon-print"
 						style="width:250px;height:50px;" rendered="false"
 						binding="#{notasEmitidasBean.btnImprimir}">
 						<p:printer target="painelServicos" />
 					</p:commandButton>
 				</div>
-
 			</p:fieldset>
-
 		</h:form>
-
 	</ui:define>
 </ui:composition>
 </html>

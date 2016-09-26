@@ -33,6 +33,7 @@ import com.sindicato.controlefinanceiro.report.model.DetalhesNotaRecolhimentosAb
 import com.sindicato.controlefinanceiro.report.model.DetalhesServico;
 import com.sindicato.controlefinanceiro.report.model.DetalhesServicosRecolhimentos;
 import com.sindicato.controlefinanceiro.report.model.FiltroAssociados;
+import com.sindicato.controlefinanceiro.report.model.NotasEmitidasDia;
 import com.sindicato.controlefinanceiro.report.model.RecebimentoDia;
 import com.sindicato.controlefinanceiro.report.model.RelatorioAssociados;
 import com.sindicato.controlefinanceiro.report.model.RelatorioFolhaVotacao;
@@ -443,11 +444,12 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		jpql.append(" 	numeronotas.maior, \n");
 		jpql.append(" 	totaldia.valor   \n");
 		jpql.append(" from debito d   \n");
+		
 		jpql.append(" join ( \n");
 		jpql.append(" 	select dataEmissaoNotaCobranca, min(numeronota) menor, max(numeronota) maior \n");
 		jpql.append(" 	from debito \n");
 		jpql.append(" 	where debito.dataEmissaoNotaCobranca between ? and ?   \n");
-		jpql.append(" 	and to_char(debito.status, '999') not in (?)   \n");
+		jpql.append(" 	and debito.status in (1,2,3)   \n");
 		jpql.append(" 	group by dataEmissaoNotaCobranca \n");
 		jpql.append(" ) numeronotas on numeronotas.dataEmissaoNotaCobranca = d.dataEmissaoNotaCobranca \n");
 		
@@ -456,67 +458,58 @@ public class RelatorioDAOImpl implements RelatorioDAO {
 		jpql.append(" 	from debito d \n");
 		jpql.append(" 	left join debitoservico ds on d.id = ds.debito_id \n");
 		jpql.append(" 	where d.dataEmissaoNotaCobranca between ? and ?   \n");
-		jpql.append(" 	and to_char(d.status, '999') not in (?)   \n");
+		jpql.append(" 	and d.status in (1,2,3)   \n");
 		jpql.append(" 	group by dataEmissaoNotaCobranca \n");
 		jpql.append(" ) totaldia on totaldia.dataEmissaoNotaCobranca = d.dataEmissaoNotaCobranca \n");
-		
 		
 		jpql.append(" left join debitoservico ds on d.id = ds.debito_id \n");
 		jpql.append(" left join servico s on s.id = ds.servico_id \n");
 		jpql.append(" Where 1 = 1 \n");
 		jpql.append(" 	and d.dataEmissaoNotaCobranca between ? and ?   \n");
-		jpql.append(" 	and to_char(d.status, '999') not in (?)   \n");
+		jpql.append(" 	and d.status in (1,2,3)   \n");
 		jpql.append(" group by d.dataEmissaoNotaCobranca, totaldia.valor, s.descricao,numeronotas.menor,numeronotas.maior \n");
 		jpql.append(" order by d.dataEmissaoNotaCobranca, s.descricao \n");
 
-		List<StatusDebitoEnum> statusNaoPermitidos = new ArrayList<StatusDebitoEnum>();	
-		statusNaoPermitidos.add(StatusDebitoEnum.DEBITOCRIADO);
-		statusNaoPermitidos.add(StatusDebitoEnum.CANCELADO);
-		
 		Query query = em.createNativeQuery(jpql.toString());
 		query.setParameter(1, dataDe);
 		query.setParameter(2, dataAte);
-		query.setParameter(3, this.getStatusDebitoToString(statusNaoPermitidos));
-		query.setParameter(4, dataDe);
-		query.setParameter(5, dataAte);
-		query.setParameter(6, this.getStatusDebitoToString(statusNaoPermitidos));
-		query.setParameter(7, dataDe);
-		query.setParameter(8, dataAte);
-		query.setParameter(9, this.getStatusDebitoToString(statusNaoPermitidos));
+		query.setParameter(3, dataDe);
+		query.setParameter(4, dataAte);
+		query.setParameter(5, dataDe);
+		query.setParameter(6, dataAte);
 		
 		@SuppressWarnings("unchecked")
 		List<Object[]> rs = query.getResultList();
 
+		boolean mudarDia = false;
+		NotasEmitidasDia notasDia = new NotasEmitidasDia();
+		
 		for (Object[] notas : rs) {
-			DetalheNotasEmitidas detalhe = new DetalheNotasEmitidas();
-			
 			Calendar dataEmissaoNota = Calendar.getInstance();
 			dataEmissaoNota.setTime((Date) notas[0]);
 			
-			detalhe.setDataEmissaoNota(dataEmissaoNota);
+			if(notasDia.getDataEmissaoNota() == null || dataEmissaoNota.compareTo(notasDia.getDataEmissaoNota()) != 0){
+				mudarDia = true;
+			}
+			
+			if(mudarDia){
+				mudarDia = false;
+				notasDia = new NotasEmitidasDia();
+				notasDia.setDataEmissaoNota(dataEmissaoNota);
+				notasDia.setValorTotalDia((BigDecimal) notas[5]);
+				relatorio.getNotasEmitidasDia().add(notasDia);
+			}
+			
+			DetalheNotasEmitidas detalhe = new DetalheNotasEmitidas();
 			detalhe.setServico((String) notas[1]);
-			detalhe.setValorTotalDia((BigDecimal) notas[2]);
 			detalhe.setPrimeiraNota((int) notas[3]);
 			detalhe.setUltimaNota((int) notas[4]);
-			detalhe.setValorTotalNota((BigDecimal) notas[5]);
-			
-			relatorio.getNotasEmitidas().add(detalhe);
+			detalhe.setValorTotalNota((BigDecimal) notas[2]);
+			notasDia.getNotas().add(detalhe);
 		}
-		
 		return relatorio;
 	}
-	
-	private String getStatusDebitoToString(List<StatusDebitoEnum> status){
-		StringBuilder statusStr = new StringBuilder();
-		for (StatusDebitoEnum statusDebitoEnum : status) {
-			if(statusStr.length() > 0){
-				statusStr.append(",");
-			}
-			statusStr.append(statusDebitoEnum.ordinal());
-		}
-		return statusStr.toString();
-	}
-	
+
 	@Override
 	public RelatorioInscricaoEstadual getRelatorioInscricaoEstadual(){
 		RelatorioInscricaoEstadual relatorio = new RelatorioInscricaoEstadual();
