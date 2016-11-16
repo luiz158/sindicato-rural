@@ -33,8 +33,8 @@ public class ServicoDAOImpl implements ServicoDAO {
 			result.setSuccess(false);
 		} else {
 			try {
-				em.merge(servico);
-				em.remove(servico);
+				Servico servico2 = em.merge(servico);
+				em.remove(servico2);
 
 				result.setMessage("Serviço removido com sucesso.");
 				result.setSuccess(true);
